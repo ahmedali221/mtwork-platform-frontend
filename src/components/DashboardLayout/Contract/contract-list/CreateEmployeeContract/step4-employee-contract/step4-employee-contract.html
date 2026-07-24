@@ -1,0 +1,178 @@
+<!-- Step 3: Working Time -->
+<div class="card-section">
+  <h2 class="section-title">Working Time</h2>
+
+  <form [formGroup]="WorkingTimeForm">
+    <div class="form-row two-columns">
+
+      <!-- Number of working days -->
+      <div class="form-group">
+        <label class="form-label">
+          Number of Working Days <span class="required-badge">Required</span>
+        </label>
+        <input
+          type="number"
+          class="form-input"
+          formControlName="workingDays"
+          placeholder="Enter Number of Working Days"
+        />
+      </div>
+
+      <!-- Working Days Dropdown -->
+      <div class="form-group">
+        <label class="form-label">
+          Working Days <span class="required-badge">Required</span>
+        </label>
+        <mat-form-field appearance="outline" class="full-width DropList">
+
+          <mat-select formControlName="selectedWorkingDays">
+            <mat-option *ngFor="let option of WorkingDaysOptions" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <!-- Working Days List (Multi-select) -->
+    <div class="form-group full-width">
+      <label class="form-label">
+        Working Days List <span class="required-badge">Required</span>
+      </label>
+      <mat-form-field appearance="outline" class="full-width DropList">
+        <mat-select formControlName="workingDaysList">
+          <mat-option *ngFor="let option of WorkingDaysOptions" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+  </form>
+</div>
+<!-- Step 3: Salaries and Other Benefits -->
+<div class="card-section">
+  <h2 class="section-title">Salaries and Other Benefits</h2>
+
+  <form [formGroup]="SalariesAndBenefitsForm">
+    <div class="form-row two-columns">
+
+      <!-- Salary -->
+      <div class="form-group">
+        <label class="form-label">Salary</label>
+        <input
+          type="number"
+          class="form-input"
+          formControlName="salary"
+          placeholder="Enter Salary"
+        />
+      </div>
+
+      <!-- Allowances Checkbox -->
+      <div class="form-group">
+        <label class="form-label">Include all Allowances</label>
+        <input
+          type="checkbox"
+          formControlName="includeAllAllowances"
+          [attr.aria-label]="'contracts.wizard.allowancesCheckbox' | transloco"
+        />
+      </div>
+
+      <!-- Currency Dropdown -->
+      <div class="form-group">
+        <label class="form-label" >
+          Currency <span class="required-badge">Required</span>
+        </label>
+        <mat-form-field appearance="outline" class="full-width DropList">
+         
+          <mat-select formControlName="SelectedCurrency" >
+            <mat-option *ngFor="let currency of CurrancyOptions" [value]="currency">
+              {{ currency }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <!-- Billing Cycle -->
+    <div class="form-group">
+      <label class="form-label">
+        Billing Cycle <span class="required-badge">Required</span>
+      </label>
+      <mat-form-field appearance="outline" class="full-width DropList">
+
+        <mat-select formControlName="SelectedBillingCycle">
+          <mat-option *ngFor="let cycle of BillingCycleOptions" [value]="cycle">
+            {{ cycle }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+  </form>
+</div>
+
+
+
+<!-- Step 3: Salaries and Other Benefits -->
+<div class="card-section">
+  <h2 class="section-title">Salaries and Other Benefits</h2>
+
+  <form [formGroup]="SalariesAndBenefitsForm">
+    <div class="form-row two-columns">
+
+      <!-- Salary -->
+      <div class="form-group">
+        <label class="form-label">Salary</label>
+        <input
+          type="number"
+          class="form-input"
+          formControlName="salary"
+          placeholder="Enter Salary"
+        />
+      </div>
+
+      <!-- Allowances Checkbox -->
+<div class="form-group toggle-group">
+ 
+
+  <p><mat-slide-toggle  formControlName="includeAllAllowances" labelPosition="before">Include all Allowances</mat-slide-toggle></p>
+</div>
+
+
+      <!-- Currency Dropdown -->
+      <div class="form-group">
+        <label class="form-label">
+          Currency <span class="required-badge">Required</span>
+        </label>
+        <mat-form-field appearance="outline" class="full-width DropList">
+
+          <mat-select formControlName="SelectedCurrency">
+            <mat-option *ngFor="let currency of CurrancyOptions" [value]="currency">
+              {{ currency }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <!-- Billing Cycle -->
+    <div class="form-group">
+      <label class="form-label">
+        Billing Cycle <span class="required-badge">Required</span>
+      </label>
+      <mat-form-field appearance="outline" class="full-width DropList">
+       
+        <mat-select formControlName="SelectedBillingCycle">
+          <mat-option *ngFor="let cycle of BillingCycleOptions" [value]="cycle">
+            {{ cycle }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+  </form>
+</div>

@@ -1,0 +1,161 @@
+<div class="admin-wd" [attr.aria-label]="'admin.withdrawals.title' | transloco">
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="admin-wd__header">
+    <div>
+      <h1 class="admin-wd__title">{{ 'admin.withdrawals.title' | transloco }}</h1>
+      <p class="admin-wd__subtitle">{{ 'admin.withdrawals.subtitle' | transloco }}</p>
+    </div>
+    <div class="admin-wd__stats" role="group" [attr.aria-label]="'admin.withdrawals.title' | transloco">
+      <div class="admin-wd__stat">
+        <span class="admin-wd__stat-value">{{ pendingCount() }}</span>
+        <span class="admin-wd__stat-label">{{ 'admin.withdrawals.pendingCount' | transloco }}</span>
+      </div>
+      <div class="admin-wd__stat">
+        <span class="admin-wd__stat-value">{{ processedCount() }}</span>
+        <span class="admin-wd__stat-label">{{ 'admin.withdrawals.processedCount' | transloco }}</span>
+      </div>
+    </div>
+  </header>
+
+  @if (isLoading()) {
+    <!-- ── Loading ──────────────────────────────────────────── -->
+    <div class="admin-wd__state" aria-busy="true" role="status">
+      <span class="admin-wd__spinner" aria-hidden="true"></span>
+      <span>{{ 'common.loading' | transloco }}</span>
+    </div>
+  } @else if (errorKey()) {
+    <!-- ── Error ────────────────────────────────────────────── -->
+    <div class="admin-wd__state admin-wd__state--error" role="alert">
+      <mat-icon aria-hidden="true">error_outline</mat-icon>
+      <span>{{ errorKey() | transloco }}</span>
+      <button class="admin-wd__retry" (click)="retry()" [attr.aria-label]="'common.retry' | transloco">
+        {{ 'common.retry' | transloco }}
+      </button>
+    </div>
+  } @else {
+
+    <!-- ── Row-level action error ───────────────────────────── -->
+    @if (actionErrorKey()) {
+      <div class="admin-wd__state admin-wd__state--error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        <span>{{ actionErrorKey() | transloco }}</span>
+      </div>
+    }
+
+    <!-- ════════════════════════════════════════════════════════
+         PENDING REQUESTS
+    ════════════════════════════════════════════════════════ -->
+    <section class="admin-wd__section" aria-labelledby="admin-wd-pending-heading">
+      <h2 class="admin-wd__section-title" id="admin-wd-pending-heading">
+        {{ 'admin.withdrawals.pendingTitle' | transloco }}
+      </h2>
+
+      @if (pending().length === 0) {
+        <div class="admin-wd__state admin-wd__state--empty">
+          <mat-icon aria-hidden="true">inbox</mat-icon>
+          <span>{{ 'admin.withdrawals.emptyPending' | transloco }}</span>
+        </div>
+      } @else {
+        <div class="admin-wd__table-wrap">
+          <table class="admin-wd__table" [attr.aria-label]="'admin.withdrawals.pendingTitle' | transloco">
+            <thead>
+              <tr>
+                <th>{{ 'admin.withdrawals.columns.employee' | transloco }}</th>
+                <th>{{ 'admin.withdrawals.columns.company' | transloco }}</th>
+                <th>{{ 'admin.withdrawals.columns.amount' | transloco }}</th>
+                <th>{{ 'admin.withdrawals.columns.requestDate' | transloco }}</th>
+                <th>{{ 'admin.withdrawals.columns.status' | transloco }}</th>
+                <th>{{ 'admin.withdrawals.columns.actions' | transloco }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (entry of pending(); track entry.id) {
+                <tr>
+                  <td class="admin-wd__cell">{{ entry.employeeName || entry.fullName || '—' }}</td>
+                  <td class="admin-wd__cell">{{ entry.companyName || '—' }}</td>
+                  <td class="admin-wd__cell">{{ entry.amount }}</td>
+                  <td class="admin-wd__cell">{{ entry.createdAt ? (entry.createdAt | date:'mediumDate') : '—' }}</td>
+                  <td class="admin-wd__cell">
+                    <span class="admin-wd__badge" [ngClass]="statusClass(entry.status)">
+                      {{ statusLabel(entry.status) | transloco }}
+                    </span>
+                  </td>
+                  <td class="admin-wd__cell admin-wd__cell--actions">
+                    <button
+                      class="admin-wd__btn admin-wd__btn--approve"
+                      (click)="process(entry, 'approve')"
+                      [disabled]="processingId() !== null"
+                      [attr.aria-label]="'admin.withdrawals.actions.approve' | transloco">
+                      @if (processingId() === entry.id) {
+                        <span class="admin-wd__spinner admin-wd__spinner--sm" aria-hidden="true"></span>
+                      } @else {
+                        <mat-icon aria-hidden="true">check_circle</mat-icon>
+                        <span>{{ 'admin.withdrawals.actions.approve' | transloco }}</span>
+                      }
+                    </button>
+                    <button
+                      class="admin-wd__btn admin-wd__btn--reject"
+                      (click)="process(entry, 'reject')"
+                      [disabled]="processingId() !== null"
+                      [attr.aria-label]="'admin.withdrawals.actions.reject' | transloco">
+                      <mat-icon aria-hidden="true">cancel</mat-icon>
+                      <span>{{ 'admin.withdrawals.actions.reject' | transloco }}</span>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════
+         PROCESSED REQUESTS (read-only history, latest first)
+    ════════════════════════════════════════════════════════ -->
+    <section class="admin-wd__section" aria-labelledby="admin-wd-processed-heading">
+      <h2 class="admin-wd__section-title" id="admin-wd-processed-heading">
+        {{ 'admin.withdrawals.processedTitle' | transloco }}
+      </h2>
+
+      @if (processed().length === 0) {
+        <div class="admin-wd__state admin-wd__state--empty">
+          <mat-icon aria-hidden="true">history</mat-icon>
+          <span>{{ 'admin.withdrawals.emptyProcessed' | transloco }}</span>
+        </div>
+      } @else {
+        <div class="admin-wd__table-wrap">
+          <table class="admin-wd__table" [attr.aria-label]="'admin.withdrawals.processedTitle' | transloco">
+            <thead>
+              <tr>
+                <th>{{ 'admin.withdrawals.columns.employee' | transloco }}</th>
+                <th>{{ 'admin.withdrawals.columns.company' | transloco }}</th>
+                <th>{{ 'admin.withdrawals.columns.amount' | transloco }}</th>
+                <th>{{ 'admin.withdrawals.columns.requestDate' | transloco }}</th>
+                <th>{{ 'admin.withdrawals.columns.status' | transloco }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (entry of processed(); track entry.id) {
+                <tr>
+                  <td class="admin-wd__cell">{{ entry.employeeName || entry.fullName || '—' }}</td>
+                  <td class="admin-wd__cell">{{ entry.companyName || '—' }}</td>
+                  <td class="admin-wd__cell">{{ entry.amount }}</td>
+                  <td class="admin-wd__cell">{{ entry.createdAt ? (entry.createdAt | date:'mediumDate') : '—' }}</td>
+                  <td class="admin-wd__cell">
+                    <span class="admin-wd__badge" [ngClass]="statusClass(entry.status)">
+                      {{ statusLabel(entry.status) | transloco }}
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+
+  }
+
+</div>

@@ -1,0 +1,182 @@
+/* ───────────────────────────────────────────────────────────────────
+   Figma node 3:37872 — Impact section. Exact Dev Mode values.
+   Stays light in dark mode (Figma dark page is white below the hero).
+   ─────────────────────────────────────────────────────────────────── */
+:host {
+  display: block;
+  background: var(--landing-impact-bg);
+  font-family: var(--font-family-dm-sans);
+}
+
+.impact {
+  /* 56px gap after previous frame + tabs at 56 inside the frame = 112 to tabs */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: var(--landing-impact-top-gap) var(--spacing-medium-lg);
+}
+
+/* ─── Tabs (3:37873): 4 × 161×56, gap 24, centered ─────────────────── */
+.impact__tabs {
+  display: flex;
+  gap: var(--spacing-medium-xl);
+  justify-content: center;
+}
+
+.impact__tab {
+  display: inline-flex;
+  flex: 0 0 auto; /* Figma mobile keeps 161px tabs, clipped at the frame edge */
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  inline-size: 161px;
+  block-size: 56px;
+  padding: var(--spacing-medium-md);
+  border: var(--border-width-hairline) solid var(--landing-impact-tab-border);
+  border-radius: var(--radius-12);
+  background: var(--landing-navbar-frame-bg);
+  color: var(--brand-grays-900);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--body-size);
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.impact__tab--active {
+  background: var(--landing-impact-card-bg);
+}
+
+.impact__tab-icon {
+  inline-size: 32px;
+  block-size: 32px;
+}
+
+/* ─── Cards grid (3:37878): 927.74 wide, gap 16 ────────────────────── */
+.impact__grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium-lg);
+  inline-size: var(--landing-features-row-max-width); /* 927.735px — Figma frame width */
+  max-inline-size: 100%;
+  margin-block-start: var(--spacing-medium-xl); /* tabs end 112 → cards 136 */
+}
+
+.impact__row {
+  display: flex;
+  gap: var(--spacing-medium-lg);
+}
+
+.impact__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  inline-size: 358.735px;
+  block-size: 380px;
+  padding: 30px 19px;
+  border-radius: var(--radius-8);
+  background: var(--landing-impact-card-bg);
+  overflow: hidden;
+}
+
+.impact__card--wide {
+  inline-size: 553px;
+}
+
+.impact__card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-medium-lg);
+}
+
+.impact__card-title {
+  margin: 0;
+  color: var(--brand-grays-900);
+  font-family: var(--typography-title-font-family);
+  font-size: var(--title-size);
+  font-weight: var(--title-font-weight-bold, 700);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.impact__card-text {
+  margin: 0;
+  max-inline-size: 320.735px;
+  color: var(--brand-neutral-400);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--subtitle-size);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.impact__card--wide .impact__card-text {
+  max-inline-size: 396.159px;
+}
+
+.impact__card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 121px;
+  block-size: 40px;
+  padding: var(--spacing-small-xs) var(--spacing-medium-md);
+  border: 0;
+  border-radius: var(--radius-8);
+  background: var(--landing-navbar-ink);
+  box-shadow: var(--landing-navbar-neutral-shadow);
+  color: var(--landing-navbar-surface);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--subtitle-size);
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Stars (3:37885): 144.46×104.75 box; svg bleeds 1.88% left */
+.impact__card-stars {
+  position: relative;
+  inline-size: 144.462px;
+  block-size: 104.752px;
+}
+
+.impact__card-stars img {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -1.88%;
+  inline-size: 101.88%;
+  block-size: 100%;
+}
+
+/* ─── Mobile — Figma frame 3:65068 (393): stacked cards, clipped tabs ── */
+@media (max-width: 767px) {
+  :host {
+    overflow: hidden; /* Figma clips tabs row and wide cards at the 393 frame */
+  }
+
+  .impact__tabs {
+    justify-content: flex-start;
+    inline-size: 361px;
+    margin-inline: auto;
+  }
+
+  .impact__grid {
+    inline-size: 361px;
+    margin-inline: auto;
+  }
+
+  .impact__row {
+    flex-direction: column;
+  }
+
+  .impact__card {
+    inline-size: 361px; /* Figma mobile narrow card (3:65084) */
+  }
+
+  .impact__card--wide {
+    inline-size: 553px; /* kept at desktop width, clipped at the frame edge (3:65076) */
+  }
+}

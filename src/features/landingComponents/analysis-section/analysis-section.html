@@ -1,0 +1,128 @@
+<!-- Figma node 3:37684 — dashboard panel + floating chart cards. Decorative mock data (aria-hidden), values from Dev Mode. -->
+<section class="analysis-section" [attr.aria-label]="languageService.translations()?.analysis?.dashboardPreview">
+  <div class="analysis-section__stage">
+
+    <img
+      class="analysis-section__float analysis-section__float--left"
+      src="assets/images/analysis/float-revenue-card.png"
+      alt=""
+      aria-hidden="true"
+    />
+
+    <div class="analysis-section__panel" aria-hidden="true">
+
+      <!-- KPI cards row (node 3:37686) -->
+      <div class="analysis-section__kpis">
+        <div class="analysis-section__kpi">
+          <div class="analysis-section__kpi-inner">
+            <div class="analysis-section__kpi-text">
+              <span class="analysis-section__kpi-label">Total Empolees</span>
+              <div class="analysis-section__kpi-figures">
+                <strong class="analysis-section__kpi-value">$1.89K</strong>
+                <span class="analysis-section__kpi-caption">20% Increase Last 7 Days</span>
+              </div>
+            </div>
+            <div class="analysis-section__kpi-visual">
+              <img class="analysis-section__kpi-menu" src="assets/images/analysis/icon-menu-horizontal.svg" alt="" />
+              <img class="analysis-section__kpi-chart" src="assets/images/analysis/kpi-line-chart-1.svg" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <div class="analysis-section__kpi analysis-section__kpi--primary">
+          <div class="analysis-section__kpi-inner">
+            <div class="analysis-section__kpi-text">
+              <span class="analysis-section__kpi-label">Total Revenue</span>
+              <div class="analysis-section__kpi-figures">
+                <strong class="analysis-section__kpi-value">$1.89K</strong>
+                <span class="analysis-section__kpi-caption">20% Increase Last 7 Days</span>
+              </div>
+            </div>
+            <div class="analysis-section__kpi-visual">
+              <img class="analysis-section__kpi-menu analysis-section__kpi-menu--light" src="assets/images/analysis/icon-menu-horizontal.svg" alt="" />
+              <div class="analysis-section__kpi-bars">
+                <span style="--kpi-bar-h: 3.519em"></span>
+                <span style="--kpi-bar-h: 2.5011em"></span>
+                <span style="--kpi-bar-h: 4.944em"></span>
+                <span class="analysis-section__kpi-bar--accent" style="--kpi-bar-h: 5.8747em"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="analysis-section__kpi">
+          <div class="analysis-section__kpi-inner">
+            <div class="analysis-section__kpi-text">
+              <span class="analysis-section__kpi-label">New Compains</span>
+              <div class="analysis-section__kpi-figures">
+                <strong class="analysis-section__kpi-value">$1.89K</strong>
+                <span class="analysis-section__kpi-caption analysis-section__kpi-caption--gray">20% Increase Last 7 Days</span>
+              </div>
+            </div>
+            <div class="analysis-section__kpi-visual">
+              <img class="analysis-section__kpi-menu" src="assets/images/analysis/icon-menu-horizontal.svg" alt="" />
+              <img class="analysis-section__kpi-chart analysis-section__kpi-chart--wide" src="assets/images/analysis/kpi-line-chart-2.svg" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Revenue chart card (node 3:37731) -->
+      <div class="analysis-section__chart-card">
+        <div class="analysis-section__chart-header">
+          <span class="analysis-section__chart-title">Total Revenue</span>
+          <span class="analysis-section__chart-date">
+            Select Date
+            <img src="assets/images/analysis/icon-chevron-down.svg" alt="" />
+          </span>
+        </div>
+
+        <div class="analysis-section__chart-legend">
+          <span class="analysis-section__legend-item">
+            <span class="analysis-section__legend-pill analysis-section__legend-pill--primary"></span>
+            This Week
+          </span>
+          <span class="analysis-section__legend-item">
+            <span class="analysis-section__legend-pill analysis-section__legend-pill--secondary"></span>
+            Last Week
+          </span>
+        </div>
+
+        <div class="analysis-section__chart-body">
+          <div class="analysis-section__chart-y-axis">
+            <span>$80K</span><span>$70K</span><span>$60K</span><span>$50K</span><span>$40K</span>
+            <span>$30K</span><span>$20K</span><span>$10K</span><span>$0K</span>
+          </div>
+
+          <img class="analysis-section__chart-grid" src="assets/images/analysis/chart-grid-lines.svg" alt="" />
+
+          <div class="analysis-section__chart-plot">
+            <div class="analysis-section__chart-bars">
+              <span style="--bar-h: 16.1964em"></span>
+              <span class="analysis-section__chart-bar--primary" style="--bar-h: 11.5115em"></span>
+              <span style="--bar-h: 13.8775em"></span>
+              <span class="analysis-section__chart-bar--primary" style="--bar-h: 23.4699em"></span>
+              <span style="--bar-h: 12.2787em"></span>
+              <span class="analysis-section__chart-bar--primary" style="--bar-h: 16.1965em"></span>
+              <span class="analysis-section__chart-bar--primary" style="--bar-h: 22.7553em"></span>
+              <span style="--bar-h: 11.5115em"></span>
+              <span style="--bar-h: 22.7553em"></span>
+              <span class="analysis-section__chart-bar--primary" style="--bar-h: 27.0386em"></span>
+            </div>
+            <div class="analysis-section__chart-x-axis">
+              <span>Jan</span><span>Feb</span><span>Mar</span><span>April</span><span>May</span><span>June</span>
+              <span>July</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <img
+      class="analysis-section__float analysis-section__float--right"
+      src="assets/images/analysis/float-invoice-card.png"
+      alt=""
+      aria-hidden="true"
+    />
+  </div>
+</section>

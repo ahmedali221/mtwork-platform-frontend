@@ -1,0 +1,61 @@
+<div class="card-section" [formGroup]="employeeForm">
+  <h2 class="section-title">Employee information</h2>
+  <div class="form-row two-columns">
+    <div class="form-group">
+      <label class="form-label">
+        Entity Name <span class="required-badge">Required</span>
+      </label>
+      <input type="text" class="form-input" placeholder="e.g. Acme Corp" formControlName="entityName" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">
+        Official Number <span class="required-badge">Required</span>
+      </label>
+      <input type="text" class="form-input" placeholder="e.g. CR-12345" formControlName="officialNumber" />
+    </div>
+  </div>
+
+  <div class="form-row two-columns">
+    <div class="form-group">
+      <label class="form-label">
+        Phone Number <span class="required-badge">Required</span>
+      </label>
+      <input type="tel" class="form-input" placeholder="+1 (555) 000-0000" formControlName="phoneNumber" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">
+        Email Address <span class="required-badge">Required</span>
+      </label>
+      <input type="email" class="form-input" placeholder="name@company.com" formControlName="emailAddress" />
+    </div>
+  </div>
+
+  <div class="form-group full-width">
+    <label class="form-label">Address</label>
+    <textarea class="form-input textarea" formControlName="address" placeholder="123 Main St, City, Country" rows="4" [attr.aria-label]="'common.address' | transloco"></textarea>
+  </div>
+</div>
+
+<div class="card-section" [formGroup]="employeeForm">
+  <h2 class="section-title">Representative</h2>
+  <div class="form-row two-columns">
+    <div class="form-group">
+      <label class="form-label">Representative</label>
+      <input type="text" class="form-input" placeholder="Full name" formControlName="representative" [attr.aria-label]="'contracts.wizard.representative' | transloco"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Representative Identity</label>
+      <input type="text" class="form-input" placeholder="ID / Passport number" formControlName="representativeIdentity" [attr.aria-label]="'contracts.wizard.identity' | transloco" />
+    </div>
+  </div>
+
+  <div class="form-group full-width">
+    <label class="form-label">Representative Email Address</label>
+    <input type="email" class="form-input" placeholder="name@company.com" formControlName="representativeEmail" [attr.aria-label]="'common.email' | transloco" />
+  </div>
+
+  <div class="form-group full-width">
+    <label class="form-label">Representative description</label>
+    <textarea class="form-input textarea" formControlName="representativeDescription" placeholder="Describe the representative's role…" rows="4" [attr.aria-label]="'common.description' | transloco"></textarea>
+  </div>
+</div>

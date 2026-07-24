@@ -1,0 +1,120 @@
+<div class="landing-page">
+  <section class="landing-hero">
+    <div class="landing-hero__content">
+      <span class="landing-hero__badge">
+        {{ languageService.translations()?.hero?.badge || 'Payroll Managment' }}
+      </span>
+
+      <div class="landing-hero__title-frame">
+        <h1 class="landing-hero__title">
+          <span class="landing-hero__title-highlighted">
+            <span class="landing-hero__title-highlight-text">
+              {{ languageService.translations()?.hero?.title1 }}
+            </span>
+          </span>
+          <span class="landing-hero__title-rest">{{ languageService.translations()?.hero?.title2 }}</span>
+        </h1>
+      </div>
+
+      <p class="landing-hero__description">
+        {{ languageService.translations()?.hero?.paragraph }}
+      </p>
+
+      <div class="landing-hero__actions">
+        <button
+          class="landing-hero__button landing-hero__button--primary"
+          (click)="scrollToFeatures()"
+          [attr.aria-label]="languageService.translations()?.hero?.learnMoreAria"
+        >
+          {{ languageService.translations()?.nav?.getStarted || 'Learn More' }}
+        </button>
+
+        <a
+          class="landing-hero__button landing-hero__button--secondary"
+          routerLink="/register"
+          [attr.aria-label]="languageService.translations()?.nav?.bookADemo"
+        >
+          {{ languageService.translations()?.nav?.bookADemo || 'Book a demo' }}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="landing-section landing-section--dashboard">
+    <app-analysis-section></app-analysis-section>
+  </section>
+
+  <!-- Figma node 3:37788 — Trusted Companies -->
+  <section class="landing-trusted" [attr.aria-label]="languageService.translations()?.trustedBy">
+    <h2 class="landing-trusted__title">{{ languageService.translations()?.trustedBy }}</h2>
+    <p class="landing-trusted__subtitle">{{ languageService.translations()?.hero?.paragraph }}</p>
+    <div class="landing-trusted__slider" aria-hidden="true">
+      @for(i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]; track i) {
+        <div class="landing-trusted__logo">
+          <img class="landing-trusted__logo-wordmark" src="assets/images/analysis/trusted-logo-wordmark.svg" alt="" />
+          <img class="landing-trusted__logo-mark" src="assets/images/analysis/trusted-logo-mark.svg" alt="" />
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="landing-section landing-section--hr">
+    <app-hrsection></app-hrsection>
+  </section>
+
+  <section class="landing-section landing-section--impact">
+    <app-creatingimact></app-creatingimact>
+  </section>
+
+  <section class="landing-section landing-section--compliance">
+    <app-continouscompliance></app-continouscompliance>
+  </section>
+
+  <!-- Figma node 3:38071 — testimonials header + 3-column card stacks -->
+  <section class="landing-why">
+    <img class="landing-why__wavey" src="assets/images/testimonials/wavey-header.png" alt="" aria-hidden="true" />
+    <h2 class="landing-why__title">
+      {{ languageService.translations()?.whyChoose?.titleHighlight }}
+      <span class="landing-why__highlight">{{ languageService.translations()?.whyChoose?.titleRest }}</span>
+    </h2>
+    <p class="landing-why__description">
+      {{ languageService.translations()?.whyChoose?.description }}
+    </p>
+  </section>
+
+  <section class="landing-testimonials">
+    @for (column of testimonialColumns; track $index) {
+      <div class="landing-testimonials__column" [class.landing-testimonials__column--blue]="column.blue">
+        @for (card of column.cards; track $index) {
+          <article class="landing-testimonials__card">
+            <div class="landing-testimonials__card-body">
+              <img class="landing-testimonials__card-icon" src="assets/images/impact/icon-comment.svg" alt="" aria-hidden="true" />
+              <p class="landing-testimonials__quote">{{ languageService.translations()?.testimonials?.quote || testimonialQuote }}</p>
+            </div>
+            <div class="landing-testimonials__person">
+              <span class="landing-testimonials__avatar" aria-hidden="true">
+                <img src="assets/images/testimonials/avatar-person.png" alt="" />
+              </span>
+              <div class="landing-testimonials__person-text">
+                <p class="landing-testimonials__name">{{ languageService.translations()?.testimonials?.name || testimonialName }}</p>
+                <p class="landing-testimonials__role">{{ languageService.translations()?.testimonials?.role || testimonialRole }}</p>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+
+  <section class="landing-section landing-section--choosing">
+    <app-choosing-component></app-choosing-component>
+  </section>
+
+  <section class="landing-section landing-section--blog">
+    <app-blog-component></app-blog-component>
+  </section>
+
+  <section class="landing-section landing-section--steps">
+    <app-steps-component></app-steps-component>
+  </section>
+</div>

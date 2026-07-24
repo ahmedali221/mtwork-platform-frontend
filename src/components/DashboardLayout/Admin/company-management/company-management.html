@@ -1,0 +1,169 @@
+<div class="co-mgmt">
+
+  <!-- ── Header ───────────────────────────────────────────────── -->
+  <div class="co-mgmt__header">
+    <div>
+      <h1 class="co-mgmt__title"    transloco="admin.companies.title"></h1>
+      <p  class="co-mgmt__subtitle" transloco="admin.companies.subtitle"></p>
+    </div>
+
+    <div class="co-mgmt__search-wrap">
+      <mat-icon class="co-mgmt__search-icon" aria-hidden="true">search</mat-icon>
+      <input
+        class="co-mgmt__search"
+        type="search"
+        [placeholder]="'admin.companies.searchPlaceholder' | transloco"
+        [value]="searchQuery()"
+        (input)="onSearch($any($event.target).value)"
+        [attr.aria-label]="'admin.companies.search' | transloco"
+      />
+    </div>
+  </div>
+
+  <!-- ── Loading ───────────────────────────────────────────────── -->
+  @if (isLoading()) {
+    <div class="co-mgmt__state co-mgmt__state--loading" aria-busy="true">
+      <span class="co-mgmt__spinner" aria-hidden="true"></span>
+    </div>
+  }
+
+  <!-- ── Error ─────────────────────────────────────────────────── -->
+  @else if (errorKey()) {
+    <div class="co-mgmt__state co-mgmt__state--error" role="alert">
+      <mat-icon aria-hidden="true">error_outline</mat-icon>
+      <span>{{ errorKey() | transloco }}</span>
+    </div>
+  }
+
+  <!-- ── Empty ─────────────────────────────────────────────────── -->
+  @else if (filteredCompanies().length === 0) {
+    <div class="co-mgmt__state co-mgmt__state--empty">
+      <mat-icon aria-hidden="true">business_center</mat-icon>
+      <span transloco="admin.companies.empty"></span>
+    </div>
+  }
+
+  <!-- ── Table ─────────────────────────────────────────────────── -->
+  @else {
+    <div class="co-mgmt__table-wrap">
+      <table class="co-mgmt__table" [attr.aria-label]="'admin.companies.list' | transloco">
+        <thead>
+          <tr>
+            <th transloco="admin.companies.columns.name"></th>
+            <th transloco="admin.companies.columns.email"></th>
+            <th transloco="admin.companies.columns.phone"></th>
+            <th transloco="admin.companies.columns.status"></th>
+            <th transloco="admin.companies.columns.actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (company of filteredCompanies(); track company.id) {
+            <tr>
+              <td class="co-mgmt__cell co-mgmt__cell--name">
+                <div class="co-mgmt__company-name">
+                  @if (company.logoPath) {
+                    <img class="co-mgmt__logo" [src]="company.logoPath" [alt]="company.name ?? ''" />
+                  } @else {
+                    <span class="co-mgmt__logo-placeholder" aria-hidden="true">
+                      {{ (company.name ?? '?')[0].toUpperCase() }}
+                    </span>
+                  }
+                  <span>{{ company.name }}</span>
+                </div>
+              </td>
+              <td class="co-mgmt__cell">{{ company.email ?? '—' }}</td>
+              <td class="co-mgmt__cell">{{ company.phoneNumber ?? '—' }}</td>
+              <td class="co-mgmt__cell">
+                <span
+                  class="co-mgmt__badge"
+                  [class.co-mgmt__badge--active]="company.isActive !== false"
+                  [class.co-mgmt__badge--suspended]="company.isActive === false">
+                  {{
+                    (company.isActive !== false
+                      ? 'admin.companies.status.active'
+                      : 'admin.companies.status.suspended') | transloco
+                  }}
+                </span>
+              </td>
+              <td class="co-mgmt__cell co-mgmt__cell--actions">
+                <button
+                  class="co-mgmt__btn co-mgmt__btn--suspend"
+                  (click)="confirmAction(company.id!, 'suspend')"
+                  [attr.aria-label]="'admin.companies.actions.suspend' | transloco">
+                  <mat-icon aria-hidden="true">pause_circle</mat-icon>
+                  <span transloco="admin.companies.actions.suspend"></span>
+                </button>
+                <button
+                  class="co-mgmt__btn co-mgmt__btn--delete"
+                  (click)="confirmAction(company.id!, 'delete')"
+                  [attr.aria-label]="'admin.companies.actions.delete' | transloco">
+                  <mat-icon aria-hidden="true">delete_outline</mat-icon>
+                  <span transloco="admin.companies.actions.delete"></span>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <!-- ── Confirmation dialog ───────────────────────────────────── -->
+  @if (pendingAction()) {
+    <div class="co-mgmt__overlay" role="dialog" aria-modal="true">
+      <div class="co-mgmt__confirm">
+
+        <mat-icon
+          class="co-mgmt__confirm-icon"
+          [class.co-mgmt__confirm-icon--warn]="pendingAction()!.type === 'suspend'"
+          [class.co-mgmt__confirm-icon--danger]="pendingAction()!.type === 'delete'"
+          aria-hidden="true">
+          {{ pendingAction()!.type === 'suspend' ? 'pause_circle' : 'delete_forever' }}
+        </mat-icon>
+
+        <p class="co-mgmt__confirm-msg">
+          {{
+            (pendingAction()!.type === 'suspend'
+              ? 'admin.companies.confirmSuspend'
+              : 'admin.companies.confirmDelete') | transloco
+          }}
+        </p>
+
+        @if (actionErrorKey()) {
+          <p class="co-mgmt__confirm-error" role="alert">
+            {{ actionErrorKey() | transloco }}
+          </p>
+        }
+
+        <div class="co-mgmt__confirm-actions">
+          <button
+            class="co-mgmt__confirm-btn co-mgmt__confirm-btn--cancel"
+            (click)="cancelAction()"
+            [disabled]="actionLoading()"
+            transloco="common.cancel">
+          </button>
+          <button
+            class="co-mgmt__confirm-btn"
+            [class.co-mgmt__confirm-btn--warn]="pendingAction()!.type === 'suspend'"
+            [class.co-mgmt__confirm-btn--danger]="pendingAction()!.type === 'delete'"
+            (click)="executeAction()"
+            [disabled]="actionLoading()">
+            @if (actionLoading()) {
+              <span class="co-mgmt__spinner co-mgmt__spinner--sm" aria-hidden="true"></span>
+            } @else {
+              <span>
+                {{
+                  (pendingAction()!.type === 'suspend'
+                    ? 'admin.companies.actions.suspend'
+                    : 'admin.companies.actions.delete') | transloco
+                }}
+              </span>
+            }
+          </button>
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>

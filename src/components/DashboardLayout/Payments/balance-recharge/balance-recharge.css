@@ -1,0 +1,280 @@
+/* Uses global .page-container; keep only the page-local max-width. */
+.recharge-page { max-width: 720px; }
+
+/* Header */
+.page-header {
+  margin-block-end: var(--spacing-large-xxl);
+}
+
+.page-title {
+  font-size: var(--text-4xl);
+  font-weight: var(--h4-font-weight-bold);
+  color: var(--brand-neutral-900);
+  margin: 0 0 var(--spacing-small-xs) 0;
+}
+
+.page-subtitle {
+  font-size: var(--text-lg);
+  color: var(--brand-neutral-600);
+  margin: 0;
+}
+
+/* Layout */
+.recharge-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large-xxl);
+}
+
+/* Balance card — surface comes from global .card; keep tinted bg + accent border */
+.balance-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-medium-lg);
+  padding: var(--spacing-medium-xl);
+  background: var(--brand-primary-50);
+  border-color: var(--brand-primary-200);
+}
+
+.balance-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--brand-primary-500);
+  border-radius: var(--radius-12);
+  color: var(--brand-neutral-500);
+  flex-shrink: 0;
+}
+
+.balance-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small-xxxs);
+}
+
+.balance-card__label {
+  font-size: var(--text-sm);
+  font-weight: var(--body-font-weight-semi-bold);
+  color: var(--brand-primary-800);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.balance-card__value {
+  font-size: var(--text-4xl);
+  font-weight: var(--h4-font-weight-bold);
+  color: var(--brand-primary-700);
+}
+
+.balance-card__value.skeleton {
+  color: var(--brand-neutral-400);
+  font-size: var(--text-lg);
+}
+
+.balance-card__error {
+  font-size: var(--text-base);
+  color: var(--functional-danger-600);
+}
+
+/* Recharge form card — surface comes from global .card; keep only padding */
+.recharge-card { padding: var(--spacing-large-xxl); }
+
+.recharge-card__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--h4-font-weight-semi-bold);
+  color: var(--brand-neutral-900);
+  margin: 0 0 var(--spacing-medium-xl) 0;
+}
+
+/* Preset grid */
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-medium-md);
+  margin-block-end: var(--spacing-medium-xl);
+}
+
+@media (max-width: 600px) {
+  .preset-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.preset-btn {
+  padding: var(--spacing-medium-md) var(--spacing-small-xs);
+  border: var(--border-width-thin) solid var(--brand-neutral-200);
+  border-radius: var(--radius-8);
+  background: var(--ui-bg-surface);
+  color: var(--brand-neutral-800);
+  font-size: var(--text-base);
+  font-weight: var(--body-font-weight-medium);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.preset-btn:hover {
+  border-color: var(--brand-primary-400);
+  color: var(--brand-primary-600);
+  background: var(--background-bg-light-primary);
+}
+
+.preset-btn--active {
+  border-color: var(--brand-primary-500);
+  background: var(--brand-primary-500);
+  color: var(--ui-bg-surface);
+}
+
+.preset-btn:focus-visible {
+  outline: 2px solid var(--brand-primary-600);
+  outline-offset: 2px;
+}
+
+/* Amount input */
+.amount-field {
+  margin-block-end: var(--spacing-medium-xl);
+}
+
+.amount-field__label {
+  display: block;
+  font-size: var(--text-base);
+  font-weight: var(--body-font-weight-medium);
+  color: var(--brand-neutral-700);
+  margin-block-end: var(--spacing-small-xs);
+}
+
+.amount-field__wrapper {
+  display: flex;
+  align-items: center;
+  border: var(--border-width-thin) solid var(--brand-neutral-200);
+  border-radius: var(--radius-8);
+  overflow: hidden;
+  background: var(--ui-bg-surface);
+}
+
+.amount-field__wrapper:focus-within {
+  border-color: var(--brand-primary-500);
+  box-shadow: var(--primary-dropshadow);
+}
+
+.amount-field__currency {
+  padding: var(--spacing-medium-md) var(--spacing-medium-lg);
+  background: var(--brand-neutral-100);
+  color: var(--brand-neutral-600);
+  font-size: var(--text-lg);
+  font-weight: var(--body-font-weight-semi-bold);
+  border-inline-end: var(--border-width-thin) solid var(--brand-neutral-200);
+  user-select: none;
+}
+
+.amount-field__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: var(--spacing-medium-md) var(--spacing-medium-lg);
+  font-size: var(--text-lg);
+  color: var(--brand-neutral-900);
+  background: transparent;
+  min-width: 0;
+}
+
+.amount-field__input::placeholder {
+  color: var(--brand-neutral-400);
+}
+
+/* Error banner */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small-xs);
+  padding: var(--spacing-medium-md) var(--spacing-medium-lg);
+  background: var(--functional-danger-50);
+  border: var(--border-width-thin) solid var(--functional-danger-200);
+  border-radius: var(--radius-8);
+  color: var(--functional-danger-700);
+  font-size: var(--text-base);
+  margin-block-end: var(--spacing-medium-lg);
+}
+
+/* Summary row */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-medium-md) var(--spacing-medium-lg);
+  background: var(--background-bg-light-neutral);
+  border-radius: var(--radius-8);
+  margin-block-end: var(--spacing-medium-xl);
+}
+
+.summary-row__label {
+  font-size: var(--text-base);
+  color: var(--brand-neutral-600);
+}
+
+.summary-row__value {
+  font-size: var(--text-2xl);
+  font-weight: var(--body-font-weight-bold);
+  color: var(--brand-primary-700);
+}
+
+/* Submit button */
+.recharge-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small-xs);
+  width: 100%;
+  padding: var(--spacing-medium-lg) var(--spacing-medium-xl);
+  background: var(--brand-primary-500);
+  color: var(--ui-bg-surface);
+  border: none;
+  border-radius: var(--radius-8);
+  font-size: var(--text-lg);
+  font-weight: var(--body-font-weight-semi-bold);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  margin-block-end: var(--spacing-medium-lg);
+}
+
+.recharge-btn:hover:not(:disabled) {
+  background: var(--brand-primary-600);
+}
+
+.recharge-btn:disabled {
+  background: var(--ui-border-secondary);
+  color: var(--ui-text-muted);
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.recharge-btn:focus-visible {
+  outline: 2px solid var(--brand-primary-600);
+  outline-offset: 2px;
+}
+
+/* Security note */
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small-xxxs);
+  font-size: var(--text-sm);
+  color: var(--ui-text-muted);
+  margin: 0;
+}
+
+.security-note mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--functional-success-600);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .recharge-card {
+    padding: var(--spacing-medium-xl);
+  }
+}

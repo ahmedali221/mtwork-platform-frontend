@@ -1,0 +1,75 @@
+<!-- Role Picker — Figma 3:124199 "How will you use Mtwork?". Standalone cream
+     surface: topbar + title/subtitle (orange brush) + 3 role cards + login
+     footer. Exact Figma illustration assets, brush, tints, and login glyph. -->
+<div class="register-page">
+
+  <!-- Top bar (Figma 3:124200, matches login/OTP) -->
+  <header class="register-topbar">
+    <a routerLink="/" class="register-topbar__logo" [attr.aria-label]="languageService.translations()?.common?.mtworkHome">
+      @for (segment of logoSegments; track segment.src) {
+        <img class="register-topbar__logo-segment" [src]="segment.src" alt="" [style.width.px]="segment.width" [style.height.px]="segment.height" />
+      }
+    </a>
+    <div class="register-topbar__controls">
+      <button class="reg-ctrl reg-ctrl--lang" (click)="toggleLanguage()" [attr.aria-label]="languageService.translations()?.common?.toggleLanguage">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        {{ languageService.currentLang() === 'en' ? 'Arabic' : 'English' }}
+      </button>
+      <div class="reg-ctrl reg-ctrl--theme-group" role="group" [attr.aria-label]="languageService.translations()?.common?.themeToggle">
+        <button class="reg-ctrl__theme-btn" [class.reg-ctrl__theme-btn--active]="!themeService.isDarkMode()" (click)="setTheme('light')" [attr.aria-label]="languageService.translations()?.common?.lightMode">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          Light
+        </button>
+        <button class="reg-ctrl__theme-btn" [class.reg-ctrl__theme-btn--active]="themeService.isDarkMode()" (click)="setTheme('dark')" [attr.aria-label]="languageService.translations()?.common?.darkMode">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          Dark
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content (Figma 3:124207): title/subtitle → cards → footer -->
+  <main class="register-content">
+
+    <!-- Title + subtitle (Figma 3:124208), exact Figma brush over subtitle -->
+    <div class="register-head">
+      <h1 class="register-head__title">How will you use Mtwork ?</h1>
+      <p class="register-head__subtitle">
+        <img class="register-head__brush" src="assets/images/signup/brush.svg" alt="" aria-hidden="true" />
+        <span class="register-head__subtitle-text">Select one of the options below</span>
+      </p>
+    </div>
+
+    <!-- 3 role cards (Figma 3:124212) — exact Figma illustration assets -->
+    <div class="register-cards" role="list">
+      @for (card of cards; track card.key) {
+        <button
+          type="button"
+          [class]="'register-card ' + card.modifier"
+          role="listitem"
+          (click)="selectRole(card.key)"
+          [class.register-card--selected]="selectedRole() === card.key"
+          [attr.aria-pressed]="selectedRole() === card.key"
+          [attr.aria-label]="card.title"
+        >
+          <span class="register-card__illus-wrap">
+            <img class="register-card__illus" [src]="card.illus" alt="" aria-hidden="true" />
+          </span>
+          <span class="register-card__title">{{ card.title }}</span>
+          <span class="register-card__body">{{ cardBody }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Footer (Figma 3:124236): "Already have an account · Log in" + exact glyph -->
+    <a routerLink="/login" class="register-footer" aria-label="Already have an account? Log in">
+      <span class="register-footer__text">
+        Already have an account
+        <span class="register-footer__link">Log in</span>
+      </span>
+      <!-- Exact Figma login icon (3:124236 → 3:18092), filled glyph, 18px, navy -->
+      <svg class="register-footer__icon" width="18" height="18" viewBox="0 0 13.5 13.5" fill="currentColor" aria-hidden="true"><path d="M7.5 13.5C7.2875 13.5 7.1095 13.428 6.966 13.284C6.8225 13.14 6.7505 12.962 6.75 12.75C6.7495 12.538 6.8215 12.36 6.966 12.216C7.1105 12.072 7.2885 12 7.5 12H12V1.5H7.5C7.2875 1.5 7.1095 1.428 6.966 1.284C6.8225 1.14 6.7505 0.962 6.75 0.75C6.7495 0.538 6.8215 0.36 6.966 0.216C7.1105 0.0720001 7.2885 0 7.5 0H12C12.4125 0 12.7658 0.147 13.0598 0.441C13.3538 0.735 13.5005 1.088 13.5 1.5V12C13.5 12.4125 13.3533 12.7658 13.0598 13.0598C12.7663 13.3538 12.413 13.5005 12 13.5H7.5ZM6.13125 7.5H0.750003C0.537503 7.5 0.359503 7.428 0.216003 7.284C0.0725027 7.14 0.000502586 6.962 2.5862e-06 6.75C-0.000497414 6.538 0.0715027 6.36 0.216003 6.216C0.360503 6.072 0.538503 6 0.750003 6H6.13125L4.725 4.59375C4.5875 4.45625 4.51875 4.2875 4.51875 4.0875C4.51875 3.8875 4.5875 3.7125 4.725 3.5625C4.8625 3.4125 5.0375 3.33425 5.25 3.32775C5.4625 3.32125 5.64375 3.39325 5.79375 3.54375L8.475 6.225C8.625 6.375 8.7 6.55 8.7 6.75C8.7 6.95 8.625 7.125 8.475 7.275L5.79375 9.95625C5.64375 10.1062 5.46575 10.1782 5.25975 10.1722C5.05375 10.1662 4.8755 10.088 4.725 9.9375C4.5875 9.7875 4.522 9.6095 4.5285 9.4035C4.535 9.1975 4.60675 9.0255 4.74375 8.8875L6.13125 7.5Z"/></svg>
+    </a>
+
+  </main>
+</div>

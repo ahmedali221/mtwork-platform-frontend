@@ -1,0 +1,157 @@
+@if (selectedMeeting) {
+  <div class="meeting-details-container">
+
+    <!-- Header Section -->
+    <div class="meeting-header">
+      <div class="header-left">
+        <mat-icon class="meeting-icon">videocam</mat-icon>
+        <div class="header-title">
+          <h1>{{ selectedMeeting.title }}</h1>
+          @if (selectedMeeting.status) {
+            <span class="status-badge" [ngClass]="{
+              'status-in-time':   selectedMeeting.status === 'In-Time',
+              'status-due-time':  selectedMeeting.status === 'Due Time',
+              'status-completed': selectedMeeting.status === 'Completed',
+              'status-scheduled': selectedMeeting.status === 'Scheduled',
+              'status-cancelled': selectedMeeting.status === 'Cancelled'
+            }">{{ selectedMeeting.status }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button mat-icon-button [attr.aria-label]="'common.fullscreen' | transloco">
+          <mat-icon>fullscreen</mat-icon>
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="actionsMenu" [attr.aria-label]="'common.moreOptions' | transloco">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #actionsMenu="matMenu">
+          <button mat-menu-item (click)="editMeeting()">
+            <mat-icon>edit</mat-icon> Edit Meeting
+          </button>
+          <button mat-menu-item class="delete-item" (click)="deleteMeeting()">
+            <mat-icon>delete</mat-icon> Delete Meeting
+          </button>
+        </mat-menu>
+        <button mat-icon-button (click)="onClose()" [attr.aria-label]="'common.closeDialog' | transloco">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <div class="meeting-content">
+
+      <!-- Meeting Details Section -->
+      <div class="details-section">
+        <h2 class="section-title">Meeting Details</h2>
+        <span class="meeting-date">{{ selectedMeeting.startTime }}</span>
+
+        <div class="detail-row">
+          <label>Meeting Link</label>
+          <div class="detail-value">
+            @if (selectedMeeting.meetingLink) {
+              <span>{{ selectedMeeting.meetingLink }}</span>
+              <button mat-button class="copy-btn" (click)="copyLink()" [attr.aria-label]="'meetings.copyMeetingLink' | transloco">
+                {{ linkCopied ? 'Copied!' : 'Copy it' }}
+              </button>
+            } @else {
+              <span class="empty-value">N/A</span>
+            }
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <label>Meeting info</label>
+          <div class="detail-value">
+            <span>{{ selectedMeeting.meetingDescription || selectedMeeting.description || selectedMeeting.title }}</span>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <label>Starting at</label>
+          <div class="detail-value">
+            <span>{{ selectedMeeting.startTime }}</span>
+          </div>
+        </div>
+
+        <div class="detail-row">
+          <label>Ending at</label>
+          <div class="detail-value">
+            <span>{{ selectedMeeting.endTime }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Members Section -->
+      <div class="members-section">
+        <div class="members-header">
+          <h2 class="section-title">Members</h2>
+          <span class="member-count">{{ selectedMeeting.participants?.length ?? 0 }}</span>
+          <button mat-icon-button class="add-member-btn" (click)="addMember()" [attr.aria-label]="'meetings.addParticipant' | transloco">
+            <mat-icon>add_circle_outline</mat-icon>
+          </button>
+        </div>
+
+        <!-- Inline member picker -->
+        @if (showMemberPicker) {
+          <div class="member-picker">
+            <select class="member-picker-select" [attr.aria-label]="'meetings.participantSearch' | transloco"
+                    [disabled]="membersLoading || isAddingMember"
+                    [(ngModel)]="selectedNewMemberId">
+              <option value="" disabled selected hidden>
+                {{ membersLoading ? 'Loading...' : (availableMembers.length === 0 ? 'All members added' : 'Select member') }}
+              </option>
+              <option *ngFor="let m of availableMembers" [value]="m.id">{{ m.name }}</option>
+            </select>
+            <div class="member-picker-actions">
+              <button class="picker-confirm-btn" [disabled]="!selectedNewMemberId || isAddingMember"
+                      (click)="confirmAddMember()" [attr.aria-label]="'meetings.confirmAddMember' | transloco">
+                {{ isAddingMember ? 'Adding...' : 'Add' }}
+              </button>
+              <button class="picker-cancel-btn" (click)="cancelAddMember()" [attr.aria-label]="'common.cancel' | transloco">
+                Cancel
+              </button>
+            </div>
+          </div>
+        }
+
+        <div class="members-list">
+          @for (member of (selectedMeeting.participants ?? []); track member.id) {
+            <div class="member-item">
+              <div class="member-avatar">
+                @if (member.avatar) {
+                  <img [src]="member.avatar" [alt]="member.name" />
+                } @else {
+                  <div class="avatar-initials" [style.background-color]="getAvatarColor(member.name)">
+                    {{ getInitials(member.name) }}
+                  </div>
+                }
+              </div>
+              <div class="member-info">
+                <span class="member-name">{{ member.name }}</span>
+                <span class="member-role">{{ member.designation || member.role || '' }}</span>
+              </div>
+            </div>
+          } @empty {
+            <p class="empty-message">No participants listed.</p>
+          }
+        </div>
+      </div>
+
+    </div>
+  </div>
+} @else {
+  <div class="meeting-details-container">
+    <div class="meeting-header">
+      <h1>Meeting Details</h1>
+      <button mat-icon-button (click)="onClose()" [attr.aria-label]="'common.closeDialog' | transloco">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="meeting-content">
+      <p class="empty-message">Meeting details could not be loaded.</p>
+    </div>
+  </div>
+}

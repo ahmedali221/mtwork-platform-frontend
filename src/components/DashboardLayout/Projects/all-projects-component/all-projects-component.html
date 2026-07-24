@@ -1,0 +1,397 @@
+<div class="proj-page projects-page" [class.ui-page--fullscreen]="isFullscreen()" [attr.aria-label]="'projects.title' | transloco">
+
+  <!-- Breadcrumb -->
+  <div class="proj-breadcrumb">
+    <span class="proj-breadcrumb__link">Mtwork</span>
+    <mat-icon class="proj-breadcrumb__sep">chevron_right</mat-icon>
+    <span class="proj-breadcrumb__current">Projects</span>
+  </div>
+
+  <!-- Title Row -->
+  <div class="proj-title-row">
+    <h1 class="proj-title">Projects</h1>
+    @if (!isEmployee) {
+      <button class="proj-new-btn" (click)="AddNewProject()">
+        <mat-icon>add</mat-icon>
+        New Project
+      </button>
+    }
+  </div>
+
+  <!-- Controls Card -->
+  <div class="proj-controls-card">
+    <div class="proj-controls-left">
+
+      <!-- Search Input -->
+      <div class="proj-search">
+        <mat-icon class="proj-search__icon">search</mat-icon>
+        <input
+          class="proj-search__input"
+          type="text"
+          placeholder="Search..."
+          [(ngModel)]="searchQuery"
+          (input)="applyFilters()"
+          [attr.aria-label]="'projects.searchPlaceholder' | transloco"
+        />
+      </div>
+
+      <!-- Filter Icon Button -->
+      <button
+        class="proj-icon-btn"
+        [class.proj-icon-btn--active]="showFilterPanel || hasAdvancedFilters()"
+        (click)="toggleFilterPanel()"
+        matTooltip="Advanced Filters"
+        [attr.aria-label]="'common.advancedFilters' | transloco"
+        [attr.aria-expanded]="showFilterPanel"
+      >
+        <svg viewBox="0 0 18 18" fill="none" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+          <line x1="2" y1="4.5" x2="16" y2="4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="2" y1="9" x2="16" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="2" y1="13.5" x2="16" y2="13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="13" cy="4.5" r="2" fill="white" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="9" cy="9" r="2" fill="white" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="5" cy="13.5" r="2" fill="white" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        @if (hasAdvancedFilters()) {
+          <span class="filter-badge">{{ activeFilterCount() }}</span>
+        }
+      </button>
+
+      <!-- Category Dropdown -->
+      <div class="proj-dropdown-wrap">
+        <select
+          class="proj-dropdown"
+          [(ngModel)]="selectedCategory"
+          (change)="applyFilters()"
+          [attr.aria-label]="'projects.filterCategory' | transloco"
+        >
+          <option [ngValue]="undefined">Project Category</option>
+          @for (cat of categories; track cat.id) {
+            <option [ngValue]="cat.id">{{ cat.title }}</option>
+          }
+        </select>
+        <mat-icon class="proj-dropdown__arrow">expand_more</mat-icon>
+      </div>
+
+      <!-- Status Dropdown -->
+      <div class="proj-dropdown-wrap">
+        <select
+          class="proj-dropdown"
+          [(ngModel)]="selectedStatus"
+          (change)="applyFilters()"
+          [attr.aria-label]="'projects.filterStatus' | transloco"
+        >
+          <option [ngValue]="undefined">Project Statuses</option>
+          @for (status of statuses; track status) {
+            <option [ngValue]="status">{{ getStatusDisplay(status) }}</option>
+          }
+        </select>
+        <mat-icon class="proj-dropdown__arrow">expand_more</mat-icon>
+      </div>
+
+    </div>
+
+    <div class="proj-controls-right">
+      <button class="proj-report-btn" (click)="viewAsReport()" matTooltip="View As Report" [attr.aria-label]="'common.viewAsReport' | transloco">
+        View As Report
+      </button>
+
+      <!-- Refresh -->
+      <button class="proj-expand-btn"
+              [class.proj-expand-btn--loading]="isLoading"
+              (click)="refreshProjects()"
+              matTooltip="Refresh"
+              [attr.aria-label]="'projects.list.refresh' | transloco"
+              [disabled]="isLoading">
+        <mat-icon [class.spinning]="isLoading">refresh</mat-icon>
+      </button>
+
+      <!-- View toggle: table | cards (shared .ui-view-toggle) -->
+      <div class="ui-view-toggle" role="group" [attr.aria-label]="'common.switchView' | transloco">
+        <button type="button" class="ui-view-toggle__btn"
+                [class.ui-view-toggle__btn--active]="viewMode === 'table'"
+                (click)="setView('table')" title="Table view" [attr.aria-label]="'common.tableView' | transloco">
+          <mat-icon>view_list</mat-icon>
+        </button>
+        <button type="button" class="ui-view-toggle__btn"
+                [class.ui-view-toggle__btn--active]="viewMode === 'cards'"
+                (click)="setView('cards')" title="Card view" [attr.aria-label]="'common.cardView' | transloco">
+          <mat-icon>view_module</mat-icon>
+        </button>
+      </div>
+
+      <!-- Expand / Fullscreen -->
+      <button class="proj-expand-btn"
+              [class.ui-view-toggle__btn--active]="isFullscreen()"
+              (click)="toggleFullscreen()"
+              [matTooltip]="isFullscreen() ? 'Exit fullscreen' : 'Expand'"
+              [attr.aria-label]="isFullscreen() ? 'Exit fullscreen' : 'Expand to fullscreen'">
+        <mat-icon>{{ isFullscreen() ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Advanced Filter Panel -->
+  @if (showFilterPanel) {
+    <div class="filter-panel" role="region" [attr.aria-label]="'common.advancedFilters' | transloco">
+      <div class="filter-panel__header">
+        <span class="filter-panel__title">Advanced Filters</span>
+        @if (hasAdvancedFilters()) {
+          <button class="filter-clear-all" (click)="clearAdvancedFilters()" [attr.aria-label]="'common.clearFilters' | transloco">
+            Clear All
+          </button>
+        }
+      </div>
+
+      <div class="filter-panel__body">
+
+        <!-- Priority -->
+        <div class="filter-group">
+          <p class="filter-group__label">Priority</p>
+          <div class="filter-chips">
+            @for (p of allPriorities; track p) {
+              <button
+                class="filter-chip"
+                [class.filter-chip--active]="selectedPriorities.includes(p)"
+                (click)="togglePriority(p)"
+                [attr.aria-pressed]="selectedPriorities.includes(p)"
+              >{{ getPriorityLabel(p) }}</button>
+            }
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="filter-group">
+          <p class="filter-group__label">Progress</p>
+          <div class="filter-chips">
+            @for (r of progressRanges; track r.label) {
+              <button
+                class="filter-chip"
+                [class.filter-chip--active]="selectedProgressRange === r.label"
+                (click)="toggleProgressRange(r)"
+                [attr.aria-pressed]="selectedProgressRange === r.label"
+              >{{ r.label }}</button>
+            }
+          </div>
+        </div>
+
+      </div>
+
+      <div class="filter-panel__footer">
+        <button class="filter-apply-btn" (click)="applyAdvancedFilters()" [attr.aria-label]="'common.applyFilters' | transloco">
+          Apply Filters
+        </button>
+        <button class="filter-cancel-btn" (click)="toggleFilterPanel()" [attr.aria-label]="'common.closeFilters' | transloco">
+          Cancel
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Table / Empty State -->
+  <div class="proj-section">
+
+    @if (filteredProjects.length > 0) {
+
+      <!-- ── Card view ── shared .ui-cards-grid + .ui-card from styles.css ── -->
+      @if (viewMode === 'cards') {
+        <div class="ui-cards-grid">
+          @for (project of filteredProjects; track project.id) {
+            <article class="ui-card">
+              <header class="ui-card__head">
+                <span class="cell-key">{{ project.id }}</span>
+                <button class="actions-trigger"
+                        [matMenuTriggerFor]="cardActMenu"
+                        (click)="openActionsMenu($event, project)"
+                        [attr.aria-label]="'Actions for ' + project.title">
+                  <mat-icon>more_horiz</mat-icon>
+                </button>
+                <mat-menu #cardActMenu="matMenu">
+                  @if (!isEmployee) {
+                    <button mat-menu-item (click)="editProject(project)"><mat-icon>edit</mat-icon><span>Edit</span></button>
+                    <button mat-menu-item (click)="deleteProject(project)"><mat-icon>delete</mat-icon><span>Delete</span></button>
+                  }
+                </mat-menu>
+              </header>
+
+              <div class="ui-card__body">
+                <div class="manager-cell">
+                  @if (getManagerName(project) !== '—') {
+                    <img [src]="getManagerAvatar(project)" [alt]="getManagerName(project)" class="manager-avatar" />
+                  }
+                  <div class="employee-text">
+                    <span class="employee-name">{{ project.title }}</span>
+                    <span class="employee-role">{{ getManagerName(project) }}</span>
+                  </div>
+                </div>
+
+                <dl class="ui-card__meta">
+                  <div>
+                    <dt>Status</dt>
+                    <dd><span class="status-pill" [class]="getStatusClass(project.status)">
+                      <span class="status-dot"></span>{{ getStatusDisplay(project.status) }}
+                    </span></dd>
+                  </div>
+                  <div>
+                    <dt>Created</dt>
+                    <dd>{{ formatDate(project.createdAt) }}</dd>
+                  </div>
+                  <div>
+                    <dt>Assigners</dt>
+                    <dd>{{ getAssignersCount(project) }}</dd>
+                  </div>
+                </dl>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+      <!-- ── Table view (existing — preserved) ── -->
+      <div class="proj-table-wrap">
+        <table class="proj-table">
+          <thead>
+            <tr class="proj-table__head-row">
+              <th class="col-check">
+                <input type="checkbox" [attr.aria-label]="'projects.list.selectAll' | transloco" />
+              </th>
+              <th>Project key</th>
+              <th>Project Name</th>
+              <th>Creation Date</th>
+              <th>Assigners</th>
+              <th>Manager</th>
+              <th>Project URL</th>
+              <th>Project Statues</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (project of filteredProjects; track project.id) {
+              <tr class="proj-table__row">
+
+                <td class="col-check">
+                  <input type="checkbox" [attr.aria-label]="'Select ' + project.title" />
+                </td>
+
+                <td class="cell-key">{{ project.id }}</td>
+
+                <td class="cell-name">{{ project.title }}</td>
+
+                <td class="cell-date">{{ formatDate(project.createdAt) }}</td>
+
+                <td>
+                  <div class="assigners-group">
+                    @for (a of getAssigners(project); track a.name; let i = $index) {
+                      <img
+                        [src]="a.avatar || 'assets/images/default-avatar.png'"
+                        [alt]="a.name"
+                        class="avatar-img"
+                        [style.z-index]="10 - i"
+                      />
+                    }
+                    @if (getAssignersCount(project) > 3) {
+                      <span class="avatar-more">+{{ getAssignersCount(project) - 3 }}</span>
+                    }
+                  </div>
+                </td>
+
+                <td>
+                  <div class="manager-cell">
+                    @if (getManagerName(project) !== '—') {
+                      <img
+                        [src]="getManagerAvatar(project)"
+                        [alt]="getManagerName(project)"
+                        class="manager-avatar"
+                      />
+                    }
+                    <span class="manager-name">{{ getManagerName(project) }}</span>
+                  </div>
+                </td>
+
+                <td>
+                  <button class="copy-btn" (click)="copyProjectUrl(project)" [attr.aria-label]="'projects.list.copyUrl' | transloco">
+                    Copy It
+                  </button>
+                </td>
+
+                <td>
+                  <span class="status-pill" [class]="getStatusClass(project.status)">
+                    <span class="status-dot"></span>
+                    {{ getStatusDisplay(project.status) }}
+                  </span>
+                </td>
+
+                <td>
+                  <button
+                    class="actions-trigger"
+                    [matMenuTriggerFor]="actMenu"
+                    (click)="openActionsMenu($event, project)"
+                    [attr.aria-label]="'Actions for ' + project.title"
+                  >
+                    <mat-icon>more_horiz</mat-icon>
+                  </button>
+                  <mat-menu #actMenu="matMenu">
+                    @if (!isEmployee) {
+                      <button mat-menu-item (click)="editProject(project)">
+                        <mat-icon>edit</mat-icon><span>Edit</span>
+                      </button>
+                    }
+                    <button mat-menu-item (click)="showProjectDetails(project)">
+                      <mat-icon>visibility</mat-icon><span>Show Details</span>
+                    </button>
+                    @if (!isEmployee) {
+                      <button mat-menu-item (click)="moveToDraft(project)">
+                        <mat-icon>drafts</mat-icon><span>Move To Draft</span>
+                      </button>
+                      <mat-divider></mat-divider>
+                      <button mat-menu-item class="menu-delete" (click)="deleteProject(project)">
+                        <mat-icon>delete</mat-icon><span>Delete Project</span>
+                      </button>
+                    }
+                  </mat-menu>
+                </td>
+
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      }<!-- /@else table view -->
+
+      <!-- Pagination -->
+      <div class="proj-pagination">
+        <button class="pag-nav" (click)="previousPage()" [disabled]="currentPage === 1" [attr.aria-label]="'common.previousPage' | transloco">
+          <mat-icon>chevron_left</mat-icon>
+          Previous
+        </button>
+
+        <div class="pag-numbers">
+          @for (page of getPageNumbers(); track page) {
+            <button
+              class="pag-num"
+              [class.active]="page === currentPage"
+              (click)="goToPage(page)"
+              [attr.aria-label]="'Page ' + page"
+              [attr.aria-current]="page === currentPage ? 'page' : null"
+            >{{ page }}</button>
+          }
+        </div>
+
+        <button class="pag-nav" (click)="nextPage()" [disabled]="currentPage === totalPages" [attr.aria-label]="'common.nextPage' | transloco">
+          Next
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+
+    } @else {
+
+      <!-- Empty State -->
+      <div class="proj-empty">
+        <img src="assets/images/NoProjects.png" alt="No projects" class="proj-empty__img" />
+        <p class="proj-empty__title">There is no any projects</p>
+        <p class="proj-empty__sub">Once Creating project will appear here.</p>
+      </div>
+
+    }
+
+  </div>
+</div>

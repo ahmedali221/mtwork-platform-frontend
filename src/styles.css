@@ -1,0 +1,1405 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=IBM+Plex+Sans:wght@700&family=Instrument+Sans:wght@400;500&family=Work+Sans:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Breakpoints: sm: 640px, md: 768px, lg: 1024px, xl: 1280px */
+
+/* ================================================
+   WCAG 2.1 – Global Focus Indicators
+   ================================================ */
+:focus-visible {
+  outline: 2px solid var(--brand-primary-600, #3B3BBF);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ================================================
+   Skip Navigation Link
+   ================================================ */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: 8px 16px;
+  background: var(--brand-primary-600);
+  color: white;
+  z-index: 10000;
+  transition: top 0.2s;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ================================================
+   Shared layout utilities (page shell, section header,
+   card, table container). Token-driven only — do not
+   hard-code colors, spacing, or radii here.
+   ================================================ */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium-xl);
+  padding: var(--spacing-medium-xl);
+  background: var(--ui-bg);
+  min-height: 100%;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-medium-lg);
+  flex-wrap: wrap;
+}
+
+.card {
+  background: var(--ui-bg-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius-12);
+  box-shadow: var(--elevation-1);
+}
+
+.table-container {
+  background: var(--ui-bg-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius-12);
+  overflow-x: auto;
+}
+
+/* Your existing custom styles below */
+/* global.css - This contains variables from Option Tokens.json as the main global file. All values are flattened into CSS variables. Sizes are assumed in px where applicable (e.g., font sizes, radii, spacings, border widths). Colors are direct hex. No inheritance here; this is the base. */
+
+
+/* Default (Light Theme) */
+:root {
+  --landing-max-width: 1440px;
+  --landing-page-inline-padding: 53.5px;
+  --landing-page-top-offset: 50px;
+  --landing-navbar-min-height: 72px;
+  --landing-navbar-logo-gap: 1.971px;
+  --landing-navbar-logo-padding: 3.942px;
+  --landing-navbar-menu-toggle-size: 42px;
+  --landing-navbar-mobile-inline-padding: 11.5px;
+  --landing-navbar-control-size: 30px;
+  --landing-navbar-button-height: 40px;
+  --landing-navbar-button-gap: 10px;
+  --landing-navbar-mobile-radius: 24px;
+  --landing-navbar-mobile-panel-padding: 20px;
+  --landing-navbar-language-min-width: 75px;
+  --landing-navbar-login-min-width: 76px;
+  --landing-navbar-demo-min-width: 121px;
+  --landing-navbar-language-icon-size: 14px;
+  --landing-navbar-theme-icon-size: 18px;
+  --landing-navbar-menu-icon-size: 24px;
+  --landing-navbar-primary: #2e358f;
+  --landing-navbar-neutral-shadow: 0px 0px 1px 0px rgba(204, 204, 204, 0.2),
+    inset 0px -2px 2px 0px rgba(204, 204, 204, 0.2);
+  --landing-navbar-primary-shadow: 0px 0px 1px 0px rgba(46, 53, 143, 0.2),
+    inset 0px -2px 2px 0px #252a74;
+  --landing-hero-content-max-width: 848.021484375px;
+  --landing-hero-title-max-width: 848.021484375px;
+  --landing-hero-title-min-height: 110px;
+  --landing-hero-title-font-weight: 700;
+  --landing-hero-title-line-height: var(--typography-h3-line-height);
+  --landing-hero-title-letter-spacing: var(--typography-h3-letter-spacing);
+  --landing-hero-title-font-size-fluid: clamp(var(--h5-size), 7vw, var(--typography-h3-font-size));
+  --landing-hero-title-highlight-width: 459.3056640625px;
+  --landing-hero-title-highlight-height: 57.3612060546875px;
+  --landing-hero-title-highlight-z-index: 0;
+  --landing-hero-title-text-z-index: 1;
+  --landing-hero-body-max-width: 555.98828125px;
+  --landing-hero-badge-font-weight: 400;
+  --landing-hero-badge-shadow: inset 0px 4px 10px 3px #656ccd;
+  --landing-hero-button-gap: 10px;
+  --landing-hero-button-font-weight: 400;
+  --landing-hero-primary-cta-min-width: 107px;
+  --landing-hero-secondary-cta-min-width: 121px;
+  --landing-hero-body-font-weight: 400;
+  --landing-hero-top-gap: var(--spacing-very-large-ultra);      /* 104px navbar→content (Figma Spacing/Very Large/Ultra) */
+  --landing-hero-bottom-gap: 85px;                              /* 603 − 518 (Figma hero frame minus content bottom) */
+  --landing-hero-bottom-gap-mobile: var(--spacing-very-large-epic); /* 112px = 655 − 543 (Figma mobile frame) */
+  --landing-hero-inline-padding-mobile: 17.5px;                 /* Figma mobile content x=17.5 */
+  --landing-dashboard-top-gap: 110.68px;     /* hero end → panel top (Figma 659+54.68−603) */
+  --landing-dashboard-top-gap-mobile: 112px; /* Figma mobile 711+56−655 */
+  --landing-dashboard-bottom-gap: 40px;      /* panel bottom → trusted title */
+  --landing-trusted-bottom-gap: 14.68px;     /* logos end → frame end (Figma 1496−1481.32) */
+  --landing-analysis-ring: rgba(101, 108, 205, 0.25); /* Figma panel ring 0 0 0 9px */
+  --landing-analysis-bar-light: #feede6;     /* Background/Bg-Light-Tertirary */
+  --landing-analysis-muted: #cccccc;         /* Text/Light Gray */
+  --landing-analysis-ink: #0d0d0c;           /* Text/Netural-950 */
+  /* Impact section (Figma 3:37872) — stays light in dark mode */
+  --landing-impact-bg: #ffffff;
+  --landing-impact-card-bg: #ccf1ff;          /* Background/Bg-Light-Secondary */
+  --landing-impact-tab-border: rgba(13, 13, 13, 0.25); /* Border/Black-Opactiy */
+  --landing-impact-top-gap: 112px;            /* 56 frame gap + tabs at y=56 */
+  /* Compliance section (Figma 3:37939 light / 3:51537 dark) — theme-flipping */
+  --landing-compliance-bg: #f7f5f2;
+  --landing-compliance-ink: #1b1b1b;
+  --landing-compliance-card-desc: #201b13;
+  --landing-compliance-cta-ink: #1b1b1b;
+  --landing-features-row-max-width: 927.7353515625px;
+  --landing-features-row-gap: 16px;
+  --landing-features-left-card-width: 358.7353515625px;
+  --landing-features-right-card-width: 553px;
+  --landing-features-card-min-height: 380px;
+  --landing-features-card-padding-inline: 19px;
+  --landing-features-card-padding-block: 30px;
+  --landing-features-card-gap: 10px;
+  --landing-features-content-gap: 16px;
+  --landing-features-title-max-width: 295px;
+  --landing-features-description-narrow-max-width: 320.7353515625px;
+  --landing-features-description-wide-max-width: 396.1591796875px;
+  --landing-features-button-width: 121px;
+  --landing-features-button-height: 40px;
+  --landing-features-stars-width: 144.46197509765625px;
+  --landing-features-stars-height: 104.75194549560547px;
+  --landing-features-card-bg: var(--background-bg-light-secondary);
+  --landing-features-title-color: var(--text-dark-gray);
+  --landing-features-description-color: var(--text-gray);
+  --landing-features-button-bg: var(--background-bg-black);
+  --landing-features-button-text: var(--ui-bg-surface);
+  --landing-features-title-font-weight: var(--title-font-weight-bold);
+  --landing-features-description-font-weight: var(--subtitle-font-weight-regular);
+  --landing-features-button-font-weight: var(--subtitle-font-weight-regular);
+  --landing-features-button-shadow:
+    0px 0px 1px 0px var(--background-bg-gray-opacity-40),
+    inset 0px -2px 2px 0px var(--background-bg-gray-opacity-40),
+    inset 0px 0px 0px 0px #222222;
+  /* Navbar frame — always light regardless of theme (white pill on dark hero) */
+  --landing-navbar-frame-bg: #f7f5f2;
+  --landing-navbar-mobile-panel-bg: #f7f5f2;
+  /* Figma dark frame (3:51273) keeps the navbar identical to light —
+     these tokens must NOT flip with the theme */
+  --landing-navbar-surface: #ffffff; /* language-btn bg, button text, icons */
+  --landing-navbar-ink: #1b1b1b;     /* language-btn text, demo-btn bg */
+  --landing-navbar-suger: #282828;   /* theme-btn bg */
+  /* Hero section — light mode values */
+  --landing-hero-section-bg: var(--ui-bg-surface);
+  --landing-hero-glow: none;
+  --landing-hero-title-color: var(--text-dark-gray);
+  --landing-hero-description-color: var(--text-dark-gray); /* Figma: #201b13 (node 3:37679) */
+  --landing-hero-badge-bg: var(--landing-navbar-primary);
+  --landing-hero-badge-border: var(--landing-navbar-primary);
+  /* HR section — same coral as hero-title-highlight.svg */
+  --landing-hr-highlight-bg: #F87748;
+
+  /* Steps section (Figma 3:38156) — non-flipping; dark frame 3:51754 is identical */
+  --landing-steps-growth: #36c220;            /* Text/success — metric +9.1% */
+  --landing-steps-filter-add: rgba(252, 190, 4, 0.4); /* Bg-warning-opacity-40 — filter add btn */
+
+  /* Footer (Figma 3:38261) — non-flipping; footer is dark-on-dark in BOTH themes */
+  --landing-footer-bg: #1b1b1b;                       /* Background/Bg-Black */
+  --landing-footer-social-bg: rgba(153, 153, 153, 0.13); /* Background/MidGrayOpacity20 */
+
+  /* Floating action buttons (Figma 3:65493 + 3:51872) — identical both themes */
+  --landing-fab-whatsapp: #1faf38;  /* WhatsApp green */
+
+  /* ── Dashboard tokens ── */
+  --dash-banner-bg: var(--brand-tertiary-500);
+  --dash-banner-text: #ffffff;
+  --dash-card-bg: var(--ui-surface);
+  --dash-card-border: var(--ui-border);
+  --dash-card-radius: var(--radius-12);
+  --dash-card-shadow: var(--elevation-1);
+  --dash-stat-up-bg: #dcfce7;
+  --dash-stat-up-text: #16a34a;
+  --dash-stat-down-bg: #fee2e2;
+  --dash-stat-down-text: #dc2626;
+  --dash-meeting-border-1: var(--brand-primary-500);
+  --dash-meeting-border-2: var(--brand-secondary-500);
+  --dash-meeting-border-3: var(--functional-success-500);
+  --dash-chart-primary: var(--brand-primary-500);
+  --dash-chart-secondary: var(--brand-tertiary-500);
+  --dash-chart-success: var(--functional-success-500);
+  --dash-chart-warning: var(--brand-accent-400);
+  --dash-chart-neutral: var(--ui-border);
+  --dash-section-title: var(--ui-text-main);
+  --dash-section-sub: var(--ui-text-muted);
+  --landing-hr-card-border: var(--brand-primary-100);
+  --landing-hr-card-shadow: 0 4px 24px 0 color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
+  --landing-hr-stat-active-bg: var(--brand-primary-600);
+  --landing-hr-stat-active-text: var(--ui-surface);
+  --landing-hr-bar-color: var(--brand-primary-500);
+  --landing-hr-bar-inactive: var(--brand-primary-100);
+  --h1-size: 64px;
+  --h1-font-weight-bold: 700;
+  --h1-font-weight-medium: 500;
+  --h1-font-weight-regular: 400;
+  --h1-font-weight-semi-bold: 600;
+  --h2-size: 54px;
+  --h2-font-weight-bold: 700;
+  --h2-font-weight-medium: 500;
+  --h2-font-weight-regular: 400;
+  --h2-font-weight-semi-bold: 600;
+  --h3-size: 42px;
+  --h3-font-weight-bold: 700;
+  --h3-font-weight-medium: 500;
+  --h3-font-weight-regular: 400;
+  --h3-font-weight-semi-bold: 600;
+  --h4-size: 36px;
+  --h4-font-weight-bold: 700;
+  --h4-font-weight-medium: 500;
+  --h4-font-weight-regular: 400;
+  --h4-font-weight-semi-bold: 600;
+  --h5-size: 32px;
+  --h5-font-weight-bold: 700;
+  --h5-font-weight-medium: 500;
+  --h5-font-weight-regular: 400;
+  --h5-font-weight-semi-bold: 600;
+  --h6-size: 26px;
+  --h6-font-weight-bold: 700;
+  --h6-font-weight-medium: 500;
+  --h6-font-weight-regular: 400;
+  --h6-font-weight-semi-bold: 600;
+  --body-size: 18px;
+  --body-font-weight-bold: 700;
+  --body-font-weight-medium: 500;
+  --body-font-weight-regular: 400;
+  --body-font-weight-semi-bold: 600;
+  --title-size: 22px;
+  --title-font-weight-bold: 700;
+  --title-font-weight-medium: 500;
+  --title-font-weight-regular: 400;
+  --title-font-weight-semi-bold: 600;
+  --radius-full: 9999px;
+  --radius-4: 4px;
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-26: 26px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-30: 30px;
+  --radius-34: 34px;
+  --radius-38: 38px;
+  --radius-40: 40px;
+  --radius-46: 46px;
+  --radius-50: 50px;
+  --radius-none: 0px;
+  --caption-size: 12px;
+  --caption-font-weight-bold: 700;
+  --caption-font-weight-medium: 500;
+  --caption-font-weight-regular: 400;
+  --caption-font-weight-semi-bold: 600;
+  --lighter-size: 8px;
+  --lighter-font-weight-bold: 700;
+  --lighter-font-weight-medium: 500;
+  --lighter-font-weight-regular: 400;
+  --lighter-font-weight-semi-bold: 600;
+  --spacing-large-xxl: 32px;
+  --spacing-large-huge: 48px;
+  --spacing-large-xxxl: 40px;
+  --spacing-large-massive: 56px;
+  --spacing-small-xs: 8px;
+  --spacing-small-xxs: 6px;
+  --spacing-small-none: 0px;
+  --spacing-small-xxxs: 4px;
+  --spacing-small-xxxxs: 2px;
+  --spacing-small-negative-lg: -2px;
+  --spacing-small-negative-md: -4px;
+  --spacing-small-negative-sm: -6px;
+  --spacing-medium-lg: 16px;
+  --spacing-medium-md: 12px;
+  --spacing-medium-xl: 24px;
+  --spacing-very-large-epic: 112px;
+  --spacing-very-large-mega: 96px;
+  --spacing-very-large-giant: 64px;
+  --spacing-very-large-prime: 128px;
+  --spacing-very-large-titan: 80px;
+  --spacing-very-large-ultra: 104px;
+  --spacing-very-large-supreme: 120px;
+  --spacing-very-large-colossal: 88px;
+  --subtitle-size: 16px;
+  --subtitle-font-weight-bold: 700;
+  --subtitle-font-weight-medium: 500;
+  --subtitle-font-weight-regular: 400;
+  --subtitle-font-weight-semi-bold: 600;
+  --caption-2-size: 14px;
+  --caption-2-font-weight-bold: 700;
+  --caption-2-font-weight-medium: 500;
+  --caption-2-font-weight-regular: 400;
+  --caption-2-font-weight-semi-bold: 600;
+  --very-lighter-size: 6px;
+  --border-width-bold: 3px;
+  --border-width-thin: 1px;
+  --border-width-heavy: 5px;
+  --border-width-light: 1.5px;
+  --border-width-medium: 2px;
+  --border-width-extreme: 8px;
+  --border-width-massive: 7px;
+  --border-width-hairline: 0.25px;
+  --border-width-extra-bold: 4px;
+  --border-width-extra-thin: 0.5px;
+  --border-width-ultra-heavy: 6px;
+  --brand-grays-50: #f5f3ef;
+  --brand-grays-100: #ece7df;
+  --brand-grays-200: #d8cec0;
+  --brand-grays-300: #c5b6a0;
+  --brand-grays-400: #b19e81;
+  --brand-grays-500: #f7f5f2;
+  --brand-grays-600: #7e6b4e;
+  --brand-grays-700: #5f503a;
+  --brand-grays-800: #3f3527;
+  --brand-grays-900: #201b13;
+  --brand-grays-950: #100d0a;
+  --brand-accent-50: #fffbeb;
+  --brand-accent-100: #fef3c7;
+  --brand-accent-200: #fde68a;
+  --brand-accent-300: #fcd34d;
+  --brand-accent-400: #fbbf24;
+  --brand-accent-500: #f59e0b;
+  --brand-accent-600: #d97706;
+  --brand-accent-700: #b45309;
+  --brand-accent-800: #92400e;
+  --brand-accent-900: #78350f;
+  --brand-accent-950: #451a03;
+  --brand-neutral-50: #f2f2f2;
+  --brand-neutral-100: #e6e6e6;
+  --brand-neutral-200: #cccccc;
+  --brand-neutral-300: #b3b3b3;
+  --brand-neutral-400: #999999;
+  --brand-neutral-500: #737373;
+  --brand-neutral-600: #666666;
+  --brand-neutral-700: #4d4d4d;
+  --brand-neutral-800: #333333;
+  --brand-neutral-900: #282828;
+  --brand-neutral-950: #1b1b1b;
+  --brand-neutral-1000: #343434;
+  --brand-primary-50: #EDEDF8;
+  --brand-primary-100: #D4D4F0;
+  --brand-primary-200: #A9A9E1;
+  --brand-primary-300: #7E7ED2;
+  --brand-primary-400: #5454C3;
+  --brand-primary-500: #4242C0;
+  --brand-primary-600: #3B3BBF;
+  --brand-primary-700: #2F2F99;
+  --brand-primary-800: #232373;
+  --brand-primary-900: #18184D;
+  --brand-primary-950: #0C0C26;
+  --brand-tertiary-50: #feede6;
+  --brand-tertiary-100: #fddace;
+  --brand-tertiary-200: #fbb69d;
+  --brand-tertiary-300: #f9916c;
+  --brand-tertiary-400: #f76d3b;
+  --brand-tertiary-500: #f87748;
+  --brand-tertiary-600: #c43a08;
+  --brand-tertiary-700: #932b06;
+  --brand-tertiary-800: #621d04;
+  --brand-tertiary-900: #310e02;
+  --brand-tertiary-950: #190701;
+  --brand-secondary-50: #e5f8ff;
+  --brand-secondary-100: #ccf1ff;
+  --brand-secondary-200: #99e4ff;
+  --brand-secondary-300: #66d6ff;
+  --brand-secondary-400: #33c9ff;
+  --brand-secondary-500: #00afef;
+  --brand-secondary-600: #0096cc;
+  --brand-secondary-700: #007099;
+  --brand-secondary-800: #004b66;
+  --brand-secondary-900: #002533;
+  --brand-secondary-950: #00131a;
+  --functional-info-50: #eff6ff;
+  --functional-info-100: #dbeafe;
+  --functional-info-200: #bfdbfe;
+  --functional-info-300: #93c5fd;
+  --functional-info-400: #60a5fa;
+  --functional-info-500: #3b82f6;
+  --functional-info-600: #2563eb;
+  --functional-info-700: #1d4ed8;
+  --functional-info-800: #1e40af;
+  --functional-info-900: #1e3a8a;
+  --functional-info-950: #172554;
+  --functional-danger-50: #fde7e7;
+  --functional-danger-100: #fbd0d0;
+  --functional-danger-200: #f8a0a0;
+  --functional-danger-300: #f47171;
+  --functional-danger-400: #f04242;
+  --functional-danger-500: #f03d3d;
+  --functional-danger-600: #bd0f0f;
+  --functional-danger-700: #8e0b0b;
+  --functional-danger-800: #5f0707;
+  --functional-danger-900: #2f0404;
+  --functional-danger-950: #180202;
+  --functional-success-50: #f0fdf4;
+  --functional-success-100: #dcfce7;
+  --functional-success-200: #bbf7d0;
+  --functional-success-300: #86efac;
+  --functional-success-400: #4ade80;
+  --functional-success-500: #22c55e;
+  --functional-success-600: #16a34a;
+  --functional-success-700: #15803d;
+  --functional-success-800: #166534;
+  --functional-success-900: #14532d;
+  --functional-success-950: #052e16;
+  --functional-warning-50: #fff8e6;
+  --functional-warning-100: #fef2cd;
+  --functional-warning-200: #fee59a;
+  --functional-warning-300: #fdd868;
+  --functional-warning-400: #fdcb35;
+  --functional-warning-500: #fcbe04;
+  --functional-warning-600: #ca9802;
+  --functional-warning-700: #977202;
+  --functional-warning-800: #654c01;
+  --functional-warning-900: #322601;
+  --functional-warning-950: #191300;
+  
+  /* light.css - Light Theme Specific */
+  --typography-h1-font-size: var(--h1-size);
+  --typography-h1-text-case: none;
+  --typography-h1-font-family: var(--font-family-ibm-plex-sans);
+  --typography-h1-font-weight: var(--font-weight-ibm-plex-sans-0);
+  --typography-h1-line-height: var(--line-height-0);
+  --typography-h1-letter-spacing: var(--letter-spacing-0);
+  --typography-h1-text-decoration: none;
+  --typography-h1-paragraph-indent: var(--paragraph-indent-0);
+  --typography-h1-paragraph-spacing: var(--paragraph-spacing-0);
+  --typography-h2-font-size: var(--h2-size);
+  --typography-h2-text-case: none;
+  --typography-h2-font-family: var(--font-family-ibm-plex-sans);
+  --typography-h2-font-weight: var(--font-weight-ibm-plex-sans-0);
+  --typography-h2-line-height: var(--line-height-0);
+  --typography-h2-letter-spacing: var(--letter-spacing-0);
+  --typography-h2-text-decoration: none;
+  --typography-h2-paragraph-indent: var(--paragraph-indent-0);
+  --typography-h2-paragraph-spacing: var(--paragraph-spacing-0);
+  --typography-h3-font-size: var(--h3-size);
+  --typography-h3-text-case: none;
+  --typography-h3-font-family: var(--font-family-ibm-plex-sans);
+  --typography-h3-font-weight: var(--font-weight-ibm-plex-sans-0);
+  --typography-h3-line-height: var(--line-height-2);
+  --typography-h3-letter-spacing: var(--letter-spacing-0);
+  --typography-h3-text-decoration: none;
+  --typography-h3-paragraph-indent: var(--paragraph-indent-0);
+  --typography-h3-paragraph-spacing: var(--paragraph-spacing-0);
+  --typography-h4-font-size: var(--h4-size);
+  --typography-h4-text-case: none;
+  --typography-h4-font-family: var(--font-family-ibm-plex-sans);
+  --typography-h4-font-weight: var(--font-weight-ibm-plex-sans-0);
+  --typography-h4-line-height: var(--line-height-2);
+  --typography-h4-letter-spacing: var(--letter-spacing-0);
+  --typography-h4-text-decoration: none;
+  --typography-h4-paragraph-indent: var(--paragraph-indent-0);
+  --typography-h4-paragraph-spacing: var(--paragraph-spacing-0);
+  --typography-h5-font-size: var(--h5-size);
+  --typography-h5-text-case: none;
+  --typography-h5-font-family: var(--font-family-ibm-plex-sans);
+  --typography-h5-font-weight: var(--font-weight-ibm-plex-sans-0);
+  --typography-h5-line-height: var(--line-height-4);
+  --typography-h5-letter-spacing: var(--letter-spacing-0);
+  --typography-h5-text-decoration: none;
+  --typography-h5-paragraph-indent: var(--paragraph-indent-0);
+  --typography-h5-paragraph-spacing: var(--paragraph-spacing-0);
+  --typography-h6-font-size: var(--h6-size);
+  --typography-h6-text-case: none;
+  --typography-h6-font-family: var(--font-family-ibm-plex-sans);
+  --typography-h6-font-weight: var(--font-weight-ibm-plex-sans-0);
+  --typography-h6-line-height: var(--line-height-4);
+  --typography-h6-letter-spacing: var(--letter-spacing-0);
+  --typography-h6-text-decoration: none;
+  --typography-h6-paragraph-indent: var(--paragraph-indent-0);
+  --typography-h6-paragraph-spacing: var(--paragraph-spacing-0);
+  --typography-body-font-size: var(--body-size);
+  --typography-body-text-case: none;
+  --typography-body-font-family: var(--font-family-dm-sans);
+  --typography-body-font-weight: var(--font-weight-dm-sans-1);
+  --typography-body-line-height: var(--line-height-7);
+  --typography-body-letter-spacing: var(--letter-spacing-0);
+  --typography-body-text-decoration: none;
+  --typography-body-paragraph-indent: var(--paragraph-indent-0);
+  --typography-body-paragraph-spacing: var(--paragraph-spacing-0);
+  --icon-gray: var(--brand-neutral-400);
+  --icon-gray-color: var(--brand-grays-500);
+  --icon-info: var(--functional-info-500);
+  --icon-black: var(--brand-neutral-900);
+  --icon-white: var(--brand-neutral-500);
+  --icon-accent: var(--brand-accent-500);
+  --icon-danger: var(--functional-danger-500);
+  --icon-primary: var(--brand-primary-500);
+  --icon-success: var(--functional-success-500);
+  --icon-warning: var(--functional-warning-500);
+  --icon-tertiary: var(--brand-tertiary-500);
+  --icon-secondary: var(--brand-secondary-500);
+  --icon-gray-opacity-40: #f7f5f266;
+  --icon-white-opacity-40: #ffffff66;
+  --icon-info-opacity-40: #3b82f666;
+  --icon-accent-opacity-40: #f59e0b66;
+  --icon-danger-opacity-40: #f03d3d66;
+  --icon-primary-opacity-40: #3B3BBF66;
+  --icon-success-opacity-40: #22c55e66;
+  --icon-warning-opacity-40: #fcbe0466;
+  --icon-tertiary-opacity-40: #f8774866;
+  --icon-secondary-opacity-40: #00afef66;
+  --text-gray: var(--brand-neutral-400);
+  --text-gray-color: var(--brand-grays-500);
+  --text-info: var(--functional-info-500);
+  --text-black: var(--brand-neutral-950);
+  --text-accent: var(--brand-accent-500);
+  --text-danger: var(--functional-danger-500);
+  --text-neutral: var(--brand-neutral-500);
+  --text-primary: var(--brand-primary-500);
+  --text-success: var(--functional-success-500);
+  --text-warning: var(--functional-warning-500);
+  --text-dark-gray: var(--brand-grays-900);
+  --text-tertiary: var(--brand-tertiary-500);
+  --text-secondary: var(--brand-secondary-500);
+  --text-light-gray: var(--brand-neutral-200);
+  --typography-title-font-size: var(--title-size);
+  --typography-title-text-case: none;
+  --typography-title-font-family: var(--font-family-ibm-plex-sans);
+  --typography-title-font-weight: var(--font-weight-ibm-plex-sans-0);
+  --typography-title-line-height: var(--line-height-4);
+  --typography-title-letter-spacing: var(--letter-spacing-0);
+  --typography-title-text-decoration: none;
+  --typography-title-paragraph-indent: var(--paragraph-indent-0);
+  --typography-title-paragraph-spacing: var(--paragraph-spacing-0);
+  --border-gray: var(--brand-neutral-200);
+  --border-info: var(--functional-info-500);
+  --border-black: var(--brand-neutral-950);
+  --border-white: var(--brand-neutral-500);
+  --border-grays: var(--brand-grays-500);
+  --border-accent: var(--brand-accent-500);
+  --border-danger: var(--functional-danger-500);
+  --border-primary: var(--brand-primary-500);
+  --border-success: var(--functional-success-500);
+  --border-warning: var(--functional-warning-500);
+  --border-tertiary: var(--brand-tertiary-500);
+  --border-secondary: var(--brand-secondary-500);
+  --border-black-opacity: #0d0d0d40;
+  --border-white-opacity-2: #ffffff40;
+  --typography-caption-font-size: var(--caption-size);
+  --typography-caption-text-case: none;
+  --typography-caption-font-family: var(--font-family-dm-sans);
+  --typography-caption-font-weight: var(--font-weight-dm-sans-1);
+  --typography-caption-line-height: var(--line-height-7);
+  --typography-caption-letter-spacing: var(--letter-spacing-0);
+  --typography-caption-text-decoration: none;
+  --typography-caption-paragraph-indent: var(--paragraph-indent-0);
+  --typography-caption-paragraph-spacing: var(--paragraph-spacing-0);
+  --typography-lighter-font-size: var(--lighter-size);
+  --typography-lighter-text-case: none;
+  --typography-lighter-font-family: var(--font-family-dm-sans);
+  --typography-lighter-font-weight: var(--font-weight-dm-sans-1);
+  --typography-lighter-line-height: var(--line-height-7);
+  --typography-lighter-letter-spacing: var(--letter-spacing-0);
+  --typography-lighter-text-decoration: none;
+  --typography-lighter-paragraph-indent: var(--paragraph-indent-0);
+  --typography-lighter-paragraph-spacing: var(--paragraph-spacing-0);
+  --typography-subtitle-font-size: var(--subtitle-size);
+  --typography-subtitle-text-case: none;
+  --typography-subtitle-font-family: var(--font-family-dm-sans);
+  --typography-subtitle-font-weight: var(--font-weight-dm-sans-1);
+  --typography-subtitle-line-height: var(--line-height-7);
+  --typography-subtitle-letter-spacing: var(--letter-spacing-0);
+  --typography-subtitle-text-decoration: none;
+  --typography-subtitle-paragraph-indent: var(--paragraph-indent-0);
+  --typography-subtitle-paragraph-spacing: var(--paragraph-spacing-0);
+  --text-case-none: none;
+  --typography-caption-2-font-size: var(--caption-2-size);
+  --typography-caption-2-text-case: none;
+  --typography-caption-2-font-family: var(--font-family-dm-sans);
+  --typography-caption-2-font-weight: var(--font-weight-dm-sans-1);
+  --typography-caption-2-line-height: var(--line-height-7);
+  --typography-caption-2-letter-spacing: var(--letter-spacing-0);
+  --typography-caption-2-text-decoration: none;
+  --typography-caption-2-paragraph-indent: var(--paragraph-indent-0);
+  --typography-caption-2-paragraph-spacing: var(--paragraph-spacing-0);
+  --background-bg-info: var(--functional-info-500);
+  --background-bg-black: var(--brand-neutral-950);
+  --background-bg-white: var(--brand-neutral-500);
+  --background-bg-accent: var(--brand-accent-500);
+  --background-bg-danger: var(--functional-danger-500);
+  --background-bg-neutral: var(--brand-neutral-50);
+  --background-bg-success: var(--functional-success-500);
+  --background-bg-white-2: var(--brand-neutral-500);
+  --background-bg-primary: var(--brand-primary-500);
+  --background-bg-warning: var(--functional-warning-500);
+  --background-bg-tertiary: var(--brand-tertiary-500);
+  --background-bg-secondary: var(--brand-secondary-500);
+  --background-bg-light-gray: var(--brand-grays-500);
+  --background-bg-suger-black: var(--brand-neutral-900);
+  --background-bg-light-accent: var(--brand-accent-200);
+  --background-bg-light-primary: var(--brand-primary-100);
+  --background-bg-light-success: var(--functional-success-50);
+  --background-bg-light-neutral: var(--brand-neutral-50);
+  --background-bg-white-opacity: #ffffff66;
+  --background-bg-gray-opacity-40: #cccccc33;
+  --background-bg-light-secondary: var(--brand-secondary-100);
+  --background-bg-light-tertiary: var(--brand-tertiary-50);  /* صححت الإملاء */
+  --background-bg-white-opacity-2: #ffffffb3;
+  --background-bg-white-opacity-3: #ffffffcc;
+  --background-bg-info-opacity-40: #3b82f666;
+  --background-bg-accent-opacity-40: #f59e0b66;
+  --background-bg-danger-opacity-40: #f03d3d66;
+  --background-bg-primary-opacity-40: #3B3BBF66;
+  --background-bg-success-opacity-40: #22c55e66;
+  --background-bg-warning-opacity-40: #fcbe0466;
+  --background-bg-tertiary-opacity-40: #f8774866;
+  --background-bg-secondary-opacity-40: #00afef66;
+  --font-weight-dm-sans-1: Regular;
+  --font-weight-dm-sans-2: Medium;
+  --font-weight-ibm-plex-sans-0: Bold;
+  --font-weight-ibm-plex-sans-3: Regular;
+  --line-height-0: 120%;  /* دمجت التكرارات: 0 و1 متشابهة */
+  --line-height-2: 130%;  /* 2 و3 */
+  --line-height-4: 140%;  /* 4،5،6 */
+  --line-height-7: 150%;  /* 7 إلى 12 */
+  --elevation-1: 0px 4px 8px 0px #959d9d33;
+  --elevation-2: 0px 6px 24px 0px #0000000d, 0px 0px 0px 1px #00000017;
+  --elevation-3: 0px 0px 0px 1px #0000000d;
+  --elevation-4: 0px 4px 12px 0px #00000014;
+  --elevation-5: 0px 3px 12px 0px #00000017;
+  --elevation-6: 0px 0px 0px 1px #0e3f7e0f, 0px 1px 1px -0.5px #2a33460a,
+    0px 2px 2px -1px #2a33460a, 0px 3px 3px -1.5px #2a33460a,
+    0px 5px 5px -2.5px #2a334608, 0px 10px 10px -5px #2a334608,
+    inset 0px 24px 24px -8px #2a334608;
+  --typography-very-lighter-font-size: var(--very-lighter-size);
+  --typography-very-lighter-text-case: none;
+  --typography-very-lighter-font-family: var(--font-family-ibm-plex-sans);
+  --typography-very-lighter-font-weight: var(--font-weight-ibm-plex-sans-3);
+  --typography-very-lighter-line-height: var(--line-height-7);
+  --typography-very-lighter-letter-spacing: var(--letter-spacing-0);
+  --typography-very-lighter-text-decoration: none;
+  --typography-very-lighter-paragraph-indent: var(--paragraph-indent-0);
+  --typography-very-lighter-paragraph-spacing: var(--paragraph-spacing-0);
+  --font-family-dm-sans: 'DM Sans', 'Inter', 'Cairo', sans-serif;
+  --font-family-ibm-plex-sans: 'IBM Plex Sans', 'Inter', 'Cairo', sans-serif;
+  --font-family-work-sans: 'Work Sans', 'DM Sans', 'Inter', sans-serif;
+  --font-family-primary: 'Inter', 'Cairo', sans-serif;
+  --font-family-heading: 'Inter', 'Cairo', sans-serif;
+  --font-family-body: 'Inter', 'Cairo', sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --text-xs: 10px;
+  --text-sm: 12px;
+  --text-base: 14px;
+  --text-lg: 16px;
+  --text-xl: 18px;
+  --text-2xl: 20px;
+  --text-3xl: 24px;
+  --text-4xl: 28px;
+  --text-5xl: 32px;
+  --text-6xl: 48px;
+  --inner-primary: inset 0px 4px 10px 3px #5454C3;
+  --shadow-flat-2: inset 0px -2px 2px 0px #cccccc33,
+    inset 0px 0px 0px 2px #222222, 0px 0px 1px 2px #cccccc33;
+  --letter-spacing-0: 0%;  /* دمجت كل الـletter-spacing (كلهم 0%) */
+  --elevation-dark-light: 0px 0px 8px 4px #959d9d33;
+  --info-dropshadow: 0px 0px 0px 3px #3b82f640;
+  --text-decoration-none: none;
+  --error-dropshadow: 0px 0px 0px 3px #f03d3d40;
+  --tertiary-shadow: 0px 0px 0px 3px #f8774840;
+  --paragraph-indent-0: 0px;
+  --accent-dropshadow: 0px 0px 0px 3px #f59e0b40;
+  --paragraph-spacing-0: 0;  /* دمجت كل الـparagraph-spacing (كلهم 0) */
+  --primary-dropshadow: 0px 0px 0px 3px #5454C340;
+  --success-dropshadow: 0px 0px 0px 3px #22c55e40;
+  --warning-dropshadow: 0px 0px 0px 3px #fcbe0440;
+  --shadow-flat-button: inset 0px -2px 2px 0px #2F2F99,
+    inset 0px 0px 0px 2px #3B3BBF, 0px 0px 1px 2px #3B3BBF33;
+  --secondary-dropshadow: 0px 0px 0px 3px #00afef40;
+
+  /* ── UI Surface Semantic Variables (dashboard components) ── */
+  --ui-surface: #ffffff;
+  --ui-bg: #f7f5f2;
+  --ui-text-main: #111827;
+  --ui-text-sub: #6B7280;
+  --ui-text-muted: #9CA3AF;
+  --ui-border: #E5E7EB;
+  --ui-border-secondary: #D1D5DB;
+  --ui-input-bg: #FAFAFA;
+
+  /* ── Extended UI Semantic Aliases ── */
+  --ui-bg-subtle: #eeece8;
+  --ui-bg-surface: #ffffff;
+  --ui-bg-secondary: #eeece8;
+  --ui-text-primary: #212529;
+  --ui-text-secondary: #71717A;
+  --brand-success-600: #2e7d32;
+  --brand-success-100: #c8e6c9;
+}
+
+/* Dark Theme - Manual Toggle */
+:root.dark-theme {
+  --icon-gray: #cfcfcf;
+  --icon-gray-color: var(--brand-grays-500);
+  --icon-info: var(--functional-info-500);
+  --icon-black: var(--brand-neutral-500);
+  --icon-white: var(--brand-neutral-900);
+  --icon-accent: var(--brand-accent-500);
+  --icon-danger: var(--functional-danger-500);
+  --icon-primary: var(--brand-primary-400);
+  --icon-success: var(--functional-success-500);
+  --icon-warning: var(--functional-warning-500);
+  --icon-tertiary: var(--brand-tertiary-500);
+  --icon-secondary: var(--brand-secondary-500);
+  --icon-gray-opacity-40: #f7f5f266;
+  --icon-white-opacity-40: #ffffff66;
+  --icon-info-opacity-40: #3b82f666;
+  --icon-accent-opacity-40: #f59e0b66;
+  --icon-danger-opacity-40: #f03d3d66;
+  --icon-primary-opacity-40: #3B3BBF66;
+  --icon-success-opacity-40: #22c55e66;
+  --icon-warning-opacity-40: #fcbe0466;
+  --icon-tertiary-opacity-40: #f8774866;
+  --icon-secondary-opacity-40: #00afef66;
+  --text-gray: var(--brand-neutral-400);
+  --text-gray-color: var(--brand-grays-950);
+  --text-info: var(--functional-info-500);
+  --text-black: var(--brand-neutral-500);
+  --text-accent: var(--brand-accent-500);
+  --text-danger: var(--functional-danger-500);
+  --text-neutral: var(--brand-neutral-950);
+  --text-primary: var(--brand-primary-400);
+  --text-success: var(--functional-success-500);
+  --text-warning: var(--functional-warning-500);
+  --text-dark-gray: var(--brand-grays-50);
+  --text-tertiary: var(--brand-tertiary-500);
+  --text-secondary: var(--brand-secondary-500);
+  --text-light-gray: var(--brand-neutral-200);
+  --border-gray: var(--brand-neutral-200);
+  --border-info: var(--functional-info-500);
+  --border-black: var(--brand-neutral-500);
+  --border-white: var(--brand-neutral-950);
+  --border-grays: var(--brand-neutral-900);
+  --border-accent: var(--brand-accent-500);
+  --border-danger: var(--functional-danger-500);
+  --border-primary: var(--brand-primary-400);
+  --border-success: var(--functional-success-500);
+  --border-warning: var(--functional-warning-500);
+  --border-tertiary: var(--brand-tertiary-500);
+  --border-secondary: var(--brand-secondary-500);
+  --border-black-opacity: #ffffff40;
+  --border-white-opacity-2: #ffffff40;
+  --background-bg-info: var(--functional-info-500);
+  --background-bg-black: var(--brand-neutral-500);
+  --background-bg-white: var(--brand-neutral-900);
+  --background-bg-accent: var(--brand-accent-500);
+  --background-bg-danger: var(--functional-danger-500);
+  --background-bg-neutral: var(--brand-neutral-800);
+  --background-bg-success: var(--functional-success-500);
+  --background-bg-white-2: var(--brand-neutral-950);
+  --background-bg-primary: var(--brand-primary-400);
+  --background-bg-warning: var(--functional-warning-500);
+  --background-bg-tertiary: var(--brand-tertiary-500);
+  --background-bg-secondary: var(--brand-secondary-500);
+  --background-bg-light-gray: var(--brand-neutral-950);
+  --background-bg-suger-black: var(--brand-grays-500);
+  --background-bg-light-accent: var(--brand-accent-200);
+  --background-bg-light-primary: var(--brand-primary-100);
+  --background-bg-light-success: var(--functional-success-50);
+  --background-bg-light-neutral: var(--brand-neutral-1000);
+  --background-bg-white-opacity: #ffffff66;
+  --background-bg-gray-opacity-40: #cccccc33;
+  --background-bg-light-secondary: var(--brand-secondary-100);
+  --background-bg-light-tertiary: var(--brand-tertiary-50);  /* صححت */
+  --background-bg-white-opacity-2: #ffffffb3;
+  --background-bg-white-opacity-3: #ffffffcc;
+  --background-bg-info-opacity-40: #3b82f666;
+  --background-bg-accent-opacity-40: #f59e0b66;
+  --background-bg-danger-opacity-40: #f03d3d66;
+  --background-bg-primary-opacity-40: #3B3BBF66;
+  --background-bg-success-opacity-40: #22c55e66;
+  --background-bg-warning-opacity-40: #fcbe0466;
+  --background-bg-tertiary-opacity-40: #f8774866;
+  --background-bg-secondary-opacity-40: #00afef66;
+  --elevation-1: 0px 4px 8px 0px #959d9d33;
+  --elevation-2: 0px 6px 24px 0px #ffffff0d, 0px 0px 0px 1px #ffffff17;
+  --elevation-3: 0px 0px 0px 1px #ffffff0d;
+  --elevation-4: 0px 4px 12px 0px #ffffff14;
+  --elevation-5: 0px 3px 12px 0px #ffffff17;
+  --elevation-6: 0px 0px 0px 1px #0e3f7e0f, 0px 1px 1px -0.5px #ffffff0a,
+    0px 2px 2px -1px #ffffff0a, 0px 3px 3px -1.5px #ffffff0a,
+    0px 5px 5px -2.5px #ffffff08, 0px 10px 10px -5px #ffffff08,
+    inset 0px 24px 24px -8px #ffffff08;
+  --inner-primary: inset 0px 4px 10px 3px #5454C3;
+  --shadow-flat-2: inset 0px -2px 2px 0px #cccccc33,
+    inset 0px 0px 0px 2px #ffffff, 0px 0px 1px 2px #cccccc33;
+  --elevation-dark-light: 0px 0px 8px 4px #959d9d33;
+  --info-dropshadow: 0px 0px 0px 3px #3b82f640;
+  --error-dropshadow: 0px 0px 0px 3px #f03d3d40;
+  --tertiary-shadow: 0px 0px 0px 3px #f8774840;
+  --accent-dropshadow: 0px 0px 0px 3px #f59e0b40;
+  --primary-dropshadow: 0px 0px 0px 3px #5454C340;
+  --success-dropshadow: 0px 0px 0px 3px #22c55e40;
+  --warning-dropshadow: 0px 0px 0px 3px #fcbe0440;
+  --shadow-flat-button: inset 0px -2px 2px 0px #2F2F99,
+    inset 0px 0px 0px 2px #3B3BBF, 0px 0px 1px 2px #3B3BBF33;
+  --secondary-dropshadow: 0px 0px 0px 3px #00afef40;
+
+  /* ── UI Surface Semantic Variables — dark overrides ── */
+  --ui-surface: #1F2937;
+  --ui-bg: #111827;
+  --ui-text-main: #F9FAFB;
+  --ui-text-sub: #D1D5DB;
+  --ui-text-muted: #9CA3AF;
+  --ui-border: #374151;
+  --ui-border-secondary: #4B5563;
+  --ui-input-bg: #1F2937;
+  /* Extended surface aliases — must mirror --ui-surface / --ui-bg in dark */
+  --ui-bg-surface: #1F2937;
+  --ui-bg-subtle: #111827;
+  --ui-bg-secondary: #1a2535;
+  /* Compliance section — dark frame values (Figma 3:51537) */
+  --landing-compliance-bg: #282828;
+  --landing-compliance-ink: #ffffff;
+  --landing-compliance-card-desc: #999999;
+  --landing-compliance-cta-ink: #ffffff;
+  /* Hero section — dark mode values */
+  --landing-hero-section-bg: #1b1b1b; /* Figma dark frame: Background/Bg-Black */
+  /* Figma dark hero glow: blurred #2E358F circle (node 3:51270, 1274.59² incl. blur bleed),
+     ellipse bbox (416.82, 405.13) in the 1440 frame → hero-element coords below */
+  --landing-hero-glow: url('/assets/images/hero-glow-dark.svg') calc(50% - 10.48px) -61.48px / 1274.59px 1274.59px no-repeat;
+  --landing-hero-title-color: #FFFFFF;
+  --landing-hero-description-color: #f7f5f2;        /* Figma dark node 3:51278 */
+  --landing-hero-badge-bg: rgba(46, 53, 143, 0.4);  /* Figma Bg-primary-opacity-40 (3:51275) */
+  --landing-hero-badge-border: #2e358f;             /* Figma Border/primary */
+}
+
+/* Auto Dark Mode (System Preference) */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light-theme) {
+    --icon-gray: #cfcfcf;
+    --icon-gray-color: var(--brand-grays-500);
+    --icon-info: var(--functional-info-500);
+    --icon-black: var(--brand-neutral-500);
+    --icon-white: var(--brand-neutral-900);
+    --icon-accent: var(--brand-accent-500);
+    --icon-danger: var(--functional-danger-500);
+    --icon-primary: var(--brand-primary-400);
+    --icon-success: var(--functional-success-500);
+    --icon-warning: var(--functional-warning-500);
+    --icon-tertiary: var(--brand-tertiary-500);
+    --icon-secondary: var(--brand-secondary-500);
+    --icon-gray-opacity-40: #f7f5f266;
+    --icon-white-opacity-40: #ffffff66;
+    --icon-info-opacity-40: #3b82f666;
+    --icon-accent-opacity-40: #f59e0b66;
+    --icon-danger-opacity-40: #f03d3d66;
+    --icon-primary-opacity-40: #3B3BBF66;
+    --icon-success-opacity-40: #22c55e66;
+    --icon-warning-opacity-40: #fcbe0466;
+    --icon-tertiary-opacity-40: #f8774866;
+    --icon-secondary-opacity-40: #00afef66;
+    --text-gray: var(--brand-neutral-400);
+    --text-gray-color: var(--brand-grays-950);
+    --text-info: var(--functional-info-500);
+    --text-black: var(--brand-neutral-500);
+    --text-accent: var(--brand-accent-500);
+    --text-danger: var(--functional-danger-500);
+    --text-neutral: var(--brand-neutral-950);
+    --text-primary: var(--brand-primary-400);
+    --text-success: var(--functional-success-500);
+    --text-warning: var(--functional-warning-500);
+    --text-dark-gray: var(--brand-grays-50);
+    --text-tertiary: var(--brand-tertiary-500);
+    --text-secondary: var(--brand-secondary-500);
+    --text-light-gray: var(--brand-neutral-200);
+    --border-gray: var(--brand-neutral-200);
+    --border-info: var(--functional-info-500);
+    --border-black: var(--brand-neutral-500);
+    --border-white: var(--brand-neutral-950);
+    --border-grays: var(--brand-neutral-900);
+    --border-accent: var(--brand-accent-500);
+    --border-danger: var(--functional-danger-500);
+    --border-primary: var(--brand-primary-400);
+    --border-success: var(--functional-success-500);
+    --border-warning: var(--functional-warning-500);
+    --border-tertiary: var(--brand-tertiary-500);
+    --border-secondary: var(--brand-secondary-500);
+    --border-black-opacity: #ffffff40;
+    --border-white-opacity-2: #ffffff40;
+    --background-bg-info: var(--functional-info-500);
+    --background-bg-black: var(--brand-neutral-500);
+    --background-bg-white: var(--brand-neutral-900);
+    --background-bg-accent: var(--brand-accent-500);
+    --background-bg-danger: var(--functional-danger-500);
+    --background-bg-neutral: var(--brand-neutral-800);
+    --background-bg-success: var(--functional-success-500);
+    --background-bg-white-2: var(--brand-neutral-950);
+    --background-bg-primary: var(--brand-primary-400);
+    --background-bg-warning: var(--functional-warning-500);
+    --background-bg-tertiary: var(--brand-tertiary-500);
+    --background-bg-secondary: var(--brand-secondary-500);
+    --background-bg-light-gray: var(--brand-neutral-950);
+    --background-bg-suger-black: var(--brand-grays-500);
+    --background-bg-light-accent: var(--brand-accent-200);
+    --background-bg-light-primary: var(--brand-primary-100);
+    --background-bg-light-success: var(--functional-success-50);
+    --background-bg-light-neutral: var(--brand-neutral-1000);
+    --background-bg-white-opacity: #ffffff66;
+    --background-bg-gray-opacity-40: #cccccc33;
+    --background-bg-light-secondary: var(--brand-secondary-100);
+    --background-bg-light-tertiary: var(--brand-tertiary-50);
+    --background-bg-white-opacity-2: #ffffffb3;
+    --background-bg-white-opacity-3: #ffffffcc;
+    --background-bg-info-opacity-40: #3b82f666;
+    --background-bg-accent-opacity-40: #f59e0b66;
+    --background-bg-danger-opacity-40: #f03d3d66;
+    --background-bg-primary-opacity-40: #3B3BBF66;
+    --background-bg-success-opacity-40: #22c55e66;
+    --background-bg-warning-opacity-40: #fcbe0466;
+    --background-bg-tertiary-opacity-40: #f8774866;
+    --background-bg-secondary-opacity-40: #00afef66;
+    --elevation-1: 0px 4px 8px 0px #959d9d33;
+    --elevation-2: 0px 6px 24px 0px #ffffff0d, 0px 0px 0px 1px #ffffff17;
+    --elevation-3: 0px 0px 0px 1px #ffffff0d;
+    --elevation-4: 0px 4px 12px 0px #ffffff14;
+    --elevation-5: 0px 3px 12px 0px #ffffff17;
+    --elevation-6: 0px 0px 0px 1px #0e3f7e0f, 0px 1px 1px -0.5px #ffffff0a,
+      0px 2px 2px -1px #ffffff0a, 0px 3px 3px -1.5px #ffffff0a,
+      0px 5px 5px -2.5px #ffffff08, 0px 10px 10px -5px #ffffff08,
+      inset 0px 24px 24px -8px #ffffff08;
+    --inner-primary: inset 0px 4px 10px 3px #5454C3;
+    --shadow-flat-2: inset 0px -2px 2px 0px #cccccc33,
+      inset 0px 0px 0px 2px #ffffff, 0px 0px 1px 2px #cccccc33;
+    --elevation-dark-light: 0px 0px 8px 4px #959d9d33;
+    --info-dropshadow: 0px 0px 0px 3px #3b82f640;
+    --error-dropshadow: 0px 0px 0px 3px #f03d3d40;
+    --tertiary-shadow: 0px 0px 0px 3px #f8774840;
+    --accent-dropshadow: 0px 0px 0px 3px #f59e0b40;
+    --primary-dropshadow: 0px 0px 0px 3px #5454C340;
+    --success-dropshadow: 0px 0px 0px 3px #22c55e40;
+    --warning-dropshadow: 0px 0px 0px 3px #fcbe0440;
+    --shadow-flat-button: inset 0px -2px 2px 0px #2F2F99,
+      inset 0px 0px 0px 2px #3B3BBF, 0px 0px 1px 2px #3B3BBF33;
+    --secondary-dropshadow: 0px 0px 0px 3px #00afef40;
+
+    /* ── UI Surface Semantic Variables — dark overrides ── */
+    --ui-surface: #1F2937;
+    --ui-bg: #111827;
+    --ui-text-main: #F9FAFB;
+    --ui-text-sub: #D1D5DB;
+    --ui-text-muted: #9CA3AF;
+    --ui-border: #374151;
+    --ui-border-secondary: #4B5563;
+    --ui-input-bg: #1F2937;
+    /* Extended surface aliases */
+    --ui-bg-surface: #1F2937;
+    --ui-bg-subtle: #111827;
+    --ui-bg-secondary: #1a2535;
+    /* Compliance section — dark frame values (Figma 3:51537) */
+    --landing-compliance-bg: #282828;
+    --landing-compliance-ink: #ffffff;
+    --landing-compliance-card-desc: #999999;
+    --landing-compliance-cta-ink: #ffffff;
+    /* Hero section — dark mode values */
+    --landing-hero-section-bg: #1b1b1b; /* Figma dark frame: Background/Bg-Black */
+    /* Figma dark hero glow: blurred #2E358F circle (node 3:51270, 1274.59² incl. blur bleed),
+     ellipse bbox (416.82, 405.13) in the 1440 frame → hero-element coords below */
+  --landing-hero-glow: url('/assets/images/hero-glow-dark.svg') calc(50% - 10.48px) -61.48px / 1274.59px 1274.59px no-repeat;
+    --landing-hero-title-color: #FFFFFF;
+    --landing-hero-description-color: #f7f5f2;        /* Figma dark node 3:51278 */
+    --landing-hero-badge-bg: rgba(46, 53, 143, 0.4);  /* Figma Bg-primary-opacity-40 (3:51275) */
+    --landing-hero-badge-border: #2e358f;             /* Figma Border/primary */
+  }
+}
+
+/* RTL: Arabic uses Cairo as primary */
+[dir="rtl"] body,
+[dir="rtl"] * {
+  font-family: 'Cairo', 'Inter', sans-serif;
+}
+
+/* ================================================
+   Global Create/Add Button — Figma Dark Primary
+   ================================================ */
+.btn-success {
+  background-color: var(--functional-success-500) !important;
+  color: var(--ui-bg-surface) !important;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  padding: 8px 20px;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+.btn-success:hover { opacity: 0.88; }
+
+.btn-create {
+  background: var(--brand-neutral-950) !important;
+  color: var(--ui-bg-surface) !important;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  padding: 8px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-create:hover { opacity: 0.88 !important; }
+.btn-create:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ================================================
+   RTL / LTR Direction Support
+   ================================================ */
+html { direction: ltr; }
+html[dir="rtl"] { direction: rtl; }
+[dir="rtl"] {
+  --direction-factor: -1;
+}
+
+.visually-hidden,
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ================================================
+   Right-Side Drawer Panel (Contract / Meeting details)
+   Used by: panelClass: 'meeting-details-right-panel'
+   ================================================ */
+
+/* Slide-in animation */
+@keyframes slideInFromRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes slideInFromLeft {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+/* Override Material Dialog container when used as right drawer */
+.meeting-details-right-panel {
+  /* Kill the default centered-dialog margins */
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: 100% !important;
+  max-height: 100vh !important;
+  border-radius: 0 !important;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12) !important;
+
+  /* Animate panel in from the right */
+  animation: slideInFromRight 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* RTL: slide in from left */
+[dir="rtl"] .meeting-details-right-panel {
+  animation: slideInFromLeft 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* The inner mat-dialog-container — remove default padding + radius */
+.meeting-details-right-panel .mat-mdc-dialog-container {
+  padding: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  max-height: 100vh !important;
+}
+
+/* Surface color — use the page surface (white) */
+.meeting-details-right-panel .mat-mdc-dialog-surface {
+  border-radius: 0 !important;
+  background: var(--ui-bg-surface, #fff) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Semi-dark backdrop */
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Invite Members dialog — strip Material wrapper so our custom .dialog-container shows cleanly */
+.invite-dialog-panel .mat-mdc-dialog-container {
+  padding: 0 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+
+.invite-dialog-panel .mat-mdc-dialog-surface {
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────
+ *  Withdraw Request dialog — panel + backdrop overrides.
+ *  Registered via MatDialogConfig.panelClass / backdropClass so they
+ *  pierce ViewEncapsulation cleanly.
+ * ────────────────────────────────────────────────────────────────── */
+.wd-dialog-panel {
+  /* Override the default Material max-width so the dialog can be 480px wide */
+  max-width: 480px !important;
+  width: 100%;
+}
+.wd-dialog-panel .mat-mdc-dialog-container {
+  padding: 0 !important;
+  border-radius: var(--radius-16) !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.wd-dialog-panel .mat-mdc-dialog-surface {
+  padding: 0 !important;
+  border-radius: var(--radius-16) !important;
+  background: var(--ui-surface) !important;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.18),
+              0 4px 12px rgba(15, 23, 42, 0.06) !important;
+  overflow: hidden !important;
+}
+
+/* Semi-transparent dark backdrop — softer than the global default */
+.wd-dialog-backdrop {
+  background: rgba(15, 23, 42, 0.45) !important;
+}
+
+/* ================================================================
+ *  Shared UI system — list / toolbar / card / view-toggle / empty
+ *  Hoisted from requests-list.css so any tab can adopt the same
+ *  pattern without duplicating styles. Use neutral .ui-* selectors.
+ * ================================================================ */
+
+/* ── Page fullscreen mode (Expand button toggle) ───────────────── */
+.ui-page--fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--ui-bg);
+  overflow: auto;
+  padding: 16px 24px;
+  margin: 0;
+}
+
+/* ── View toggle pill (table | cards) ──────────────────────────── */
+.ui-view-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius-8);
+  background: var(--ui-surface);
+}
+.ui-view-toggle__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  padding: 6px 8px;
+  color: var(--ui-text-muted);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color .15s ease, color .15s ease;
+}
+.ui-view-toggle__btn:hover {
+  background: var(--ui-bg-subtle, var(--brand-neutral-50));
+  color: var(--ui-text-main);
+}
+.ui-view-toggle__btn--active {
+  background: var(--brand-primary-500) !important;
+  color: #ffffff !important;
+}
+
+/* ── Cards grid (responsive) ───────────────────────────────────── */
+.ui-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  padding: 16px;
+}
+
+/* ── Card primitive ────────────────────────────────────────────── */
+.ui-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 20px;
+  background: var(--ui-surface);
+  color: var(--ui-text-main);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius-12);
+  /* Subtle resting shadow for hierarchy lift off the page bg */
+  box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+  transition: border-color .18s ease, box-shadow .18s ease, transform .15s ease;
+}
+.ui-card:hover {
+  border-color: var(--brand-primary-300, var(--brand-primary-500));
+  box-shadow: 0 6px 18px rgba(15, 23, 42, .08),
+              0 2px 4px  rgba(15, 23, 42, .04);
+  transform: translateY(-1px);
+}
+.ui-card--selected {
+  border-color: var(--brand-primary-500);
+  box-shadow: 0 0 0 2px var(--brand-primary-100, rgba(99, 102, 241, .15)),
+              0 1px 2px rgba(15, 23, 42, .04);
+}
+.ui-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ui-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ui-card__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin: 0;
+}
+.ui-card__meta > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.ui-card__meta dt {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ui-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  margin: 0;
+}
+.ui-card__meta dd {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ui-text-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Empty state primitive (icon + title + sub + optional CTA) ── */
+.ui-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  gap: 14px;
+  color: var(--ui-text-muted);
+  text-align: center;
+}
+.ui-empty svg {
+  width: 56px;
+  height: 56px;
+  margin-block-end: 4px;
+  opacity: .55;
+}
+.ui-empty--compact {
+  padding: 48px 16px;
+}
+.ui-empty__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ui-text-main);
+  margin: 0;
+  letter-spacing: -0.1px;
+}
+.ui-empty__sub {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ui-text-muted);
+  margin: 0;
+  max-width: 320px;
+}
+.ui-empty__cta {
+  margin-block-start: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: var(--radius-8);
+  background: var(--brand-primary-500);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, .25);
+  transition: background-color .15s ease, transform .12s ease, box-shadow .15s ease;
+}
+.ui-empty__cta:hover {
+  background: var(--brand-primary-600);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, .3);
+}
+.ui-empty__cta:active { transform: translateY(0); }
+
+/* ── Status badge primitive (used by attendance .leaveType column) ──
+ * Backend field `leaveType` is the daily attendance STATUS:
+ *   0 → Working, 1 → Leave, 2 → Meeting, 3 → Other.
+ * Pair the base class with one modifier returned by getStatusClass(record).
+ */
+.ui-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.ui-status-badge--working {
+  background: var(--functional-success-50);
+  color:      var(--functional-success-600);
+  border-color: var(--functional-success-100, transparent);
+}
+.ui-status-badge--leave {
+  background: var(--functional-danger-50);
+  color:      var(--functional-danger-600);
+  border-color: var(--functional-danger-100, transparent);
+}
+.ui-status-badge--meeting {
+  background: var(--functional-info-50);
+  color:      var(--functional-info-600);
+  border-color: var(--functional-info-100, transparent);
+}
+.ui-status-badge--other {
+  background: var(--brand-neutral-100);
+  color:      var(--brand-neutral-700);
+  border-color: var(--brand-neutral-200, transparent);
+}
+
+/* ================================================
+   Mat-Menu global adjustments
+   ================================================ */
+.mat-mdc-menu-panel {
+  border-radius: 10px !important;
+  border: 1px solid var(--ui-border) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important;
+  min-width: 160px !important;
+}
+
+.mat-mdc-menu-item {
+  font-size: 14px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 16px !important;
+  min-height: 40px !important;
+}
+
+/* Danger menu item */
+.mat-mdc-menu-item.menu-item--danger,
+.mat-mdc-menu-item .menu-item--danger {
+  color: #dc2626 !important;
+}

@@ -1,0 +1,29 @@
+<div class="container-center text-center">
+  <div class="content">
+    <img src="assets/images/Maintenance.png"
+         alt="Maintenance"
+         class="maintenance-image" />
+
+    <h2 class="maintenance-title mt-4">
+      We’re Under Maintenance
+    </h2>
+
+    <p class="maintenance-message">
+      We’re making improvements to bring you a better experience.  
+      Thank you for your patience!
+    </p>
+
+    <p class="mt-3">
+      <span class="text-muted">
+        ⏳ Estimated time: 
+      </span>
+      <span class="text-primary fw-bold">
+        {{ estimatedTime }}
+      </span>
+    </p>
+
+    <button class="btn btn-primary mt-4 btn-khalli" (click)="reloadPage()">
+      Please check back soon!
+    </button>
+  </div>
+</div>

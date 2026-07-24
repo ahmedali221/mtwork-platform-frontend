@@ -1,0 +1,49 @@
+<div class="page-wrap">
+  <div class="container">
+    <div class="header">
+      <button class="back-btn" (click)="onBack()" [attr.aria-label]="'common.back' | transloco">
+       <span class="backIcon">←</span>  Back
+      </button>
+    </div>
+
+    <header class="header">
+      <h1 class="title">Create Contract</h1>
+      <p class="subtitle">What type of contract's you need to add ?</p>
+    </header>
+
+    <main class="cards">
+      @for (c of contracts; track c.id) {
+        <article
+          class="card"
+          (click)="onSelect(c)"
+          role="button"
+          tabindex="0"
+          (keydown.enter)="onSelect(c)"
+        >
+          <div class="card-left">
+            @if (c.icon) {
+              <img [src]="c.icon" [alt]="c.title + ' icon'" class="card-icon" />
+            }
+          </div>
+
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3 class="card-title">{{ c.title }}</h3>
+              <div class="info-wrapper">
+                <button class="info" (click)="toggleInfo(c, $event)" [attr.aria-label]="'common.moreInfo' | transloco">● More info</button>
+                @if (showInfoId === c.id) {
+                  <div class="info-tooltip" role="tooltip">{{ c.description }}</div>
+                }
+              </div>
+            </div>
+            <p class="card-sub">{{ c.subtitle }}</p>
+          </div>
+
+          <div class="card-right">
+            <span class="chev">›</span>
+          </div>
+        </article>
+      }
+    </main>
+  </div>
+</div>

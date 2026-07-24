@@ -1,0 +1,23 @@
+<!-- Figma node 3:37913 (light) / 3:51511 (dark) / 3:65109 (mobile) — Impact stats band -->
+<section class="impact-band">
+  <div class="impact-band__header">
+    <img class="impact-band__wavey" src="assets/images/compliance/wavey-impact.png" alt="" aria-hidden="true" />
+    <h2 class="impact-band__title">
+      {{ lang.translations()?.creatingImpact?.titlePrefix }}
+      <span class="impact-band__title-highlight">{{ lang.translations()?.creatingImpact?.titleHighlight }}</span>
+    </h2>
+    <p class="impact-band__desc">{{ lang.translations()?.creatingImpact?.description }}</p>
+  </div>
+
+  <div class="impact-band__stats">
+    @for (val of statValues; track $index) {
+      <div class="impact-band__stat">
+        <img class="impact-band__stat-icon" src="assets/images/compliance/stat-icon.png" alt="" aria-hidden="true" />
+        <div class="impact-band__stat-text">
+          <strong class="impact-band__stat-value">{{ val }}</strong>
+          <span class="impact-band__stat-label">{{ lang.translations()?.creatingImpact?.statLabel }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</section>

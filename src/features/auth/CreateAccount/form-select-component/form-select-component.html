@@ -1,0 +1,26 @@
+<div class="form-group">
+  <label [for]="label">
+    {{ label }}
+    <span *ngIf="required" class="required-label">Required</span>
+  </label>
+
+  <select
+    [id]="label"
+    [formControl]="formControl"
+    [class.is-invalid]="invalid"
+    [attr.aria-label]="label"
+    [attr.aria-invalid]="invalid"
+    [attr.aria-describedby]="invalid ? label + '-error' : null"
+  >
+    <option [ngValue]="null" disabled>{{ placeholder }}</option>
+    <option *ngFor="let opt of options" [ngValue]="opt.id">{{ opt.name }}</option>
+  </select>
+
+  <div
+    *ngIf="invalid"
+    [id]="label + '-error'"
+    class="error-message text-danger"
+    role="alert">
+    {{ errorText }}
+  </div>
+</div>

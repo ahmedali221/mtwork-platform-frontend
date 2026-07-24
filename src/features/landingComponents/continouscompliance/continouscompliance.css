@@ -1,0 +1,349 @@
+/* ───────────────────────────────────────────────────────────────────
+   Figma 3:37939 — Compliance section. All values from Dev Mode.
+   Theme: bg #f7f5f2 → #282828 via --landing-compliance-* tokens
+   (.dark-theme overrides in styles.css; no Tailwind dark: variants).
+   ─────────────────────────────────────────────────────────────────── */
+:host {
+  display: block;
+  background: var(--landing-compliance-bg);
+  font-family: var(--font-family-dm-sans);
+  overflow: hidden;
+}
+
+.compliance {
+  /* frame rhythm: 56 top, 64 between blocks, 16 bottom */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-very-large-giant); /* 64 */
+  padding-block: var(--spacing-large-massive) var(--spacing-medium-lg);
+}
+
+/* ─── Intro (3:37946) ──────────────────────────────────────────────── */
+.compliance__intro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-medium-lg);
+  inline-size: min(100%, 1408px);
+  text-align: center;
+}
+
+/* wavey (3:37947): wrapper at (467, −10) 775×57 — Figma export bakes the flip */
+.compliance__intro-wavey {
+  position: absolute;
+  inset-inline-start: 467px;
+  inset-block-start: -10px;
+  inline-size: 775px;
+  block-size: 57px;
+  max-inline-size: none;
+}
+
+.compliance__intro-wavey--mobile {
+  display: none;
+}
+
+.compliance__title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  max-inline-size: 841.648px;
+  color: var(--landing-compliance-ink);
+  font-family: var(--typography-h4-font-family);
+  font-size: var(--typography-h4-font-size);
+  font-weight: var(--landing-hero-title-font-weight);
+  line-height: var(--typography-h4-line-height);
+}
+
+.compliance__tm {
+  font-size: 0.4em;
+  vertical-align: super;
+}
+
+.compliance__title-highlight {
+  color: var(--landing-navbar-surface); /* white over the wavey, both themes */
+}
+
+.compliance__desc {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  max-inline-size: 744.818px;
+  color: var(--brand-neutral-400);
+  font-size: var(--body-size);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.compliance__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 40px;
+  padding: var(--spacing-small-xs) var(--spacing-medium-md);
+  border: 0;
+  border-radius: var(--radius-8);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--subtitle-size);
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.compliance__cta--tertiary {
+  min-inline-size: 111px;
+  background: var(--landing-hr-highlight-bg); /* #f87748 */
+  box-shadow: var(--landing-navbar-neutral-shadow);
+  color: var(--landing-compliance-cta-ink); /* #1b1b1b light / white dark */
+}
+
+.compliance__cta--primary {
+  min-inline-size: 107px;
+  border: 1px solid var(--landing-navbar-primary);
+  background: var(--landing-navbar-primary); /* #2e358f */
+  box-shadow: var(--landing-navbar-primary-shadow);
+  color: var(--landing-compliance-cta-ink);
+}
+
+/* ─── Compliance cards (3:37956): 3 × 402×412, gap 24 ─────────────── */
+.compliance__cards {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-medium-xl);
+  inline-size: min(100%, 1254px);
+}
+
+.compliance__card {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  inline-size: 402px;
+  block-size: 412px;
+  padding: var(--spacing-small-xxs); /* 6 */
+}
+
+.compliance__card-art {
+  inline-size: 100%;
+  block-size: 286px;
+  border-radius: var(--radius-8);
+}
+
+.compliance__card-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium-lg);
+  inline-size: 100%;
+}
+
+.compliance__card-title {
+  margin: 0;
+  color: var(--landing-compliance-ink);
+  font-family: var(--typography-title-font-family);
+  font-size: var(--title-size); /* 22 */
+  font-weight: var(--title-font-weight-bold);
+  line-height: 1.4;
+}
+
+.compliance__card-desc {
+  margin: 0;
+  color: var(--landing-compliance-card-desc); /* #201b13 light / #999 dark */
+  font-size: var(--subtitle-size);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ─── Why band (3:38060) ───────────────────────────────────────────── */
+.compliance__why {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-medium-lg);
+  inline-size: min(100%, 1408px);
+  text-align: center;
+}
+
+/* wavey (3:37940): frame (341, 833) → rel block (325, −10), 756×57 */
+.compliance__why-wavey {
+  position: absolute;
+  inset-inline-start: 325px;
+  inset-block-start: -10px;
+  inline-size: 756px;
+  block-size: 57px;
+  max-inline-size: none;
+}
+
+.compliance__title--why {
+  max-inline-size: 100%;
+}
+
+.compliance__desc--why {
+  max-inline-size: 580.527px;
+}
+
+/* ─── Service cards (3:38064): 6 × 441×244, gap 24 ─────────────────── */
+.compliance__services {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-medium-xl);
+  inline-size: min(100%, 1440px);
+  padding-inline: 34.5px;
+}
+
+.compliance__service {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--spacing-medium-lg);
+  inline-size: 441px;
+  block-size: 244px;
+  padding: var(--spacing-medium-xl); /* 24 */
+  border-radius: var(--radius-4);
+  overflow: hidden;
+}
+
+/* icon chip (Overlay): px15 py16; icon 33.33×32 themable via mask */
+.compliance__service-icon {
+  display: block;
+  inline-size: 33.333px;
+  block-size: 32px;
+  margin: 16px 15px;
+  background-color: var(--landing-compliance-ink);
+  -webkit-mask: url('/assets/images/compliance/icon-analytics.svg') center / contain no-repeat;
+  mask: url('/assets/images/compliance/icon-analytics.svg') center / contain no-repeat;
+  transform: scaleY(-1); /* Figma flips the icon vertically */
+}
+
+.compliance__service-title {
+  margin: 0;
+  color: var(--landing-compliance-ink);
+  font-family: var(--typography-h6-font-family);
+  font-size: var(--typography-h6-font-size); /* 26 */
+  font-weight: var(--h6-font-weight-bold, 700);
+  line-height: var(--typography-h6-line-height); /* 1.4 */
+}
+
+.compliance__service-desc {
+  margin: 0;
+  color: var(--brand-neutral-400);
+  font-size: var(--subtitle-size);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ─── Tablet stabilization (768–1100px) — fit decorative waveys, wrap
+   cards to 2-up. Desktop (>1100) and mobile (<768) untouched. ───────── */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .compliance {
+    padding-inline: var(--spacing-large-xxxl); /* 40 */
+    box-sizing: border-box;
+  }
+
+  /* decorative blue waveys sit behind the centered title — recenter and
+     cap width so they no longer push the section past the viewport */
+  .compliance__intro-wavey,
+  .compliance__why-wavey {
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    inline-size: min(90%, 775px);
+    max-inline-size: 90%;
+  }
+
+  /* compliance cards: 3×402 (1254) won't fit → wrap to 2-up centered */
+  .compliance__cards {
+    flex-wrap: wrap;
+    inline-size: 100%;
+    max-inline-size: 828px; /* 2×402 + 24 gap */
+    margin-inline: auto;
+  }
+
+  /* services already flex-wrap → 2-up; just drop the fixed side padding */
+  .compliance__services {
+    padding-inline: 0;
+    max-inline-size: 906px; /* 2×441 + 24 */
+  }
+}
+
+/* ─── Mobile — Figma 3:65135 ───────────────────────────────────────── */
+@media (max-width: 767px) {
+  .compliance {
+    padding-inline: var(--spacing-medium-lg); /* 16 */
+  }
+
+  .compliance__intro-wavey {
+    display: none;
+  }
+
+  /* mobile wavey (3:65136): rel intro (−2.5, 55.12), 380.5×58 contents */
+  .compliance__intro-wavey--mobile {
+    display: block;
+    position: absolute;
+    inset-inline-start: -2.5px;
+    inset-block-start: 55.12px;
+    inline-size: 380.5px;
+    block-size: 58px;
+    max-inline-size: none;
+  }
+
+  .compliance__title {
+    max-inline-size: 358px;
+    font-size: var(--typography-h6-font-size);
+    line-height: var(--typography-h6-line-height);
+  }
+
+  .compliance__desc {
+    max-inline-size: 303.95px; /* Figma mobile intro desc (3:65150) */
+    font-size: var(--subtitle-size); /* 16 on mobile */
+  }
+
+  .compliance__desc--why {
+    /* Figma mobile why desc (3:65258): 320×81 → stays 18px */
+    max-inline-size: 320px;
+    font-size: var(--body-size);
+  }
+
+  .compliance__cards {
+    flex-direction: column;
+    align-items: flex-start;
+    inline-size: 100%;
+  }
+
+  .compliance__card {
+    /* Figma: 377 wide at x = 8 (−8 from the 16px padding) */
+    inline-size: 377px;
+    margin-inline-start: -8px;
+  }
+
+  .compliance__card-art {
+    block-size: 286px;
+    object-fit: cover;
+  }
+
+  .compliance__why-wavey {
+    display: none; /* no wavey in the mobile frame */
+  }
+
+  .compliance__title-highlight--why {
+    color: inherit; /* mobile why-title is single-color */
+  }
+
+  .compliance__services {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 29px; /* Figma mobile stack gap */
+    padding-inline: 0;
+  }
+
+  .compliance__service {
+    inline-size: 358px;
+  }
+
+  /* Figma keeps cards 4–6 at 441, clipped at the frame edge */
+  .compliance__service:nth-child(n + 4) {
+    inline-size: 441px;
+  }
+}

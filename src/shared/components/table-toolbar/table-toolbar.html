@@ -1,0 +1,53 @@
+<div class="toolbar">
+  <!-- Refresh + Search -->
+  <div class="toolbar__left">
+    <button class="toolbar__refresh" (click)="refresh.emit()" [attr.aria-label]="'common.refresh' | transloco">
+      <mat-icon>refresh</mat-icon>
+    </button>
+    <div class="toolbar__search">
+      <mat-icon class="toolbar__search-icon">search</mat-icon>
+      <input
+        class="toolbar__search-input"
+        type="text"
+        [value]="searchValue"
+        (input)="searchChange.emit($any($event.target).value)"
+        [placeholder]="'common.searchPlaceholder' | transloco"
+        [attr.aria-label]="'common.search' | transloco"
+      />
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="toolbar__filters">
+    <button class="toolbar__filter-icon" [attr.aria-label]="'common.filterOptions' | transloco">
+      <mat-icon>tune</mat-icon>
+    </button>
+
+    @for (filter of filters; track filter.label) {
+      <div class="toolbar__filter-wrap">
+        <select
+          class="toolbar__filter-select"
+          [value]="filter.value"
+          (change)="onFilterChange(filter, $any($event.target).value)"
+          [attr.aria-label]="filter.label"
+        >
+          <option value="">{{ filter.label }}</option>
+          @for (opt of filter.options; track opt) {
+            <option [value]="opt">{{ opt }}</option>
+          }
+        </select>
+        <mat-icon class="toolbar__filter-arrow">expand_more</mat-icon>
+      </div>
+    }
+
+    @if (showViewAsReport) {
+      <button class="toolbar__view-report" (click)="viewAsReport.emit()" [attr.aria-label]="'common.viewAsReport' | transloco">
+        {{ 'common.viewAsReport' | transloco }}
+      </button>
+    }
+
+    <button class="toolbar__expand" (click)="expand.emit()" [attr.aria-label]="'common.expandTable' | transloco">
+      <mat-icon>open_in_full</mat-icon>
+    </button>
+  </div>
+</div>

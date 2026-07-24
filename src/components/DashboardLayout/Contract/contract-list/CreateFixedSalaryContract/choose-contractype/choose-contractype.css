@@ -1,0 +1,192 @@
+:host { display: block; }
+
+/* ── Page ─────────────────────────────────────────────────────── */
+.page-wrap {
+  min-height: 100vh;
+  background: var(--ui-bg);
+  padding: 36px 24px;
+  font-family: var(--font-family-primary);
+}
+
+.container {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* ── Back button ──────────────────────────────────────────────── */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ui-text-sub);
+  cursor: pointer;
+  padding: 6px 0;
+  margin-bottom: 24px;
+  transition: color 0.15s;
+}
+
+.back-btn:hover { color: var(--ui-text-main); }
+
+.backIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ── Header ───────────────────────────────────────────────────── */
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--ui-text-main);
+  margin: 0 0 6px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--ui-text-muted);
+  margin: 0;
+}
+
+/* ── Cards list ───────────────────────────────────────────────── */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Card row ─────────────────────────────────────────────────── */
+.card {
+  display: grid;
+  grid-template-columns: 56px 1fr 32px;
+  gap: 16px;
+  align-items: center;
+  background: var(--ui-bg-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s;
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--brand-neutral-950) 4%, transparent);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--ui-border-secondary);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--brand-neutral-950) 8%, transparent);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--brand-primary-500);
+  outline-offset: 2px;
+}
+
+/* ── Card left: icon ──────────────────────────────────────────── */
+.card-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 10px;
+  padding: 6px;
+  background: var(--ui-bg-subtle);
+}
+
+/* ── Card body ────────────────────────────────────────────────── */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ui-text-main);
+  margin: 0;
+}
+
+.card-sub {
+  font-size: 13px;
+  color: var(--ui-text-muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* ── Info button + tooltip ────────────────────────────────────── */
+.info-wrapper { position: relative; }
+
+.info {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--functional-info-500);
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.info:hover { color: var(--functional-info-700); }
+
+.info-tooltip {
+  position: absolute;
+  inset-inline-end: 0;
+  top: calc(100% + 6px);
+  width: 240px;
+  background: var(--ui-bg-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--ui-text-sub);
+  line-height: 1.5;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--brand-neutral-950) 10%, transparent);
+  z-index: 10;
+}
+
+/* ── Chevron ──────────────────────────────────────────────────── */
+.card-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chev {
+  font-size: 20px;
+  color: var(--ui-text-muted);
+  line-height: 1;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .page-wrap { padding: 20px 16px; }
+  .card { grid-template-columns: 44px 1fr 28px; padding: 14px 16px; gap: 12px; }
+  .card-icon { width: 40px; height: 40px; }
+  .title { font-size: 22px; }
+}

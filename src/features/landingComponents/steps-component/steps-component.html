@@ -1,0 +1,80 @@
+<section class="steps" [attr.aria-label]="languageService.translations()?.steps?.sectionLabel">
+  <div class="steps__container">
+    <div class="steps__visual" aria-hidden="true">
+      <div class="steps__people-card">
+        <div class="steps__filters">
+          @for (filter of filterKeys; track filter) {
+            <button class="steps__filter" type="button" tabindex="-1">
+              {{ languageService.translations()?.steps?.[filter] }}
+              <span class="steps__chevron"></span>
+            </button>
+          }
+          <button class="steps__filter-action" type="button" tabindex="-1"></button>
+        </div>
+
+        <div class="steps__divider"></div>
+
+        <div class="steps__avatars">
+          <img src="assets/images/steps/avatars-row.png" alt="" />
+        </div>
+      </div>
+
+      <div class="steps__profit-card">
+        <div class="steps__mini-heading">
+          <strong>{{ languageService.translations()?.steps?.profit }}</strong>
+          <span>{{ languageService.translations()?.steps?.lastMonth }}</span>
+        </div>
+        <div class="steps__line-chart">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+          <svg viewBox="0 0 107 80" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M10 56 L22.05 66.74 L43.21 33.88 L69.5 61.22 L97 5" />
+          </svg>
+          <i class="steps__dot steps__dot--one"></i>
+          <i class="steps__dot steps__dot--two"></i>
+          <i class="steps__dot steps__dot--three"></i>
+          <i class="steps__dot steps__dot--end"></i>
+        </div>
+        <div class="steps__metric">
+          <strong>{{ metricValue }}</strong>
+          <span>{{ metricGrowth }}</span>
+        </div>
+      </div>
+
+      <div class="steps__payroll-card">
+        <div class="steps__mini-heading">
+          <strong>{{ languageService.translations()?.steps?.payroll }}</strong>
+          <span>{{ languageService.translations()?.steps?.lastMonth }}</span>
+        </div>
+        <div class="steps__bar-chart">
+          @for (bar of payrollBars; track $index) {
+            <span [style.--bar-height]="bar + '%'"></span>
+          }
+        </div>
+        <div class="steps__metric">
+          <strong>{{ metricValue }}</strong>
+          <span>{{ metricGrowth }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps__content">
+      <div class="steps__timeline" aria-hidden="true">
+        @for (step of stepNumbers; track step) {
+          <div class="steps__number">{{ step }}</div>
+          @if (!$last) {
+            <div class="steps__line"></div>
+          }
+        }
+      </div>
+
+      <div class="steps__copy">
+        @for (step of stepItems; track step.titleKey) {
+          <article class="steps__item">
+            <h3>{{ languageService.translations()?.steps?.[step.titleKey] }}</h3>
+            <p>{{ languageService.translations()?.steps?.[step.descKey] }}</p>
+          </article>
+        }
+      </div>
+    </div>
+  </div>
+</section>

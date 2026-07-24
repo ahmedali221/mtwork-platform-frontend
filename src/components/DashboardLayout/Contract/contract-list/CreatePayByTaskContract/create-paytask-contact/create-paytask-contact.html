@@ -1,0 +1,84 @@
+<div class="contract-container">
+  <div class="mainform">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | transloco">
+      <a routerLink="/dashboard/contracts" class="breadcrumb__item breadcrumb__item--link">Contracts</a>
+      <span class="breadcrumb__sep" aria-hidden="true">›</span>
+      <a routerLink="/dashboard/typecontract" class="breadcrumb__item breadcrumb__item--link">Select Contract</a>
+      <span class="breadcrumb__sep" aria-hidden="true">›</span>
+      <span class="breadcrumb__item breadcrumb__item--active">Create Pay by Task Contract</span>
+    </nav>
+
+    <!-- Page title row -->
+    <div class="page-header">
+      <button type="button" class="btn-back-header" (click)="onBack()" [disabled]="currentStep === 1" [attr.aria-label]="'common.back' | transloco">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/>
+        </svg>
+        Back
+      </button>
+      <h1 class="page-title">Create Pay by Task Contract</h1>
+    </div>
+
+    <!-- Form + Sidebar -->
+    <div class="form-steps-wrapper">
+
+      <div class="form-section">
+        <div class="form-wrapper">
+          <div class="form-content" [formGroup]="formGroup">
+            <ng-container [ngSwitch]="currentStep">
+              <app-step1-pay-by-task *ngSwitchCase="1" [parentForm]="formGroup"></app-step1-pay-by-task>
+              <app-step2-pay-by-task *ngSwitchCase="2" [parentForm]="formGroup"></app-step2-pay-by-task>
+              <app-step3pay-by-task  *ngSwitchCase="3" [parentForm]="formGroup"></app-step3pay-by-task>
+              <app-step4-pay-by-task *ngSwitchCase="4" [parentForm]="formGroup"></app-step4-pay-by-task>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps-sidebar-wrapper">
+        <div class="steps-sidebar">
+          <div class="steps-list">
+            @for (step of steps; track step.number) {
+              <div
+                class="step-item"
+                [class.active]="step.number === currentStep"
+                [class.completed]="step.completed"
+                [class.clickable]="step.completed"
+                (click)="goToStep(step.number)"
+                [attr.aria-label]="'Step ' + step.number + ': ' + step.title"
+                [attr.aria-current]="step.number === currentStep ? 'step' : null"
+                role="button"
+                tabindex="0"
+              >
+                <div class="step-circle"
+                  [class.step-circle--completed]="step.completed"
+                  [class.step-circle--active]="step.number === currentStep && !step.completed">
+                  @if (step.completed) {
+                    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+                    </svg>
+                  } @else {
+                    {{ step.number }}
+                  }
+                </div>
+                <span class="step-title">{{ step.title }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-actions">
+      <button type="button" class="btn-footer-back" (click)="onBack()" [disabled]="currentStep === 1" [attr.aria-label]="'common.previousStep' | transloco">Back</button>
+      <button type="button" class="btn-footer-next" (click)="onNext()" [attr.aria-label]="currentStep === totalSteps ? 'Submit' : 'Next'">
+        {{ currentStep === totalSteps ? 'Submit' : 'Next' }}
+      </button>
+    </div>
+
+  </div>
+</div>

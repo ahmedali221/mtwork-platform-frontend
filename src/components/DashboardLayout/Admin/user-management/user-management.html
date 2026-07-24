@@ -1,0 +1,103 @@
+<div class="usr-mgmt">
+
+  <!-- ── Header ───────────────────────────────────────────────── -->
+  <div class="usr-mgmt__header">
+    <div>
+      <h1 class="usr-mgmt__title"    transloco="admin.users.title"></h1>
+      <p  class="usr-mgmt__subtitle" transloco="admin.users.subtitle"></p>
+    </div>
+
+    <div class="usr-mgmt__search-wrap">
+      <mat-icon class="usr-mgmt__search-icon" aria-hidden="true">search</mat-icon>
+      <input
+        class="usr-mgmt__search"
+        type="search"
+        [placeholder]="'admin.users.searchPlaceholder' | transloco"
+        [value]="searchQuery()"
+        (input)="onSearch($any($event.target).value)"
+        [attr.aria-label]="'admin.users.search' | transloco"
+      />
+    </div>
+  </div>
+
+  <!-- ── Loading ───────────────────────────────────────────────── -->
+  @if (isLoading()) {
+    <div class="usr-mgmt__state usr-mgmt__state--loading" aria-busy="true">
+      <span class="usr-mgmt__spinner" aria-hidden="true"></span>
+    </div>
+  }
+
+  <!-- ── Error ─────────────────────────────────────────────────── -->
+  @else if (errorKey()) {
+    <div class="usr-mgmt__state usr-mgmt__state--error" role="alert">
+      <mat-icon aria-hidden="true">error_outline</mat-icon>
+      <span>{{ errorKey() | transloco }}</span>
+    </div>
+  }
+
+  <!-- ── Empty ─────────────────────────────────────────────────── -->
+  @else if (filteredUsers().length === 0) {
+    <div class="usr-mgmt__state usr-mgmt__state--empty">
+      <mat-icon aria-hidden="true">people_outline</mat-icon>
+      <span transloco="admin.users.empty"></span>
+    </div>
+  }
+
+  <!-- ── Table ─────────────────────────────────────────────────── -->
+  @else {
+    <div class="usr-mgmt__table-wrap">
+      <table class="usr-mgmt__table" [attr.aria-label]="'admin.users.listTitle' | transloco">
+        <thead>
+          <tr>
+            <th transloco="admin.users.columns.name"></th>
+            <th transloco="admin.users.columns.email"></th>
+            <th transloco="admin.users.columns.type"></th>
+            <th transloco="admin.users.columns.status"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of filteredUsers(); track user.id) {
+            <tr>
+              <td class="usr-mgmt__cell usr-mgmt__cell--name">
+                <div class="usr-mgmt__user-name">
+                  @if (user.profileImagePath) {
+                    <img class="usr-mgmt__avatar" [src]="user.profileImagePath"
+                         [alt]="user.firstName + ' ' + user.lastName" />
+                  } @else {
+                    <span class="usr-mgmt__avatar-placeholder" aria-hidden="true">
+                      {{ (user.firstName || '?')[0].toUpperCase() }}
+                    </span>
+                  }
+                  <span>{{ user.firstName }} {{ user.lastName }}</span>
+                </div>
+              </td>
+              <td class="usr-mgmt__cell">{{ user.email }}</td>
+              <td class="usr-mgmt__cell">
+                <span
+                  class="usr-mgmt__type-badge"
+                  [class.usr-mgmt__type-badge--employee]="user.userTypeId === UserTypeId.Employee"
+                  [class.usr-mgmt__type-badge--contractor]="user.userTypeId === UserTypeId.Contractor"
+                  [class.usr-mgmt__type-badge--business]="user.userTypeId === UserTypeId.Business">
+                  {{ userTypeKey(user.userTypeId) | transloco }}
+                </span>
+              </td>
+              <td class="usr-mgmt__cell">
+                <span
+                  class="usr-mgmt__status-badge"
+                  [class.usr-mgmt__status-badge--active]="user.isActive !== false"
+                  [class.usr-mgmt__status-badge--suspended]="user.isActive === false">
+                  {{
+                    (user.isActive !== false
+                      ? 'admin.users.status.active'
+                      : 'admin.users.status.suspended') | transloco
+                  }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>

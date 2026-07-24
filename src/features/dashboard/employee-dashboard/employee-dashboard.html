@@ -1,0 +1,222 @@
+<div class="emp-dash" [attr.aria-label]="'dashboard.employee.title' | transloco">
+
+  @if (isLoading()) {
+    <div class="dashboard-loading" role="status" aria-live="polite">
+      <div class="dashboard-loading__spinner"></div>
+      <p>{{ 'common.loading' | transloco }}</p>
+    </div>
+  } @else {
+
+  <!-- ── HERO BANNER ──────────────────────────────────────────── -->
+  <div class="emp-banner">
+    <div class="emp-banner__content">
+      <h2 class="emp-banner__title">{{ 'dashboard.employee.bannerTitle' | transloco }}</h2>
+      <p class="emp-banner__sub">{{ 'dashboard.employee.bannerSubtitle' | transloco }}</p>
+      <!-- Audit DEFECT-1: removed dead "My Contracts" CTA — /dashboard/contracts is
+           gated to [Admin, Business] (FeatureAccess.contracts), so an Employee was
+           bounced back here. The request button (in the visual card) remains the
+           working primary action for this role. -->
+    </div>
+    <div class="emp-banner__visual" aria-hidden="true">
+      <div class="emp-banner__avatar-ring">
+        <mat-icon class="emp-banner__avatar-icon">person</mat-icon>
+      </div>
+      <div class="emp-banner__card">
+        <span class="emp-banner__card-badge">{{ 'dashboard.employee.badge' | transloco }}</span>
+        <p class="emp-banner__card-text">{{ 'dashboard.employee.manageWork' | transloco }}</p>
+        <a routerLink="/dashboard/requests" class="emp-banner__request-btn" [attr.aria-label]="'dashboard.employee.submitRequest' | transloco">
+          <mat-icon>request_page</mat-icon> {{ 'dashboard.employee.request' | transloco }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── UPCOMING MEETINGS ─────────────────────────────────────── -->
+  <section class="emp-section" aria-labelledby="emp-meetings-heading">
+    <div class="emp-section__header">
+      <div class="emp-section__title-group">
+        <mat-icon class="emp-section__icon">videocam</mat-icon>
+        <h3 class="emp-section__title" id="emp-meetings-heading">{{ 'dashboard.upcomingMeetings' | transloco }}</h3>
+      </div>
+      <a routerLink="/dashboard/meetings" class="emp-section__view-all" [attr.aria-label]="'dashboard.viewAllMeetings' | transloco">
+        {{ 'dashboard.viewAll' | transloco }} <mat-icon class="emp-section__arrow">expand_more</mat-icon>
+      </a>
+    </div>
+    @if (meetingsStatus() === 'error') {
+      <div class="emp-widget-state emp-widget-state--error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        <span>{{ 'dashboard.states.error' | transloco }}</span>
+        <button type="button" class="emp-widget-state__retry" (click)="reload()"
+                [attr.aria-label]="'common.retry' | transloco">{{ 'common.retry' | transloco }}</button>
+      </div>
+    } @else if (meetings.length === 0) {
+      <div class="emp-widget-state emp-widget-state--empty">
+        <mat-icon aria-hidden="true">event_busy</mat-icon>
+        <span>{{ 'dashboard.states.emptyMeetings' | transloco }}</span>
+      </div>
+    } @else {
+      <div class="emp-meetings-grid">
+        @for (meeting of meetings; track $index) {
+          <div class="emp-meeting-card">
+            <div class="emp-meeting-card__top">
+              <mat-icon class="emp-meeting-card__icon">video_call</mat-icon>
+              <span class="emp-meeting-card__status"
+                [class.emp-meeting-card__status--past]="meeting.status === 'past'"
+                [class.emp-meeting-card__status--now]="meeting.status === 'now'">
+                {{ meeting.status === 'now' ? ('dashboard.meeting.now' | transloco) : meeting.status === 'past' ? ('dashboard.meeting.past' | transloco) : ('dashboard.meeting.soon' | transloco) }}
+              </span>
+            </div>
+            <p class="emp-meeting-card__title">{{ meeting.title || ('dashboard.meeting.untitled' | transloco) }}</p>
+            @if (meeting.when) {
+              <p class="emp-meeting-card__time">
+                <mat-icon class="emp-meeting-card__time-icon">schedule</mat-icon>
+                {{ meeting.when }}
+              </p>
+            }
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- ── KPI STATS ─────────────────────────────────────────────── -->
+  <div class="emp-kpi-row" role="list" [attr.aria-label]="'dashboard.kpiList' | transloco">
+    @for (stat of kpiStats; track stat.label) {
+      <div class="emp-kpi-card" role="listitem">
+        <div class="emp-kpi-card__header">
+          <div class="emp-kpi-card__icon-wrap" [style.background]="stat.iconBg">
+            <mat-icon class="emp-kpi-card__icon">{{ stat.icon }}</mat-icon>
+          </div>
+        </div>
+        <p class="emp-kpi-card__value">{{ stat.value }}</p>
+        <p class="emp-kpi-card__label">{{ stat.label | transloco }}</p>
+      </div>
+    }
+  </div>
+
+  <!-- ── ATTENDANCE + SALARY CHARTS ───────────────────────────── -->
+  <div class="emp-charts-row">
+    <section class="emp-chart-card" aria-labelledby="emp-attendance-heading">
+      <div class="emp-chart-card__header">
+        <div>
+          <p class="emp-chart-card__title" id="emp-attendance-heading">{{ 'dashboard.employee.monthlyAttendance' | transloco }}</p>
+          <p class="emp-chart-card__sub">{{ 'dashboard.employee.attendanceSub' | transloco }}</p>
+        </div>
+        <a routerLink="/dashboard/attendance" class="emp-section__view-all" [attr.aria-label]="'dashboard.employee.viewAttendance' | transloco">
+          {{ 'dashboard.viewAll' | transloco }} <mat-icon class="emp-section__arrow">expand_more</mat-icon>
+        </a>
+      </div>
+      <!-- E-3: no attendance API integrated this phase — honest empty state, no fabricated chart. -->
+      <div class="emp-widget-state emp-widget-state--empty" style="min-height:220px;">
+        <mat-icon aria-hidden="true">insights</mat-icon>
+        <span>{{ 'dashboard.states.emptyAttendance' | transloco }}</span>
+      </div>
+    </section>
+
+    <section class="emp-chart-card" aria-labelledby="emp-salary-heading">
+      <div class="emp-chart-card__header">
+        <div>
+          <p class="emp-chart-card__title" id="emp-salary-heading">{{ 'dashboard.employee.salaryHistory' | transloco }}</p>
+          <p class="emp-chart-card__sub">{{ 'dashboard.employee.salarySub' | transloco }}</p>
+        </div>
+        <a routerLink="/dashboard/salary" class="emp-section__view-all" [attr.aria-label]="'dashboard.employee.viewSalary' | transloco">
+          {{ 'dashboard.viewAll' | transloco }} <mat-icon class="emp-section__arrow">expand_more</mat-icon>
+        </a>
+      </div>
+      <!-- E-4: salary history not integrated this phase — honest empty state, no fabricated trend. -->
+      <div class="emp-widget-state emp-widget-state--empty" style="min-height:220px;">
+        <mat-icon aria-hidden="true">show_chart</mat-icon>
+        <span>{{ 'dashboard.states.emptySalary' | transloco }}</span>
+      </div>
+    </section>
+  </div>
+
+  <!-- ── BOTTOM ROW: REQUESTS + QUICK ACCESS ───────────────────── -->
+  <div class="emp-bottom-row">
+
+    <!-- Recent Requests -->
+    <section class="emp-chart-card" aria-labelledby="emp-requests-heading">
+      <div class="emp-chart-card__header">
+        <div class="emp-section__title-group">
+          <mat-icon class="emp-section__icon">request_page</mat-icon>
+          <h3 class="emp-chart-card__title" id="emp-requests-heading">{{ 'dashboard.employee.recentRequestsTitle' | transloco }}</h3>
+        </div>
+        <a routerLink="/dashboard/requests" class="emp-section__view-all" [attr.aria-label]="'dashboard.viewAllRequests' | transloco">
+          {{ 'dashboard.viewAll' | transloco }} <mat-icon class="emp-section__arrow">expand_more</mat-icon>
+        </a>
+      </div>
+      @if (requestsStatus() === 'error') {
+        <div class="emp-widget-state emp-widget-state--error" role="alert">
+          <mat-icon aria-hidden="true">error_outline</mat-icon>
+          <span>{{ 'dashboard.states.error' | transloco }}</span>
+          <button type="button" class="emp-widget-state__retry" (click)="reload()"
+                  [attr.aria-label]="'common.retry' | transloco">{{ 'common.retry' | transloco }}</button>
+        </div>
+      } @else if (recentRequests.length === 0) {
+        <div class="emp-widget-state emp-widget-state--empty">
+          <mat-icon aria-hidden="true">inbox</mat-icon>
+          <span>{{ 'dashboard.states.emptyRequests' | transloco }}</span>
+        </div>
+      } @else {
+        <ul class="emp-request-list" [attr.aria-label]="'dashboard.employee.recentRequests' | transloco">
+          @for (req of recentRequests; track $index) {
+            <li class="emp-request-item">
+              <div class="emp-request__icon-wrap">
+                <mat-icon>event_note</mat-icon>
+              </div>
+              <div class="emp-request__info">
+                <p class="emp-request__type">{{ req.type }}</p>
+                <p class="emp-request__date">{{ req.date }}</p>
+              </div>
+              <span class="emp-request__status" [ngClass]="getRequestClass(req.status)">
+                {{ getRequestLabel(req.status) | transloco }}
+              </span>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+
+    <!-- Quick Access -->
+    <section class="emp-chart-card" aria-labelledby="emp-quick-heading">
+      <div class="emp-chart-card__header">
+        <div class="emp-section__title-group">
+          <mat-icon class="emp-section__icon">apps</mat-icon>
+          <h3 class="emp-chart-card__title" id="emp-quick-heading">{{ 'dashboard.employee.quickAccess' | transloco }}</h3>
+        </div>
+      </div>
+      <div class="emp-quick-links">
+        <!-- Audit DEFECT-1: removed dead "Contracts" quick-link — /dashboard/contracts
+             is gated to [Admin, Business], not available to Employees. -->
+        <a routerLink="/dashboard/attendance" class="emp-quick-link" [attr.aria-label]="'dashboard.goToAttendance' | transloco">
+          <div class="emp-quick-link__icon" style="background:var(--brand-secondary-50)">
+            <mat-icon>how_to_reg</mat-icon>
+          </div>
+          <span>{{ 'dashboard.nav.attendance' | transloco }}</span>
+        </a>
+        <a routerLink="/dashboard/requests" class="emp-quick-link" [attr.aria-label]="'dashboard.goToRequests' | transloco">
+          <div class="emp-quick-link__icon" style="background:var(--functional-warning-50)">
+            <mat-icon>request_page</mat-icon>
+          </div>
+          <span>{{ 'dashboard.nav.requests' | transloco }}</span>
+        </a>
+        <a routerLink="/dashboard/salary" class="emp-quick-link" [attr.aria-label]="'dashboard.goToSalary' | transloco">
+          <div class="emp-quick-link__icon" style="background:var(--functional-success-50)">
+            <mat-icon>payments</mat-icon>
+          </div>
+          <span>{{ 'dashboard.nav.salary' | transloco }}</span>
+        </a>
+        <a routerLink="/dashboard/meetings" class="emp-quick-link" [attr.aria-label]="'dashboard.goToMeetings' | transloco">
+          <div class="emp-quick-link__icon" style="background:var(--brand-tertiary-50)">
+            <mat-icon>event</mat-icon>
+          </div>
+          <span>{{ 'dashboard.nav.meetings' | transloco }}</span>
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  }
+
+</div>

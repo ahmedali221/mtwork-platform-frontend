@@ -1,0 +1,37 @@
+.container-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--ui-surface);
+  text-align: center; 
+}
+
+.content {
+  display: flex;         
+  flex-direction: column;   /* Images above text below it  */
+  align-items: center;      /* Center align items horizontally inside the container */
+  justify-content: center;
+  max-width: 720px;           /* Control overall content width     */
+  padding: 20px;
+}
+
+.error-image {
+  width: 100%;                /* Allow image to scale within the container */
+  max-width: 320px;            /* Maximum width to ensure good fit on various screens */
+  height: auto;               /* Preserve aspect ratio               */
+  display: block;
+  margin: 0 auto;              /* Center the image inside the container (enhanced alignment) */
+}
+
+.error-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--brand-neutral-800);
+}
+
+.error-message {
+  font-size: 1rem;
+  color: var(--ui-text-muted);
+  margin-top: 10px;
+}

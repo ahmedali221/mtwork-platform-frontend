@@ -1,0 +1,137 @@
+.upload-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--brand-neutral-950);
+}
+
+.required-label {
+  background: var(--functional-warning-300);
+  padding: 2px 6px;
+  font-size: 10px;
+  border-radius: 4px;
+  margin-inline-start: 6px;
+}
+
+.upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.upload-btn {
+  background: var(--brand-neutral-950);
+  color: var(--brand-neutral-500);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.upload-area {
+  flex: 1;
+  background: var(--brand-primary-50);
+  border-radius: 10px;
+  padding: 14px 20px;
+  min-height: 55px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.dragging {
+  border: 2px dashed var(--brand-neutral-600);
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-placeholder-text {
+  color: var(--brand-neutral-700);
+}
+
+/* ------------ during upload -------------- */
+.upload-progress-box {
+  width: 100%;
+}
+
+.progress-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--ui-text-sub);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--brand-primary-100);
+  border-radius: 4px;
+  margin: 8px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--brand-primary-700);
+  border-radius: 4px;
+}
+
+/* ------------ File box after upload ------------ */
+.file-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--ui-surface);
+  padding: 12px;
+  border-radius: 8px;
+  width: 100%;
+  border: 1px solid var(--brand-neutral-200);
+}
+
+.file-icon {
+  font-size: 24px;
+}
+
+.file-details .file-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.file-details .file-size {
+  font-size: 12px;
+  color: var(--ui-text-muted);
+}
+
+.delete-btn {
+  margin-inline-start: auto;
+  font-size: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.pause-btn,
+.cancel-btn {
+  font-size: 16px;
+  margin-inline-end: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.resume-btn {
+  font-size: 16px;
+  margin-inline-end: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}

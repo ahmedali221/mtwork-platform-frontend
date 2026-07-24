@@ -1,0 +1,316 @@
+<div class="attendance-container attendance-page" [class.ui-page--fullscreen]="isFullscreen()">
+
+  <!-- Breadcrumb + Title + Import button -->
+  <div class="page-header">
+    <div class="page-header__top">
+      <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | transloco">
+        <span class="breadcrumb__item">Mtwork</span>
+        <span class="breadcrumb__sep" aria-hidden="true">›</span>
+        <span class="breadcrumb__item breadcrumb__item--active">Attendance</span>
+      </nav>
+    </div>
+    <div class="page-header__row">
+      <h1 class="page-title">Attendance</h1>
+      <div class="page-header__actions">
+        @if (!isBusiness) {
+          @if (!isCheckedInToday) {
+            <button class="btn-check-in" (click)="checkIn()" [disabled]="checkInOutLoading()"
+              [attr.aria-label]="'attendance.checkIn' | transloco">
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+              </svg>
+              {{ 'attendance.checkIn' | transloco }}
+            </button>
+          } @else if (!isCheckedOutToday) {
+            <button class="btn-check-out" (click)="checkOut()" [disabled]="checkInOutLoading()"
+              [attr.aria-label]="'attendance.checkOut' | transloco">
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M17 8l-1.41 1.41L18.17 12l-2.58 2.59L17 16l5-4-5-4zM4 5h9V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h9v-2H4V5z" fill="currentColor"/>
+              </svg>
+              {{ 'attendance.checkOut' | transloco }}
+            </button>
+          } @else if (todayRecord?.checkOutTime) {
+            <span class="checkin-status" role="status">
+              {{ ('attendance.checkedOutAt' | transloco).replace('{{time}}', formatTime(todayRecord!.checkOutTime)) }}
+            </span>
+          }
+        }
+        <button class="btn-import" (click)="importAttendance()" [attr.aria-label]="'attendance.importAttendance' | transloco" [disabled]="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 20h14v-2H5v2zm7-18L5.33 9h4.17v4h4V9h4.17L12 2z" fill="currentColor"/>
+          </svg>
+          Import
+        </button>
+      </div>
+    </div>
+    @if (checkInOutError()) {
+      <p class="attendance-checkinout-error" role="alert">{{ checkInOutError()! | transloco }}</p>
+    }
+  </div>
+
+  <!-- Toolbar: refresh + search + filter + By Date + Shift type + expand -->
+  <div class="table-toolbar">
+    <button class="toolbar-btn" [attr.aria-label]="'common.refresh' | transloco" title="Refresh" (click)="loadAttendanceRecords()">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M17.65 6.35A7.96 7.96 0 0 0 12 4C7.58 4 4 7.58 4 12s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>
+      </svg>
+    </button>
+
+    <div class="toolbar-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" class="toolbar-search__icon">
+        <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/>
+      </svg>
+      <input
+        type="text"
+        class="toolbar-search__input"
+        placeholder="Search"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
+        [attr.aria-label]="'attendance.searchRecords' | transloco"
+      />
+    </div>
+
+    <button class="toolbar-btn" [attr.aria-label]="'common.filters' | transloco" title="Filters">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4.25 5.61C6.27 8.2 10 13 10 13v6c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-6s3.72-4.8 5.74-7.39A.998.998 0 0 0 18.95 4H5.04a1 1 0 0 0-.79 1.61z" fill="currentColor"/>
+      </svg>
+    </button>
+
+    <input
+      type="date"
+      class="toolbar-date-input"
+      [attr.aria-label]="'attendance.filterByDate' | transloco"
+      [(ngModel)]="dateInputValue"
+      (ngModelChange)="onDateInputChange($event)"
+    />
+
+    <select
+      class="toolbar-shift-select"
+      [attr.aria-label]="'attendance.filterByShift' | transloco"
+      [(ngModel)]="shiftFilter"
+      (ngModelChange)="onShiftChange($event)"
+    >
+      <option value="">All Statuses</option>
+      <option value="0">Working</option>
+      <option value="1">Leave</option>
+      <option value="2">Meeting</option>
+      <option value="3">Other</option>
+    </select>
+
+    @if (hasActiveFilters) {
+      <button class="toolbar-btn toolbar-btn--reset" (click)="resetFilters()" [attr.aria-label]="'common.resetFilters' | transloco" title="Reset filters">
+        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
+        </svg>
+        Reset
+      </button>
+    }
+
+    <!-- View toggle: table | cards (shared .ui-view-toggle) -->
+    <div class="ui-view-toggle" role="group" [attr.aria-label]="'common.switchView' | transloco">
+      <button type="button" class="ui-view-toggle__btn"
+              [class.ui-view-toggle__btn--active]="viewMode === 'table'"
+              (click)="setView('table')" title="Table view" [attr.aria-label]="'common.tableView' | transloco">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v4H3V4zm0 6h18v4H3v-4zm0 6h18v4H3v-4z" fill="currentColor"/></svg>
+      </button>
+      <button type="button" class="ui-view-toggle__btn"
+              [class.ui-view-toggle__btn--active]="viewMode === 'cards'"
+              (click)="setView('cards')" title="Card view" [attr.aria-label]="'common.cardView' | transloco">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" fill="currentColor"/></svg>
+      </button>
+    </div>
+
+    <!-- Fullscreen — was decorative, now wired -->
+    <button class="toolbar-btn toolbar-btn--expand"
+            [class.ui-view-toggle__btn--active]="isFullscreen()"
+            (click)="toggleFullscreen()"
+            [attr.aria-label]="isFullscreen() ? 'Exit fullscreen' : 'Expand to fullscreen'"
+            [attr.title]="isFullscreen() ? 'Exit fullscreen' : 'Expand'">
+      @if (!isFullscreen()) {
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 14H5v5h5v-2H7v-3zm0-4h2V7h3V5H7v5zm10 9h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" fill="currentColor"/>
+        </svg>
+      } @else {
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" fill="currentColor"/>
+        </svg>
+      }
+    </button>
+  </div>
+
+  <!-- Active filter chips -->
+  @if (hasActiveFilters) {
+    <div class="active-filters" role="status" aria-live="polite">
+      @if (searchQuery) {
+        <span class="filter-chip">Search: {{ searchQuery }}</span>
+      }
+      @if (selectedDate) {
+        <span class="filter-chip">Date: {{ selectedDate | date: 'mediumDate' }}</span>
+      }
+      @if (shiftFilter) {
+        <span class="filter-chip">Shift: {{ shiftFilter }}</span>
+      }
+    </div>
+  }
+
+  <!-- Loading state -->
+  @if (isLoading) {
+    <div class="loading-state" role="status" aria-live="polite">
+      <svg class="loading-spinner-icon" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8z" fill="currentColor"/>
+      </svg>
+      <p>Loading…</p>
+    </div>
+  }
+
+  <!-- Error state -->
+  @if (!isLoading && loadError) {
+    <div class="error-state" role="alert">
+      <p>Failed to load attendance records.</p>
+      <button class="retry-btn" (click)="loadAttendanceRecords()" [attr.aria-label]="'common.retryLoading' | transloco">Retry</button>
+    </div>
+  }
+
+  <!-- Data region -->
+  @if (!isLoading && !loadError && viewMode === 'table') {
+  <div class="attendance-table-container">
+    <table mat-table [dataSource]="dataSource" class="attendance-table">
+
+      <!-- Employee column -->
+      <ng-container matColumnDef="employee">
+        <th mat-header-cell *matHeaderCellDef>Employee</th>
+        <td mat-cell *matCellDef="let record">
+          <div class="employee-cell">
+            <div class="employee-initials">{{ getInitials(getFullName(record)) }}</div>
+            <div class="employee-text">
+              <span class="employee-name">{{ getFullName(record) || '—' }}</span>
+              <span class="employee-role">{{ record.userName ?? '' }}</span>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Date column (real backend AttendanceDto.attendanceDate) -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let record">
+          {{ formatDate(record.attendanceDate || record.checkInTime) || '—' }}
+          @if (record.weekDay) {
+            <span class="muted" style="margin-inline-start:6px;">· {{ record.weekDay }}</span>
+          }
+        </td>
+      </ng-container>
+
+      <!-- Status — backend `leaveType` is the daily attendance status -->
+      <ng-container matColumnDef="leaveType">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let record">
+          <span class="ui-status-badge" [class]="getStatusClass(record)">
+            {{ getStatusLabel(record) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Check In column -->
+      <ng-container matColumnDef="checkIn">
+        <th mat-header-cell *matHeaderCellDef>Check In</th>
+        <td mat-cell *matCellDef="let record">{{ formatDate(record.checkInTime) || '—' }}</td>
+      </ng-container>
+
+      <!-- Check Out column -->
+      <ng-container matColumnDef="checkOut">
+        <th mat-header-cell *matHeaderCellDef>Check Out</th>
+        <td mat-cell *matCellDef="let record">{{ formatDate(record.checkOutTime) || '—' }}</td>
+      </ng-container>
+
+      <!-- Actions column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="col-actions">Actions</th>
+        <td mat-cell *matCellDef="let record" class="col-actions">
+          <button class="actions-menu-btn" [matMenuTriggerFor]="rowMenu" [attr.aria-label]="'common.rowActions' | transloco">
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="5"  r="2" fill="currentColor"/>
+              <circle cx="12" cy="12" r="2" fill="currentColor"/>
+              <circle cx="12" cy="19" r="2" fill="currentColor"/>
+            </svg>
+          </button>
+          <mat-menu #rowMenu="matMenu">
+            <button mat-menu-item [disabled]="true">Edit</button>
+            <button mat-menu-item [disabled]="true">Delete</button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Empty state -->
+    @if (dataSource.data.length === 0) {
+      <div class="empty-state">
+        <svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z" fill="currentColor" opacity=".3"/>
+        </svg>
+        @if (hasActiveFilters) {
+          <p>No records match your filters.</p>
+          <button class="retry-btn" (click)="resetFilters()" [attr.aria-label]="'common.clearFilters' | transloco">Clear filters</button>
+        } @else {
+          <p>No attendance records found.</p>
+        }
+      </div>
+    }
+  </div>
+  }
+
+  <!-- Card view (alternate to the table — same data, same filters) -->
+  @if (!isLoading && !loadError && viewMode === 'cards') {
+    @if (filteredRecords.length === 0) {
+      <div class="ui-empty ui-empty--compact">
+        <svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z" fill="currentColor"/>
+        </svg>
+        <p class="ui-empty__title">No Attendance Records</p>
+        @if (hasActiveFilters) {
+          <p class="ui-empty__sub">No records match your current filters.</p>
+          <button class="ui-empty__cta" (click)="resetFilters()">Clear filters</button>
+        } @else {
+          <p class="ui-empty__sub">No attendance records have been recorded yet.</p>
+        }
+      </div>
+    } @else {
+      <div class="ui-cards-grid">
+        @for (record of filteredRecords; track record.id ?? $index) {
+          <article class="ui-card">
+            <header class="ui-card__head">
+              <span class="ui-status-badge" [class]="getStatusClass(record)">
+                {{ getStatusLabel(record) }}
+              </span>
+              @if (isBusiness) {
+                <span class="employee-name" style="font-size:13px; font-weight:600;">
+                  {{ getFullName(record) || '—' }}
+                </span>
+              }
+            </header>
+            <div class="ui-card__body">
+              <dl class="ui-card__meta">
+                <div>
+                  <dt>Date</dt>
+                  <dd>{{ formatDate(record.attendanceDate || record.checkInTime) || '—' }}</dd>
+                </div>
+                <div>
+                  <dt>Check In</dt>
+                  <dd>{{ formatDate(record.checkInTime) || '—' }}</dd>
+                </div>
+                <div>
+                  <dt>Check Out</dt>
+                  <dd>{{ formatDate(record.checkOutTime) || '—' }}</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  }
+
+</div>

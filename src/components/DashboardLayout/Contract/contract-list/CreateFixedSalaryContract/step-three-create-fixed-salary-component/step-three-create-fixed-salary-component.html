@@ -1,0 +1,40 @@
+<!-- Step 3: Scope of Work -->
+<div class="card-section" [formGroup]="scopeForm">
+  <h2 class="section-title">Scope of Work</h2>
+
+  <div class="form-row two-columns">
+    <div class="form-group">
+      <label class="form-label">
+        Job Title <span class="required-badge">Required</span>
+      </label>
+      <input
+        type="text"
+        class="form-input"
+        formControlName="jobTitle"
+        placeholder="e.g. Software Engineer"
+      />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Job Number <span class="required-badge">Required</span>
+      </label>
+      <input
+        type="text"
+        class="form-input"
+        formControlName="jobNumber"
+        placeholder="e.g. JOB-001"
+      />
+    </div>
+  </div>
+
+  <div class="form-group full-width">
+    <label class="form-label">Job Description</label>
+    <textarea
+      rows="3"
+      class="form-input"
+      formControlName="jobDescription"
+      placeholder="Describe the scope of work…"
+    ></textarea>
+  </div>
+</div>

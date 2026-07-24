@@ -1,0 +1,270 @@
+/* ============================================================
+   Create / Edit Team Dialog
+   ============================================================ */
+
+.ct-dialog {
+  width: 567px;
+  max-width: 100%;
+  background: var(--ui-surface);
+  border-radius: var(--radius-20);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--font-family-dm-sans);
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.ct-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.ct-title {
+  font-family: var(--font-family-ibm-plex-sans);
+  font-size: var(--title-size);
+  font-weight: 700;
+  color: var(--brand-grays-900);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.ct-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-8);
+  color: var(--brand-neutral-400);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ct-close:hover {
+  background: var(--ui-bg);
+  color: var(--brand-grays-900);
+}
+
+.ct-close:focus-visible {
+  outline: 2px solid var(--brand-primary-600);
+  outline-offset: 2px;
+}
+
+/* ── Body ───────────────────────────────────────────────────── */
+.ct-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  max-height: 480px;
+}
+
+/* Field group */
+.ct-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ct-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--caption-2-size);
+  font-weight: 600;
+  color: var(--brand-grays-900);
+  line-height: 1.4;
+}
+
+.ct-required {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--brand-neutral-900);
+  background: var(--functional-warning-100);
+  border: 1px solid var(--functional-warning-300);
+  border-radius: 3px;
+  padding: 1px 6px;
+  line-height: 1.5;
+}
+
+.ct-input {
+  width: 100%;
+  height: 44px;
+  padding: 10px 14px;
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius-8);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-2-size);
+  color: var(--brand-grays-900);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.ct-input::placeholder {
+  color: var(--brand-neutral-400);
+}
+
+.ct-input:focus {
+  border-color: var(--brand-primary-800);
+}
+
+.ct-select {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius-8);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-2-size);
+  color: var(--brand-grays-900);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  cursor: pointer;
+}
+
+.ct-select:focus {
+  border-color: var(--brand-primary-800);
+}
+
+.ct-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ct-select-multi {
+  height: 112px;
+  padding: 6px 8px;
+}
+
+.ct-select-multi option {
+  padding: 5px 8px;
+  border-radius: 4px;
+}
+
+.ct-select-multi option:checked {
+  background: var(--brand-primary-100);
+  color: var(--brand-primary-800);
+}
+
+.ct-select-single {
+  height: 44px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-inline-end: 36px;
+}
+
+.ct-loading {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--brand-neutral-400);
+  font-size: var(--caption-2-size);
+  cursor: default;
+}
+
+.ct-hint {
+  margin: 2px 0 0;
+  font-size: var(--caption-size);
+  color: var(--brand-neutral-400);
+  line-height: 1.4;
+}
+
+/* Error banner */
+.ct-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--functional-danger-50, var(--ui-bg));
+  border: 1px solid var(--functional-danger-300, var(--ui-border));
+  border-radius: var(--radius-8);
+  color: var(--functional-danger-700, var(--brand-grays-900));
+  font-size: var(--caption-2-size);
+  line-height: 1.4;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.ct-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid var(--ui-border);
+}
+
+.ct-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+  min-width: 122px;
+  padding: 0 20px;
+  border: none;
+  border-radius: var(--radius-8);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-2-size);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ct-btn-cancel {
+  background: var(--ui-bg);
+  color: var(--brand-grays-900);
+  border: 1px solid var(--ui-border);
+}
+
+.ct-btn-cancel:hover {
+  background: var(--brand-neutral-100);
+}
+
+.ct-btn-create {
+  background: var(--brand-primary-800);
+  color: var(--ui-surface);
+}
+
+.ct-btn-create:hover:not(:disabled) {
+  background: var(--brand-primary-700);
+}
+
+.ct-btn-create:disabled {
+  background: var(--brand-neutral-200);
+  color: var(--brand-neutral-400);
+  cursor: not-allowed;
+}
+
+.ct-btn-cancel:focus-visible,
+.ct-btn-create:focus-visible {
+  outline: 2px solid var(--brand-primary-600);
+  outline-offset: 2px;
+}
+
+/* Inline spinner */
+.ct-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: ct-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes ct-spin {
+  to { transform: rotate(360deg); }
+}

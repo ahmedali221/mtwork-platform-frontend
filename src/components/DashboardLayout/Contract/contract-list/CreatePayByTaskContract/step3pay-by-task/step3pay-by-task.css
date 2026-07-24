@@ -1,0 +1,202 @@
+:root {
+  --primary-color: var(--brand-primary-600);
+  --primary-hover: var(--brand-primary-600);
+  --secondary-color: var(--brand-neutral-50);
+  --border-color: var(--ui-text-muted);
+  --text-dark: var(--ui-text-primary);
+  --text-gray: var(--ui-text-muted);
+  --badge-bg: var(--brand-accent-50);
+  --badge-text: var(--brand-accent-500);
+  --success-color: var(--functional-success-600);
+  --error-color: var(--functional-danger-500);
+  --input-bg: var(--ui-bg-surface);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ========== CARD SECTION ========== */
+.card-section {
+  background: var(--brand-neutral-50);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--brand-neutral-950) 6%, transparent);
+  border: 3px solid var(--border-color);
+  margin-bottom: 35px;
+  animation: slideUp 0.3s ease;
+  margin-inline-start: 5px;
+
+}
+
+.card-section:hover {
+  border-color: var(--primary-hover);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--brand-neutral-950) 10%, transparent);
+  transition: all 0.3s ease;
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 24px;
+  letter-spacing: -0.3px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border-color);
+
+}
+
+/* ========== FORM ELEMENTS ========== */
+.form-row {
+  display: grid;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-row.two-columns {
+  grid-template-columns: 1fr 1fr;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.required-badge {
+  display: inline-block;
+  background: var(--functional-warning-300);
+  color: var(--brand-neutral-800);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input {
+  padding: 12px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-dark);
+background-color: var(--brand-neutral-100);
+  transition: all 0.2s ease;
+  font-family: inherit;
+  width: 100%;
+  
+}
+
+
+
+
+.form-input::placeholder {
+  color: var(--ui-text-muted);
+  font-weight: 400;
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary-500) 10%, transparent);
+  background: var(--input-bg);
+}
+
+.form-input:hover {
+  border-color: var(--brand-neutral-300);
+}
+
+.form-input.textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: var(--font-family-primary);
+  line-height: 1.5;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--brand-neutral-100);
+}
+
+/* Input with icon (for date) */
+.input-icon{
+
+  color: var(--text-gray);
+  pointer-events: none;
+  width: 20px;
+
+}
+.input-with-icon .input-icon {
+  position: absolute;
+  right: 12px;
+  color: var(--text-gray);
+  width: 20px;
+  height: 20px;
+  pointer-events: none; /* Allow clicks to pass through to the input */
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .card-section {
+    padding: 20px;
+  }
+
+  .form-row.two-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .form-input {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-section {
+    padding: 16px;
+    margin: 10px;
+  }
+
+  .form-label {
+    font-size: 13px;
+  }
+
+  .form-input {
+    font-size: 14px;
+    padding: 8px 10px;
+    
+  }
+
+  .required-badge {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+}

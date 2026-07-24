@@ -1,0 +1,140 @@
+<div class="dialog-container">
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <h2 class="dialog-title">{{ dialogTitle }}</h2>
+    <button class="close-button" (click)="dialogRef.close()" [attr.aria-label]="'common.closeDialog' | transloco">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20px" height="20px" aria-hidden="true">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Body -->
+  <div class="dialog-content">
+    <form class="meeting-form" #meetingForm="ngForm" (ngSubmit)="saveMeeting()">
+
+      <div class="form-group">
+        <label for="meetingTitle">Meeting Title <span class="required-mark" aria-hidden="true">*</span></label>
+        <input type="text" id="meetingTitle" name="title" placeholder="Add here.."
+               class="input-field" [attr.aria-label]="'meetings.meetingTitle' | transloco"
+               [class.input-error]="submitted && !form.title.trim()"
+               [(ngModel)]="form.title" required />
+        @if (submitted && !form.title.trim()) {
+          <span class="field-error" role="alert">Meeting title is required.</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="meetingLink">Meeting Link</label>
+        <input type="text" id="meetingLink" name="meetingLink" placeholder="Example: google link or zoom"
+               class="input-field" [attr.aria-label]="'meetings.meetingLink' | transloco"
+               [(ngModel)]="form.meetingLink" />
+      </div>
+
+      <div class="form-group">
+        <label for="meetingDescription">Meeting Description</label>
+        <textarea id="meetingDescription" name="meetingDescription"
+                  placeholder="Add the purpose of your meeting" rows="3"
+                  class="input-field textarea-field" [attr.aria-label]="'meetings.meetingDescription' | transloco"
+                  [(ngModel)]="form.meetingDescription"></textarea>
+      </div>
+
+      <div class="time-row">
+        <div class="form-group">
+          <label for="meetingDate">Date <span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="date" id="meetingDate" name="meetingDate"
+                 class="input-field date-field" [attr.aria-label]="'meetings.meetingDate' | transloco"
+                 [class.input-error]="submitted && !form.meetingDate"
+                 [(ngModel)]="form.meetingDate" required />
+          @if (submitted && !form.meetingDate) {
+            <span class="field-error" role="alert">Date is required.</span>
+          }
+        </div>
+        <div class="form-group">
+          <label for="startingTime">Starting Time <span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="time" id="startingTime" name="startingTime"
+                 class="input-field time-field" [attr.aria-label]="'meetings.startTime' | transloco"
+                 [class.input-error]="submitted && !form.startTime"
+                 [(ngModel)]="form.startTime" required />
+          @if (submitted && !form.startTime) {
+            <span class="field-error" role="alert">Start time is required.</span>
+          }
+        </div>
+        <div class="form-group">
+          <label for="endingTime">Ending Time <span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="time" id="endingTime" name="endingTime"
+                 class="input-field time-field" [attr.aria-label]="'meetings.endTime' | transloco"
+                 [class.input-error]="submitted && !form.endTime"
+                 [(ngModel)]="form.endTime" required />
+          @if (submitted && !form.endTime) {
+            <span class="field-error" role="alert">End time is required.</span>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="repeatEvery">Repeat Every</label>
+        <div class="select-wrapper">
+          <select id="repeatEvery" name="repeatEvery" class="input-field select-field"
+                  [attr.aria-label]="'meetings.repeatFrequency' | transloco" [(ngModel)]="form.repeatType">
+            <option value="" disabled selected hidden>Select</option>
+            <option value="None">None</option>
+            <option value="Daily">Daily</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Monthly">Monthly</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Assign Members</label>
+        <div class="members-dropdown-wrapper">
+          <button type="button" class="members-trigger input-field"
+                  [class.open]="membersDropdownOpen"
+                  [disabled]="membersLoading"
+                  (click)="toggleDropdown()"
+                  aria-haspopup="listbox" [attr.aria-expanded]="membersDropdownOpen">
+            <span class="trigger-label" [class.placeholder]="form.assignedMemberIds.length === 0">
+              {{ selectedMembersLabel }}
+            </span>
+            <svg class="trigger-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" aria-hidden="true">
+              <path d="M7 10l5 5 5-5z"/>
+            </svg>
+          </button>
+
+          @if (membersDropdownOpen) {
+            <div class="members-dropdown" role="listbox" aria-multiselectable="true">
+              @for (member of members; track member.id) {
+                <label class="member-option"
+                       [class.selected]="isMemberSelected(member.id)"
+                       role="option"
+                       [attr.aria-selected]="isMemberSelected(member.id)">
+                  <input type="checkbox"
+                         [checked]="isMemberSelected(member.id)"
+                         (change)="toggleMember(member.id)"
+                         [attr.aria-label]="member.name" />
+                  <span class="member-name">{{ member.name }}</span>
+                </label>
+              }
+            </div>
+          }
+        </div>
+        @if (!membersLoading && members.length === 0) {
+          <span class="members-hint">No employees have been added to your company yet.</span>
+        }
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <div class="dialog-actions">
+    <button type="button" class="cancel-button" (click)="dialogRef.close()" [attr.aria-label]="'common.cancel' | transloco">Cancel</button>
+    <button type="button" class="create-button" [disabled]="isSaving || (submitted && !isFormValid)"
+            (click)="saveMeeting()" [attr.aria-label]="'meetings.saveMeeting' | transloco" [attr.aria-busy]="isSaving">
+      {{ saveLabel }}
+    </button>
+  </div>
+
+</div>

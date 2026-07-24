@@ -1,0 +1,124 @@
+<div class="chat-root" [class.chat-open]="isOpen()">
+
+  <!-- ── FAB button ──────────────────────────────────────────────── -->
+  <button
+    class="chat-fab"
+    mat-fab
+    [attr.aria-label]="'chat.toggleBtn' | transloco"
+    [matTooltip]="'chat.toggleBtn' | transloco"
+    (click)="togglePanel()"
+    aria-haspopup="dialog"
+    [attr.aria-expanded]="isOpen()"
+  >
+    <mat-icon>{{ isOpen() ? 'close' : 'chat' }}</mat-icon>
+    @if (unreadCount() > 0 && !isOpen()) {
+      <span class="chat-badge" [attr.aria-label]="'chat.unreadMessages' | transloco">{{ unreadCount() }}</span>
+    }
+  </button>
+
+  <!-- ── Chat panel ─────────────────────────────────────────────── -->
+  @if (isOpen()) {
+    <div
+      class="chat-panel"
+      role="dialog"
+      aria-modal="false"
+      [attr.aria-label]="'chat.title' | transloco"
+    >
+
+      <!-- Header -->
+      <header class="chat-header">
+        <div class="chat-header-title">
+          <span class="chat-title">{{ 'chat.title' | transloco }}</span>
+          <span
+            class="chat-status"
+            [attr.data-state]="connectionState()"
+            [attr.aria-label]="'chat.status.' + connectionState() | transloco"
+          >
+            <mat-icon class="chat-status-icon">{{ statusIcon() }}</mat-icon>
+            {{ 'chat.status.' + connectionState() | transloco }}
+          </span>
+        </div>
+        <button
+          mat-icon-button
+          class="chat-close-btn"
+          [attr.aria-label]="'chat.close' | transloco"
+          (click)="togglePanel()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </header>
+
+      <!-- Recipient input -->
+      <div class="chat-recipient-row">
+        <label class="chat-label" for="chat-recipient">
+          {{ 'chat.to' | transloco }}
+        </label>
+        <input
+          id="chat-recipient"
+          class="chat-input"
+          type="text"
+          [(ngModel)]="recipientId"
+          [placeholder]="'chat.recipientPlaceholder' | transloco"
+          [attr.aria-label]="'chat.to' | transloco"
+          autocomplete="off"
+          (change)="loadHistory()"
+        />
+      </div>
+
+      <!-- Messages -->
+      <div class="chat-messages" #messageList role="log" aria-live="polite" aria-relevant="additions">
+        @if (messages().length === 0) {
+          <p class="chat-empty">{{ 'chat.empty' | transloco }}</p>
+        }
+        @for (msg of messages(); track msg.timestamp + msg.senderId) {
+          <div class="chat-bubble-wrapper" [class.mine]="msg.isMine">
+            <div class="chat-bubble" [class.mine]="msg.isMine">
+              @if (!msg.isMine) {
+                <span class="chat-sender">{{ msg.senderId }}</span>
+              }
+              <p class="chat-text">{{ msg.message }}</p>
+              <time class="chat-time" [attr.datetime]="msg.timestamp">
+                {{ formatTime(msg.timestamp) }}
+              </time>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Send error -->
+      @if (sendError()) {
+        <p class="chat-send-error" role="alert">
+          {{ sendError()! | transloco }}
+        </p>
+      }
+
+      <!-- Input row -->
+      <div class="chat-input-row">
+        <textarea
+          class="chat-textarea"
+          [(ngModel)]="messageText"
+          [placeholder]="'chat.messagePlaceholder' | transloco"
+          [attr.aria-label]="'chat.messagePlaceholder' | transloco"
+          rows="2"
+          [disabled]="!isConnected() || sending()"
+          (keydown)="onKeydown($event)"
+        ></textarea>
+        <button
+          mat-icon-button
+          class="chat-send-btn"
+          [attr.aria-label]="'chat.send' | transloco"
+          [disabled]="!isConnected() || sending() || !messageText.trim() || !recipientId.trim()"
+          (click)="send()"
+        >
+          @if (sending()) {
+            <mat-spinner diameter="20"></mat-spinner>
+          } @else {
+            <mat-icon>send</mat-icon>
+          }
+        </button>
+      </div>
+
+    </div>
+  }
+
+</div>

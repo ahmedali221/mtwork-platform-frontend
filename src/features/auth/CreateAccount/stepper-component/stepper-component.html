@@ -1,0 +1,24 @@
+<div class="stepper">
+  @for (step of steps; track step; let i = $index) {
+    <div class="stepper__item" [class.stepper__item--active]="i === current" [class.stepper__item--done]="i < current">
+
+      <!-- Connector line (before first circle, except first step) -->
+      @if (i > 0) {
+        <div class="stepper__line" [class.stepper__line--done]="i <= current"></div>
+      }
+
+      <!-- Circle -->
+      <div class="stepper__circle">
+        @if (i < current) {
+          <!-- Checkmark -->
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        } @else {
+          {{ i + 1 }}
+        }
+      </div>
+
+      <!-- Label -->
+      <span class="stepper__label">{{ step }}</span>
+    </div>
+  }
+</div>

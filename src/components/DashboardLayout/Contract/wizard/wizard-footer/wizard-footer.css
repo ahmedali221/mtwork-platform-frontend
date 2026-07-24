@@ -1,0 +1,98 @@
+.wizard-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0;
+  border-block-start: 1px solid var(--ui-border);
+  background: transparent;
+}
+
+.wizard-footer__nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── Shared button base ─────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--brand-primary-400);
+  outline-offset: 2px;
+}
+
+/* ── Variants ───────────────────────────────────────────────────── */
+.btn--primary {
+  background: var(--brand-neutral-950);
+  color: var(--ui-bg-surface);
+  border-color: var(--brand-neutral-950);
+}
+.btn--primary:hover:not(:disabled) { opacity: 0.88; }
+
+.btn--secondary {
+  background: var(--ui-bg-surface);
+  color: var(--ui-text-sub);
+  border-color: var(--ui-border);
+}
+.btn--secondary:hover:not(:disabled) { background: var(--ui-bg-subtle); }
+
+.btn--ghost {
+  background: none;
+  color: var(--ui-text-muted);
+  border-color: transparent;
+  padding-inline: 10px;
+}
+.btn--ghost:hover:not(:disabled) {
+  background: var(--ui-bg-subtle);
+  color: var(--ui-text-sub);
+}
+
+/* ── Spinner ────────────────────────────────────────────────────── */
+.btn-spinner {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border: 2px solid var(--ui-border);
+  border-top-color: var(--brand-primary-500);
+  border-radius: 50%;
+  animation: footer-spin 0.65s linear infinite;
+  flex-shrink: 0;
+}
+
+.btn-spinner--light {
+  border-color: rgba(255, 255, 255, 0.35);
+  border-top-color: var(--brand-neutral-0, #fff);
+}
+
+@keyframes footer-spin { to { transform: rotate(360deg); } }
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .wizard-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    padding: 12px 16px;
+  }
+  .wizard-footer__nav { justify-content: flex-end; }
+  .btn--ghost { justify-content: center; }
+}

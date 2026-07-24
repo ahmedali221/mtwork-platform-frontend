@@ -1,0 +1,186 @@
+.dialog-container {
+  width: 100%;
+  height: 100%;
+  max-width: 90vw;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--brand-neutral-950) 20%, transparent);
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--ui-border);
+  background-color: var(--ui-bg);
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ui-text-main);
+}
+
+.dialog-content {
+  padding: 20px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.form-field {
+  margin-bottom: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.required-label {
+  color: var(--functional-danger-600);
+  font-size: 11px;
+  font-weight: 500;
+  margin-inline-start: 5px;
+  background-color: var(--functional-danger-50);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.file-upload-container {
+  border: 2px dashed var(--ui-border);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  background-color: var(--ui-bg);
+  transition: all 0.3s;
+}
+
+.file-upload-container:hover {
+  border-color: var(--brand-primary-800);
+  background-color: var(--ui-border);
+}
+
+.file-upload-area {
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.file-upload-area mat-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: var(--ui-text-muted);
+  margin-bottom: 10px;
+}
+
+.file-upload-area p {
+  margin: 0;
+  color: var(--ui-text-muted);
+  font-size: 14px;
+}
+
+.selected-file-name {
+  color: var(--brand-primary-500);
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.file-upload-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.browse-button {
+  background-color: var(--ui-bg-subtle);
+  color: var(--ui-text-sub);
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 14px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid var(--ui-border);
+  background-color: var(--ui-bg-subtle);
+}
+
+.cancel-button {
+  background-color: var(--ui-bg-subtle);
+  color: var(--ui-text-sub);
+  border-radius: 8px;
+  padding: 8px 20px;
+}
+
+.create-button {
+  background-color: var(--brand-primary-800);
+  color: var(--ui-surface);
+  border-radius: 8px;
+  padding: 8px 20px;
+}
+
+.create-button:disabled {
+  background-color: var(--brand-neutral-200);
+  color: var(--brand-neutral-600);
+  cursor: not-allowed;
+}
+
+/* Material form field customization */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: var(--brand-neutral-200);
+  border-radius: 8px;
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: var(--brand-primary-800);
+}
+
+.mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.mat-form-field-label {
+  color: var(--brand-neutral-600) !important;
+  font-weight: 500;
+}
+
+.mat-input-element::placeholder {
+  color: var(--brand-neutral-400) !important;
+  opacity: 1;
+}
+
+/* Select customization */
+.mat-select-value {
+  color: var(--brand-neutral-800);
+}
+
+.mat-option {
+  font-size: 14px;
+}
+
+.mat-option mat-icon {
+  margin-inline-end: 8px;
+  vertical-align: middle;
+}
+/* ── Save error banner ─────────────────────────────── */
+.save-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--functional-danger-50);
+  border: 1px solid var(--functional-danger-200);
+  border-radius: 8px;
+  color: var(--functional-danger-600);
+  font-size: 13px;
+  margin-block-end: 12px;
+}
+.save-error-banner mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}

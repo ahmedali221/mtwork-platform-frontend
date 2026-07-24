@@ -1,0 +1,107 @@
+<div class="wd-dialog">
+
+  <!-- Header -->
+  <div class="wd-dialog__header">
+    <h2 class="wd-dialog__title">{{ 'salary.dialog.withdrawTitle' | transloco }}</h2>
+    <button type="button" class="wd-dialog__close" (click)="close()"
+            [attr.aria-label]="'common.close' | transloco">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M2 2l14 14M16 2L2 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="wd-dialog__body" novalidate>
+
+    <!-- Balance banner — above the form, only when known -->
+    @if (hasBalance()) {
+      <div class="wd-balance" role="status">
+        <span class="wd-balance__label">{{ 'salary.form.availableBalance' | transloco }}</span>
+        <span class="wd-balance__value">{{ balance | number:'1.2-2' }}</span>
+      </div>
+    }
+
+    <!-- Full Name -->
+    <div class="wd-field" [class.wd-field--error]="fieldInvalid('fullName')">
+      <label for="wd-fullName" class="wd-field__label">
+        {{ 'salary.form.fullName' | transloco }}
+        <span class="wd-field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="wd-fullName" type="text" formControlName="fullName" class="wd-field__input"
+             maxlength="100"
+             [placeholder]="'salary.form.fullName' | transloco"
+             [attr.aria-required]="true"
+             [attr.aria-invalid]="fieldInvalid('fullName')">
+      @if (fieldInvalid('fullName')) {
+        <span class="wd-field__error" role="alert">
+          {{ 'salary.form.fullName' | transloco }} {{ 'common.isRequired' | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- IBAN -->
+    <div class="wd-field" [class.wd-field--error]="fieldInvalid('iban')">
+      <label for="wd-iban" class="wd-field__label">
+        {{ 'salary.form.iban' | transloco }}
+        <span class="wd-field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="wd-iban" type="text" formControlName="iban" class="wd-field__input"
+             maxlength="50"
+             [placeholder]="'salary.form.iban' | transloco"
+             [attr.aria-required]="true"
+             [attr.aria-invalid]="fieldInvalid('iban')">
+      @if (fieldInvalid('iban')) {
+        <span class="wd-field__error" role="alert">
+          {{ 'salary.form.iban' | transloco }} {{ 'common.isRequired' | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Amount -->
+    <div class="wd-field" [class.wd-field--error]="fieldInvalid('amount') || insufficientBalance()">
+      <label for="wd-amount" class="wd-field__label">
+        {{ 'salary.form.amount' | transloco }}
+        <span class="wd-field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="wd-amount" type="number" formControlName="amount" class="wd-field__input"
+             min="0.01" step="0.01"
+             (input)="onAmountInput()"
+             [placeholder]="'salary.form.amount' | transloco"
+             [attr.aria-required]="true"
+             [attr.aria-invalid]="fieldInvalid('amount') || insufficientBalance()">
+      @if (fieldInvalid('amount')) {
+        <span class="wd-field__error" role="alert">
+          {{ 'salary.form.amount' | transloco }} {{ 'common.isRequired' | transloco }}
+        </span>
+      }
+      @if (insufficientBalance()) {
+        <span class="wd-field__error" role="alert">
+          {{ 'salary.errors.insufficientBalance' | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Form-level submit error (e.g. backend 500 → "Insufficient balance") -->
+    @if (submitError) {
+      <p class="wd-form-error" role="alert">{{ submitError | transloco }}</p>
+    }
+
+    <!-- Footer -->
+    <div class="wd-dialog__footer">
+      <button type="button" class="wd-btn wd-btn--ghost" (click)="close()"
+              [attr.aria-label]="'hr.actions.cancel' | transloco">
+        {{ 'hr.actions.cancel' | transloco }}
+      </button>
+      <button type="submit" class="wd-btn wd-btn--primary" [disabled]="isSubmitting"
+              [attr.aria-label]="'salary.actions.requestWithdrawal' | transloco">
+        @if (isSubmitting) {
+          <span class="wd-spinner" aria-hidden="true"></span>
+        }
+        {{ isSubmitting ? ('common.loading' | transloco) : ('salary.actions.requestWithdrawal' | transloco) }}
+      </button>
+    </div>
+
+  </form>
+
+</div>

@@ -1,0 +1,258 @@
+/* ── Page shell ─────────────────────────────────────────────── */
+.admin-wd {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.admin-wd__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.admin-wd__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ui-text-primary);
+  margin: 0 0 0.25rem;
+}
+
+.admin-wd__subtitle {
+  font-size: 0.875rem;
+  color: var(--ui-text-muted);
+  margin: 0;
+}
+
+/* ── Header stats ───────────────────────────────────────────── */
+.admin-wd__stats {
+  display: flex;
+  gap: 1rem;
+}
+
+.admin-wd__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+  padding: 0.625rem 1rem;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius-md, 8px);
+  background: var(--ui-bg-surface);
+}
+
+.admin-wd__stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ui-text-primary);
+}
+
+.admin-wd__stat-label {
+  font-size: 0.75rem;
+  color: var(--ui-text-muted);
+  text-align: center;
+}
+
+/* ── State blocks ───────────────────────────────────────────── */
+.admin-wd__state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2.5rem;
+  border-radius: var(--radius-lg, 12px);
+  background: var(--ui-bg-surface);
+  color: var(--ui-text-muted);
+  font-size: 0.9375rem;
+}
+
+.admin-wd__state--error {
+  color: var(--functional-danger-600);
+  background: var(--functional-danger-50);
+}
+
+.admin-wd__retry {
+  margin-inline-start: 0.5rem;
+  padding: 0.375rem 0.875rem;
+  border: 1px solid var(--functional-danger-200);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--ui-bg-surface);
+  color: var(--functional-danger-700);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.admin-wd__retry:hover {
+  background: var(--functional-danger-100);
+}
+
+/* ── Sections ───────────────────────────────────────────────── */
+.admin-wd__section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-wd__section-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--ui-text-primary);
+  margin: 0;
+}
+
+/* ── Table ──────────────────────────────────────────────────── */
+.admin-wd__table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg, 12px);
+  border: 1px solid var(--ui-border);
+}
+
+.admin-wd__table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--ui-bg-surface);
+}
+
+.admin-wd__table thead th {
+  padding: 0.875rem 1rem;
+  text-align: start;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ui-text-muted);
+  background: var(--ui-bg-subtle);
+  border-bottom: 1px solid var(--ui-border);
+  white-space: nowrap;
+}
+
+.admin-wd__table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.admin-wd__table tbody tr:hover {
+  background: var(--ui-bg-subtle);
+}
+
+.admin-wd__cell {
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  color: var(--ui-text-primary);
+  vertical-align: middle;
+}
+
+/* ── Status badge ───────────────────────────────────────────── */
+.admin-wd__badge {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.admin-wd__badge--pending {
+  background: var(--functional-warning-50);
+  color: var(--functional-warning-700);
+}
+
+.admin-wd__badge--approved {
+  background: var(--functional-success-50);
+  color: var(--functional-success-700);
+}
+
+.admin-wd__badge--rejected {
+  background: var(--functional-danger-50);
+  color: var(--functional-danger-700);
+}
+
+/* ── Action buttons ─────────────────────────────────────────── */
+.admin-wd__cell--actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.admin-wd__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  min-width: 92px;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, opacity 0.15s;
+}
+
+.admin-wd__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-wd__btn mat-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+.admin-wd__btn--approve {
+  background: var(--functional-success-50);
+  color: var(--functional-success-700);
+  border-color: var(--functional-success-200);
+}
+
+.admin-wd__btn--approve:hover:not(:disabled) {
+  background: var(--functional-success-100);
+}
+
+.admin-wd__btn--reject {
+  background: var(--functional-danger-50);
+  color: var(--functional-danger-700);
+  border-color: var(--functional-danger-200);
+}
+
+.admin-wd__btn--reject:hover:not(:disabled) {
+  background: var(--functional-danger-100);
+}
+
+/* ── Spinner ────────────────────────────────────────────────── */
+.admin-wd__spinner {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--ui-border);
+  border-top-color: var(--brand-primary-500);
+  border-radius: 50%;
+  animation: admin-wd-spin 0.7s linear infinite;
+}
+
+.admin-wd__spinner--sm {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+@keyframes admin-wd-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .admin-wd__header {
+    flex-direction: column;
+  }
+
+  .admin-wd__cell--actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -1,0 +1,244 @@
+<!-- Step 4: Stage 1 -->
+<div class="card-section">
+  <div class="section-header">
+    <h2 class="section-title">Stage 1</h2>
+    <button class="icon-button delete-button" [attr.aria-label]="'contracts.wizard.deleteStage' | transloco">
+     <img src="assets/images/delete.png" alt="Delete" />
+    </button>
+  </div>
+
+  <form [formGroup]="Stage1Form">
+    <div class="form-group">
+      <label class="form-label">Stage Title</label>
+      <input
+        type="text"
+        class="form-input"
+        formControlName="StageTitle"
+        placeholder="mm/dd/yyyy"
+      />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Work Brief</label>
+      <textarea
+        class="form-input textarea"
+        formControlName="workBrief"
+        placeholder="Your Email..."
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Stage Start Date</label>
+      <div class="input-with-icon">
+        <input
+          type="text"
+          class="form-input"
+          formControlName="StageStartDate"
+          placeholder="mm/dd/yyyy"
+          onfocus="(this.type='date')"
+          onblur="(this.type='text')"
+        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="input-icon"
+        >
+          <path
+            d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM5 7V6h14v1H5zm7-4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-4 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Stage Amount
+        <span class="required-badge">Required</span>
+      </label>
+      <div class="input-with-spinner">
+        <input
+          [attr.aria-label]="'contracts.wizard.stageAmount' | transloco"
+          type="number"
+          class="form-input"
+          formControlName="StageAmount"
+          value="0"
+        />
+        <div class="spinner-buttons">
+          <button [attr.aria-label]="'common.increment' | transloco" class="spinner-button" (click)="incrementStageAmount(1)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="spinner-icon"
+            >
+              <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z" />
+            </svg>
+          </button>
+          <button [attr.aria-label]="'common.decrement' | transloco" class="spinner-button" (click)="decrementStageAmount(1)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="spinner-icon"
+            >
+              <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Attach File</label>
+      <div class="file-upload-container">
+        <input    [attr.aria-label]="'common.uploadFile' | transloco"
+          type="file"
+          id="fileUpload1"
+          class="file-input"
+          (change)="onFileSelected($event, 1)"
+          #fileInput1
+        />
+        <button
+          type="button"
+          class="upload-button"
+          (click)="fileInput1.click()"
+        >
+          Upload
+        </button>
+        <span class="file-info">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="file-icon"
+          >
+            <path
+              d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+            />
+          </svg>
+          Drag or upload PDF,Png,Jpg
+        </span>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Step 4: Stage 2 -->
+<div class="card-section">
+  <div class="section-header">
+    <h2 class="section-title">Stage 2</h2>
+    <button class="add-Stage-button btn-primary" (click)="addStage()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        class="icon"
+      >
+        <path
+          d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+        />
+      </svg>
+      Add Stage
+    </button>
+  </div>
+
+  <form [formGroup]="Stage2Form">
+    <div class="form-group">
+      <label class="form-label">Stage Title</label>
+      <input
+        type="text"
+        class="form-input"
+        formControlName="StageTitle"
+        placeholder="mm/dd/yyyy"
+      />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Work Brief</label>
+      <textarea
+        class="form-input textarea"
+        formControlName="workBrief"
+        placeholder="Your Email..."
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Stage Start Date</label>
+      <div class="input-with-icon">
+        <input
+          type="text"
+          class="form-input"
+          formControlName="StageStartDate"
+          placeholder="mm/dd/yyyy"
+          onfocus="(this.type='date')"
+          onblur="(this.type='text')"
+        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="input-icon"
+        >
+          <path
+            d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM5 7V6h14v1H5zm7-4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-4 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Stage Amount
+        <span class="required-badge">Required</span>
+      </label>
+      <div class="input-with-spinner">
+        <input [attr.aria-label]="'contracts.wizard.stageAmount' | transloco"
+          type="number"
+          class="form-input"
+          formControlName="StageAmount"
+          value="0"
+        />
+        <div class="spinner-buttons">
+          <button [attr.aria-label]="'common.increment' | transloco" type="button" class="spinner-button" (click)="incrementStageAmount(2)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="spinner-icon"
+            >
+              <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z" />
+            </svg>
+          </button>
+          <button [attr.aria-label]="'common.decrement' | transloco" type="button" class="spinner-button" (click)="decrementStageAmount(2)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="spinner-icon"
+            >
+              <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Attach File</label>
+       <div class="file-upload-container">
+              <input [attr.aria-label]="'common.uploadFile' | transloco" type="file" id="fileUpload${StageCounter}" class="file-input" 
+                     accept=".pdf,.png,.jpg,.jpeg" onchange="handleFileSelect(event, 1)" />
+              <button type="button" class="upload-button" onclick="document.getElementById('fileUpload${StageCounter}').click()">
+                Upload
+              </button>
+              <span class="file-info" id="fileInfo${StageCounter}">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="file-icon">
+                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                </svg>
+                Drag or upload PDF,Png,Jpg
+              </span>
+            </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,215 @@
+<div class="settings-page">
+
+  <!-- ── Breadcrumb ───────────────────────────────────────────── -->
+  <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | transloco">
+    <span class="bc-item">{{ 'common.appName' | transloco }}</span>
+    <svg class="bc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M5.5 3.5L10.5 8L5.5 12.5" stroke="currentColor" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="bc-item bc-active">{{ 'settings.title' | transloco }}</span>
+  </nav>
+
+  <h1 class="page-title">{{ 'settings.title' | transloco }}</h1>
+
+  <div class="settings-shell">
+
+    <!-- ── Side nav ─────────────────────────────────────────── -->
+    <aside class="settings-nav" [attr.aria-label]="'settings.sections' | transloco">
+      <button
+        type="button"
+        class="nav-item"
+        [class.nav-item--active]="activeSection() === 'profile'"
+        (click)="setSection('profile')"
+      >
+        {{ 'settings.profile.title' | transloco }}
+      </button>
+      <button
+        type="button"
+        class="nav-item"
+        [class.nav-item--active]="activeSection() === 'password'"
+        (click)="setSection('password')"
+      >
+        {{ 'settings.password.title' | transloco }}
+      </button>
+      <button
+        type="button"
+        class="nav-item"
+        [class.nav-item--active]="activeSection() === 'preferences'"
+        (click)="setSection('preferences')"
+      >
+        {{ 'settings.preferences.title' | transloco }}
+      </button>
+    </aside>
+
+    <!-- ── Section content ──────────────────────────────────── -->
+    <section class="settings-content" [attr.aria-label]="activeSection()">
+
+      <!-- ── Profile (read-only) ─────────────────────────────── -->
+      @if (activeSection() === 'profile') {
+        <div class="section-card">
+          <h2 class="section-title">{{ 'settings.profile.title' | transloco }}</h2>
+          <p class="section-sub">{{ 'settings.profile.sub' | transloco }}</p>
+
+          @if (loadingProfile()) {
+            <div class="state-block" role="status">
+              <p>{{ 'common.loading' | transloco }}</p>
+            </div>
+          } @else if (profileError()) {
+            <div class="state-block state-block--error" role="alert">
+              <p>{{ profileError() }}</p>
+              <button type="button" class="btn-secondary" (click)="loadProfile()">
+                {{ 'common.retry' | transloco }}
+              </button>
+            </div>
+          } @else if (profile(); as user) {
+            <dl class="profile-grid">
+              <div class="profile-row">
+                <dt>{{ 'settings.profile.fullName' | transloco }}</dt>
+                <dd>{{ fullName(user) || '—' }}</dd>
+              </div>
+              <div class="profile-row">
+                <dt>{{ 'settings.profile.email' | transloco }}</dt>
+                <dd>{{ user.email || '—' }}</dd>
+              </div>
+              <div class="profile-row">
+                <dt>{{ 'settings.profile.phone' | transloco }}</dt>
+                <dd>{{ user.phoneNumber || '—' }}</dd>
+              </div>
+              <div class="profile-row">
+                <dt>{{ 'settings.profile.role' | transloco }}</dt>
+                <dd>{{ user.userTypeId || '—' }}</dd>
+              </div>
+            </dl>
+            <p class="readonly-note">{{ 'settings.profile.readonlyNote' | transloco }}</p>
+          }
+        </div>
+      }
+
+      <!-- ── Password ─────────────────────────────────────────── -->
+      @if (activeSection() === 'password') {
+        <div class="section-card">
+          <h2 class="section-title">{{ 'settings.password.title' | transloco }}</h2>
+          <p class="section-sub">{{ 'settings.password.sub' | transloco }}</p>
+
+          <form class="form" [formGroup]="passwordForm" (ngSubmit)="submitPassword()" novalidate>
+            <div class="form-field">
+              <label for="curPwd">{{ 'settings.password.current' | transloco }}</label>
+              <input id="curPwd" type="password" autocomplete="current-password"
+                     formControlName="currentPassword" />
+              @if (hasError('currentPassword', 'required')) {
+                <span class="form-error">{{ 'validation.required' | transloco }}</span>
+              }
+              @if (hasError('currentPassword', 'minlength')) {
+                <span class="form-error">{{ 'settings.password.tooShort' | transloco }}</span>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="newPwd">{{ 'settings.password.new' | transloco }}</label>
+              <input id="newPwd" type="password" autocomplete="new-password"
+                     formControlName="newPassword" />
+              @if (hasError('newPassword', 'required')) {
+                <span class="form-error">{{ 'validation.required' | transloco }}</span>
+              }
+              @if (hasError('newPassword', 'minlength')) {
+                <span class="form-error">{{ 'settings.password.tooShort' | transloco }}</span>
+              }
+            </div>
+
+            <div class="form-field">
+              <label for="cfPwd">{{ 'settings.password.confirm' | transloco }}</label>
+              <input id="cfPwd" type="password" autocomplete="new-password"
+                     formControlName="confirmPassword" />
+              @if (hasError('confirmPassword', 'required')) {
+                <span class="form-error">{{ 'validation.required' | transloco }}</span>
+              }
+              @if (formMismatch()) {
+                <span class="form-error">{{ 'settings.password.mismatch' | transloco }}</span>
+              }
+            </div>
+
+            @if (passwordMessage(); as msg) {
+              <div
+                class="form-message"
+                [class.form-message--success]="msg.kind === 'success'"
+                [class.form-message--error]="msg.kind === 'error'"
+                role="status"
+              >
+                {{ msg.text | transloco }}
+              </div>
+            }
+
+            <div class="form-actions">
+              <button
+                type="submit"
+                class="btn-primary"
+                [disabled]="passwordForm.invalid || isSavingPassword()"
+                [attr.aria-busy]="isSavingPassword()"
+              >
+                @if (isSavingPassword()) {
+                  {{ 'common.saving' | transloco }}
+                } @else {
+                  {{ 'settings.password.save' | transloco }}
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+      }
+
+      <!-- ── Preferences ──────────────────────────────────────── -->
+      @if (activeSection() === 'preferences') {
+        <div class="section-card">
+          <h2 class="section-title">{{ 'settings.preferences.title' | transloco }}</h2>
+          <p class="section-sub">{{ 'settings.preferences.sub' | transloco }}</p>
+
+          <!-- Language -->
+          <div class="pref-row">
+            <div class="pref-label">
+              <h3>{{ 'settings.preferences.language' | transloco }}</h3>
+              <p>{{ 'settings.preferences.languageSub' | transloco }}</p>
+            </div>
+            <div class="pref-control" role="group" [attr.aria-label]="'common.language' | transloco">
+              <button
+                type="button"
+                class="seg-btn"
+                [class.seg-btn--active]="languageService.currentLang() === 'en'"
+                (click)="setLanguage('en')"
+                [attr.aria-pressed]="languageService.currentLang() === 'en'"
+              >English</button>
+              <button
+                type="button"
+                class="seg-btn"
+                [class.seg-btn--active]="languageService.currentLang() === 'ar'"
+                (click)="setLanguage('ar')"
+                [attr.aria-pressed]="languageService.currentLang() === 'ar'"
+              >العربية</button>
+            </div>
+          </div>
+
+          <!-- Theme -->
+          <div class="pref-row">
+            <div class="pref-label">
+              <h3>{{ 'settings.preferences.theme' | transloco }}</h3>
+              <p>{{ 'settings.preferences.themeSub' | transloco }}</p>
+            </div>
+            <div class="pref-control">
+              <button
+                type="button"
+                class="toggle-btn"
+                (click)="toggleTheme()"
+                [attr.aria-pressed]="themeService.isDarkMode()"
+              >
+                {{ themeService.isDarkMode()
+                    ? ('settings.preferences.themeDark'  | transloco)
+                    : ('settings.preferences.themeLight' | transloco) }}
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+
+    </section>
+  </div>
+</div>

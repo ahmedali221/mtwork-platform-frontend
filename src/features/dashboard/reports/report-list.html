@@ -1,0 +1,304 @@
+<div class="rp-page" [attr.aria-label]="'reports.title' | transloco">
+
+  <!-- ════════════════════════════════════════════════════
+       SECTION 1 — UPCOMING MEETINGS
+  ════════════════════════════════════════════════════ -->
+  <section class="rp-section" aria-labelledby="rp-meetings-heading">
+    <div class="rp-section__header">
+      <div class="rp-section__title-group">
+        <mat-icon class="rp-section__icon" aria-hidden="true">videocam</mat-icon>
+        <h2 class="rp-section__title" id="rp-meetings-heading">
+          {{ 'reports.meetings.heading' | transloco }}
+        </h2>
+      </div>
+      <a
+        routerLink="/dashboard/meetings"
+        class="rp-section__view-all"
+        [attr.aria-label]="'reports.meetings.viewAll' | transloco"
+      >
+        {{ 'reports.meetings.viewAll' | transloco }}
+        <mat-icon class="rp-section__arrow" aria-hidden="true">chevron_right</mat-icon>
+      </a>
+    </div>
+
+    @if (meetingsLoading()) {
+      <div class="rp-state" role="status" aria-live="polite">
+        <mat-spinner diameter="36"></mat-spinner>
+      </div>
+    }
+
+    @if (!meetingsLoading() && meetingsError()) {
+      <div class="rp-state rp-state--error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        <span>{{ meetingsError()! | transloco }}</span>
+      </div>
+    }
+
+    @if (!meetingsLoading() && !meetingsError() && meetings().length === 0) {
+      <div class="rp-state" role="status">
+        <mat-icon aria-hidden="true">event_busy</mat-icon>
+        <span>{{ 'reports.meetings.noMeetings' | transloco }}</span>
+      </div>
+    }
+
+    @if (!meetingsLoading() && !meetingsError() && meetings().length > 0) {
+      <div class="rp-meetings-grid">
+        @for (meeting of meetings(); track meeting.id) {
+          <div class="rp-meeting-card">
+            <div class="rp-meeting-card__top">
+              <mat-icon class="rp-meeting-card__icon" aria-hidden="true">video_call</mat-icon>
+              <span
+                class="rp-meeting-card__status"
+                [class.rp-meeting-card__status--past]="meeting.status === 'past'"
+                [class.rp-meeting-card__status--now]="meeting.status === 'now'"
+              >
+                @if (meeting.status === 'now') {
+                  {{ 'reports.meetings.statusNow' | transloco }}
+                } @else if (meeting.status === 'past') {
+                  {{ 'reports.meetings.statusPast' | transloco }}
+                } @else {
+                  {{ 'reports.meetings.statusSoon' | transloco }}
+                }
+              </span>
+            </div>
+            <p class="rp-meeting-card__title">{{ meeting.title }}</p>
+            @if (meeting.date) {
+              <p class="rp-meeting-card__time">
+                <mat-icon class="rp-meeting-card__time-icon" aria-hidden="true">schedule</mat-icon>
+                {{ meeting.date }}
+              </p>
+            }
+            <a
+              [href]="meeting.link || '#'"
+              class="rp-meeting-card__open"
+              [attr.aria-label]="'reports.meetings.open' | transloco"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              {{ 'reports.meetings.open' | transloco }}
+            </a>
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- ════════════════════════════════════════════════════
+       SECTION 2 — PROJECTS ANALYTICS
+  ════════════════════════════════════════════════════ -->
+  <section class="rp-section" aria-labelledby="rp-projects-heading">
+    <div class="rp-section__header">
+      <div class="rp-section__title-group">
+        <mat-icon class="rp-section__icon" aria-hidden="true">folder</mat-icon>
+        <h2 class="rp-section__title" id="rp-projects-heading">
+          {{ 'reports.projects.heading' | transloco }}
+        </h2>
+      </div>
+      <a
+        routerLink="/dashboard/projects"
+        class="rp-section__view-all"
+        [attr.aria-label]="'reports.projects.seeAll' | transloco"
+      >
+        {{ 'reports.projects.seeAll' | transloco }}
+        <mat-icon class="rp-section__arrow" aria-hidden="true">chevron_right</mat-icon>
+      </a>
+    </div>
+
+    @if (projectsLoading()) {
+      <div class="rp-state" role="status" aria-live="polite">
+        <mat-spinner diameter="36"></mat-spinner>
+      </div>
+    }
+
+    @if (!projectsLoading() && projectsError()) {
+      <div class="rp-state rp-state--error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        <span>{{ projectsError()! | transloco }}</span>
+      </div>
+    }
+
+    <!-- Charts render only after data is ready (prevents null-canvas issue) -->
+    @if (!projectsLoading() && !projectsError()) {
+      <div class="rp-charts-row">
+
+        <!-- Left: Project Status Doughnut ───────────────────── -->
+        <div class="rp-chart-card">
+          <div class="rp-chart-card__header">
+            <div>
+              <p class="rp-chart-card__title">
+                {{ 'reports.projects.statusOverview.title' | transloco }}
+              </p>
+              <p class="rp-chart-card__sub">
+                {{ 'reports.projects.statusOverview.sub' | transloco }}
+              </p>
+            </div>
+            <select
+              class="rp-select"
+              [attr.aria-label]="'reports.periodFilter' | transloco"
+              [title]="'reports.periodFilter' | transloco"
+            >
+              <option>{{ 'reports.projects.statusOverview.filter' | transloco }}</option>
+            </select>
+          </div>
+
+          <div class="rp-donut-wrap">
+            <div class="rp-chart-canvas-wrap">
+              <canvas
+                baseChart
+                [data]="projectStatusData"
+                [options]="projectStatusOptions"
+                type="doughnut"
+                [attr.aria-label]="'reports.projects.statusOverview.title' | transloco"
+                role="img"
+              ></canvas>
+            </div>
+            <div class="rp-donut-center" aria-hidden="true">
+              {{ donutCenterLabel() }}
+            </div>
+          </div>
+
+          <div class="rp-legend" aria-hidden="true">
+            <span class="rp-legend__item">
+              <span class="rp-legend__dot rp-legend__dot--success"></span>
+              {{ 'reports.projects.statusOverview.completed' | transloco }}
+            </span>
+            <span class="rp-legend__item">
+              <span class="rp-legend__dot rp-legend__dot--warning"></span>
+              {{ 'reports.projects.statusOverview.inProgress' | transloco }}
+            </span>
+            <span class="rp-legend__item">
+              <span class="rp-legend__dot rp-legend__dot--neutral"></span>
+              {{ 'reports.projects.statusOverview.notStarted' | transloco }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Right: Projects by Manager Bar ──────────────────── -->
+        <div class="rp-chart-card">
+          <div class="rp-chart-card__header">
+            <div>
+              <p class="rp-chart-card__title">
+                {{ 'reports.projects.byManager.title' | transloco }}
+              </p>
+              <p class="rp-chart-card__sub">
+                {{ 'reports.projects.byManager.sub' | transloco }}
+              </p>
+            </div>
+            <select
+              class="rp-select"
+              [attr.aria-label]="'reports.periodFilter' | transloco"
+              [title]="'reports.periodFilter' | transloco"
+            >
+              <option>{{ 'reports.projects.byManager.filter' | transloco }}</option>
+            </select>
+          </div>
+          <div class="rp-chart-canvas-wrap rp-chart-canvas-wrap--bar">
+            <canvas
+              baseChart
+              [data]="projectsByManagerData"
+              [options]="projectsByManagerOptions"
+              type="bar"
+              [attr.aria-label]="'reports.projects.byManager.title' | transloco"
+              role="img"
+            ></canvas>
+          </div>
+        </div>
+
+      </div>
+    }
+  </section>
+
+  <!-- ════════════════════════════════════════════════════
+       SECTION 3 — CONTRACT PDF REPORTS
+  ════════════════════════════════════════════════════ -->
+  <section class="rp-section" aria-labelledby="rp-contracts-heading">
+    <div class="rp-section__header">
+      <div class="rp-section__title-group">
+        <mat-icon class="rp-section__icon" aria-hidden="true">description</mat-icon>
+        <h2 class="rp-section__title" id="rp-contracts-heading">
+          {{ 'reports.contracts.heading' | transloco }}
+        </h2>
+      </div>
+    </div>
+
+    @if (contractsLoading()) {
+      <div class="rp-state" role="status" aria-live="polite">
+        <mat-spinner diameter="36"></mat-spinner>
+      </div>
+    }
+
+    @if (!contractsLoading() && contractsError()) {
+      <div class="rp-state rp-state--error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        <span>{{ contractsError()! | transloco }}</span>
+      </div>
+    }
+
+    @if (!contractsLoading() && !contractsError() && contracts().length === 0) {
+      <div class="rp-state" role="status">
+        <mat-icon aria-hidden="true">description</mat-icon>
+        <span>{{ 'reports.noContracts' | transloco }}</span>
+      </div>
+    }
+
+    @if (!contractsLoading() && !contractsError() && contracts().length > 0) {
+      <div class="rp-table-wrapper" role="region"
+           [attr.aria-label]="'reports.contracts.heading' | transloco">
+        <table class="rp-table" aria-labelledby="rp-contracts-heading">
+          <thead>
+            <tr>
+              <th scope="col">{{ 'reports.columns.contract'   | transloco }}</th>
+              <th scope="col" class="rp-col-hide-mobile">{{ 'reports.columns.contractor' | transloco }}</th>
+              <th scope="col">{{ 'reports.columns.status'     | transloco }}</th>
+              <th scope="col">{{ 'reports.columns.action'     | transloco }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (contract of contracts(); track contract.id) {
+              <tr>
+                <td>
+                  <span class="rp-contract-title">
+                    {{ contract.contractTitle || ('Contract #' + contract.id) }}
+                  </span>
+                </td>
+                <td class="rp-col-hide-mobile">
+                  <span class="rp-contractor-name">
+                    {{ contract.empoleeOrContractor?.name || '—' }}
+                  </span>
+                </td>
+                <td>
+                  <span class="rp-status-badge"
+                        [attr.data-status]="contract.status ? contract.status.toLowerCase() : ''">
+                    {{ contract.status }}
+                  </span>
+                </td>
+                <td>
+                  <button
+                    mat-stroked-button
+                    color="primary"
+                    class="rp-download-btn"
+                    [disabled]="isDownloading(contract.id)"
+                    (click)="downloadPdf(contract.id)"
+                    [attr.aria-label]="('reports.downloadBtn' | transloco) + ' ' + (contract.contractTitle || contract.id)"
+                  >
+                    @if (isDownloading(contract.id)) {
+                      <mat-spinner diameter="18"></mat-spinner>
+                    } @else {
+                      <mat-icon aria-hidden="true">download</mat-icon>
+                    }
+                    <span>
+                      {{ isDownloading(contract.id)
+                           ? ('reports.downloading' | transloco)
+                           : ('reports.downloadBtn' | transloco) }}
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+
+</div>

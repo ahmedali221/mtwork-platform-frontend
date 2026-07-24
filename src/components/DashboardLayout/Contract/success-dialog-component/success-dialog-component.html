@@ -1,0 +1,13 @@
+<div class="dialog-content">
+  <img src="assets/SavedSuccessfully.png" alt="Success" class="success-img" />
+
+  <p class="success-message">
+    Your <span class="contract-type">{{ data.contractType }}</span> Contract has been created successfully!
+  </p>
+
+  <div class="dialog-actions">
+    <button class="btnContract" mat-button routerLink="/dashboard/contracts" (click)="closeDialog()">Go to Contracts</button>
+    <button class="btnDashboard" mat-button (click)="goToDashboard()">Go to Dashboard</button>
+    <button class="btnClose" mat-stroked-button color="primary" (click)="closeDialog()">Close</button>
+  </div>
+</div>

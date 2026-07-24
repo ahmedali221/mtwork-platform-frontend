@@ -1,0 +1,109 @@
+<!-- Financial Compensation Section -->
+<div class="card-section" [formGroup]="FinincialCompensationForm">
+  <h2 class="section-title">Financial compensation</h2>
+
+  <div class="form-row two-columns">
+    <div class="form-group">
+      <label class="form-label">
+        Currency
+        <span class="required-badge">Required</span>
+      </label>
+      <select class="form-input" [attr.aria-label]="'contracts.details.fields.currency' | transloco" formControlName="currency">
+        <option value="" disabled selected>Select currency</option>
+        @for (currency of currencies; track currency.value) {
+          <option [value]="currency.value">{{ currency.label }}</option>
+        }
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">
+        Billing Cycle
+        <span class="required-badge">Required</span>
+      </label>
+      <select class="form-input" [attr.aria-label]="'contracts.details.fields.billingCycle' | transloco" formControlName="billingCycle">
+        <option value="" disabled selected>Select cycle</option>
+        @for (cycle of billingCycles; track cycle.value) {
+          <option [value]="cycle.value">{{ cycle.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group full-width">
+    <label class="form-label">Amount <span class="required-badge">Required</span></label>
+    <input
+      type="number"
+      class="form-input"
+      placeholder="0.00"
+      formControlName="amount"
+    />
+  </div>
+</div>
+
+<!-- First Batch Section -->
+<div class="card-section" [formGroup]="FinincialCompensationForm">
+  <h2 class="section-title">First Batch</h2>
+
+  <div class="form-row two-columns">
+    <div class="form-group">
+      <label class="form-label">From <span class="required-badge">Required</span></label>
+      <input
+        type="date"
+        class="form-input"
+        formControlName="firstBatchFrom"
+      />
+    </div>
+    <div class="form-group">
+      <label class="form-label">To <span class="required-badge">Required</span></label>
+      <input
+        type="date"
+        class="form-input"
+        formControlName="firstBatchTo"
+      />
+    </div>
+  </div>
+
+  <div class="form-group full-width">
+    <label class="form-label">First payment amount <span class="required-badge">Required</span></label>
+    <input
+      type="number"
+      class="form-input"
+      placeholder="0.00"
+      formControlName="firstPaymentAmount"
+    />
+  </div>
+</div>
+
+<!-- Last Batch Section -->
+<div class="card-section" [formGroup]="FinincialCompensationForm">
+  <h2 class="section-title">Last Batch</h2>
+
+  <div class="form-row two-columns">
+    <div class="form-group">
+      <label class="form-label">From <span class="required-badge">Required</span></label>
+      <input
+        type="date"
+        class="form-input"
+        formControlName="lastBatchFrom"
+      />
+    </div>
+    <div class="form-group">
+      <label class="form-label">To <span class="required-badge">Required</span></label>
+      <input
+        type="date"
+        class="form-input"
+        formControlName="lastBatchTo"
+      />
+    </div>
+  </div>
+
+  <div class="form-group full-width">
+    <label class="form-label">Last payment amount <span class="required-badge">Required</span></label>
+    <input
+      type="number"
+      class="form-input"
+      placeholder="0.00"
+      formControlName="lastPaymentAmount"
+    />
+  </div>
+</div>

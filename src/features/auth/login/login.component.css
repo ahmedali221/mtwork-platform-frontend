@@ -1,0 +1,867 @@
+/* ── Login-scoped tokens (Figma 3:123581) ───────────────────────
+   Required-badge fill = Background/Bg-warning-opacity-40 (#fcbe04 @ 40%).
+   Field fill / social fill = Background/Bg-Light_Gray (#f7f5f2). */
+.login-page {
+  /* Figma Background/Bg-primary #2e358f — note: --brand-primary-500 is #4242C0,
+     the true brand navy lives in --landing-navbar-primary. Alias it here. */
+  --login-primary: var(--landing-navbar-primary);
+  --login-required-bg: rgba(252, 190, 4, 0.4);
+  --login-field-bg: var(--brand-grays-500);
+  --login-surface-white: #ffffff;
+  /* Figma "Background/Bg Color Secondary" — the Apple SSO icon badge */
+  --login-apple-badge: #ffd166;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+/* ── Left panel ─────────────────────────────────────────────────
+   Figma 3:123581 has NO dark variant for login. Pin the flipping
+   tokens to their light values so the blue promo renders identically
+   in both themes (white cards, white headline) — no invented dark UX. */
+.login-panel--left {
+  --ui-surface: #ffffff;
+  --ui-text-main: var(--brand-grays-900);
+  --ui-text-muted: var(--brand-neutral-400);
+  --ui-text-sub: var(--brand-neutral-400);
+  --ui-bg: var(--brand-grays-500);
+  --ui-border: var(--brand-grays-200, #e9e6e1);
+  position: relative;
+  /* Figma frame 1440×1086: logo+controls at top (y23), dashboard cluster
+     mid, headline near bottom (y761). Reproduce as a flex column that
+     fills 100vh — topbar top, cluster centred, hero bottom — so the
+     composition holds at ANY viewport height (the prior fixed-1055 stage
+     clipped the hero below the fold on short viewports). */
+  display: flex;
+  flex-direction: column;
+  /* Figma vertical rhythm (1055 art): topbar y23 → big gap → cluster
+     y273–790 → hero y761–957 (hero hugs cluster bottom) → ~98 bottom.
+     So topbar pins top, cluster+hero group toward the lower-middle.
+     Side padding small (≈27px) so cluster renders at ~Figma 666 width. */
+  padding: 23px 3.7% 40px;   /* 3.7% of 742 ≈ 27px side margin */
+  gap: 28px;
+  background-color: var(--login-primary);
+  overflow: hidden;
+}
+
+/* Decorative pattern — REAL exported Figma artwork (3:123593): scattered
+   white pill-outlines concentrated top-left, fading out. opacity 0.25.
+   Single positioned image (NOT a repeating tile). */
+/* SINGLE composed artwork cropped from the Figma art (opacity baked in).
+   Spans the panel width below the topbar; height auto preserves the exact
+   composition + the large empty space below it. No repeat/mirror/stretch. */
+.login-panel__pattern {
+  position: absolute;
+  inset-block-start: 0;         /* starts at the very top edge (Figma) */
+  inset-inline-start: 0;
+  inline-size: 100%;            /* uniform scale of the whole artwork */
+  block-size: auto;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* ── Top bar (3:123626: y23, h32) — in-flow, full panel width ──── */
+.login-panel__topbar {
+  position: relative;
+  flex: 0 0 auto;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 4;
+}
+
+.login-panel__controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Logo wordmark — 6 SVG segments (#282828), inverted to white over the
+   blue panel. Gap 1.971px / pad 3.942px per Figma 3:123627. */
+.login-panel__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.971px;
+  padding: 3.942px;
+}
+
+.login-panel__logo-segment {
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+/* Lang button — Figma: white #fff bg, dark text, r8, h32, pad 8, gap 6 */
+.login-ctrl--lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: var(--radius-8);
+  background: var(--login-surface-white);
+  border: 0;
+  color: var(--brand-neutral-950);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-size);
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Theme group — Figma: white #fff container r8 h32, holds Light + Dark */
+.login-ctrl--theme-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 4px;
+  border-radius: var(--radius-8);
+  background: var(--login-surface-white);
+}
+
+.login-ctrl__theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: var(--radius-6);
+  border: 0;
+  background: transparent;
+  color: var(--brand-neutral-400);
+  font-size: var(--caption-size);
+  font-family: var(--font-family-dm-sans);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* Active theme = Bg-Suger_Black #282828, white text */
+.login-ctrl__theme-btn--active {
+  background: var(--brand-neutral-900);
+  color: var(--ui-surface);
+}
+
+/* ── Dashboard mock cluster ───────────────────────────────────────
+   The 3 Figma cards span x35→701 (666w) y273→790 (517h). Reproduce as
+   ONE overlapping composition sized 666×517 (aspect-locked), centred in
+   the panel's middle row. Cards are positioned in % of the cluster so the
+   whole dashboard scales as a unit on narrower panels — never floats. */
+.login-cluster {
+  position: relative;
+  flex: 0 0 auto;
+  align-self: center;
+  inline-size: min(666px, 100%);
+  aspect-ratio: 666 / 517;
+  /* absorb extra height ABOVE the cluster so it + hero sit lower-middle
+     (Figma: large empty band between topbar and cluster, hero hugs it). */
+  margin-block-start: auto;
+}
+
+.mock-card {
+  position: absolute;
+  background: var(--ui-surface);
+  border-radius: var(--radius-12);
+  box-shadow: var(--elevation-4);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Profit  3:123633  (cluster 0,0)  139×196 of 666×517 */
+.mock-card--profit {
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  inline-size: 20.87%;
+  block-size: 37.92%;
+  padding: 16px;
+  gap: 12px;
+  z-index: 1;
+}
+
+/* People/filter  3:123594  (85.56,129)  495×223 */
+.mock-card--employees {
+  inset-inline-start: 12.85%;
+  inset-block-start: 24.95%;
+  inline-size: 74.32%;
+  block-size: 43.13%;
+  padding: 16px;
+  gap: 16px;
+  z-index: 2;
+}
+
+/* Payroll  3:123653  (479,311)  187×206 */
+.mock-card--payroll {
+  inset-inline-start: 71.92%;
+  inset-block-start: 60.15%;
+  inline-size: 28.08%;
+  block-size: 39.85%;
+  padding: 16px;
+  gap: 24px;
+  z-index: 3;
+}
+
+/* Header (3:123634/654) — stacked, left-aligned, gap 4 */
+.mock-card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+}
+
+/* Title "Profit"/"Payroll" — DM Sans Subtitle 16, #1b1b1b (NOT bold) */
+.mock-card__title {
+  font-family: var(--font-family-dm-sans);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--brand-neutral-950);
+}
+
+.mock-card__sub {
+  font-family: var(--font-family-dm-sans);
+  font-size: 12px;
+  color: var(--ui-text-muted);
+}
+
+.mock-card__chart {
+  flex: 1;
+  min-height: 0;
+}
+
+.mock-card__chart svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.mock-card__footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Footer "823K" — DM Sans Subtitle 16 #1b1b1b */
+.mock-card__value {
+  font-family: var(--font-family-dm-sans);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--brand-neutral-950);
+}
+
+/* "+9.1%" — DM Sans Bold 12, Text/success #36c220 */
+.mock-card__badge {
+  font-family: var(--font-family-dm-sans);
+  font-size: 12px;
+  font-weight: 700;
+  color: #36c220;
+}
+
+.mock-card__footer { justify-content: space-between; }
+
+/* Filter pills row (3:123596) — h35.28 13.229px text, border .551 r8.819 */
+.mock-card__filters {
+  display: flex;
+  align-items: center;
+  gap: 13.229px;
+}
+
+.mock-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4.41px;
+  height: 35.278px;
+  padding: 8.819px;
+  font-family: var(--font-family-dm-sans);
+  font-size: 13.229px;
+  color: var(--ui-text-muted);
+  border: 0.551px solid rgba(13, 13, 13, 0.25);
+  border-radius: 8.819px;
+  white-space: nowrap;
+}
+
+.mock-filter i { font-style: normal; font-size: 11px; }
+
+/* yellow add-button (3:123607) 32×32 */
+.mock-filter--add {
+  margin-inline-start: auto;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-8);
+  background: var(--login-required-bg);
+  color: var(--brand-neutral-900);
+  font-size: 16px;
+}
+
+.mock-card__divider {
+  height: 0.5px;
+  background: rgba(13, 13, 13, 0.1);
+  margin: 0;
+}
+
+/* Avatar row (3:123609) — 4 circles 98.755px, justify-between in 455 */
+.mock-card__avatars {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mock-avatar {
+  width: 98.755px;
+  height: 98.755px;
+  border-radius: var(--radius-full);
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.mock-avatar__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-full);
+}
+
+/* Flag corner badge — transparent SVG over the portrait bottom-right
+   (Figma 3:16329: 32px slot at left70/top71 of the 98.755 circle).
+   No white plate; sits on top, does not clip the portrait. */
+.mock-avatar__flag {
+  position: absolute;
+  inset-inline-end: 2px;
+  inset-block-end: 6px;
+  width: 26px;
+  height: auto;
+  z-index: 2;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.15));
+}
+
+/* Payroll bars (3:123665) — 7 vertical bars: #f7f5f2 track + #2e358f fill,
+   fully rounded, bottom-aligned. */
+.mock-card__bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex: 1;
+  min-height: 0;
+}
+
+.mock-bar {
+  width: 9px;
+  flex: 0 0 9px;
+  background: var(--login-field-bg);   /* #f7f5f2 track */
+  border-radius: 21px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.mock-bar__fill {
+  width: 100%;
+  background: var(--login-primary);     /* #2e358f fill */
+  border-radius: 21px;
+}
+
+/* ── Hero text (3:123583  x64.5  613 wide, pinned bottom-start) ── */
+.login-panel__hero {
+  position: relative;
+  flex: 0 0 auto;
+  inline-size: min(613px, 100%);
+  /* Figma hero x=64.5; panel side padding ≈27 → nudge ~37px more */
+  margin-inline-start: clamp(0px, 5vw, 37px);
+  z-index: 1;
+}
+
+.login-panel__headline {
+  font-family: var(--font-family-ibm-plex-sans);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--ui-surface);
+  line-height: 1.3;
+  margin: 0 0 16px;
+}
+
+.login-panel__highlight {
+  display: inline;
+  background: var(--landing-hr-highlight-bg);
+  color: var(--ui-surface);
+  padding-inline: 8px;
+  border-radius: var(--radius-4);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.login-panel__sub {
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--subtitle-size);
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.5;
+  margin: 0 0 24px;
+  inline-size: 556px;
+}
+
+.login-panel__dots {
+  display: flex;
+  gap: 6px;
+}
+
+.login-panel__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.35);
+}
+
+.login-panel__dot--active {
+  background: var(--ui-surface);
+  width: 20px;
+}
+
+/* ── Right panel (cream area x742→1440 = 698w) ───────────────────
+   Figma form content starts at x877 = 135px from the panel's left
+   edge (not centered). Anchor it there at desktop; center on mobile. */
+.login-panel--right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: var(--brand-grays-50);
+  padding-block: 32px;
+  /* Figma form content x=877; right panel starts at 50vw → start gutter
+     card x=845; right panel starts at 50vw → start gutter = 845 - 50vw
+     at 1440 (=125px), shrinking toward 24px on narrower. */
+  padding-inline: clamp(24px, calc(845px - 50vw), 125px) 24px;
+}
+
+/* Figma 3:123680 "Container Login" — exact Dev Mode values:
+   white fill, 0.5px hairline border rgba(13,13,13,0.25), radius 20,
+   padding 32 inline / 24 block, gap 24, 528 wide (464 content + 2×32). */
+.login-form-card {
+  width: 100%;
+  max-width: 528px;
+  background: var(--login-surface-white);
+  border: 0.5px solid rgba(13, 13, 13, 0.25);
+  border-radius: var(--radius-20);
+  padding: 24px 32px;
+  box-shadow: none;
+  /* header→body 24px & title→subtitle 4px come from element margins
+     (already measured exact); no flex-gap to avoid double-spacing. */
+}
+
+/* Title "Welcome Back" — IBM Plex Bold H5 32/1.4, #201b13 */
+.login-form__title {
+  font-family: var(--font-family-ibm-plex-sans);
+  font-size: var(--h5-size);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--brand-grays-900);
+  margin: 0 0 4px;
+}
+
+/* Subtitle "Sign in to Continue" — Work Sans Regular 18/1.5, #999 */
+.login-form__subtitle {
+  font-family: var(--font-family-work-sans);
+  font-size: var(--body-size);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--brand-neutral-400);
+  margin: 0 0 24px;
+}
+
+/* ── Form elements ─────────────────────────────────────────────
+   Figma 3:123684 body 464×430:
+   fields group (192) → gap 32 → Next btn (48) → gap 32 → privacy/social */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;          /* field-group internal rhythm (lg) */
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;           /* label → input (xxs) */
+}
+
+/* Label — DM Sans Regular 12px (Caption), #1b1b1b */
+.login-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-size);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--brand-neutral-950);
+}
+
+/* Required badge — Bg-warning 40% fill, IBM Plex 6px #1b1b1b, pad 4/2, r4 */
+.login-required-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-family-ibm-plex-sans);
+  font-size: 6px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--brand-neutral-950);
+  background: var(--login-required-bg);
+  padding: 2px 4px;
+  border-radius: var(--radius-4);
+  white-space: nowrap;
+}
+
+/* Input "Fiedls" — h40, bg #f7f5f2, pad 8/12, r8, DM Sans 12px, placeholder #999 */
+.login-input {
+  width: 100%;
+  height: 40px;
+  padding: 12px 8px;
+  border-radius: var(--radius-8);
+  border: 0;
+  background: var(--login-field-bg);
+  color: var(--brand-neutral-950);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-size);
+  line-height: 1.5;
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+
+.login-input:focus {
+  box-shadow: inset 0 0 0 1px var(--login-primary);
+}
+
+.login-input::placeholder {
+  color: var(--brand-neutral-400);
+}
+
+/* Forgot link — Figma: START-aligned below password, 32px tall */
+.login-form__forgot {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.login-link {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-size);
+  line-height: 1.5;
+  color: var(--login-primary);
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+/* Forgot Password ? — DM Sans 12px, Text/tertiary #f87748 */
+.login-link--danger {
+  color: var(--brand-tertiary-500);
+}
+
+.login-error {
+  font-size: var(--caption-2-size);
+  color: var(--functional-danger-500);
+  margin: 0;
+}
+
+/* "Next" button — Figma 3:123689: Lg h48, Bg-Black #1b1b1b, r12,
+   pad 16/12, DM Sans Regular 18px white. Sits 32px below the field group. */
+.login-btn {
+  width: 100%;
+  height: 48px;
+  margin-block-start: 16px;   /* 16 (form gap) + 16 = 32 below fields */
+  padding: 12px 16px;
+  border: 0;
+  border-radius: var(--radius-12);
+  background: var(--brand-neutral-950);
+  color: var(--login-surface-white);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--body-size);
+  font-weight: 400;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-btn:not(:disabled):hover {
+  opacity: 0.88;
+}
+
+.login-btn--primary-dark {
+  background: var(--login-primary);
+}
+
+/* ── Bottom block (3:123690): privacy+signup as ONE centered
+   paragraph, gap 16 to social row, the whole block 32 below button ── */
+.login-foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-block-start: 32px;
+}
+
+/* Privacy + "Sign up here ?" — DM Sans 12px #999, centered */
+.login-form__privacy {
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-size);
+  font-weight: 400;
+  color: var(--brand-neutral-400);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.login-form__privacy .login-link {
+  font-size: var(--caption-size);
+  font-weight: 700;
+  color: var(--login-primary);
+}
+
+/* ── Social buttons (3:123692) — group 204px, gap 8, each flex-1,
+   h56, bg #f7f5f2, r12, 32px brand icon ── */
+.login-social {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  width: 204px;
+  max-width: 100%;
+}
+
+.login-social__btn {
+  flex: 1 0 0;
+  min-width: 0;
+  height: 56px;
+  padding: 12px 16px;
+  border-radius: var(--radius-12);
+  border: 0;
+  background: var(--login-field-bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.login-social__btn:hover {
+  box-shadow: var(--elevation-1);
+}
+
+.login-social__btn svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Apple integration icon — white apple on a #ffd166 rounded badge
+   (Figma 3:123694: badge inset 6.25% of 32 = 28px, white glyph) */
+.login-social__apple {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-social__apple::before {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--login-apple-badge);
+}
+
+.login-social__apple svg {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Forgot Password Modal ──────────────────────────────────── */
+/* ── Forgot Password Modal — Figma node 3:124172 ────────────────────
+   Self-contained: lives in a position:fixed backdrop OUTSIDE .login-page,
+   so it cannot inherit the --login-* token scope. All values pinned to
+   the Figma Dev Mode spec (radius-20, Elevation-4, 567px, navy CTA). */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+}
+
+.modal-card {
+  background: #ffffff;                       /* Background/Bg-Color 2 */
+  border-radius: var(--radius-20);           /* radius-20 */
+  padding: 16px 24px;                        /* md-spaces lg / xl */
+  width: 567px;
+  max-width: calc(100vw - 48px);
+  box-shadow: 0px 4px 12px 0px rgba(0,0,0,0.08);  /* Eleveation 4 */
+  display: flex;
+  flex-direction: column;
+  gap: 32px;                                 /* large-spaces xxxl */
+}
+
+.modal-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.modal-card__title {
+  font-family: var(--font-family-ibm-plex-sans);
+  font-size: 22px;                           /* Title/size */
+  font-weight: 700;
+  line-height: 1.4;
+  color: #1b1b1b;                            /* Text/Black */
+  margin: 0;
+}
+
+.modal-card__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-4);            /* radius-sm */
+  border: 0;
+  background: transparent;
+  color: #282828;                            /* Icon/Black */
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.modal-card__close:hover {
+  background: #f7f5f2;
+}
+
+.modal-card__subtitle {
+  font-family: var(--font-family-dm-sans);
+  font-size: 18px;                           /* Body/size */
+  font-weight: 400;
+  color: #1b1b1b;                            /* Text/Black */
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Field + button grouped with 16px (md-spaces lg) gap */
+.modal-card__group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;                                  /* small-spaces xxs */
+}
+
+.modal-label {
+  font-family: var(--font-family-dm-sans);
+  font-size: 12px;                           /* Caption/size */
+  font-weight: 400;
+  line-height: 1.5;
+  color: #1b1b1b;                            /* Text/Black */
+}
+
+.modal-input {
+  width: 100%;
+  height: 40px;
+  padding: 12px 8px;                         /* md md / xs */
+  border-radius: var(--radius-8);
+  border: 0;
+  background: #f7f5f2;                        /* Background/Bg-Light_Gray */
+  color: #1b1b1b;
+  font-family: var(--font-family-dm-sans);
+  font-size: 12px;                           /* Caption/size */
+  line-height: 1.5;
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+
+.modal-input:focus {
+  box-shadow: inset 0 0 0 1px #2e358f;       /* Border/primary */
+}
+
+.modal-input::placeholder {
+  color: #999999;                            /* Text/Gray */
+}
+
+.modal-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* CTA — Figma 3:124180: h40, navy fill, r8, white DM Sans 16, flat-button shadow */
+.modal-btn {
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px;                         /* xs / md */
+  border: 1px solid #2e358f;                 /* Border/primary */
+  border-radius: var(--radius-8);
+  background: #2e358f;                        /* Background/Bg-primary */
+  color: #ffffff;                            /* Text/Netural */
+  font-family: var(--font-family-dm-sans);
+  font-size: 16px;                           /* Subtitle/size */
+  font-weight: 400;
+  line-height: 1.5;
+  cursor: pointer;
+  /* Shadow Flat Button (Figma 3:124180): drop ring + 2 inner bevel shadows */
+  box-shadow:
+    0px 0px 0px 2px rgba(46,53,143,0.2),
+    inset 0px 0px 0px 2px #32399a,
+    inset 0px -2px 2px 0px #252a74;
+  transition: opacity 0.2s;
+}
+
+.modal-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modal-btn:not(:disabled):hover {
+  opacity: 0.9;
+}
+
+.modal-card__success {
+  padding: 12px 16px;
+  border-radius: var(--radius-8);
+  background: var(--functional-success-50);
+  border: var(--border-width-thin) solid var(--functional-success-200);
+  color: var(--functional-success-700);
+  font-size: var(--caption-2-size);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────
+   No Figma mobile login frame → single-column, form centred. */
+@media (max-width: 900px) {
+  .login-page {
+    grid-template-columns: 1fr;
+  }
+
+  .login-panel--left {
+    display: none;
+  }
+
+  .login-panel--right {
+    min-height: 100vh;
+    justify-content: center;
+    /* reset the desktop left-of-centre gutter so the form centres */
+    padding-inline: 24px;
+  }
+}

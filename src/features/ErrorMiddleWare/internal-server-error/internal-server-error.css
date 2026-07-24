@@ -1,0 +1,96 @@
+.container-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* full screen */
+  background-color: var(--ui-surface);
+}
+
+.content {
+  text-align: center;
+  max-width: 600px;
+  padding: 20px;
+}
+
+.header-500 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--brand-neutral-800);
+  margin-top: 20px;
+  margin-bottom: 12px;
+}
+
+.image-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-image {
+  max-width: 280px;
+  height: auto;
+}
+
+.error-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--brand-neutral-800);
+  margin-top: 16px;
+}
+
+.error-message {
+  font-size: 1rem;
+  color: var(--brand-neutral-600);
+}
+
+/* ترتيب الأيقونة بجانب النص */
+.reach-out {
+  display: inline-block;
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+.icon-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* المسافة بين الأيقونة والنص */
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.icon-inline {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.mt-4 { margin-top: 1rem; }
+.mt-3 { margin-top: 0.75rem; }
+
+/* زر الأساس*/
+.btn {
+  display: inline-block;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.25rem;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--brand-primary-500);
+  color: var(--ui-surface);
+}
+
+.btn-khalli {
+  background-color: var(--brand-primary-800);
+  border-color: var(--brand-primary-800);
+  color: var(--ui-surface);
+}
+.btn-khalli:hover,
+.btn-khalli:focus,
+.btn-khalli:active {
+  background-color: var(--brand-primary-900);
+  border-color: var(--brand-primary-900);
+  color: var(--ui-surface);
+}

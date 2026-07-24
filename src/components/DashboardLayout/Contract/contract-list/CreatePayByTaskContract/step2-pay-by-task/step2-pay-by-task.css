@@ -1,0 +1,95 @@
+
+.card-section {
+  background-color: var(--ui-bg-surface);
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 5px color-mix(in srgb, var(--brand-neutral-950) 5%, transparent);
+  margin-bottom: 20px; /* Space between card sections */
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: var(--brand-neutral-800);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-grid-secondary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Optional: For fields that should span the full width in a grid */
+.form-field.full-width {
+  grid-column: 1 / -1; /* Spans all columns */
+}
+
+.form-label {
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: var(--brand-neutral-600);
+  display: flex;
+  align-items: center;
+}
+
+.required-badge {
+  color: var(--brand-neutral-900);
+  background-color: var(--functional-warning-300);
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin-inline-start: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--ui-border-secondary);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--brand-neutral-800);
+  box-sizing: border-box;
+  background-color: var(--brand-neutral-100);
+}
+
+.form-input::placeholder {
+  color: var(--brand-neutral-300);
+}
+
+.form-input:focus {
+  border-color: var(--functional-info-600);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-primary-500) 25%, transparent);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon .form-input {
+  padding-inline-end: 40px; /* Make space for the icon */
+}
+
+.input-icon {
+  position: absolute;
+  inset-inline-end: 12px;
+  width: 20px;
+  height: 20px;
+  color: var(--brand-neutral-400); /* Styling for the icon if it were an SVG or font icon */
+}

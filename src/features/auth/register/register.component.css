@@ -1,0 +1,313 @@
+/* ── Role Picker page (Figma 3:124199) ──────────────────────────
+   Standalone cream surface. Tokens mirror login/OTP freeze. */
+.register-page {
+  --login-primary: var(--landing-navbar-primary);   /* #2e358f */
+  --register-surface-white: #ffffff;
+  /* Figma card tints (Background/Bg-Light-*) — business is #d8daf3 exactly
+     (--brand-primary-100 is #D4D4F0, a hair off, so pin the Figma value). */
+  --register-business-bg: #d8daf3;
+  --register-contractor-bg: var(--brand-secondary-100);   /* #ccf1ff */
+  --register-employee-bg: var(--brand-tertiary-50);       /* #feede6 */
+  min-height: 100vh;
+  background: var(--brand-grays-50);                 /* Bg-Light_Gray #f7f5f2 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Top bar (Figma 3:124200: x32 y40, h32) — same as login/OTP ─── */
+.register-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 32px 0;
+}
+
+.register-topbar__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.971px;
+  padding: 3.942px;
+  text-decoration: none;
+}
+
+.register-topbar__logo-segment {
+  display: block;
+  filter: var(--register-logo-filter, none);   /* #282828 art on cream */
+}
+
+.register-topbar__controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reg-ctrl--lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: var(--radius-8);
+  background: var(--register-surface-white);
+  border: 0;
+  color: var(--brand-neutral-950);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-size);
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.reg-ctrl--theme-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 4px;
+  border-radius: var(--radius-8);
+  background: var(--register-surface-white);
+}
+
+.reg-ctrl__theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: var(--radius-6);
+  border: 0;
+  background: transparent;
+  color: var(--brand-neutral-400);
+  font-size: var(--caption-size);
+  font-family: var(--font-family-dm-sans);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.reg-ctrl__theme-btn--active {
+  background: var(--brand-neutral-900);
+  color: #ffffff;
+}
+
+/* ── Main content (Figma 3:124207: y203, content centered) ────────
+   Vertical rhythm: title/sub block → 64px → cards → 64px → footer,
+   group vertically centered (generous Figma breathing room). */
+.register-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 64px;
+  padding: 32px 32px 56px;
+}
+
+/* ── Title + subtitle (Figma 3:124208: flex-col gap 8, centered) ── */
+.register-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+/* Title — IBM Plex Sans Bold H3 42 / 1.3, #1b1b1b */
+.register-head__title {
+  font-family: var(--font-family-ibm-plex-sans);
+  font-size: var(--h3-size);          /* 42px */
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--brand-neutral-950);    /* #1b1b1b */
+  margin: 0;
+}
+
+/* Subtitle — DM Sans Regular Body 18 / 1.5, #999, with brush over it. */
+.register-head__subtitle {
+  position: relative;
+  isolation: isolate;
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--body-size);        /* 18px */
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--brand-neutral-400);    /* #999 Text/gray */
+  margin: 0;
+}
+
+/* Orange brush scribble — exact Figma 3:124211 display box 324.845×45.865
+   (Figma's own render of the 332×54 viewBox). Centered over subtitle,
+   nudged down ~2px so the loop sits around the text. Behind text (z0/z1). */
+.register-head__brush {
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: calc(50% + 2px);
+  transform: translate(-50%, -50%);
+  width: 324.845px;
+  height: 45.865px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.register-head__subtitle-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Cards (Figma 3:124212: 3 × 320, gap 24, centered row) ──────── */
+.register-cards {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+/* Card (Figma 3:16715): 320 square, flex-col gap 16, pad 24, radius-16. */
+.register-card {
+  width: 320px;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  border: 0;
+  border-radius: var(--radius-16);
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.register-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--elevation-2);
+}
+
+.register-card:focus-visible {
+  outline: 2px solid var(--login-primary);
+  outline-offset: 2px;
+}
+
+.register-card--selected {
+  outline: 2px solid var(--login-primary);
+  outline-offset: 2px;
+}
+
+/* Per-role tints (Figma Background/Bg-Light-*) */
+.register-card--business   { background: var(--register-business-bg); }
+.register-card--contractor { background: var(--register-contractor-bg); }
+.register-card--employee   { background: var(--register-employee-bg); }
+
+/* Illustration slot — Figma illustration ≈143px tall, centered top of card.
+   Assets are high-res Figma SVG exports (rendered + bg-stripped + trimmed),
+   crisp at any scale. */
+.register-card__illus-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 154px;
+}
+
+/* Heights tuned to Figma VISUAL occupancy; width auto = true aspect (no
+   stretch). All within the 154px slot so card padding/title/body/height
+   are unaffected. */
+.register-card__illus {
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.register-card--business   .register-card__illus { height: 144px; }
+/* Contractor is the dominant illustration in Figma — kept larger. */
+.register-card--contractor .register-card__illus { height: 152px; }
+.register-card--employee   .register-card__illus { height: 146px; }
+
+/* Card title — IBM Plex Sans Bold Title 22 / 1.4, #1b1b1b */
+.register-card__title {
+  font-family: var(--font-family-ibm-plex-sans);
+  font-size: var(--title-size);       /* 22px */
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--brand-neutral-950);    /* #1b1b1b */
+}
+
+/* Card body — Instrument Sans Medium 14 / 22, per-role accent color */
+.register-card__body {
+  font-family: 'Instrument Sans', var(--font-family-dm-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  margin: 0;
+}
+
+.register-card--business   .register-card__body { color: var(--login-primary); }       /* #2e358f */
+.register-card--contractor .register-card__body { color: var(--brand-secondary-500); } /* #00afef */
+.register-card--employee   .register-card__body { color: var(--brand-tertiary-500); }  /* #f87748 */
+
+/* ── Footer (Figma 3:124236): text + login icon, gap 6, pad 12/8 ── */
+.register-footer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: var(--radius-8);
+  text-decoration: none;
+}
+
+/* "Already have an account" — DM Sans Subtitle 16 / 1.5, #201b13 */
+.register-footer__text {
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--subtitle-size);    /* 16px */
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--brand-grays-900);      /* #201b13 */
+}
+
+/* "Log in" — DM Sans Bold, navy #2e358f */
+.register-footer__link {
+  font-family: var(--font-family-dm-sans);
+  font-weight: 700;
+  color: var(--login-primary);
+}
+
+.register-footer__icon {
+  color: var(--login-primary);
+  flex-shrink: 0;
+}
+
+.register-footer:hover .register-footer__link {
+  text-decoration: underline;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────
+   Desktop-first @1440. Below 1040 cards tighten to 280px (still one row
+   to ~872px). Below 896 → single centered column (no 2+1 orphan). */
+@media (max-width: 1040px) {
+  .register-cards { gap: 16px; }
+  .register-card { width: 280px; }
+}
+
+@media (max-width: 896px) {
+  .register-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+  .register-card {
+    width: 100%;
+    max-width: 360px;
+    min-height: auto;
+  }
+}
+
+@media (max-width: 620px) {
+  .register-content {
+    gap: 40px;
+    padding: 24px 16px 40px;
+  }
+  .register-head__title { font-size: 32px; }
+  .register-card { max-width: 340px; }
+  .register-topbar {
+    padding: 24px 16px 0;
+    gap: 12px;
+  }
+}

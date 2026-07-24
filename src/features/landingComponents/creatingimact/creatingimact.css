@@ -1,0 +1,183 @@
+/* ───────────────────────────────────────────────────────────────────
+   Figma 3:37913 — Impact stats band. White bg in BOTH themes; the
+   wavey highlight is the blue asset in both themes too.
+   ─────────────────────────────────────────────────────────────────── */
+:host {
+  display: block;
+  background: var(--landing-impact-bg);
+  font-family: var(--font-family-dm-sans);
+}
+
+.impact-band {
+  /* 56px gap before the frame; 56px white band after it (before compliance bg) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-medium-lg);
+  padding-block: var(--spacing-large-massive);
+  overflow: hidden;
+}
+
+.impact-band__header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-medium-lg);
+  inline-size: min(100%, var(--landing-hero-title-max-width)); /* 848.02 */
+  text-align: center;
+}
+
+/* wavey (3:37915): abs (385.51, −10), 756×57 — blue rect behind the phrase */
+.impact-band__wavey {
+  position: absolute;
+  inset-inline-start: 385.51px;
+  inset-block-start: -10px;
+  inline-size: 756px;
+  block-size: 57px;
+  max-inline-size: none;
+}
+
+.impact-band__title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: var(--brand-grays-900);
+  font-family: var(--typography-h4-font-family);
+  font-size: var(--typography-h4-font-size);
+  font-weight: var(--landing-hero-title-font-weight);
+  line-height: var(--typography-h4-line-height);
+}
+
+.impact-band__title-highlight {
+  color: var(--landing-navbar-surface); /* white over the wavey, both themes */
+}
+
+.impact-band__desc {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  max-inline-size: var(--landing-hero-body-max-width); /* 555.99 */
+  color: var(--brand-neutral-400);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--body-size);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Stats row (3:37923): gap 16, items-end */
+.impact-band__stats {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--spacing-medium-lg);
+  inline-size: 100%;
+}
+
+.impact-band__stat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small-xxxs);
+}
+
+.impact-band__stat-icon {
+  inline-size: 79.561px;
+  block-size: 76.534px;
+}
+
+.impact-band__stat-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-small-xs);
+  white-space: nowrap;
+}
+
+.impact-band__stat-value {
+  color: var(--brand-grays-900);
+  font-family: var(--typography-h4-font-family);
+  font-size: var(--typography-h4-font-size);
+  font-weight: var(--landing-hero-title-font-weight);
+  line-height: var(--typography-h4-line-height);
+}
+
+.impact-band__stat-label {
+  max-inline-size: 235px;
+  color: var(--brand-neutral-400);
+  font-size: var(--subtitle-size);
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: normal;
+}
+
+/* ─── Tablet stabilization (768–1100px) — fit decorative wavey.
+   Desktop (>1100) and mobile (<768) untouched. ─────────────────────── */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .impact-band {
+    padding-inline: var(--spacing-large-xxxl); /* 40 */
+    box-sizing: border-box;
+  }
+
+  /* blue wavey sits behind the centered title — recenter + cap to fit */
+  .impact-band__wavey {
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    inline-size: min(90%, 756px);
+    max-inline-size: 90%;
+  }
+}
+
+/* ─── Mobile — Figma 3:65109 ─────────────────────────────────────── */
+@media (max-width: 767px) {
+  .impact-band__header {
+    inline-size: 100%;
+  }
+
+  .impact-band__wavey {
+    /* (166, −7.36), 575.14×43.36, clipped at frame edge */
+    inset-inline-start: 166px;
+    inset-block-start: -7.36px;
+    inline-size: 575.14px;
+    block-size: 43.36px;
+  }
+
+  .impact-band__title {
+    /* Figma mobile (3:65117): 336×36 — single line */
+    max-inline-size: 336px;
+    font-size: var(--typography-h6-font-size);  /* 26 */
+    line-height: var(--typography-h6-line-height); /* 1.4 */
+    white-space: nowrap;
+  }
+
+  .impact-band__desc {
+    max-inline-size: 100%;
+    font-size: var(--subtitle-size); /* 16 on mobile */
+  }
+
+  .impact-band__stats {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-medium-xl); /* 24 */
+  }
+
+  .impact-band__stat {
+    inline-size: 295.12px;
+    justify-content: flex-start;
+  }
+
+  .impact-band__stat-icon {
+    inline-size: 82.124px;
+    block-size: 79px;
+  }
+
+  .impact-band__stat-value {
+    font-size: var(--h5-size);   /* 32 */
+    line-height: var(--line-height-4); /* 1.4 */
+  }
+
+  .impact-band__stat-label {
+    max-inline-size: 209px;
+    font-size: 14px; /* Figma mobile label: 209×21 = 14px × 1.5 */
+  }
+}

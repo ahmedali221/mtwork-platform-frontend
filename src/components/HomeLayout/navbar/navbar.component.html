@@ -1,0 +1,115 @@
+<nav class="navbar" [attr.aria-label]="languageService.translations()?.common?.mainNavigation">
+  <div class="navbar__frame">
+    <a class="navbar__brand" routerLink="/" [attr.aria-label]="languageService.translations()?.common?.mtworkHome">
+      <span class="visually-hidden">MTWORK</span>
+      <span class="navbar__brand-lockup" aria-hidden="true">
+        @for (segment of logoSegments; track segment.src) {
+          <img
+            class="navbar__brand-segment"
+            [src]="segment.src"
+            alt=""
+            [style.width.px]="segment.width"
+            [style.height.px]="segment.height"
+          />
+        }
+      </span>
+    </a>
+
+    <div class="navbar__desktop">
+      <div class="navbar__links">
+        @for (link of navLinks; track link.route) {
+          <a class="navbar__link" [routerLink]="link.route">
+            {{ languageService.translations()?.nav?.[link.key] || link.fallback }}
+          </a>
+        }
+      </div>
+
+      <div class="navbar__actions">
+        <button
+          (click)="toggleLanguage()"
+          type="button"
+          class="navbar__utility-button navbar__utility-button--language"
+        >
+          <span class="navbar__icon navbar__icon--language" aria-hidden="true">
+            <img class="navbar__icon-layer navbar__icon-layer--language" src="assets/images/navbar/icon-language.svg" alt="" />
+          </span>
+          <span>{{ languageService.currentLang() === 'en' ? 'Arabic' : 'EN' }}</span>
+        </button>
+
+        <button
+          (click)="toggleTheme()"
+          type="button"
+          class="navbar__utility-button navbar__utility-button--theme"
+          [attr.aria-label]="languageService.translations()?.common?.toggleTheme"
+        >
+          <span class="navbar__icon navbar__icon--theme" aria-hidden="true">
+            <img class="navbar__icon-layer navbar__icon-layer--theme-inner" src="assets/images/navbar/icon-theme-inner.svg" alt="" />
+            <img class="navbar__icon-layer navbar__icon-layer--theme-outer" src="assets/images/navbar/icon-theme-outer.svg" alt="" />
+          </span>
+        </button>
+
+        <div class="navbar__cta-group">
+          <a class="navbar__cta navbar__cta--login" routerLink="/login">
+            {{ languageService.translations()?.nav?.login || 'Login' }}
+          </a>
+          <a class="navbar__cta navbar__cta--demo" routerLink="/register">
+            {{ languageService.translations()?.nav?.bookADemo || 'Book a demo' }}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <button
+      (click)="toggleMenu()"
+      type="button"
+      class="navbar__menu-toggle"
+      [attr.aria-expanded]="isMenuOpen()"
+      aria-controls="navbar-mobile-panel"
+      [attr.aria-label]="languageService.translations()?.common?.toggleNavMenu"
+    >
+      <svg *ngIf="!isMenuOpen()" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 6H20M4 12H20M4 18H20" />
+      </svg>
+      <svg *ngIf="isMenuOpen()" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 6L18 18M18 6L6 18" />
+      </svg>
+    </button>
+  </div>
+
+  <div *ngIf="isMenuOpen()" id="navbar-mobile-panel" class="navbar__mobile-panel">
+    @for (link of navLinks; track link.route) {
+      <a class="navbar__mobile-link" [routerLink]="link.route" (click)="toggleMenu()">
+        {{ languageService.translations()?.nav?.[link.key] || link.fallback }}
+      </a>
+    }
+
+    <div class="navbar__mobile-actions">
+      <button (click)="toggleLanguage()" type="button" class="navbar__mobile-utility">
+        <span class="navbar__icon navbar__icon--language" aria-hidden="true">
+          <img class="navbar__icon-layer navbar__icon-layer--language" src="assets/images/navbar/icon-language.svg" alt="" />
+        </span>
+        <span>{{ languageService.currentLang() === 'en' ? 'Arabic' : 'EN' }}</span>
+      </button>
+
+      <button
+        (click)="toggleTheme()"
+        type="button"
+        class="navbar__mobile-utility navbar__mobile-utility--theme"
+        [attr.aria-label]="languageService.translations()?.common?.toggleTheme"
+      >
+        <span class="navbar__icon navbar__icon--theme" aria-hidden="true">
+          <img class="navbar__icon-layer navbar__icon-layer--theme-inner" src="assets/images/navbar/icon-theme-inner.svg" alt="" />
+          <img class="navbar__icon-layer navbar__icon-layer--theme-outer" src="assets/images/navbar/icon-theme-outer.svg" alt="" />
+        </span>
+      </button>
+
+      <a class="navbar__mobile-cta navbar__mobile-cta--login" routerLink="/login" (click)="toggleMenu()">
+        {{ languageService.translations()?.nav?.login || 'Login' }}
+      </a>
+
+      <a class="navbar__mobile-cta navbar__mobile-cta--demo" routerLink="/register" (click)="toggleMenu()">
+        {{ languageService.translations()?.nav?.bookADemo || 'Book a demo' }}
+      </a>
+    </div>
+  </div>
+</nav>

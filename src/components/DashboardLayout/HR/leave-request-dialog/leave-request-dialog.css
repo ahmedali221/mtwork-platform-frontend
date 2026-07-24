@@ -1,0 +1,365 @@
+/* ── Container ───────────────────────────────────────────── */
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  width: 480px;
+  max-width: 100%;
+  background: var(--ui-bg-surface);
+  border-radius: var(--radius-8);
+  overflow: hidden;
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--brand-neutral-100);
+  flex-shrink: 0;
+}
+
+.dialog-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--brand-neutral-950);
+  letter-spacing: -0.2px;
+}
+
+.close-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--radius-6);
+  background: none;
+  color: var(--brand-neutral-400);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.close-btn:hover {
+  background-color: var(--brand-neutral-100);
+  color: var(--brand-neutral-900);
+}
+
+/* ── Body ────────────────────────────────────────────────── */
+.dialog-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Form fields ─────────────────────────────────────────── */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.field-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--brand-neutral-800);
+}
+
+.required {
+  color: var(--functional-danger-500);
+  margin-inline-start: 2px;
+}
+
+.field-select,
+.field-input,
+.field-textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--brand-neutral-200);
+  border-radius: var(--radius-6);
+  font-size: 13px;
+  color: var(--brand-neutral-800);
+  background-color: var(--brand-neutral-50);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.field-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: inset-inline-end 12px center;
+  padding-inline-end: 32px;
+  cursor: pointer;
+}
+
+.field-textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.5;
+}
+
+.field-select:focus,
+.field-input:focus,
+.field-textarea:focus {
+  outline: none;
+  border-color: var(--brand-primary-500);
+  box-shadow: 0 0 0 2px var(--brand-primary-100);
+  background-color: var(--ui-bg-surface);
+}
+
+.field-select::placeholder,
+.field-input::placeholder,
+.field-textarea::placeholder {
+  color: var(--brand-neutral-300);
+}
+
+/* Error state */
+.form-field.has-error .field-select,
+.form-field.has-error .field-input,
+.form-field.has-error .field-textarea {
+  border-color: var(--functional-danger-500);
+}
+
+.form-field.has-error .field-select:focus,
+.form-field.has-error .field-input:focus,
+.form-field.has-error .field-textarea:focus {
+  box-shadow: 0 0 0 2px var(--functional-danger-100);
+}
+
+.field-error {
+  font-size: 12px;
+  color: var(--functional-danger-500);
+}
+
+.form-level-error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-6);
+  background-color: var(--functional-danger-50);
+  color: var(--functional-danger-600);
+  font-size: 13px;
+  border: 1px solid var(--functional-danger-100);
+}
+
+/* ── View mode ───────────────────────────────────────────── */
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-badge.status-pending {
+  background-color: var(--functional-warning-50);
+  color: var(--functional-warning-600);
+}
+
+.status-badge.status-approved {
+  background-color: var(--functional-success-50);
+  color: var(--functional-success-600);
+}
+
+.status-badge.status-rejected {
+  background-color: var(--functional-danger-50);
+  color: var(--functional-danger-600);
+}
+
+.status-badge.status-canceled {
+  background-color: var(--brand-neutral-100);
+  color: var(--brand-neutral-600);
+}
+
+.created-at {
+  font-size: 12px;
+  color: var(--brand-neutral-400);
+}
+
+.info-section {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--brand-neutral-100);
+  border-radius: var(--radius-6);
+  overflow: hidden;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--brand-neutral-50);
+  font-size: 13px;
+  gap: 12px;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row-column {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.info-label {
+  font-weight: 500;
+  color: var(--brand-neutral-400);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.info-value {
+  color: var(--brand-neutral-900);
+  font-weight: 500;
+  text-align: end;
+  word-break: break-word;
+}
+
+.reason-text {
+  margin: 0;
+  text-align: start;
+  font-weight: 400;
+  color: var(--brand-neutral-800);
+  line-height: 1.6;
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.btn-secondary {
+  padding: 9px 18px;
+  border: 1px solid var(--brand-neutral-200);
+  border-radius: var(--radius-6);
+  background: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--brand-neutral-800);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--brand-neutral-50);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  border: none;
+  border-radius: var(--radius-6);
+  background-color: var(--brand-primary-500);
+  color: var(--brand-neutral-500);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--brand-primary-600);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-approve {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 20px;
+  border: none;
+  border-radius: var(--radius-6);
+  background-color: var(--functional-success-500);
+  color: var(--brand-neutral-500);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-approve:hover:not(:disabled) {
+  background-color: var(--functional-success-600);
+}
+
+.btn-approve:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-reject {
+  padding: 9px 20px;
+  border: 1px solid var(--functional-danger-200);
+  border-radius: var(--radius-6);
+  background: none;
+  color: var(--functional-danger-500);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-reject:hover:not(:disabled) {
+  background-color: var(--functional-danger-50);
+}
+
+.btn-reject:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Spinner ─────────────────────────────────────────────── */
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: var(--brand-neutral-500);
+  border-radius: var(--radius-full);
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .dialog-container { width: 100%; }
+  .form-row { grid-template-columns: 1fr; }
+  .dialog-footer { flex-direction: column-reverse; align-items: stretch; }
+  .btn-primary,
+  .btn-secondary,
+  .btn-approve,
+  .btn-reject { justify-content: center; }
+}

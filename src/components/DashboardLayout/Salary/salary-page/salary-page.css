@@ -1,0 +1,355 @@
+/* ── Page Layout — uses global .page-container; keep only Salary-specific tweaks ── */
+.salary-page { gap: 0; }
+
+/* ── Page Header ─────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-medium-xl);
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--brand-neutral-900);
+  margin: 0;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-small-xs);
+  padding: 10px 20px;
+  background-color: var(--brand-neutral-950);
+  color: var(--ui-bg-surface);
+  border: none;
+  border-radius: var(--radius-8);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.action-btn:hover { opacity: 0.88; }
+
+/* ── Tabs ────────────────────────────────────────────────── */
+.tabs-container {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--brand-neutral-100);
+}
+
+.tab-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--brand-neutral-300);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.tab-item:hover { color: var(--brand-neutral-400); }
+
+.tab-item.active {
+  color: var(--brand-neutral-900);
+  font-weight: 600;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--brand-primary-500);
+  border-radius: 1px;
+}
+
+.tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background-color: var(--brand-primary-100);
+  color: var(--brand-primary-700);
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ── States ──────────────────────────────────────────────── */
+.loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 60px 24px;
+  font-size: 14px;
+  color: var(--brand-neutral-400);
+}
+
+.spinner-lg {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--brand-neutral-200);
+  border-top-color: var(--brand-primary-500);
+  border-radius: var(--radius-full);
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--functional-danger-500);
+  font-size: 14px;
+}
+
+.retry-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--brand-neutral-200);
+  border-radius: var(--radius-6);
+  background: none;
+  font-size: 13px;
+  color: var(--brand-neutral-800);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.retry-btn:hover { background-color: var(--brand-neutral-50); }
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 60px 24px;
+  text-align: center;
+  background-color: var(--brand-neutral-50);
+  border-radius: var(--radius-8);
+  color: var(--brand-neutral-400);
+}
+
+.empty-state h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--brand-neutral-900);
+  margin: 0;
+}
+
+.empty-state p {
+  font-size: 14px;
+  color: var(--brand-neutral-400);
+  margin: 0;
+  max-width: 360px;
+}
+
+/* ── Overview cards ──────────────────────────────────────── */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* .balance-card / .salary-card: surface comes from global .card; keep only inner layout */
+.balance-card,
+.salary-card {
+  padding: var(--spacing-medium-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small-xs);
+}
+
+.balance-label,
+.salary-card-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--brand-neutral-400);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.balance-amount {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--brand-neutral-900);
+  line-height: 1.1;
+}
+
+.balance-currency {
+  font-size: 13px;
+  color: var(--brand-neutral-400);
+}
+
+.salary-info-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.salary-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.info-label {
+  color: var(--brand-neutral-400);
+  font-weight: 500;
+}
+
+.info-value {
+  color: var(--brand-neutral-900);
+  font-weight: 600;
+}
+
+/* ── Table — uses global .table-container ── */
+.salary-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--ui-bg-surface);
+}
+
+.salary-table th,
+.salary-table td {
+  padding: 12px 16px;
+  text-align: start;
+  font-size: 13px;
+}
+
+.salary-table th {
+  font-weight: 600;
+  color: var(--ui-text-muted);
+  background-color: var(--ui-bg-surface);
+  border-bottom: 1px solid var(--ui-border);
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.salary-table tbody tr {
+  border-bottom: 1px solid var(--brand-neutral-100);
+  transition: background-color 0.15s;
+}
+
+.salary-table tbody tr:last-child { border-bottom: none; }
+.salary-table tbody tr:hover { background-color: var(--brand-neutral-50); }
+.salary-table td { color: var(--brand-neutral-800); vertical-align: middle; }
+
+.amount-cell { font-weight: 600; color: var(--brand-neutral-900); }
+.date-cell   { color: var(--brand-neutral-400); white-space: nowrap; }
+
+.reason-cell {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Employee cell ───────────────────────────────────────── */
+.employee-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background-color: var(--brand-primary-100);
+  color: var(--brand-primary-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.employee-name {
+  font-weight: 500;
+  color: var(--brand-neutral-900);
+}
+
+/* ── Status badges ───────────────────────────────────────── */
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.status-pending,
+.status-pending-payment {
+  background-color: var(--functional-warning-50);
+  color: var(--functional-warning-600);
+}
+
+.status-approved,
+.status-paid {
+  background-color: var(--functional-success-50);
+  color: var(--functional-success-600);
+}
+
+.status-rejected {
+  background-color: var(--functional-danger-50);
+  color: var(--functional-danger-600);
+}
+
+/* ── Action buttons ──────────────────────────────────────── */
+.action-btns {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: var(--radius-6);
+  background: none;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+  color: var(--brand-neutral-400);
+}
+
+.icon-btn:hover         { background-color: var(--brand-neutral-100); color: var(--brand-neutral-900); }
+.approve-btn:hover      { background-color: var(--functional-success-50); color: var(--functional-success-600); }
+.reject-btn:hover       { background-color: var(--functional-danger-50);  color: var(--functional-danger-500);  }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .page-header  { flex-direction: column; align-items: flex-start; gap: var(--spacing-medium-lg); }
+  .tabs-container { gap: var(--spacing-medium-lg); overflow-x: auto; }
+  .overview-grid { grid-template-columns: 1fr; }
+}

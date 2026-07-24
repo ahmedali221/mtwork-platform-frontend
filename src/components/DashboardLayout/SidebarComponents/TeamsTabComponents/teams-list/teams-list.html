@@ -1,0 +1,405 @@
+<div class="teams-page">
+
+  <!-- ── Breadcrumb ─────────────────────────────────────────────── -->
+  <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | transloco">
+    <span class="bc-item">Mtwork</span>
+    <svg class="bc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M5.5 3.5L10.5 8L5.5 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="bc-item bc-active">Teams</span>
+  </nav>
+
+  <!-- ── People Section ─────────────────────────────────────────── -->
+  <h2 class="section-people-title">All Peoples in teams</h2>
+
+  <div class="people-row">
+    @for (person of allPeople | slice:0:5; track person.id) {
+      <div class="person-card">
+        <div class="person-card-inner">
+          <div class="person-avatar-wrap">
+            @if (person.avatar && !person.avatar.includes('Avater.png')) {
+              <img [src]="person.avatar" [alt]="person.name + ' avatar'" class="person-avatar-img">
+            } @else {
+              <div class="person-avatar-initials" aria-hidden="true">{{ getInitials(person.name) }}</div>
+            }
+            @if (person.countryFlag) {
+              <img [src]="person.countryFlag" alt="country flag" class="person-flag">
+            }
+          </div>
+          <div class="person-meta">
+            <span class="person-name">{{ person.name || 'Unknown' }}</span>
+            <span class="person-role">{{ person.designation || person.role || '—' }}</span>
+          </div>
+        </div>
+      </div>
+    }
+    @empty {
+      <p class="people-empty">No team members yet.</p>
+    }
+  </div>
+
+  <!-- ── Teams Section Header ───────────────────────────────────── -->
+  <div class="teams-section-header">
+    <h1 class="teams-title">Teams</h1>
+    @if (!isEmployee) {
+      <button class="btn-create-team" (click)="addNewTeam()" [attr.aria-label]="'teams.createTeam' | transloco">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M9 1.5C4.86 1.5 1.5 4.86 1.5 9C1.5 13.14 4.86 16.5 9 16.5C13.14 16.5 16.5 13.14 16.5 9C16.5 4.86 13.14 1.5 9 1.5ZM12.75 9.75H9.75V12.75H8.25V9.75H5.25V8.25H8.25V5.25H9.75V8.25H12.75V9.75Z" fill="currentColor"/>
+        </svg>
+        Create Team
+      </button>
+    }
+  </div>
+
+  <!-- ── Toolbar ─────────────────────────────────────────────────── -->
+  <div class="teams-toolbar">
+    <div class="toolbar-start">
+      <!-- Search -->
+      <div class="search-field">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5C5 7.01 7.01 5 9.5 5C11.99 5 14 7.01 14 9.5C14 11.99 11.99 14 9.5 14Z" fill="currentColor"/>
+        </svg>
+        <input
+          type="text"
+          class="search-input"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Search teams..."
+          [attr.aria-label]="'teams.searchTeams' | transloco"
+        />
+      </div>
+
+      <!-- Filter button -->
+      <button class="btn-filter" [attr.aria-label]="'teams.filterTeams' | transloco">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M2.25 4.5H15.75M4.5 9H13.5M6.75 13.5H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="6"  cy="4.5"  r="1.5" fill="currentColor"/>
+          <circle cx="12" cy="9"    r="1.5" fill="currentColor"/>
+          <circle cx="9"  cy="13.5" r="1.5" fill="currentColor"/>
+        </svg>
+      </button>
+
+      <!-- Refresh -->
+      <button class="btn-filter" (click)="refresh()" [attr.aria-label]="'common.refresh' | transloco" title="Refresh">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M17.65 6.35A7.96 7.96 0 0 0 12 4C7.58 4 4 7.58 4 12s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>
+        </svg>
+      </button>
+
+      <!-- View toggle: table | cards (shared .ui-view-toggle) -->
+      <div class="ui-view-toggle" role="group" [attr.aria-label]="'common.switchView' | transloco">
+        <button type="button" class="ui-view-toggle__btn"
+                [class.ui-view-toggle__btn--active]="viewMode === 'table'"
+                (click)="setView('table')" title="Table view" [attr.aria-label]="'common.tableView' | transloco">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v4H3V4zm0 6h18v4H3v-4zm0 6h18v4H3v-4z" fill="currentColor"/></svg>
+        </button>
+        <button type="button" class="ui-view-toggle__btn"
+                [class.ui-view-toggle__btn--active]="viewMode === 'cards'"
+                (click)="setView('cards')" title="Card view" [attr.aria-label]="'common.cardView' | transloco">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Fullscreen toggle -->
+    <button
+      class="btn-expand"
+      [class.btn-expand--active]="isFullscreen()"
+      (click)="toggleFullscreen()"
+      [attr.aria-label]="isFullscreen() ? 'Exit fullscreen' : 'Enter fullscreen'"
+      [attr.aria-pressed]="isFullscreen()"
+    >
+      @if (isFullscreen()) {
+        <!-- Compress icon -->
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+          <path d="M8.25 3.667V8.25H3.667M18.333 8.25H13.75V3.667M13.75 18.333V13.75H18.333M3.667 13.75H8.25V18.333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      } @else {
+        <!-- Expand icon -->
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+          <path d="M3.667 8.25V3.667H8.25M13.75 3.667H18.333V8.25M18.333 13.75V18.333H13.75M8.25 18.333H3.667V13.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      }
+    </button>
+  </div>
+
+  <!-- ── Teams Grid / Table / Empty State ──────────────────────── -->
+  <div class="teams-content">
+    @if (filteredTeams.length > 0) {
+
+      <!-- ── Table view (alternate to the existing card grid) ── -->
+      @if (viewMode === 'table') {
+        <div class="attendance-table-container">
+          <table class="full-width-table" style="width:100%; border-collapse:separate; border-spacing:0 8px;">
+            <thead>
+              <tr>
+                <th style="text-align:start; padding:12px 16px; font-size:12px; font-weight:600; color:var(--ui-text-muted); text-transform:uppercase;">Team</th>
+                <th style="text-align:start; padding:12px 16px; font-size:12px; font-weight:600; color:var(--ui-text-muted); text-transform:uppercase;">Members</th>
+                <th style="text-align:end;   padding:12px 16px; font-size:12px; font-weight:600; color:var(--ui-text-muted); text-transform:uppercase;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (team of paginatedTeams; track team.id) {
+                <tr style="background: var(--ui-surface); border-radius:8px;">
+                  <td style="padding:14px 16px; cursor:pointer;" (click)="showTeamDetails(team.id)">
+                    {{ resolveTeamName(team) }}
+                  </td>
+                  <td style="padding:14px 16px;">{{ team.members.length || 0 }}</td>
+                  <td style="padding:14px 16px; text-align:end;">
+                    <button class="actions-menu-btn" [matMenuTriggerFor]="rowTeamMenu" [attr.aria-label]="'teams.teamOptions' | transloco">
+                      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="5"  r="2" fill="currentColor"/>
+                        <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                        <circle cx="12" cy="19" r="2" fill="currentColor"/>
+                      </svg>
+                    </button>
+                    <mat-menu #rowTeamMenu="matMenu">
+                      @if (!isEmployee) {
+                        <button mat-menu-item (click)="editTeam(team.id)">Edit</button>
+                        <button mat-menu-item (click)="deleteTeam(team.id)">Delete</button>
+                      }
+                    </mat-menu>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+      <!-- ── Card view (existing — preserved) ── -->
+      <div class="teams-grid">
+        @for (team of paginatedTeams; track team.id) {
+          <div class="team-card">
+            <div class="team-card-top">
+              <!-- Team icon -->
+              <div class="team-icon-box" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM16 18H8V16H16V18ZM16 14H8V12H16V14ZM13 9V3.5L18.5 9H13Z" fill="currentColor"/>
+                </svg>
+              </div>
+
+              <!-- Three-dot menu -->
+              <button
+                class="btn-team-menu"
+                [matMenuTriggerFor]="teamMenu"
+                [attr.aria-label]="'Options for ' + resolveTeamName(team)"
+              >
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <circle cx="4.5" cy="9" r="1.5" fill="currentColor"/>
+                  <circle cx="9"   cy="9" r="1.5" fill="currentColor"/>
+                  <circle cx="13.5" cy="9" r="1.5" fill="currentColor"/>
+                </svg>
+              </button>
+
+              <mat-menu #teamMenu="matMenu" class="teams-dropdown-menu">
+                @if (!isEmployee) {
+                  <button mat-menu-item (click)="editTeam(team.id)">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M11.333 2a1.886 1.886 0 0 1 2.667 2.667L4.667 14 1 15l1-3.667L11.333 2Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Edit Team
+                  </button>
+                }
+                <button mat-menu-item (click)="showTeamDetails(team.id)">
+                  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M8 3C4.36 3 1.258 5.232.25 8.5 1.258 11.768 4.36 14 8 14s6.742-2.232 7.75-5.5C14.742 5.232 11.64 3 8 3Zm0 9.167A3.667 3.667 0 1 1 8 4.833a3.667 3.667 0 0 1 0 7.334ZM8 6.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" fill="currentColor"/>
+                  </svg>
+                  View Details
+                </button>
+                @if (!isEmployee) {
+                  <button mat-menu-item (click)="deleteTeam(team.id)" class="menu-item-danger">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M2 4h12M5.333 4V2.667h5.334V4M6.667 7.333v4M9.333 7.333v4M3.333 4l.667 9.333h8L12.667 4H3.333Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Delete Team
+                  </button>
+                }
+              </mat-menu>
+            </div>
+
+            <div class="team-name">{{ resolveTeamName(team) }}</div>
+
+            <div class="team-card-footer">
+              <span class="members-count">{{ team.members.length }} Members</span>
+              <div class="avatar-group" aria-hidden="true">
+                @for (m of team.members | slice:0:3; track m.id) {
+                  <div class="avatar-chip" [title]="m.name || ''">{{ getInitials(m.name) }}</div>
+                }
+                @if (team.members.length > 3) {
+                  <div class="avatar-chip avatar-overflow">+{{ team.members.length - 3 }}</div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      }<!-- /@else (card view) -->
+
+    } @else {
+      <!-- Empty state -->
+      <div class="empty-state">
+        <img src="assets/images/NoTeams.png" alt="No teams illustration" class="empty-img">
+        <h2 class="empty-title">No Teams Created yet.</h2>
+        <p class="empty-sub">Start by creating team to see your teams, project, task working on</p>
+      </div>
+    }
+  </div>
+
+  <!-- ── Pagination ─────────────────────────────────────────────── -->
+  @if (filteredTeams.length > 0) {
+    <div class="pagination" role="navigation" [attr.aria-label]="'teams.teamsPagination' | transloco">
+      <button
+        class="page-btn page-prev"
+        (click)="prevPage()"
+        [disabled]="currentPage === 1"
+        [attr.aria-label]="'common.previousPage' | transloco"
+      >
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M11.25 13.5L6.75 9L11.25 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Previous
+      </button>
+
+      <div class="page-numbers">
+        @for (p of pages; track p) {
+          <button
+            class="page-num"
+            [class.active]="p === currentPage"
+            (click)="goToPage(p)"
+            [attr.aria-label]="'Page ' + p"
+            [attr.aria-current]="p === currentPage ? 'page' : null"
+          >{{ p }}</button>
+        }
+      </div>
+
+      <button
+        class="page-btn page-next"
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages"
+        [attr.aria-label]="'common.nextPage' | transloco"
+      >
+        Next
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M6.75 4.5L11.25 9L6.75 13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  }
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     Team Details Drawer  (rendered outside .teams-page so it
+     can overlay the full viewport via position:fixed)
+     ═══════════════════════════════════════════════════════════ -->
+@if (selectedTeam()) {
+  <!-- Backdrop -->
+  <div
+    class="drawer-overlay"
+    (click)="closeDrawer()"
+    aria-hidden="true"
+    role="presentation"
+  ></div>
+
+  <!-- Drawer panel -->
+  <aside
+    class="team-drawer"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="'Details for ' + selectedTeam()!.name"
+  >
+    <!-- Header -->
+    <div class="drawer-header">
+      <div class="drawer-header-left">
+        <div class="drawer-icon-box" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM16 18H8V16H16V18ZM16 14H8V12H16V14ZM13 9V3.5L18.5 9H13Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="drawer-header-meta">
+          <h2 class="drawer-name">{{ selectedTeam()!.name }}</h2>
+          <span class="drawer-members-count">
+            {{ selectedTeam()!.members.length }} Member{{ selectedTeam()!.members.length !== 1 ? 's' : '' }}
+          </span>
+        </div>
+      </div>
+      <button class="drawer-close" (click)="closeDrawer()" [attr.aria-label]="'common.closeDetailsPanel' | transloco" type="button">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="drawer-body">
+
+      <!-- About section -->
+      <section class="drawer-section">
+        <h3 class="drawer-section-title">About</h3>
+        <p class="drawer-description">
+          {{ selectedTeam()!.description || 'No description provided for this team.' }}
+        </p>
+        @if (selectedTeam()!.createdAt) {
+          <div class="drawer-meta-row">
+            <svg class="drawer-meta-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M5 1.5V4M11 1.5V4M2 7H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+            <span class="drawer-meta-label">Created</span>
+            <span class="drawer-meta-value">{{ selectedTeam()!.createdAt | date:'MMM d, y' }}</span>
+          </div>
+        }
+      </section>
+
+      <!-- Members section -->
+      <section class="drawer-section">
+        <h3 class="drawer-section-title">
+          Team Members
+          <span class="drawer-count-badge">{{ selectedTeam()!.members.length }}</span>
+        </h3>
+
+        @if (selectedTeam()!.members.length === 0) {
+          <div class="drawer-empty-members">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+              <path d="M18 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM9 32a9 9 0 0 1 18 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <p>No members have been added yet.</p>
+          </div>
+        } @else {
+          <ul class="drawer-member-list">
+            @for (member of selectedTeam()!.members; track member.id) {
+              <li class="drawer-member-item">
+                <div class="drawer-member-avatar">
+                  @if (member.avatar && !member.avatar.includes('Avater.png')) {
+                    <img
+                      [src]="member.avatar"
+                      [alt]="(member.name || '') + ' avatar'"
+                      class="drawer-member-img"
+                    >
+                  } @else {
+                    <span class="drawer-member-initials" aria-hidden="true">{{ getInitials(member.name) }}</span>
+                  }
+                </div>
+                <div class="drawer-member-info">
+                  <span class="drawer-member-name">{{ member.name || member.email || '—' }}</span>
+                  @if (member.designation || member.role) {
+                    <span class="drawer-member-role">{{ member.designation || member.role }}</span>
+                  }
+                </div>
+                @if (member.email && member.name) {
+                  <span class="drawer-member-email">{{ member.email }}</span>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="drawer-footer">
+      <button class="drawer-btn-close" (click)="closeDrawer()" type="button">Close</button>
+    </div>
+  </aside>
+}

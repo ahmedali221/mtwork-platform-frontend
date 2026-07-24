@@ -1,0 +1,217 @@
+/* ───────────────────────────────────────────────────────────────────
+   Figma 3:38261 — Footer. Dark-on-dark (#1b1b1b) in BOTH themes — dark
+   frame is identical, so all tokens are non-flipping. Mobile 3:65453.
+   ─────────────────────────────────────────────────────────────────── */
+.lp-footer {
+  background-color: var(--landing-footer-bg); /* #1b1b1b */
+  color: var(--brand-neutral-400);            /* #999 */
+  font-family: var(--font-family-dm-sans);
+}
+
+/* Footer container (3:38261): flex col, gap19, px24 py32, full-width */
+.lp-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  padding: var(--spacing-large-xxl) var(--spacing-medium-xl); /* 32 / 24 */
+  box-sizing: border-box;
+}
+
+/* top columns (199:76548): flex, gap68, items-start */
+.lp-footer__grid {
+  display: flex;
+  gap: 68px;
+  align-items: flex-start;
+  inline-size: 100%;
+}
+
+/* brand column (199:76433): flex col gap19, auto width (left-packed) */
+.lp-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  flex: 0 0 auto;
+  inline-size: 310px; /* social row width drives the brand column */
+}
+
+/* logo (Component 185): white wordmark, p3.942, gap1.971 */
+.lp-footer__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.971px;
+  padding: 3.942px;
+}
+
+.lp-footer__logo-segment {
+  display: block;
+  /* navbar SVGs are #282828 — invert to white for the dark footer */
+  filter: brightness(0) invert(1);
+}
+
+/* description (197:76608): body 18 / 1.5 #999, w299 */
+.lp-footer__description {
+  inline-size: 299px;
+  max-inline-size: 100%;
+  margin: 0;
+  color: var(--brand-neutral-400);
+  font-size: var(--body-size); /* 18 */
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* social row (197:76519): flex-wrap, gap25, w310 */
+.lp-footer__social {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 25px;
+  inline-size: 310px;
+  max-inline-size: 100%;
+}
+
+/* social link (197:76521): 42×40, p10, bg rgba(153,153,153,.13), r50, icon 20 */
+.lp-footer__social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 42px;
+  block-size: 40px;
+  padding: 10px;
+  border-radius: 50px;
+  background: var(--landing-footer-social-bg);
+  color: var(--landing-navbar-surface); /* white icon */
+  font-size: 20px;
+  line-height: 1;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: background 0.2s;
+}
+
+.lp-footer__social-link i {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.lp-footer__social-link:hover {
+  background: rgba(153, 153, 153, 0.25);
+}
+
+/* link column (Tab 197:76526): w176, flex col gap8 */
+.lp-footer__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small-xs); /* 8 */
+  inline-size: 176px;
+  flex: 0 0 176px;
+}
+
+/* heading (199:76532): body 18 bold white */
+.lp-footer__heading {
+  margin: 0;
+  color: var(--landing-navbar-surface); /* white */
+  font-size: var(--body-size); /* 18 */
+  font-weight: var(--body-font-weight-bold, 700);
+  line-height: 1.5;
+}
+
+/* links (Link 199:76495): each px6 py8, inner h24, subtitle 16 #999 */
+.lp-footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.lp-footer__links li {
+  display: flex;
+}
+
+.lp-footer__links a {
+  display: flex;
+  align-items: center;
+  min-block-size: 24px;
+  padding: var(--spacing-small-xs) var(--spacing-small-xxs); /* 8 / 6 */
+  color: var(--brand-neutral-400); /* #999 */
+  font-size: var(--subtitle-size); /* 16 */
+  font-weight: 400;
+  line-height: 1.5;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* divider (197:76539): full-width hairline */
+.lp-footer__divider {
+  inline-size: 100%;
+  block-size: 0.5px;
+  background: var(--landing-footer-social-bg);
+}
+
+/* bottom row (197:76540): flex space-between */
+.lp-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  inline-size: 100%;
+}
+
+/* copyright (199:76426): body 18 #999 */
+.lp-footer__copyright {
+  margin: 0;
+  color: var(--brand-neutral-400);
+  font-size: var(--body-size); /* 18 */
+  line-height: 1.5;
+}
+
+/* policies (197:76541): flex gap13 */
+.lp-footer__policies {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.lp-footer__policies a {
+  color: var(--brand-neutral-400); /* #999 */
+  font-size: var(--body-size); /* 18 */
+  line-height: 1.5;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* ─── Tablet + Mobile — columns stack ≤1100px (Figma mobile 3:65453, p24).
+   Desktop (>1100) keeps the 4-across row. ──────────────────────────── */
+@media (max-width: 1100px) {
+  .lp-footer__inner {
+    padding-inline: var(--spacing-medium-xl); /* 24 */
+  }
+
+  /* container 345 wide: brand + 3 tabs stack vertically, gap ~32 */
+  .lp-footer__grid {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .lp-footer__brand,
+  .lp-footer__column {
+    inline-size: 100%;
+    flex: 1 1 auto;
+  }
+
+  /* social row mobile (3:65458): 5 × 42 spread across 310, gap 25 */
+  .lp-footer__social {
+    inline-size: 310px;
+  }
+
+  /* bottom stacks (3:65483): copyright then policies, gap ~15 */
+  .lp-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .lp-footer__policies {
+    gap: 13px;
+  }
+}

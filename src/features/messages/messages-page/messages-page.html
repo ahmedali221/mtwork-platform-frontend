@@ -1,0 +1,131 @@
+<div class="messages-page">
+
+  <!-- ── Breadcrumb ───────────────────────────────────────────── -->
+  <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | transloco">
+    <span class="bc-item">{{ 'common.appName' | transloco }}</span>
+    <svg class="bc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M5.5 3.5L10.5 8L5.5 12.5" stroke="currentColor" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="bc-item bc-active">{{ 'messages.title' | transloco }}</span>
+  </nav>
+
+  <h1 class="page-title">{{ 'messages.title' | transloco }}</h1>
+
+  <div class="messages-shell" role="region" [attr.aria-label]="'messages.title' | transloco">
+
+    <!-- ── Left: conversations list ───────────────────────────── -->
+    <aside class="conversations-panel" [attr.aria-label]="'messages.conversations' | transloco">
+      <div class="conv-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/>
+        </svg>
+        <input
+          type="text"
+          [ngModel]="searchQuery()"
+          (ngModelChange)="onSearchChange($event)"
+          [attr.placeholder]="'messages.searchPlaceholder' | transloco"
+          [attr.aria-label]="'messages.searchPlaceholder' | transloco"
+        />
+      </div>
+
+      <ul class="conv-list" role="listbox" [attr.aria-label]="'messages.list' | transloco">
+        @for (c of filteredConversations(); track trackByConvId($index, c)) {
+          <li
+            class="conv-item"
+            role="option"
+            [class.conv-item--active]="c.id === selectedConvId()"
+            [attr.aria-selected]="c.id === selectedConvId()"
+            (click)="selectConversation(c.id)"
+            (keyup.enter)="selectConversation(c.id)"
+            tabindex="0"
+          >
+            <div class="conv-avatar" aria-hidden="true">{{ c.participant.initials }}</div>
+            <div class="conv-meta">
+              <div class="conv-row">
+                <span class="conv-name">{{ c.participant.name }}</span>
+                <span class="conv-time">{{ formatDay(c.lastMessageAt) }}</span>
+              </div>
+              <div class="conv-row conv-row--sub">
+                <span class="conv-preview">{{ c.lastMessage }}</span>
+                @if (c.unreadCount > 0) {
+                  <span class="conv-badge" [attr.aria-label]="'chat.unreadMessages' | transloco">{{ c.unreadCount }}</span>
+                }
+              </div>
+            </div>
+          </li>
+        } @empty {
+          <li class="conv-empty">
+            <app-empty-state
+              kind="chat"
+              [title]="'messages.empty.conversations.title' | transloco"
+              [description]="'messages.empty.conversations.desc' | transloco"
+            />
+          </li>
+        }
+      </ul>
+    </aside>
+
+    <!-- ── Right: messages panel ──────────────────────────────── -->
+    <section class="messages-panel" [attr.aria-label]="'messages.thread' | transloco">
+
+      @if (selectedConversation(); as conv) {
+        <header class="thread-header">
+          <div class="thread-avatar" aria-hidden="true">{{ conv.participant.initials }}</div>
+          <div class="thread-meta">
+            <h2 class="thread-name">{{ conv.participant.name }}</h2>
+            @if (conv.participant.role) {
+              <span class="thread-role">{{ conv.participant.role }}</span>
+            }
+          </div>
+        </header>
+
+        <div #messageList class="thread-list" role="log" aria-live="polite">
+          @for (m of currentMessages(); track trackByMsgId($index, m)) {
+            <div class="msg-row" [class.msg-row--mine]="m.senderId === currentUserId">
+              <div class="msg-bubble">
+                <p class="msg-body">{{ m.body }}</p>
+                <span class="msg-time">{{ formatTime(m.sentAt) }}</span>
+              </div>
+            </div>
+          } @empty {
+            <app-empty-state
+              kind="chat"
+              [title]="'messages.empty.thread.title' | transloco"
+              [description]="'messages.empty.thread.desc' | transloco"
+            />
+          }
+        </div>
+
+        <form class="thread-composer" (ngSubmit)="sendMessage()">
+          <input
+            type="text"
+            class="composer-input"
+            [ngModel]="draft()"
+            (ngModelChange)="onDraftChange($event)"
+            name="draft"
+            [attr.placeholder]="'messages.composerPlaceholder' | transloco"
+            [attr.aria-label]="'messages.composerPlaceholder' | transloco"
+          />
+          <button
+            type="submit"
+            class="composer-send"
+            [disabled]="!draft().trim()"
+            [attr.aria-label]="'messages.send' | transloco"
+          >
+            {{ 'messages.send' | transloco }}
+          </button>
+        </form>
+      } @else {
+        <div class="thread-empty thread-empty--full">
+          <app-empty-state
+            kind="chat"
+            [title]="'messages.empty.select.title' | transloco"
+            [description]="'messages.empty.select.desc' | transloco"
+          />
+        </div>
+      }
+
+    </section>
+  </div>
+</div>

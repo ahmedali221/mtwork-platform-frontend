@@ -1,0 +1,348 @@
+/* ───────────────────────────────────────────────────────────────────
+   Figma node 3:37684 — all values from Dev Mode.
+   Proportional scale: 1em = 10px at desktop; shrinks fluidly so the
+   panel renders 763px wide at ≥1440 and exactly 321.08px at 393
+   (Figma mobile frame), matching both Figma viewports.
+   ─────────────────────────────────────────────────────────────────── */
+.analysis-section {
+  font-size: min(10px, calc((100vw - 71.92px) / 76.3));
+  font-family: var(--font-family-dm-sans);
+}
+
+/* Dark-mode: the dashboard panel must render visually IDENTICAL to light
+   (Figma dark frame 3:51282 — light panel below the dark hero). Pin the
+   theme-flipping tokens used inside the panel to their light values so the
+   panel bg, KPI cards, chart card and text all stay light. Light unchanged. */
+:host-context(.dark-theme) .analysis-section {
+  --ui-bg-surface: #ffffff;       /* panel + KPI cards + chart card bg */
+  --text-dark-gray: var(--brand-grays-900); /* #201b13 KPI/chart text */
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(.dark-theme) .analysis-section {
+    --ui-bg-surface: #ffffff;
+    --text-dark-gray: var(--brand-grays-900);
+  }
+}
+
+.analysis-section__stage {
+  position: relative;
+  inline-size: 76.3em; /* 763px */
+  margin-inline: auto;
+}
+
+/* ─── Panel (3:37685): #f7f5f2, r12, p12, 9px ring ─────────────────── */
+.analysis-section__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2em;
+  inline-size: 100%;
+  padding: 1.2em;
+  border-radius: 1.2em;
+  background: var(--landing-navbar-frame-bg);
+  box-shadow: 0 0 0 0.9em var(--landing-analysis-ring);
+  overflow: hidden;
+}
+
+/* ─── KPI cards row (3:37686): 3 cards, gap 10.514 ─────────────────── */
+.analysis-section__kpis {
+  display: flex;
+  gap: 1.0514em;
+  inline-size: 100%;
+}
+
+.analysis-section__kpi {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  padding: 0.7885em;
+  border-radius: 0.8em;
+  background: var(--ui-bg-surface);
+  overflow: hidden;
+}
+
+.analysis-section__kpi--primary {
+  background: var(--landing-navbar-primary);
+}
+
+.analysis-section__kpi-inner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.analysis-section__kpi-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  block-size: 7.9902em;
+  white-space: nowrap;
+}
+
+.analysis-section__kpi-label {
+  font-family: var(--font-family-work-sans);
+  font-size: 1.4456em;
+  font-weight: 500;
+  line-height: normal;
+  color: var(--text-dark-gray);
+}
+
+.analysis-section__kpi--primary .analysis-section__kpi-label {
+  color: var(--ui-bg-surface);
+}
+
+.analysis-section__kpi-figures {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5257em;
+}
+
+.analysis-section__kpi-value {
+  font-size: 1.8em;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--text-dark-gray);
+}
+
+.analysis-section__kpi--primary .analysis-section__kpi-value {
+  color: var(--ui-bg-surface);
+}
+
+.analysis-section__kpi-caption {
+  font-size: 0.8em;
+  line-height: 1.5;
+  color: var(--landing-analysis-muted);
+}
+
+.analysis-section__kpi-caption--gray {
+  color: var(--text-gray);
+}
+
+.analysis-section__kpi-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  block-size: 7.9902em;
+}
+
+.analysis-section__kpi-menu {
+  inline-size: 1.6344em;
+  block-size: 1.6344em;
+}
+
+.analysis-section__kpi-chart {
+  inline-size: 9.4548em;
+  block-size: 4.8123em;
+}
+
+.analysis-section__kpi-chart--wide {
+  inline-size: 8.989em;
+}
+
+/* Mini bar chart in the primary card (3:37712) */
+.analysis-section__kpi-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.6571em;
+  inline-size: 7.0967em;
+}
+
+.analysis-section__kpi-bars span {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  block-size: var(--kpi-bar-h);
+  background: var(--landing-analysis-bar-light);
+}
+
+.analysis-section__kpi-bars .analysis-section__kpi-bar--accent {
+  background: var(--landing-hr-highlight-bg);
+}
+
+/* ─── Revenue chart card (3:37731): white, r8, p16, gap 6 ──────────── */
+.analysis-section__chart-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  inline-size: 100%;
+  padding: 1.6em;
+  border-radius: 0.8em;
+  background: var(--ui-bg-surface);
+  overflow: hidden;
+}
+
+.analysis-section__chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+}
+
+.analysis-section__chart-title {
+  font-size: 1.6em;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--landing-analysis-ink);
+  white-space: nowrap;
+}
+
+.analysis-section__chart-date {
+  /* dims divided by own 0.9741em font so they resolve to Figma px */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3333em;
+  block-size: 3em;
+  padding: 0.5em 0.6667em;
+  border-radius: 0.616em;
+  background: var(--landing-navbar-frame-bg);
+  font-family: 'Inter', var(--font-family-dm-sans);
+  font-size: 0.9741em;
+  line-height: normal;
+  color: var(--landing-analysis-muted);
+  white-space: nowrap;
+}
+
+.analysis-section__chart-date img {
+  inline-size: 1.0716em; /* 10.44 / 9.741 — em context is the 0.9741em text */
+  block-size: 1.0716em;
+}
+
+.analysis-section__chart-legend {
+  display: flex;
+  gap: 0.9741em;
+}
+
+.analysis-section__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4059em; /* 3.247px / 0.8em context */
+  font-size: 0.8em;
+  line-height: 1.5;
+  color: var(--landing-analysis-ink);
+  white-space: nowrap;
+}
+
+.analysis-section__legend-pill {
+  display: inline-block;
+  inline-size: 1.4206em; /* 11.365 / 8 — em context is the 0.8em text */
+  block-size: 0.5684em;  /* 4.547 / 8 */
+  border-radius: 0.8118em;
+}
+
+.analysis-section__legend-pill--primary {
+  background: var(--landing-navbar-primary);
+}
+
+.analysis-section__legend-pill--secondary {
+  background: var(--landing-navbar-frame-bg);
+  border: 0.0313em solid var(--landing-analysis-muted);
+}
+
+/* Chart body (3:37744): y-axis + grid + bars + x labels */
+.analysis-section__chart-body {
+  position: relative;
+  display: flex;
+  gap: 1.2988em;
+  inline-size: 100%;
+  padding: 0.4871em;
+}
+
+.analysis-section__chart-y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  block-size: 29.6em; /* base em — font-size lives on the spans to keep this 296px */
+  color: var(--landing-analysis-muted);
+  white-space: nowrap;
+}
+
+.analysis-section__chart-y-axis span {
+  font-size: 1.2em;
+  line-height: 1.5;
+}
+
+.analysis-section__chart-grid {
+  position: absolute;
+  inset-inline-start: 4.797em;
+  inset-block-start: 3.01em;
+  inline-size: 65.9em;
+  block-size: 26.1em;
+}
+
+.analysis-section__chart-plot {
+  display: flex;
+  flex: 1 0 0;
+  min-inline-size: 0;
+  flex-direction: column;
+  gap: 0.8em;
+  block-size: 29.6em;
+  overflow: hidden;
+}
+
+.analysis-section__chart-bars {
+  display: flex;
+  flex-shrink: 0; /* Figma clips the x-labels, not the bars (300 > 296 box) */
+  align-items: flex-end;
+  gap: 3.0244em;
+  block-size: 27.4em;
+  inline-size: 100%;
+}
+
+.analysis-section__chart-bars span {
+  flex: 1 0 0;
+  min-inline-size: 0;
+  block-size: var(--bar-h);
+  background: var(--landing-navbar-frame-bg);
+}
+
+.analysis-section__chart-bars .analysis-section__chart-bar--primary {
+  background: var(--landing-navbar-primary);
+}
+
+.analysis-section__chart-x-axis {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  inline-size: 100%;
+  font-size: 1.2em;
+  line-height: 1.5;
+  color: var(--landing-analysis-muted);
+  white-space: nowrap;
+}
+
+/* ─── Floating cards (3:37808 / 3:37849) — exact Figma exports ──────
+   bbox offsets relative to the panel; PNGs include ~0.8–1em shadow
+   bleed, compensated in position/size. */
+.analysis-section__float {
+  position: absolute;
+  z-index: 2;
+  display: block;
+}
+
+.analysis-section__float--left {
+  inset-inline-start: -21.769em; /* −209.79 − bleed 7.9 */
+  inset-block-start: 27.182em;   /* 279.52 − bleed 7.7 */
+  inline-size: 31.9em;           /* 303.17 + bleed ×2 */
+}
+
+.analysis-section__float--right {
+  inset-inline-start: 71.18em;   /* 721.87 − bleed 10.1 */
+  inset-block-start: 19.39em;    /* 203.79 − bleed 9.9 */
+  inline-size: 25.2em;           /* 231.85 + bleed ×2 */
+}
+
+/* ─── Mobile (Figma frame 393): floats use their own mobile geometry ── */
+@media (max-width: 767px) {
+  .analysis-section__float--left {
+    inset-inline-start: -38.96px; /* −35.96 − scaled bleed */
+    inset-block-start: 213.95px;  /* 216.875 − scaled bleed */
+    inline-size: 121.16px;        /* 115.14 + bleed */
+  }
+
+  .analysis-section__float--right {
+    inset-inline-start: 266.51px;
+    inset-block-start: 184.81px;
+    inline-size: 108.9px;
+  }
+}

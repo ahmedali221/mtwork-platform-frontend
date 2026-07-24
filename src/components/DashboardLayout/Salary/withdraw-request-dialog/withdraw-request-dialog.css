@@ -1,0 +1,244 @@
+/* ──────────────────────────────────────────────────────────────────
+ *  Withdraw Request dialog — refined UI
+ *  Container/backdrop styling lives in styles.css under the
+ *  `.wd-dialog-panel` and `.wd-dialog-backdrop` classes (registered via
+ *  MatDialogConfig.panelClass / backdropClass) so it survives Angular's
+ *  ViewEncapsulation. Everything below is scoped to .wd-dialog.
+ * ────────────────────────────────────────────────────────────────── */
+
+.wd-dialog {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: var(--ui-surface);
+  color: var(--ui-text-main);
+  font-family: inherit;
+}
+
+/* ── Header ─────────────────────────────────────────────────────── */
+.wd-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 22px 24px 16px;
+  /* Visible separator between header and form body */
+  border-block-end: 1px solid var(--ui-border);
+}
+
+.wd-dialog__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.2px;
+  color: var(--brand-neutral-950);
+}
+
+.wd-dialog__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--radius-8);
+  background: transparent;
+  color: var(--brand-neutral-400);
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease;
+  flex-shrink: 0;
+}
+.wd-dialog__close:hover {
+  background: var(--brand-neutral-100);
+  color: var(--brand-neutral-900);
+}
+.wd-dialog__close:focus-visible {
+  outline: 2px solid var(--brand-primary-500);
+  outline-offset: 2px;
+}
+
+/* ── Body / form ────────────────────────────────────────────────── */
+.wd-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 24px 24px;   /* more separation from header */
+}
+
+/* ── Balance banner (above the form) ────────────────────────────── */
+.wd-balance {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-8);
+  background: var(--brand-primary-50);
+  border: 1px solid var(--brand-primary-100);
+}
+.wd-balance__label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--brand-neutral-700);
+  letter-spacing: .1px;
+}
+.wd-balance__value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brand-primary-700, var(--brand-primary-600));
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Field block ────────────────────────────────────────────────── */
+.wd-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.wd-field__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--brand-neutral-800);
+  line-height: 1.4;
+}
+.wd-field__required {
+  color: var(--functional-danger-500);
+  margin-inline-start: 2px;
+}
+
+.wd-field__input {
+  width: 100%;
+  height: 42px;                             /* consistent control height */
+  padding: 0 12px;
+  border: 1px solid var(--brand-neutral-200);
+  border-radius: var(--radius-8);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--brand-neutral-900);
+  background: var(--brand-neutral-50);
+  font-family: inherit;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.wd-field__input::placeholder {
+  color: var(--brand-neutral-400);
+}
+.wd-field__input:hover:not(:disabled):not(:focus) {
+  border-color: var(--brand-neutral-300);
+}
+.wd-field__input:focus,
+.wd-field__input:focus-visible {
+  outline: none;
+  border-color: var(--brand-primary-500);
+  box-shadow: 0 0 0 3px var(--brand-primary-100);
+  background: var(--ui-surface);
+}
+
+.wd-field--error .wd-field__input {
+  border-color: var(--functional-danger-500);
+  background: var(--functional-danger-50);
+}
+.wd-field--error .wd-field__input:focus {
+  box-shadow: 0 0 0 3px var(--functional-danger-100);
+}
+
+.wd-field__error {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--functional-danger-600);
+  line-height: 1.4;
+}
+
+/* ── Form-level error (e.g. backend 500 → "Insufficient balance") ── */
+.wd-form-error {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border-radius: var(--radius-8);
+  background: var(--functional-danger-50);
+  border: 1px solid var(--functional-danger-100);
+  color: var(--functional-danger-600);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/* ── Footer / buttons ──────────────────────────────────────────── */
+.wd-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.wd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: var(--radius-8);
+  font-size: 14px;
+  font-weight: 600;                 /* heavier weight for stronger hierarchy */
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .12s ease;
+  user-select: none;
+}
+.wd-btn:focus-visible {
+  outline: 2px solid var(--brand-primary-500);
+  outline-offset: 2px;
+}
+.wd-btn:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+.wd-btn--ghost {
+  background: transparent;
+  color: var(--brand-neutral-800);
+  border: 1px solid var(--brand-neutral-200);
+}
+.wd-btn--ghost:hover:not(:disabled) {
+  background: var(--brand-neutral-100);
+  border-color: var(--brand-neutral-300);
+}
+
+.wd-btn--primary {
+  background: var(--brand-primary-500);
+  color: var(--brand-neutral-0, #fff);
+  border: 1px solid var(--brand-primary-500);
+  /* Brand-tinted shadow gives the primary action stronger visual weight */
+  box-shadow: 0 2px 6px rgba(79, 70, 229, .25);
+}
+.wd-btn--primary:hover:not(:disabled) {
+  background: var(--brand-primary-600);
+  border-color: var(--brand-primary-600);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, .3);
+}
+.wd-btn--primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(79, 70, 229, .25);
+}
+
+.wd-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid color-mix(in srgb, var(--brand-neutral-0, #fff) 40%, transparent);
+  border-top-color: var(--brand-neutral-0, #fff);
+  border-radius: var(--radius-full);
+  animation: wd-spin .7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes wd-spin { to { transform: rotate(360deg); } }
+
+/* ── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .wd-dialog__header { padding: 16px 16px 8px; }
+  .wd-dialog__body   { padding: 8px 16px 16px; }
+  .wd-dialog__footer { flex-direction: column-reverse; align-items: stretch; gap: 8px; }
+  .wd-btn            { width: 100%; }
+}

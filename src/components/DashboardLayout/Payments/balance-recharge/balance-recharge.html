@@ -1,0 +1,109 @@
+<section class="page-container recharge-page" aria-labelledby="recharge-title">
+
+  <!-- Page header -->
+  <div class="page-header">
+    <h1 id="recharge-title" class="page-title">{{ 'payments.balanceRecharge.title' | transloco }}</h1>
+    <p class="page-subtitle">{{ 'payments.balanceRecharge.subtitle' | transloco }}</p>
+  </div>
+
+  <div class="recharge-layout">
+
+    <!-- Current balance card -->
+    <div class="card balance-card" role="status" aria-live="polite">
+      <div class="balance-card__icon">
+        <mat-icon aria-hidden="true">account_balance_wallet</mat-icon>
+      </div>
+      <div class="balance-card__info">
+        <span class="balance-card__label">{{ 'payments.balanceRecharge.currentBalance' | transloco }}</span>
+
+        @if (isLoadingBalance()) {
+          <span class="balance-card__value skeleton">{{ 'payments.balanceRecharge.loading' | transloco }}</span>
+        } @else if (balanceError()) {
+          <span class="balance-card__error">{{ balanceError() }}</span>
+        } @else if (currentBalance() === null) {
+          <span class="balance-card__value">—</span>
+        } @else {
+          <span class="balance-card__value">${{ currentBalance() | number: '1.2-2' }}</span>
+        }
+      </div>
+    </div>
+
+    <!-- Recharge form -->
+    <div class="card recharge-card">
+      <h2 class="recharge-card__title">{{ 'payments.balanceRecharge.chooseAmount' | transloco }}</h2>
+
+      <!-- Preset amounts -->
+      <div class="preset-grid" role="group" [attr.aria-label]="'payments.balanceRecharge.presetLabel' | transloco">
+        @for (preset of presetAmounts; track preset) {
+          <button
+            class="preset-btn"
+            [class.preset-btn--active]="amount() === preset"
+            (click)="selectPreset(preset)"
+            [attr.aria-pressed]="amount() === preset"
+            type="button"
+          >
+            ${{ preset }}
+          </button>
+        }
+      </div>
+
+      <!-- Custom amount input -->
+      <div class="amount-field">
+        <label for="custom-amount" class="amount-field__label">{{ 'payments.balanceRecharge.customLabel' | transloco }}</label>
+        <div class="amount-field__wrapper">
+          <span class="amount-field__currency" aria-hidden="true">$</span>
+          <input
+            id="custom-amount"
+            type="number"
+            class="amount-field__input"
+            [value]="amount() || ''"
+            (input)="onAmountInput($event)"
+            min="1"
+            step="1"
+            placeholder="0.00"
+            [attr.aria-label]="'payments.balanceRecharge.customAriaLabel' | transloco"
+          />
+        </div>
+      </div>
+
+      <!-- Error message -->
+      @if (errorMessage()) {
+        <div class="error-banner" role="alert" aria-live="assertive">
+          <mat-icon aria-hidden="true">error_outline</mat-icon>
+          <span>{{ errorMessage() | transloco }}</span>
+        </div>
+      }
+
+      <!-- Summary -->
+      @if (isValidAmount) {
+        <div class="summary-row">
+          <span class="summary-row__label">{{ 'payments.balanceRecharge.chargedLabel' | transloco }}</span>
+          <span class="summary-row__value">${{ amount() | number: '1.2-2' }}</span>
+        </div>
+      }
+
+      <!-- Submit -->
+      <button
+        class="recharge-btn"
+        type="button"
+        (click)="submit()"
+        [disabled]="!isValidAmount || isSubmitting()"
+        [attr.aria-label]="'payments.balanceRecharge.submitAriaLabel' | transloco"
+      >
+        @if (isSubmitting()) {
+          <mat-spinner diameter="20" aria-hidden="true"></mat-spinner>
+          <span>{{ 'payments.balanceRecharge.redirecting' | transloco }}</span>
+        } @else {
+          <mat-icon aria-hidden="true">lock</mat-icon>
+          <span>{{ 'payments.balanceRecharge.paySecurely' | transloco }}</span>
+        }
+      </button>
+
+      <p class="security-note">
+        <mat-icon aria-hidden="true">shield</mat-icon>
+        {{ 'payments.balanceRecharge.securityNote' | transloco }}
+      </p>
+    </div>
+
+  </div>
+</section>

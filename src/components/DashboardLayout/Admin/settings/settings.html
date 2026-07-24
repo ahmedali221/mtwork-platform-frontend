@@ -1,0 +1,41 @@
+<div class="adm-settings">
+
+  <!-- ── Header ───────────────────────────────────────────────── -->
+  <div class="adm-settings__header">
+    <h1 class="adm-settings__title"    transloco="admin.settings.title"></h1>
+    <p  class="adm-settings__subtitle" transloco="admin.settings.subtitle"></p>
+  </div>
+
+  <!-- ── Loading ───────────────────────────────────────────────── -->
+  @if (isLoading()) {
+    <div class="adm-settings__state adm-settings__state--loading" aria-busy="true">
+      <span class="adm-settings__spinner" aria-hidden="true"></span>
+    </div>
+  }
+
+  <!-- ── Error ─────────────────────────────────────────────────── -->
+  @else if (errorKey()) {
+    <div class="adm-settings__state adm-settings__state--error" role="alert">
+      <mat-icon aria-hidden="true">error_outline</mat-icon>
+      <span>{{ errorKey() | transloco }}</span>
+    </div>
+  }
+
+  <!-- ── Cards ─────────────────────────────────────────────────── -->
+  @else {
+    <div class="adm-settings__grid">
+      @for (card of cards(); track card.labelKey) {
+        <div class="adm-settings__card">
+          <div class="adm-settings__card-icon">
+            <mat-icon aria-hidden="true">{{ card.iconName }}</mat-icon>
+          </div>
+          <div class="adm-settings__card-body">
+            <span class="adm-settings__card-label">{{ card.labelKey | transloco }}</span>
+            <span class="adm-settings__card-value">{{ card.value }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</div>

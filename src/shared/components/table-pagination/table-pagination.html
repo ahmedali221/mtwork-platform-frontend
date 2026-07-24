@@ -1,0 +1,23 @@
+<div class="pagination">
+  <button class="pagination__prev" (click)="goTo(currentPage - 1)" [disabled]="currentPage === 1" [attr.aria-label]="'common.previous' | transloco">
+    <mat-icon>login</mat-icon>
+    {{ 'common.previous' | transloco }}
+  </button>
+
+  <div class="pagination__pages">
+    @for (page of pages; track page) {
+      <button
+        class="pagination__page"
+        [class.pagination__page--active]="page === currentPage"
+        (click)="goTo(page)"
+        [attr.aria-label]="('common.page' | transloco) + ' ' + page"
+        [attr.aria-current]="page === currentPage ? 'page' : null"
+      >{{ page }}</button>
+    }
+  </div>
+
+  <button class="pagination__next" (click)="goTo(currentPage + 1)" [disabled]="currentPage === totalPages" [attr.aria-label]="'common.next' | transloco">
+    {{ 'common.next' | transloco }}
+    <mat-icon>logout</mat-icon>
+  </button>
+</div>

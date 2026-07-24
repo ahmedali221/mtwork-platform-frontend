@@ -1,0 +1,487 @@
+<div class="tasks-container">
+
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a routerLink="/dashboard/projects" class="breadcrumb-link">Projects</a>
+    <span class="breadcrumb-separator">›</span>
+    <a routerLink="/dashboard/projects" class="breadcrumb-link">Tasks</a>
+    <span class="breadcrumb-separator">›</span>
+    <span class="breadcrumb-current">{{ projectTitle }}</span>
+  </div>
+
+  <!-- Page Title -->
+  <div class="page-header">
+    <h1 class="page-title">{{ projectTitle }}</h1>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="view-switcher">
+        <button
+          class="view-btn"
+          [class.active]="currentView === 'table'"
+          (click)="changeView('table')"
+          [attr.aria-label]="'common.tableView' | transloco"
+        >
+          <mat-icon>table_rows</mat-icon> Table
+        </button>
+        <button
+          class="view-btn"
+          [class.active]="currentView === 'list'"
+          (click)="changeView('list')"
+          [attr.aria-label]="'common.listView' | transloco"
+        >
+          <mat-icon>format_list_bulleted</mat-icon> List
+        </button>
+        <button
+          class="view-btn"
+          [class.active]="currentView === 'board'"
+          (click)="changeView('board')"
+          [attr.aria-label]="'common.boardView' | transloco"
+        >
+          <mat-icon>view_kanban</mat-icon> Board
+        </button>
+      </div>
+
+      <button class="toolbar-btn" [attr.aria-label]="'common.refresh' | transloco" (click)="loadTasks()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+
+    <div class="toolbar-right">
+      <button class="toolbar-btn" [attr.aria-label]="'common.filter' | transloco">
+        <mat-icon>filter_alt</mat-icon>
+      </button>
+      <button class="toolbar-btn" [attr.aria-label]="'common.sort' | transloco">
+        <mat-icon>sort</mat-icon>
+      </button>
+      <button class="btn-import">
+        <mat-icon>upload</mat-icon> Import
+      </button>
+      <button class="btn-primary" (click)="quickAddToStatus('todo')" [attr.aria-label]="'projects.details.newTask' | transloco">
+        <mat-icon>add</mat-icon> New Task
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <div class="spinner"></div>
+    Loading tasks...
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && filteredTasks.length === 0 && !showNewTaskInput" class="empty-state">
+    <img src="assets/images/NoProjects.png" alt="No tasks" class="empty-img" />
+    <h3 class="empty-title">No tasks yet</h3>
+    <p class="empty-desc">Create your first task to start tracking work</p>
+    <button class="btn-primary" (click)="showNewTaskInput = true">
+      <span class="icon">+</span> New Task
+    </button>
+  </div>
+
+  <!-- Table View -->
+  <div *ngIf="currentView === 'table' && !isLoading" class="table-wrapper">
+    <table class="tasks-table">
+      <thead>
+        <tr>
+          <th class="col-checkbox">
+            <input 
+              type="checkbox" 
+              [checked]="selectedTasks.size === filteredTasks.length && filteredTasks.length > 0"
+              (change)="selectAllTasks()"
+              [attr.aria-label]="'projects.details.selectAllTasks' | transloco"
+              title="Select all tasks"
+            />
+          </th>
+          <th class="col-id">ID</th>
+          <th class="col-summary">Summary</th>
+          <th class="col-category">Category</th>
+          <th class="col-assignee">Assignee</th>
+          <th class="col-due-date">Due Date</th>
+          <th class="col-priority">Priority</th>
+          <th class="col-created">Created time</th>
+          <th class="col-updated">Last Update</th>
+          <th class="col-reporter">Reporter</th>
+          <th class="col-status">Status</th>
+          <th class="col-team">Team</th>
+          <th class="col-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of filteredTasks" [class.selected]="selectedTasks.has(task.id)">
+          <td>
+            <label [attr.for]="'task-checkbox-' + task.id" class="sr-only">Select task {{ task.title }}</label>
+            <input 
+              type="checkbox" 
+              [id]="'task-checkbox-' + task.id"
+              [checked]="selectedTasks.has(task.id)"
+              (change)="toggleTaskSelection(task.id)"
+              [attr.aria-label]="'Select task ' + task.title"
+              title="Select task"
+            />
+          </td>
+          <td class="task-id">{{ task.id }}</td>
+          <td class="task-summary">{{ task.title }}</td>
+          <td>
+            <span class="category-badge" *ngIf="task.category">
+              {{ task.category.title }}
+            </span>
+            <span *ngIf="!task.category" class="text-muted">-</span>
+          </td>
+          <td>
+            <div class="assignee" *ngIf="task.assignee">
+              <span class="avatar-sm">{{ task.assignee.name.substring(0, 2).toUpperCase() }}</span>
+              {{ task.assignee.name }}
+            </div>
+            <span *ngIf="!task.assignee" class="text-muted">-</span>
+          </td>
+          <td class="due-date">{{ formatDate(task.dueDate) }}</td>
+          <td>
+            <span class="priority-badge" [attr.data-priority]="getPriorityKey(task.priority)">
+              <span class="priority-icon">{{ getPriorityIcon(task.priority) }}</span>
+              {{ getPriorityDisplay(task.priority) }}
+            </span>
+          </td>
+          <td class="date-cell">{{ formatDate(task.createdAt) }}</td>
+          <td class="date-cell">{{ formatDate(task.updatedAt) }}</td>
+          <td>
+            <div class="reporter" *ngIf="task.reporter">
+              <span class="avatar-sm">{{ task.reporter.name.substring(0, 2).toUpperCase() }}</span>
+              {{ task.reporter.name }}
+            </div>
+            <span *ngIf="!task.reporter" class="text-muted">-</span>
+          </td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(task.status)">
+              {{ getTaskStatusDisplay(task.status) }}
+            </span>
+          </td>
+          <td>
+            <span *ngIf="task.projectId" class="text-muted">—</span>
+          </td>
+          <td class="row-actions">
+            <button class="row-action-btn" (click)="editTaskInline(task)" [attr.aria-label]="'Edit task ' + task.title" title="Edit"><mat-icon>edit</mat-icon></button>
+            <button class="row-action-btn danger" (click)="deleteTask(task)" [attr.aria-label]="'Delete task ' + task.title" title="Delete"><mat-icon>delete</mat-icon></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- New Task Row -->
+    <div *ngIf="showNewTaskInput" class="new-task-row">
+      <input
+        type="text"
+        class="new-task-input"
+        placeholder="Task summary…"
+        [(ngModel)]="newTaskName"
+        (keyup.enter)="createNewTask()"
+        (keyup.escape)="showNewTaskInput = false"
+        [attr.aria-label]="'projects.details.newTaskName' | transloco"
+        autofocus
+      />
+
+      <select class="new-task-select" [(ngModel)]="newTaskAssigneeId" [attr.aria-label]="'common.assignee' | transloco">
+        <option value="">👤 Assignee</option>
+        <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.name }}</option>
+      </select>
+
+      <input
+        type="date"
+        class="new-task-date"
+        [(ngModel)]="newTaskDueDate"
+        [attr.aria-label]="'common.dueDate' | transloco"
+        title="Due date"
+      />
+
+      <select class="new-task-select" [(ngModel)]="newTaskPriority" [attr.aria-label]="'common.priority' | transloco">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+        <option value="urgent">Urgent</option>
+      </select>
+
+      <button class="btn-create" (click)="createNewTask()" [disabled]="isSavingTask">
+        {{ isSavingTask ? 'Saving…' : 'Create' }}
+      </button>
+      <button class="btn-cancel" (click)="showNewTaskInput = false">Cancel</button>
+    </div>
+
+  </div>
+
+  <!-- List View -->
+  <div *ngIf="currentView === 'list' && !isLoading" class="list-view">
+
+    @for (section of listSections; track section.status) {
+      <div class="list-section">
+        <div class="section-header">
+          <span class="section-indicator" [ngClass]="section.indicatorClass"></span>
+          <h3 class="section-title">{{ section.title }}</h3>
+          <span class="section-count">{{ getTasksByStatus(section.status).length }}</span>
+          <button class="section-toggle" [attr.aria-label]="'common.toggleSection' | transloco"><mat-icon>expand_more</mat-icon></button>
+        </div>
+
+        <div class="tasks-list">
+          @for (task of getTasksByStatus(section.status); track task.id) {
+            <div class="task-item" [class.selected]="selectedTasks.has(task.id)">
+              <input type="checkbox" class="task-checkbox"
+                     [checked]="selectedTasks.has(task.id)"
+                     (change)="toggleTaskSelection(task.id)"
+                     [attr.aria-label]="'Select ' + task.title" title="Select task" />
+              <span class="task-title" [class.completed]="section.status === 'done'">{{ task.title }}</span>
+              <div class="task-meta">
+                <span class="priority-badge-sm" [attr.data-priority]="getPriorityKey(task.priority)">
+                  {{ getPriorityIcon(task.priority) }}
+                </span>
+                <span class="task-date" *ngIf="task.dueDate"><mat-icon class="date-icon">event</mat-icon> {{ formatDate(task.dueDate) }}</span>
+                <span class="status-badge" [ngClass]="getStatusClass(task.status)">{{ getTaskStatusDisplay(task.status) }}</span>
+              </div>
+              <div class="task-item-actions">
+                <button class="row-action-btn" (click)="editTaskInline(task)"
+                        [attr.aria-label]="'Edit ' + task.title" title="Edit"><mat-icon>edit</mat-icon></button>
+                <button class="row-action-btn danger" (click)="deleteTask(task)"
+                        [attr.aria-label]="'Delete ' + task.title" title="Delete"><mat-icon>delete</mat-icon></button>
+              </div>
+            </div>
+          }
+
+          <!-- Quick add row for this section -->
+          @if (showNewTaskInput && selectedStatus === section.status) {
+            <div class="quick-add-row">
+              <input type="text" class="new-task-input" placeholder="Task name…"
+                     [(ngModel)]="newTaskName"
+                     (keyup.enter)="createNewTask()"
+                     (keyup.escape)="showNewTaskInput = false"
+                     [attr.aria-label]="'projects.details.newTaskName' | transloco" autofocus />
+              <button class="btn-create" (click)="createNewTask()" [disabled]="isSavingTask" [attr.aria-label]="'projects.details.saveTask' | transloco">
+                @if (isSavingTask) { … } @else { <mat-icon>check</mat-icon> }
+              </button>
+              <button class="btn-cancel" (click)="showNewTaskInput = false" [attr.aria-label]="'common.cancel' | transloco"><mat-icon>close</mat-icon></button>
+            </div>
+          }
+
+          <button class="add-task-btn" (click)="quickAddToStatus(section.status)"
+                  [attr.aria-label]="'Add task to ' + section.title">
+            <mat-icon>add_circle</mat-icon> Add Task
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Board View -->
+  <div *ngIf="currentView === 'board' && !isLoading" class="board-view">
+    <div class="board-columns">
+      <div *ngFor="let column of boardColumns" class="board-column">
+        <div class="column-header">
+          <div class="column-title-wrapper">
+            <span class="column-indicator" [style.background-color]="column.color"></span>
+            <h3 class="column-title">{{ column.title }}</h3>
+            <span class="column-count">{{ column.tasks.length }}</span>
+          </div>
+          <div class="column-actions">
+            <button class="column-action-btn" (click)="addTaskToColumn(column)" [attr.aria-label]="'projects.details.addTask' | transloco"><mat-icon>add</mat-icon></button>
+            <button class="column-action-btn" [attr.aria-label]="'projects.details.columnOptions' | transloco"><mat-icon>more_horiz</mat-icon></button>
+          </div>
+        </div>
+
+        <div 
+          class="tasks-container-board"
+          cdkDropList
+          [cdkDropListData]="column.tasks"
+          (cdkDropListDropped)="onTaskDrop($event, column)"
+          [id]="column.id"
+          [cdkDropListConnectedTo]="getConnectedDropListIds()"
+        >
+          <div 
+            *ngFor="let task of column.tasks" 
+            class="task-card"
+            cdkDrag
+            (contextmenu)="openContextMenu($event, task)"
+            title="Task"
+          >
+            <!-- card header: title + priority badge -->
+            <div class="task-card-header">
+              <h4 class="task-card-title">{{ task.title }}</h4>
+              <span class="priority-badge-sm" [attr.data-priority]="getPriorityKey(task.priority)">
+                {{ getPriorityIcon(task.priority) }}
+              </span>
+            </div>
+
+            <!-- description preview -->
+            <p class="task-card-desc" *ngIf="task.description">
+              {{ task.description | slice:0:60 }}{{ task.description.length > 60 ? '…' : '' }}
+            </p>
+
+            <!-- due date -->
+            <div class="task-card-due" *ngIf="task.dueDate">
+              <mat-icon class="due-icon">event</mat-icon>
+              {{ formatDate(task.dueDate) }}
+            </div>
+
+            <div class="task-card-footer">
+              <div class="task-assignees-group">
+                <span *ngIf="task.assignee" class="assignee-avatar-sm"
+                      [attr.title]="task.assignee.name">
+                  {{ task.assignee.name.substring(0, 2).toUpperCase() }}
+                </span>
+                <span *ngIf="!task.assignee" class="text-muted" style="font-size:0.75rem">—</span>
+              </div>
+
+              <div class="task-card-actions">
+                <button class="card-action-btn" (click)="editTaskInline(task)"
+                        [attr.aria-label]="'Edit ' + task.title" title="Edit"><mat-icon>edit</mat-icon></button>
+                <button class="card-action-btn danger" (click)="deleteTask(task)"
+                        [attr.aria-label]="'Delete ' + task.title" title="Delete"><mat-icon>delete</mat-icon></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inline quick-add for this board column -->
+          @if (showNewTaskInput && selectedStatus === column.status) {
+            <div class="board-quick-add">
+              <input type="text" class="new-task-input" placeholder="Task name…"
+                     [(ngModel)]="newTaskName"
+                     (keyup.enter)="createNewTask()"
+                     (keyup.escape)="showNewTaskInput = false"
+                     [attr.aria-label]="'projects.details.newTaskName' | transloco" autofocus />
+              <div class="quick-add-btns">
+                <button class="btn-create" (click)="createNewTask()" [disabled]="isSavingTask">
+                  {{ isSavingTask ? '…' : '+ Add' }}
+                </button>
+                <button class="btn-cancel" (click)="showNewTaskInput = false">✕</button>
+              </div>
+            </div>
+          }
+
+          <button class="add-card-btn" (click)="addTaskToColumn(column)" [attr.aria-label]="'projects.details.addNewTask' | transloco">
+            <mat-icon>add_circle</mat-icon> Add New
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Global Inline Edit Modal (works for Table, List, Board) ═══ -->
+  <div *ngIf="editingTask" class="inline-edit-overlay" role="dialog" aria-modal="true" [attr.aria-label]="'projects.details.editTask' | transloco">
+    <div class="inline-edit-form">
+      <div class="edit-form-header">
+        <h3 class="edit-form-title">Edit Task</h3>
+        <button class="btn-icon-close" (click)="cancelEdit()" [attr.aria-label]="'common.close' | transloco"><mat-icon>close</mat-icon></button>
+      </div>
+
+      <div class="edit-form-grid">
+        <div class="edit-form-field">
+          <label class="edit-label">Title *</label>
+          <input type="text" class="edit-input"
+                 [(ngModel)]="editFormData.title"
+                 placeholder="Task title"
+                 [attr.aria-label]="'projects.details.taskTitle' | transloco" />
+        </div>
+
+        <div class="edit-form-field">
+          <label class="edit-label">Status</label>
+          <select class="edit-select" [(ngModel)]="editFormData.status" [attr.aria-label]="'common.status' | transloco">
+            <option value="todo">Draft</option>
+            <option value="pending">Pending</option>
+            <option value="in-progress">In Progress</option>
+            <option value="done">Done</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="on-hold">On Hold</option>
+          </select>
+        </div>
+
+        <div class="edit-form-field">
+          <label class="edit-label">Priority</label>
+          <select class="edit-select" [(ngModel)]="editFormData.priority" [attr.aria-label]="'common.priority' | transloco">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+          </select>
+        </div>
+
+        <div class="edit-form-field">
+          <label class="edit-label">Assignee</label>
+          <select class="edit-select" [(ngModel)]="editFormData.assigneeId" [attr.aria-label]="'common.assignee' | transloco">
+            <option value="">— None —</option>
+            <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.name }}</option>
+          </select>
+        </div>
+
+        <div class="edit-form-field">
+          <label class="edit-label">Due Date</label>
+          <input type="date" class="edit-input"
+                 [(ngModel)]="editFormData.dueDate"
+                 [attr.aria-label]="'common.dueDate' | transloco" title="Due date" />
+        </div>
+      </div>
+
+      <div class="edit-form-actions">
+        <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+        <button class="btn-create" (click)="saveEditTask()"
+                [disabled]="!editFormData.title">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Bar (when tasks are selected) -->
+  <div *ngIf="selectedTasks.size > 0" class="action-bar">
+    <div class="action-bar-content">
+      <span class="selected-count">
+        <mat-icon>check</mat-icon>
+        {{ selectedTasks.size }} item Selected
+      </span>
+      <div class="action-buttons">
+        <button class="action-btn" (click)="editSelectedTask()" [attr.aria-label]="'projects.details.editSelectedTask' | transloco">
+          <mat-icon>edit</mat-icon> Edit
+        </button>
+        <button class="action-btn" (click)="clipToClipboard()" [attr.aria-label]="'common.copyToClipboard' | transloco">
+          <mat-icon>content_copy</mat-icon> Clip to clipboard
+        </button>
+        <button class="action-btn danger" (click)="deleteSelectedTasks()" [attr.aria-label]="'projects.details.deleteSelectedTasks' | transloco">
+          <mat-icon>delete</mat-icon> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Modal -->
+  <div *ngIf="showCategoryModal" class="modal-overlay" (click)="closeCategoryModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ editingCategory ? 'Edit Category' : 'New Category' }}</h3>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Name of Category</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Ex:Marketing"
+            [(ngModel)]="newCategoryName"
+          />
+        </div>
+        
+        <div class="color-picker">
+          <div *ngFor="let row of colorPalette" class="color-row">
+            <button  [attr.aria-label]="'projects.details.selectColor' | transloco"
+              *ngFor="let color of row" 
+              class="color-option"
+              [style.background-color]="color"
+              [class.selected]="selectedColor === color"
+              (click)="selectColor(color)"
+            ></button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeCategoryModal()">Cancel</button>
+        <button class="btn-primary" (click)="saveCategory()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>

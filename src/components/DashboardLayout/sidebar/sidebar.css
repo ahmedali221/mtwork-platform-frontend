@@ -1,0 +1,219 @@
+/* ── Sidebar shell ────────────────────────────────────────────── */
+.sidebar {
+  width: 277px;
+  height: 100vh;
+  background: var(--ui-bg-surface);
+  border-inline-end: 0.5px solid color-mix(in srgb, var(--brand-neutral-950) 25%, transparent);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  position: fixed;
+  inset-inline-start: 0;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--brand-neutral-500) 20%, transparent);
+  overflow: hidden;
+  padding-block-start: 24px;
+  padding-block-end: 48px;
+  padding-inline: 12px;
+  gap: 32px;
+}
+
+.sidebar.collapsed {
+  width: 100px;
+  align-items: center;
+  padding-block-start: 32px;
+  padding-inline: 16px;
+}
+
+/* ── Logo ────────────────────────────────────────────────────── */
+.logo-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logo-img {
+  width: 119px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Collapsed rail: show just the "M" mark portion, scaled down */
+.sidebar.collapsed .logo-img {
+  width: 36px;
+  object-fit: cover;
+  object-position: left center;
+}
+
+/* Dark theme: the wordmark is #282828 (near-black) — invert so it stays
+   visible if the sidebar surface flips dark. */
+.dark-theme .logo-img {
+  filter: brightness(0) invert(1);
+}
+
+/* ── Nav container ───────────────────────────────────────────── */
+.sidebar-nav {
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar-nav::-webkit-scrollbar { width: 3px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb { background: var(--ui-border); border-radius: 2px; }
+
+.sidebar-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: 12px;
+}
+
+/* ── Nav item row ────────────────────────────────────────────── */
+.sidebar-nav li {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  position: relative;
+}
+
+.sidebar-nav li:hover:not(:has(.nav-link.active)) {
+  background: var(--ui-bg-subtle);
+}
+
+/* ── Nav link ────────────────────────────────────────────────── */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-grow: 1;
+  height: 40px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--ui-text-muted);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Active state — black background, white text */
+.nav-link.active {
+  background: var(--brand-neutral-950);
+  color: var(--ui-bg-surface);
+  font-weight: 500;
+}
+
+.nav-link.active .nav-icon {
+  color: var(--ui-bg-surface);
+}
+
+/* ── Icon ────────────────────────────────────────────────────── */
+.nav-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  line-height: 18px !important;
+  flex-shrink: 0;
+  color: var(--ui-text-muted);
+  transition: color 0.2s ease;
+}
+
+/* ── Label ───────────────────────────────────────────────────── */
+.label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Add button (Teams) ──────────────────────────────────────── */
+.add-btn {
+  margin-inline-start: auto;
+  color: var(--ui-text-muted);
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.add-btn:hover {
+  background: var(--ui-bg-subtle);
+  border-radius: 50%;
+}
+
+/* ── Collapsed state ─────────────────────────────────────────── */
+.sidebar.collapsed .label {
+  display: none;
+}
+
+.sidebar.collapsed .add-btn {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-nav li {
+  justify-content: center;
+}
+
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding: 8px;
+  gap: 0;
+  flex-grow: 0;
+  width: 40px;
+}
+
+.sidebar.collapsed .nav-icon {
+  margin: 0;
+}
+
+/* ── RTL arrow flips ─────────────────────────────────────────── */
+[dir="rtl"] .sidebar .expand-icon,
+[dir="rtl"] .sidebar .chevron {
+  transform: scaleX(-1);
+}
+
+/* ── Mobile: slide-in drawer ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    box-shadow: none;
+  }
+
+  [dir="rtl"] .sidebar {
+    transform: translateX(100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px color-mix(in srgb, var(--brand-neutral-950) 15%, transparent);
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: color-mix(in srgb, var(--brand-neutral-950) 50%, transparent);
+    z-index: 999;
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  .hamburger-btn {
+    display: flex !important;
+  }
+}

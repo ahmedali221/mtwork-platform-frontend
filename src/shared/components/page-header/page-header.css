@@ -1,0 +1,83 @@
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-block-end: 24px;
+}
+
+/* ── Breadcrumb ───────────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.breadcrumb__item {
+  color: var(--ui-text-muted);
+  text-decoration: none;
+}
+
+.breadcrumb__item--link {
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.breadcrumb__item--link:hover {
+  color: var(--ui-text-sub);
+}
+
+.breadcrumb__item--active {
+  color: var(--brand-primary-500);
+  font-weight: 500;
+}
+
+.breadcrumb__sep {
+  color: var(--ui-text-muted);
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* ── Title row ────────────────────────────────────────────────── */
+.page-header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.page-header__title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ui-text-main);
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* ── Action button (dark navy) ────────────────────────────────── */
+.page-header__action {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: var(--brand-neutral-950);
+  color: var(--ui-bg-surface);
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+  flex-shrink: 0;
+}
+
+.page-header__action:hover {
+  opacity: 0.88;
+}
+
+.page-header__action-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+}

@@ -1,0 +1,61 @@
+<div class="step" [formGroup]="formGroup">
+
+  <div class="step__header">
+    <h2 class="step__title">{{ 'wizard.steps.scopeOfWork' | transloco }}</h2>
+    <p class="step__desc">{{ 'wizard.steps.scopeOfWorkDesc' | transloco }}</p>
+  </div>
+
+  <div class="step__grid">
+
+    <!-- Job title -->
+    <div class="field">
+      <label class="field__label" for="scopeJobTitle">
+        {{ 'scope.jobTitle' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="scopeJobTitle" type="text" class="field__input"
+        [class.field__input--error]="isInvalid('jobTitle')"
+        formControlName="jobTitle"
+        [attr.aria-label]="'scope.jobTitle' | transloco"
+        [attr.aria-invalid]="isInvalid('jobTitle')"
+        [attr.aria-describedby]="isInvalid('jobTitle') ? 'scopeJobTitle-err' : null" />
+      @if (isInvalid('jobTitle')) {
+        <span id="scopeJobTitle-err" class="field__error" role="alert">
+          {{ errorKey('jobTitle') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Job number -->
+    <div class="field">
+      <label class="field__label" for="jobNumber">
+        {{ 'scope.jobNumber' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="jobNumber" type="text" class="field__input"
+        [class.field__input--error]="isInvalid('jobNumber')"
+        formControlName="jobNumber"
+        [attr.aria-label]="'scope.jobNumber' | transloco"
+        [attr.aria-invalid]="isInvalid('jobNumber')"
+        [attr.aria-describedby]="isInvalid('jobNumber') ? 'jobNumber-err' : null" />
+      @if (isInvalid('jobNumber')) {
+        <span id="jobNumber-err" class="field__error" role="alert">
+          {{ errorKey('jobNumber') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Job description (optional, full width) -->
+    <div class="field field--full">
+      <label class="field__label" for="jobDescription">
+        {{ 'scope.jobDescription' | transloco }}
+      </label>
+      <textarea id="jobDescription" class="field__input field__textarea"
+        formControlName="jobDescription"
+        [attr.aria-label]="'scope.jobDescription' | transloco"
+        rows="4"></textarea>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,186 @@
+{
+  "nav": {
+    "dashboard":      "Dashboard",
+    "contracts":      "Contracts",
+    "hr":             "HR",
+    "salary":         "Salary",
+    "projects":       "Projects",
+    "teams":          "Teams",
+    "meetings":       "Meetings",
+    "attendance":     "Attendance",
+    "reports":        "Reports",
+    "taskManagement": "Task Management",
+    "requests":       "Requests",
+    "withdrawals":    "Withdrawals",
+    "inviteWorker":   "Invite Worker",
+    "createTeam":     "Create Team"
+  },
+  "common": {
+    "loading":    "Loading…",
+    "retry":      "Retry",
+    "close":      "Close",
+    "cancel":     "Cancel",
+    "all":        "All",
+    "search":     "Search",
+    "actions":    "Actions",
+    "appName":    "MTWork",
+    "isRequired": "is required",
+    "error":      "This field is required"
+  },
+  "dashboard": {
+    "comingSoon": "Coming Soon",
+    "business": {
+      "title":     "Business Dashboard",
+      "contracts": "Contracts",
+      "hr":        "HR",
+      "salary":    "Salary",
+      "projects":  "Projects",
+      "teams":     "Teams",
+      "reports":   "Reports"
+    },
+    "employee":   { "title": "Employee Dashboard" },
+    "contractor": { "title": "Contractor Dashboard" }
+  },
+  "hr": {
+    "title": "HR",
+    "tabs": {
+      "employees": "Employees",
+      "requests":  "Requests"
+    },
+    "dialog": {
+      "createTitle": "New Request",
+      "viewTitle":   "Request Details"
+    },
+    "actions": {
+      "newRequest": "New Request",
+      "approve":    "Approve",
+      "reject":     "Reject",
+      "submit":     "Submit",
+      "cancel":     "Cancel"
+    },
+    "status": {
+      "pending":  "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "canceled": "Canceled"
+    },
+    "employees": {
+      "name":      "Name",
+      "jobTitle":  "Job Title",
+      "contract":  "Contract",
+      "startDate": "Start Date",
+      "endDate":   "End Date",
+      "salary":    "Salary"
+    },
+    "requests": {
+      "key":       "Key",
+      "employee":  "Employee",
+      "type":      "Type",
+      "startDate": "Start Date",
+      "endDate":   "End Date",
+      "status":    "Status",
+      "reason":    "Reason"
+    },
+    "filters": {
+      "search": "Search",
+      "status": "Status"
+    },
+    "form": {
+      "requestType":       "Request Type",
+      "startDate":         "Start Date",
+      "endDate":           "End Date",
+      "reason":            "Reason",
+      "reasonPlaceholder": "Add a reason…",
+      "endBeforeStart":    "End date must be after start date"
+    },
+    "requestTypes": {
+      "annualLeave": "Annual Leave",
+      "sickLeave":   "Sick Leave",
+      "unpaidLeave": "Unpaid Leave",
+      "other":       "Other"
+    },
+    "emptyState": {
+      "noEmployees":        "No employees found",
+      "noEmployeesDesc":    "Employees will appear here once contracts are created.",
+      "noEmployeesSearch":  "No employees match your search.",
+      "noRequests":         "No requests found",
+      "noRequestsDesc":     "Leave requests will appear here.",
+      "noRequestsSearch":   "No requests match your filters."
+    },
+    "toasts": {
+      "requestSubmitted": "Request submitted successfully."
+    },
+    "errors": {
+      "loadEmployees": "Failed to load employees.",
+      "loadRequests":  "Failed to load requests.",
+      "submitRequest": "Failed to submit request. Please try again."
+    }
+  },
+  "requests": {
+    "newRequest": "New Request",
+    "subtitle":   "Submit a new request",
+    "filterType": "Request Type",
+    "types": {
+      "annualLeave":  "Annual Leave",
+      "sickLeave":    "Sick Leave",
+      "workFromHome": "Work From Home",
+      "overtime":     "Overtime",
+      "businessTrip": "Business Trip",
+      "course":       "Course / Training",
+      "certificate":  "Certificate",
+      "other":        "Other"
+    }
+  },
+  "contracts": {
+    "tabs": {
+      "all":        "All",
+      "draft":      "Draft",
+      "active":     "Active",
+      "terminated": "Terminated"
+    },
+    "status": {
+      "draft":      "Draft",
+      "active":     "Active",
+      "terminated": "Terminated"
+    },
+    "filters": {
+      "all":               "All",
+      "searchPlaceholder": "Search",
+      "country":           "Country",
+      "contractType":      "Contract Type",
+      "status":            "Status",
+      "clearAll":          "Clear Filters"
+    }
+  },
+  "chat": {
+    "title":                "Chat",
+    "toggleBtn":            "Open chat",
+    "close":                "Close chat",
+    "to":                   "To:",
+    "recipientPlaceholder": "User ID",
+    "messagePlaceholder":   "Type a message… (Enter to send)",
+    "send":                 "Send message",
+    "empty":                "No messages yet. Start a conversation!",
+    "sendError":            "Failed to send message. Please try again.",
+    "notConnected":         "Not connected to chat.",
+    "status": {
+      "connected":    "Connected",
+      "connecting":   "Connecting…",
+      "disconnected": "Disconnected",
+      "error":        "Connection error"
+    }
+  },
+  "reports": {
+    "title":       "Reports",
+    "subtitle":    "Download PDF reports for your contracts",
+    "downloadBtn": "Download PDF",
+    "downloading": "Downloading...",
+    "noContracts": "No contracts found",
+    "columns": {
+      "contract":   "Contract",
+      "contractor": "Contractor",
+      "status":     "Status",
+      "action":     "Action"
+    }
+  }
+}

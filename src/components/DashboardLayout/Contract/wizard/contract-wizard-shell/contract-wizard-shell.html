@@ -1,0 +1,129 @@
+<div class="wizard-page">
+
+  <!-- Breadcrumb -->
+  <nav class="wizard-breadcrumb" aria-label="{{ 'common.breadcrumb' | transloco }}">
+    <span class="breadcrumb__item breadcrumb__item--link"
+          (click)="navigateBack()" role="link" tabindex="0"
+          (keydown.enter)="navigateBack()">
+      {{ 'contracts.title' | transloco }}
+    </span>
+    <svg class="breadcrumb__sep" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+      <path d="M4 2L8 6L4 10" stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="breadcrumb__item">{{ 'wizard.selectContract' | transloco }}</span>
+    <svg class="breadcrumb__sep" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+      <path d="M4 2L8 6L4 10" stroke="currentColor" stroke-width="1.4"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="breadcrumb__item breadcrumb__item--current" aria-current="page">
+      {{ titleKey | transloco }}
+    </span>
+  </nav>
+
+  <!-- Page heading -->
+  <div class="wizard-heading">
+    <button type="button" class="wizard-heading__back"
+            (click)="navigateBack()"
+            [attr.aria-label]="'common.back' | transloco">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M12 4L7 10L12 16" stroke="currentColor" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <h1 class="wizard-heading__title">{{ titleKey | transloco }}</h1>
+  </div>
+
+  <!-- Loading overlay for edit mode -->
+  @if (isLoadingEdit()) {
+    <div class="wizard-loading" aria-live="polite" aria-label="{{ 'common.loading' | transloco }}">
+      <span class="wizard-spinner" aria-hidden="true"></span>
+      <span class="wizard-loading__text">{{ 'wizard.loading' | transloco }}</span>
+    </div>
+  }
+
+  @if (!isLoadingEdit()) {
+
+    <!-- Two-column layout: form (left) + stepper (right) -->
+    <div class="wizard-layout">
+
+      <!-- Left: step content -->
+      <main class="wizard-main">
+
+        @switch (currentStepDef.formKey) {
+
+          @case ('employer') {
+            <app-step-employer-info [formGroup]="employerForm" />
+          }
+
+          @case ('contractor') {
+            <app-step-contractor-info [formGroup]="contractorForm" />
+          }
+
+          @case ('scopeOfWork') {
+            <app-step-scope-of-work [formGroup]="scopeForm" />
+          }
+
+          @case ('contracting') {
+            @if (contractType === 'FixedSalary') {
+              <app-step-contracting [formGroup]="contractingForm" />
+            } @else {
+              <div class="step-placeholder">
+                <p>{{ 'wizard.steps.contracting' | transloco }} — {{ 'common.comingSoon' | transloco }}</p>
+              </div>
+            }
+          }
+
+          @case ('financial') {
+            <app-step-financial [formGroup]="financialForm" />
+          }
+
+          @default {
+            <div class="step-placeholder">
+              <p>{{ 'common.comingSoon' | transloco }}</p>
+            </div>
+          }
+
+        }
+
+        <!-- Submit error -->
+        @if (submitError()) {
+          <div class="wizard-error" role="alert" aria-live="assertive">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M8 5V8.5M8 11H8.01" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round"/>
+            </svg>
+            {{ submitError() }}
+          </div>
+        }
+
+      </main>
+
+      <!-- Right: stepper panel -->
+      <aside class="wizard-aside">
+        <app-wizard-stepper
+          [steps]="steps"
+          [currentStep]="currentStep()"
+          [completedSteps]="completedSteps()"
+          (stepClicked)="goToStep($event)"
+        />
+      </aside>
+
+    </div>
+
+    <!-- Footer (full width, below the two columns) -->
+    <app-wizard-footer
+      [isFirst]="isFirst"
+      [isLast]="isLast"
+      [isSubmitting]="isSubmitting()"
+      [isSavingDraft]="isSavingDraft()"
+      [isEditMode]="isEditMode()"
+      (back)="onBack()"
+      (next)="onNext()"
+      (saveDraft)="onSaveDraft()"
+    />
+
+  }
+
+</div>

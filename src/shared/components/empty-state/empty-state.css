@@ -1,0 +1,40 @@
+/* Shared empty-state block — used by Messages, Notifications, and any
+   future surface that needs a "no data yet" panel. Uses CSS variables
+   only — never hardcoded colors. */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  padding: 32px 16px;
+  color: var(--ui-text-muted);
+}
+
+.empty-state__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ui-surface-hover, rgba(0, 0, 0, 0.04));
+  color: var(--ui-text-muted);
+  margin-block-end: 4px;
+}
+
+.empty-state__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ui-text);
+}
+
+.empty-state__desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ui-text-muted);
+  max-width: 320px;
+  line-height: 1.4;
+}

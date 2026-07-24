@@ -1,0 +1,452 @@
+/* ================================================================
+   Reports Page  —  report-list.css
+   All colors via CSS variables — zero hardcoded hex.
+   Logical CSS properties for RTL/LTR support.
+   Class namespace: rp-
+   ================================================================ */
+
+/* ── Page Wrapper ────────────────────────────────────────────── */
+.rp-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-block: 1.5rem;
+  padding-inline: 1.5rem;
+  background: var(--ui-bg);
+  min-height: 100%;
+}
+
+/* ── Section Layout ──────────────────────────────────────────── */
+.rp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rp-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.rp-section__title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rp-section__icon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--brand-primary-600);
+}
+
+.rp-section__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ui-text-main);
+  margin: 0;
+}
+
+.rp-section__view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--brand-primary-600);
+  text-decoration: none;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-8);
+  border: 1px solid var(--brand-primary-200);
+  background: var(--brand-primary-50);
+  transition: background 0.2s;
+}
+
+.rp-section__view-all:hover {
+  background: var(--brand-primary-100);
+}
+
+.rp-section__view-all:focus-visible {
+  outline: 2px solid var(--brand-primary-400);
+  outline-offset: 2px;
+}
+
+.rp-section__arrow {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ── State: loading / error / empty ─────────────────────────── */
+.rp-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem 1rem;
+  color: var(--ui-text-muted);
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.rp-state mat-icon {
+  font-size: 2.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--ui-border);
+}
+
+.rp-state--error {
+  color: var(--functional-danger-500);
+}
+
+.rp-state--error mat-icon {
+  color: var(--functional-danger-500);
+}
+
+/* ── Meetings Grid ───────────────────────────────────────────── */
+.rp-meetings-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.rp-meeting-card {
+  background: var(--ui-surface);
+  border-radius: var(--radius-12);
+  border: 1px solid var(--ui-border);
+  border-inline-start-width: 3px;
+  border-inline-start-color: var(--brand-primary-400);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s;
+}
+
+.rp-meeting-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.rp-meeting-card:nth-child(2) { border-inline-start-color: var(--brand-tertiary-500); }
+.rp-meeting-card:nth-child(3) { border-inline-start-color: var(--brand-secondary-500); }
+.rp-meeting-card:nth-child(4) { border-inline-start-color: var(--functional-success-500); }
+
+.rp-meeting-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rp-meeting-card__icon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--brand-primary-400);
+}
+
+.rp-meeting-card__status {
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-600);
+}
+
+.rp-meeting-card__status--past {
+  background: var(--functional-danger-50);
+  color: var(--functional-danger-600);
+}
+
+.rp-meeting-card__status--now {
+  background: var(--functional-success-50);
+  color: var(--functional-success-600);
+}
+
+.rp-meeting-card__title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ui-text-main);
+  margin: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.rp-meeting-card__time {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  color: var(--ui-text-muted);
+  margin: 0;
+}
+
+.rp-meeting-card__time-icon {
+  font-size: 0.75rem;
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.rp-meeting-card__open {
+  align-self: flex-start;
+  margin-block-start: 0.25rem;
+  padding: 0.3rem 1rem;
+  border-radius: var(--radius-8);
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-600);
+  border: 1px solid var(--brand-primary-200);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s;
+}
+
+.rp-meeting-card__open:hover {
+  background: var(--brand-primary-100);
+}
+
+.rp-meeting-card__open:focus-visible {
+  outline: 2px solid var(--brand-primary-400);
+  outline-offset: 2px;
+}
+
+/* ── Charts Row ──────────────────────────────────────────────── */
+.rp-charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.rp-chart-card {
+  background: var(--ui-surface);
+  border-radius: var(--radius-12);
+  border: 1px solid var(--ui-border);
+  padding: 1.1rem 1.25rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.rp-chart-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rp-chart-card__title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ui-text-main);
+  margin: 0;
+}
+
+.rp-chart-card__sub {
+  font-size: 0.7rem;
+  color: var(--ui-text-muted);
+  margin: 0;
+  margin-block-start: 2px;
+}
+
+/* ── Select / period filter ──────────────────────────────────── */
+.rp-select {
+  font-size: 0.72rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-8);
+  border: 1px solid var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-text-main);
+  cursor: pointer;
+  outline: none;
+  min-width: 90px;
+  flex-shrink: 0;
+}
+
+.rp-select:focus-visible {
+  border-color: var(--brand-primary-400);
+  box-shadow: 0 0 0 2px var(--brand-primary-100);
+}
+
+/* ── Doughnut wrap + center label ────────────────────────────── */
+.rp-donut-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rp-chart-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 180px;
+}
+
+.rp-chart-canvas-wrap--bar {
+  height: 220px;
+}
+
+.rp-donut-center {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ui-text-main);
+  pointer-events: none;
+}
+
+/* ── Chart Legend ────────────────────────────────────────────── */
+.rp-legend {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.rp-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: var(--ui-text-muted);
+}
+
+.rp-legend__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--ui-border);
+}
+
+.rp-legend__dot--success { background: var(--functional-success-500); }
+.rp-legend__dot--warning { background: var(--functional-warning-500); }
+.rp-legend__dot--neutral { background: var(--ui-border); }
+
+/* ── Contracts Table ─────────────────────────────────────────── */
+.rp-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius-8);
+}
+
+.rp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.rp-table th {
+  background: var(--ui-bg);
+  color: var(--ui-text-muted);
+  font-weight: 600;
+  text-align: start;
+  padding: 0.75rem 1rem;
+  border-block-end: 1px solid var(--ui-border);
+  white-space: nowrap;
+}
+
+.rp-table td {
+  padding: 0.75rem 1rem;
+  border-block-end: 1px solid var(--ui-border);
+  color: var(--ui-text-main);
+  vertical-align: middle;
+}
+
+.rp-table tbody tr:last-child td {
+  border-block-end: none;
+}
+
+.rp-table tbody tr:hover {
+  background: var(--ui-bg);
+}
+
+.rp-contract-title {
+  font-weight: 500;
+}
+
+.rp-contractor-name {
+  font-weight: 500;
+}
+
+/* ── Status badge ────────────────────────────────────────────── */
+.rp-status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: var(--ui-border);
+  color: var(--ui-text-muted);
+  text-transform: capitalize;
+}
+
+.rp-status-badge[data-status="active"] {
+  background: var(--functional-success-100);
+  color: var(--functional-success-800);
+}
+
+.rp-status-badge[data-status="terminated"] {
+  background: var(--functional-danger-50);
+  color: var(--functional-danger-700);
+}
+
+.rp-status-badge[data-status="draft"] {
+  background: var(--functional-warning-50);
+  color: var(--functional-warning-800);
+}
+
+/* ── Download button ─────────────────────────────────────────── */
+.rp-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.rp-download-btn mat-icon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* ── Responsive: tablet ──────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .rp-meetings-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Responsive: mobile ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  .rp-charts-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .rp-page {
+    padding-inline: 1rem;
+    padding-block: 1rem;
+  }
+
+  .rp-meetings-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rp-col-hide-mobile {
+    display: none;
+  }
+}

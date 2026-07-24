@@ -1,0 +1,188 @@
+<div class="page-container salary-page">
+
+  <!-- ── Page Header ── -->
+  <div class="page-header">
+    <h1 class="page-title">{{ 'salary.title' | transloco }}</h1>
+
+    @if (isBusiness && activeTab === 'overview') {
+      <button class="action-btn" (click)="openPaySalaryDialog()"
+              [attr.aria-label]="'salary.actions.paySalary' | transloco">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        {{ 'salary.actions.paySalary' | transloco }}
+      </button>
+    }
+
+  </div>
+
+  <!-- ── Tabs ── -->
+  <div class="tabs-container" role="tablist">
+    <button class="tab-item" role="tab"
+            [class.active]="activeTab === 'overview'"
+            [attr.aria-selected]="activeTab === 'overview'"
+            (click)="switchTab('overview')">
+      {{ 'salary.tabs.overview' | transloco }}
+    </button>
+    <button class="tab-item" role="tab"
+            [class.active]="activeTab === 'history'"
+            [attr.aria-selected]="activeTab === 'history'"
+            (click)="switchTab('history')">
+      {{ 'salary.tabs.history' | transloco }}
+      @if (historyEntries.length) {
+        <span class="tab-badge">{{ historyEntries.length }}</span>
+      }
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       OVERVIEW TAB
+  ══════════════════════════════════════ -->
+  @if (activeTab === 'overview') {
+
+    <!-- Business: Company Balance -->
+    @if (isBusiness) {
+      @if (balanceLoading) {
+        <div class="loading-spinner" role="status">
+          <span class="spinner-lg" aria-hidden="true"></span>
+          {{ 'common.loading' | transloco }}
+        </div>
+      } @else if (balanceError) {
+        <div class="error-state" role="alert">
+          {{ 'salary.errors.loadBalance' | transloco }}
+          <button class="retry-btn" (click)="loadCompanyBalance()"
+                  [attr.aria-label]="'common.retry' | transloco">
+            {{ 'common.retry' | transloco }}
+          </button>
+        </div>
+      } @else if (companyBalance) {
+        <div class="overview-grid">
+          <div class="card balance-card">
+            <span class="balance-label">{{ 'salary.balance.currentBalance' | transloco }}</span>
+            <span class="balance-amount">{{ companyBalance.currentBalance | number:'1.2-2' }}</span>
+            @if (companyBalance.currency) {
+              <span class="balance-currency">{{ companyBalance.currency }}</span>
+            }
+          </div>
+        </div>
+      }
+    }
+
+    <!-- Employee/Contractor: Salary Card -->
+    @if (!isBusiness) {
+      @if (salaryLoading) {
+        <div class="loading-spinner" role="status">
+          <span class="spinner-lg" aria-hidden="true"></span>
+          {{ 'common.loading' | transloco }}
+        </div>
+      } @else if (salaryError) {
+        <div class="error-state" role="alert">
+          {{ 'salary.errors.loadSalary' | transloco }}
+          <button class="retry-btn" (click)="loadEmployeeSalary()"
+                  [attr.aria-label]="'common.retry' | transloco">
+            {{ 'common.retry' | transloco }}
+          </button>
+        </div>
+      } @else if (employeeSalary) {
+        <div class="overview-grid">
+          <div class="card salary-card">
+            <span class="salary-card-label">{{ 'salary.employeeSalary.title' | transloco }}</span>
+            <div class="salary-info-rows">
+              <div class="salary-info-row">
+                <span class="info-label">{{ 'salary.table.amount' | transloco }}</span>
+                <span class="info-value">{{ employeeSalary.salary | number:'1.2-2' }}</span>
+              </div>
+              @if (employeeSalary.contractType) {
+                <div class="salary-info-row">
+                  <span class="info-label">{{ 'salary.employeeSalary.contractType' | transloco }}</span>
+                  <span class="info-value">{{ employeeSalary.contractType }}</span>
+                </div>
+              }
+              @if (employeeSalary.currency) {
+                <div class="salary-info-row">
+                  <span class="info-label">{{ 'salary.employeeSalary.currency' | transloco }}</span>
+                  <span class="info-value">{{ employeeSalary.currency }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <h2>{{ 'salary.emptyState.noSalary' | transloco }}</h2>
+          <p>{{ 'salary.emptyState.noSalaryDesc' | transloco }}</p>
+        </div>
+      }
+    }
+
+  }
+
+  <!-- ══════════════════════════════════════
+       HISTORY TAB
+  ══════════════════════════════════════ -->
+  @if (activeTab === 'history') {
+
+    @if (historyLoading) {
+      <div class="loading-spinner" role="status">
+        <span class="spinner-lg" aria-hidden="true"></span>
+        {{ 'common.loading' | transloco }}
+      </div>
+    } @else if (historyError) {
+      <div class="error-state" role="alert">
+        {{ 'salary.errors.loadHistory' | transloco }}
+        <button class="retry-btn" (click)="loadHistory()"
+                [attr.aria-label]="'common.retry' | transloco">
+          {{ 'common.retry' | transloco }}
+        </button>
+      </div>
+    } @else if (!historyEntries.length) {
+      <div class="empty-state">
+        <h2>{{ 'salary.emptyState.noHistory' | transloco }}</h2>
+        <p>{{ 'salary.emptyState.noHistoryDesc' | transloco }}</p>
+      </div>
+    } @else {
+      <div class="table-container">
+        <table class="salary-table">
+          <thead>
+            <tr>
+              @if (isBusiness) {
+                <th>{{ 'salary.table.employee' | transloco }}</th>
+              }
+              <th>{{ 'salary.table.paymentType' | transloco }}</th>
+              <th>{{ 'salary.table.amount' | transloco }}</th>
+              <th>{{ 'salary.table.status' | transloco }}</th>
+              <th>{{ 'salary.table.date' | transloco }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (entry of historyEntries; track entry.id) {
+              <tr>
+                @if (isBusiness && entry.employeeName) {
+                  <td>
+                    <div class="employee-cell">
+                      <span class="avatar-badge">{{ getInitials(entry.employeeName) }}</span>
+                      <span class="employee-name">{{ entry.employeeName }}</span>
+                    </div>
+                  </td>
+                }
+                <td>{{ getPaymentTypeKey(entry.paymentType) | transloco }}</td>
+                <td class="amount-cell">{{ entry.amount | number:'1.2-2' }}</td>
+                <td>
+                  <span class="status-badge" [ngClass]="getPaymentStatusClass(entry.paymentStatus)">
+                    {{ getPaymentStatusKey(entry.paymentStatus) | transloco }}
+                  </span>
+                </td>
+                <td class="date-cell">
+                  {{ (entry.paidAt || entry.createdAt) | date:'mediumDate' }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+  }
+
+
+</div>

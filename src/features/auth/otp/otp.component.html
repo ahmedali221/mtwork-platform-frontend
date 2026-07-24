@@ -1,0 +1,98 @@
+<!-- OTP Verification — Figma 3:124181. Standalone cream surface (NOT a
+     modal): topbar + centered white card. Chrome matches the login freeze. -->
+<div class="otp-page">
+
+  <!-- Top bar: logo + lang + theme toggle (Figma 3:124182, identical to login) -->
+  <header class="otp-topbar">
+    <a routerLink="/" class="otp-topbar__logo" [attr.aria-label]="'common.mtworkHome' | transloco">
+      @for (segment of logoSegments; track segment.src) {
+        <img class="otp-topbar__logo-segment" [src]="segment.src" alt="" [style.width.px]="segment.width" [style.height.px]="segment.height" />
+      }
+    </a>
+    <div class="otp-topbar__controls">
+      <button class="otp-ctrl otp-ctrl--lang" (click)="toggleLanguage()" [attr.aria-label]="'common.toggleLanguage' | transloco">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        {{ languageService.currentLang() === 'en' ? 'Arabic' : 'English' }}
+      </button>
+      <div class="otp-ctrl otp-ctrl--theme-group" role="group" [attr.aria-label]="'common.themeToggle' | transloco">
+        <button class="otp-ctrl__theme-btn" [class.otp-ctrl__theme-btn--active]="!themeService.isDarkMode()" (click)="setTheme('light')" [attr.aria-label]="'common.lightMode' | transloco">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          Light
+        </button>
+        <button class="otp-ctrl__theme-btn" [class.otp-ctrl__theme-btn--active]="themeService.isDarkMode()" (click)="setTheme('dark')" [attr.aria-label]="'common.darkMode' | transloco">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          Dark
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Card: Figma 3:124189 "Container Login" 426×419 -->
+  <main class="otp-main">
+    <div class="otp-card">
+
+      <!-- Back (Figma 3:124190): arrow + "Back", DM Sans Bold 18, h48 -->
+      <a [routerLink]="['/login']" class="otp-back" [attr.aria-label]="'otp.backAria' | transloco">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        {{ 'common.back' | transloco }}
+      </a>
+
+      <!-- Title + subtitle (Figma 3:124191) -->
+      <div class="otp-head">
+        <h1 class="otp-head__title">{{ 'otp.title' | transloco }}</h1>
+        <p class="otp-head__subtitle">
+          {{ 'otp.subtitleStart' | transloco }}
+          <span class="otp-head__email">{{ email() }}</span>
+          {{ 'otp.subtitleEnd' | transloco }}
+        </p>
+      </div>
+
+      <!-- Digit group + CTA (Figma 3:124194, gap 32) -->
+      <div class="otp-body">
+
+        <div class="otp-digits-block">
+          <!-- 4 cells (Figma 3:124196) -->
+          <div class="otp-cells" role="group" [attr.aria-label]="'otp.codeAria' | transloco" (paste)="onPaste($event)">
+            @for (i of cells; track i) {
+              <input
+                #cell
+                class="otp-cell"
+                type="text"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                maxlength="1"
+                [attr.aria-label]="('otp.cellAria' | transloco) + ' ' + (i + 1)"
+                (input)="onInput(i, $event)"
+                (keydown)="onKeydown(i, $event)"
+              />
+            }
+          </div>
+
+          <!-- Resend (Figma 3:124197): replace icon + "Resend", sm button -->
+          <button type="button" class="otp-resend" (click)="resend()" [disabled]="resendDisabled()" [attr.aria-label]="'otp.resendAria' | transloco">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          {{ 'otp.resend' | transloco }}
+        </button>
+        </div>
+
+        @if (errorMessage()) {
+          <p class="otp-error" role="alert">{{ errorMessage() }}</p>
+        }
+
+        <!-- Reset CTA (Figma 3:124198): full-width, h48, black, r12 -->
+        <button
+          type="button"
+          class="otp-btn"
+          [disabled]="!isComplete() || isLoading()"
+          [attr.aria-busy]="isLoading()"
+          (click)="submit()"
+        >
+          {{ isLoading() ? ('otp.verifying' | transloco) : ('otp.reset' | transloco) }}
+        </button>
+
+      </div>
+
+    </div>
+  </main>
+
+</div>

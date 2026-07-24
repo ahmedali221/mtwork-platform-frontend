@@ -1,0 +1,172 @@
+/* Shared styles for all wizard step form components */
+
+/* ── Step root ───────────────────────────────────────────────── */
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Section card (white card per form section) ──────────────── */
+.step-card {
+  background: var(--ui-bg-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.step-card__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ui-text-main);
+  margin: 0;
+}
+
+/* ── Required badge (amber pill) ─────────────────────────────── */
+.field__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: var(--functional-warning-100);
+  color: var(--functional-warning-700);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: nowrap;
+  margin-inline-start: 4px;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.step__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.step__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ui-text-main);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.step__desc {
+  font-size: 13px;
+  color: var(--ui-text-muted);
+  margin: 0;
+}
+
+/* ── Section divider ─────────────────────────────────────────── */
+.step__section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-block-end: 4px;
+  border-block-end: 1px solid var(--ui-border);
+}
+
+.step__section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ui-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* ── Grid ────────────────────────────────────────────────────── */
+.step__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 24px;
+}
+
+.field--full  { grid-column: 1 / -1; }
+.field--third { grid-column: span 1; }
+
+/* ── Field ───────────────────────────────────────────────────── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ui-text-sub);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.field__required { color: var(--functional-error-500); }
+
+.field__input {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--ui-border);
+  border-radius: 8px;
+  background: var(--ui-bg-surface);
+  color: var(--ui-text-main);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--brand-primary-400);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary-400) 14%, transparent);
+}
+
+.field__input--error {
+  border-color: var(--functional-error-400);
+}
+
+.field__input--error:focus {
+  border-color: var(--functional-error-500);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--functional-error-400) 14%, transparent);
+}
+
+.field__input::placeholder { color: var(--ui-text-muted); }
+
+/* Select arrow */
+select.field__input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-inline-end: 36px;
+  cursor: pointer;
+}
+
+.field__textarea {
+  height: auto;
+  padding: 10px 12px;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.field__hint {
+  font-size: 12px;
+  color: var(--ui-text-muted);
+}
+
+.field__error {
+  font-size: 12px;
+  color: var(--functional-error-600);
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .step__grid { grid-template-columns: 1fr; }
+}

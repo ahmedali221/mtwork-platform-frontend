@@ -1,0 +1,209 @@
+/* ── Contractor Step 4 · Attachments (Figma 3:123316) ───────────
+   Single centered card (no side panel). Mirrors the frozen Steps 1-3
+   .ca-* chrome. The shared file-upload-component is NOT styled here. */
+.ca-body {
+  --login-primary: var(--landing-navbar-primary);   /* #2e358f */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block-end: 48px;
+  padding-inline: 24px;
+}
+
+/* Card wrapper — single column, centered. Stepper pulled into the band;
+   card lands at Figma y297 (stepper bottom ≈167 → +62px). */
+.ca-card-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-block-start: 62px;
+}
+
+/* inline submit error (final-submit step) */
+.ca-error {
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-size);
+  color: var(--functional-danger-500);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* White form card (Figma 3:123332: 569 wide, radius-20, 0.5px border,
+   Elevation-3, pad 24). */
+.ca-card {
+  width: 100%;
+  max-width: 569px;
+  background: #ffffff;
+  border: 0.5px solid rgba(13, 13, 13, 0.25);   /* Border/Black-Opacity */
+  border-radius: var(--radius-20);
+  padding: 24px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);    /* Elevation 3 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo — navy MTWORK wordmark asset (Figma 3:123334, 119×24, top-left) */
+.ca-card__logo {
+  display: block;
+  width: 119px;
+  height: 24px;
+}
+
+/* Back (Figma 3:123335: 92×48, DM Sans Bold 18) */
+.ca-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+  width: fit-content;
+  padding: 12px 16px 12px 0;
+  background: none;
+  border: none;
+  color: var(--brand-grays-900);     /* #201b13 */
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--body-size);       /* 18 */
+  font-weight: 700;
+  line-height: 1.5;
+  cursor: pointer;
+  margin-block-start: 16px;          /* Figma 3:123335: logo bottom→back = 16 */
+}
+
+.ca-back:hover { color: var(--login-primary); }
+
+/* Title — IBM Plex Bold H4 36 / 1.3, #201b13 (Figma 3:123337) */
+.ca-card__title {
+  font-family: var(--font-family-ibm-plex-sans);
+  font-size: var(--h4-size);         /* 36 */
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--brand-grays-900);     /* #201b13 */
+  margin: 16px 0 0;
+}
+
+/* Subtitle — DM Sans Subtitle 16 / 1.5, #999 (Figma 3:123338) */
+.ca-card__subtitle {
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--subtitle-size);   /* 16 */
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--brand-neutral-400);   /* #999 */
+  margin: 8px 0 0;
+}
+
+/* ── Form layout (Figma 3:123339: upload group, gap 16) ────────── */
+.ca-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  /* Figma 3:123316: form group starts ~48px below the title/subtitle
+     block bottom — matches the frozen Steps 1-3. */
+  margin-block-start: 48px;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.ca-btn {
+  width: 100%;
+  height: 48px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: var(--radius-12);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--body-size);       /* 18 */
+  font-weight: 400;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: opacity 0.2s, background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Create account — fills navy when valid; disabled = Bg-Netural #e6e6e6
+   (Figma 3:123372). */
+.ca-btn--primary {
+  background: var(--login-primary);
+  color: #ffffff;
+  margin-block-start: 16px;          /* form→CTA (Figma 32 total incl. gap16) */
+}
+
+.ca-btn--primary:disabled {
+  background: #e6e6e6;                /* Figma Bg-Netural */
+  color: var(--brand-neutral-400);
+  cursor: not-allowed;
+}
+
+.ca-btn--primary:not(:disabled):hover { opacity: 0.9; }
+
+/* Google — white, border, 48h (Figma 3:123373) */
+.ca-btn--google {
+  margin-block-start: 12px;
+  background: #ffffff;
+  color: var(--brand-neutral-950);
+  border: 0.5px solid rgba(13, 13, 13, 0.25);
+}
+
+.ca-btn--google:not(:disabled):hover { background: var(--brand-grays-50); }
+
+.ca-btn--google:disabled { cursor: not-allowed; opacity: 0.6; }
+
+.ca-btn--google img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+/* ── Login link (Figma 3:123374: text + glyph, centered) ───────── */
+.ca-card__login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-block-start: 16px;
+  text-decoration: none;
+}
+
+.ca-card__login-text {
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--subtitle-size);   /* 16 */
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--brand-grays-900);     /* #201b13 */
+}
+
+.ca-card__login-link {
+  font-weight: 700;
+  color: var(--login-primary);       /* #2e358f */
+}
+
+.ca-card__login-icon {
+  color: var(--login-primary);
+  flex-shrink: 0;
+}
+
+.ca-card__login:hover .ca-card__login-link { text-decoration: underline; }
+
+/* ── Terms (Figma 3:123375: DM Sans 12 #999, links navy) ───────── */
+.ca-card__terms {
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-size);    /* 12 */
+  font-weight: 400;
+  color: var(--brand-neutral-400);   /* #999 */
+  text-align: center;
+  line-height: 1.5;
+  margin: 24px 0 0;
+}
+
+.ca-link {
+  color: var(--login-primary);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.ca-link:hover { text-decoration: underline; }
+
+/* ── Responsive (desktop-first) ────────────────────────────────── */
+@media (max-width: 620px) {
+  .ca-card { padding: 20px; }
+}

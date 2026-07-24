@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/components/DashboardLayout/Contract/wizard/create-pay-by-task/create-pay-by-task.ts"],
+  "sourcesContent": ["import { Component } from '@angular/core';\nimport { ContractWizardShellComponent } from '../contract-wizard-shell/contract-wizard-shell';\n\n@Component({\n  selector: 'app-create-pay-by-task',\n  standalone: true,\n  imports: [ContractWizardShellComponent],\n  template: `<app-contract-wizard-shell contractType=\"PayByTask\" />`,\n})\nexport class CreatePayByTaskComponent {}\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AASM,IAAO,4BAAP,MAAO,0BAAwB;;;mCAAxB,2BAAwB;AAAA;0FAAxB,2BAAwB,WAAA,CAAA,CAAA,wBAAA,CAAA,GAAA,OAAA,GAAA,MAAA,GAAA,QAAA,CAAA,CAAA,gBAAA,WAAA,CAAA,GAAA,UAAA,SAAA,kCAAA,IAAA,KAAA;AAAA,MAAA,KAAA,GAAA;AAFxB,IAAA,oBAAA,GAAA,6BAAA,CAAA;;kBADD,4BAA4B,GAAA,eAAA,EAAA,CAAA;AAGlC,IAAO,2BAAP;;sEAAO,0BAAwB,CAAA;UANpC;WAAU;MACT,UAAU;MACV,YAAY;MACZ,SAAS,CAAC,4BAA4B;MACtC,UAAU;KACX;;;;6EACY,0BAAwB,EAAA,WAAA,4BAAA,UAAA,2FAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
+  "names": []
+}

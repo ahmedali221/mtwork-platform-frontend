@@ -1,0 +1,458 @@
+/* ── Header shell ─────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  background: var(--ui-bg-surface);
+  border-block-end: 0.5px solid color-mix(in srgb, var(--brand-neutral-950) 25%, transparent);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: margin-inline-start 0.3s ease;
+  margin-inline-start: 277px;
+}
+
+.header.sidebar-collapsed {
+  margin-inline-start: 100px;
+}
+
+/* ── Left section ─────────────────────────────────────────────── */
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-shrink: 0;
+  width: 361px;
+}
+
+.hamburger-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  color: var(--ui-text-main);
+  flex-shrink: 0;
+}
+
+.hamburger-btn:hover {
+  background: var(--ui-bg-subtle);
+}
+
+.hamburger-btn mat-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-avatar-small {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ui-bg-surface);
+  border: 2px solid color-mix(in srgb, var(--brand-neutral-950) 25%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-avatar-small mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: var(--ui-text-muted);
+}
+
+.user-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.5;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ui-text-main);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.user-company {
+  font-size: 8px;
+  font-weight: 400;
+  color: var(--ui-text-muted);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+/* ── Center: search bar ───────────────────────────────────────── */
+.center-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding-inline: 24px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 465px;
+  height: 42px;
+  background: var(--ui-bg-surface);
+  border: 0.5px solid var(--ui-border);
+  border-radius: 12px;
+  padding-inline: 8px;
+  box-shadow: 0 0 1px rgba(204, 204, 204, 0.2);
+  gap: 8px;
+}
+
+.search-left {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.search-icon {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  color: var(--ui-text-muted);
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  color: var(--ui-text-muted);
+  min-width: 0;
+}
+
+.search-input::placeholder {
+  color: var(--ui-text-muted);
+}
+
+.search-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--ui-border);
+  flex-shrink: 0;
+}
+
+.search-filter {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ui-text-muted);
+  white-space: nowrap;
+}
+
+.filter-arrow {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  color: var(--ui-text-muted);
+}
+
+/* ── Right section ────────────────────────────────────────────── */
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.icon-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Icon buttons: 42×42, radius 12, white bg, thin border */
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: var(--ui-bg-surface);
+  border: 0.25px solid var(--ui-border);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 0 1px rgba(204, 204, 204, 0.2),
+              inset 0 -2px 2px rgba(204, 204, 204, 0.2);
+  transition: background 0.15s ease;
+  color: var(--ui-text-sub);
+}
+
+.icon-btn:hover {
+  background: var(--ui-bg-subtle);
+}
+
+.icon-btn mat-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+/* User avatar circle */
+.user-avatar {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--brand-accent-200);
+  border: 2px solid color-mix(in srgb, var(--brand-neutral-950) 25%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ui-text-main);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+}
+
+.avatar-dot {
+  position: absolute;
+  bottom: 1px;
+  inset-inline-end: 1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--functional-success-500);
+  border: 2px solid var(--ui-bg-surface);
+}
+
+/* ── Avatar wrapper + arrow tip ──────────────────────────────── */
+.user-avatar-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Small down-arrow chip below avatar (matches Figma "Tip") */
+.avatar-arrow-tip {
+  position: absolute;
+  bottom: -8px;
+  inset-inline-end: -4px;
+  width: 20px;
+  height: 20px;
+  background: var(--ui-bg);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.avatar-arrow-tip mat-icon {
+  font-size: 13px !important;
+  width: 13px !important;
+  height: 13px !important;
+  color: var(--ui-text-sub);
+}
+
+/* ── User menu dropdown ───────────────────────────────────────── */
+.user-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 16px);
+  inset-inline-end: 0;
+  width: 240px;
+  background: var(--ui-bg-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  z-index: 200;
+  overflow: hidden;
+  animation: menuFadeIn 0.15s ease;
+}
+
+@keyframes menuFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Profile header inside dropdown */
+.menu-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+.menu-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--brand-accent-200);
+  border: 2px solid color-mix(in srgb, var(--brand-neutral-950) 20%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ui-text-main);
+  flex-shrink: 0;
+}
+
+.menu-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.menu-user-email {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ui-text-main);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menu-role-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 1px 8px;
+  border-radius: 50px;
+  background: var(--ui-bg-subtle);
+  color: var(--ui-text-sub);
+}
+
+.menu-role-badge.role-badge--business   { background: var(--brand-primary-50);       color: var(--brand-primary-600); }
+.menu-role-badge.role-badge--employee   { background: var(--functional-success-50);  color: var(--functional-success-700); }
+.menu-role-badge.role-badge--contractor { background: var(--functional-warning-50);  color: var(--brand-tertiary-600); }
+.menu-role-badge.role-badge--admin      { background: var(--brand-primary-50);       color: var(--brand-primary-700); }
+
+/* Divider */
+.menu-divider {
+  height: 1px;
+  background: var(--ui-border);
+  margin: 0;
+}
+
+/* Menu list */
+.menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+/* Menu item buttons */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ui-text-main);
+  text-align: start;
+  transition: background 0.12s ease;
+}
+
+.menu-item:hover {
+  background: var(--ui-bg-subtle);
+}
+
+.menu-item-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: var(--ui-text-sub);
+}
+
+/* Danger (logout) item */
+.menu-item--danger {
+  color: var(--functional-danger-600);
+  width: 100%;
+  padding: 10px 16px;
+  margin: 4px 0;
+}
+
+.menu-item--danger .menu-item-icon {
+  color: var(--functional-danger-600);
+}
+
+.menu-item--danger:hover {
+  background: color-mix(in srgb, var(--functional-danger-600) 8%, transparent);
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .header { margin-inline-start: 0; }
+  .left-section { width: auto; }
+}
+
+@media (max-width: 768px) {
+  .header { margin-inline-start: 0 !important; padding: 12px 16px; }
+  .center-section { display: none; }
+  .user-company { display: none; }
+  .left-section { gap: 12px; width: auto; }
+  .icon-group .icon-btn:not(:last-child) { display: none; }
+}
+
+/* Notifications badge on the bell icon — added by Notifications integration. */
+.icon-btn--has-badge { position: relative; }
+.icon-badge {
+  position: absolute;
+  top: 4px;
+  inset-inline-end: 4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--brand-primary-500, rgb(99, 102, 241));
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+  pointer-events: none;
+  box-shadow: 0 0 0 2px var(--ui-bg-surface);
+}

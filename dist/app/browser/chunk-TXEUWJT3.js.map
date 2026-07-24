@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/models/roles.enum.ts"],
+  "sourcesContent": ["/**\n * Role strings as stored in the JWT \"role\" claim.\n * Backend: ClaimTypes.Role → serialized as \"role\" in JWT payload.\n * Source: MTWorkHR.Infrastructure migrations (AspNetRoles seed data)\n */\nexport enum UserRole {\n  Admin      = 'Admin',\n  Employee   = 'Employee',\n  Contractor = 'Contractor',\n  Business   = 'Business',\n}\n\n/**\n * Numeric user type matching the backend UserTypeEnum.\n * Source: MTWorkHR.Core\\Global\\Enum\\UserTypeEnum.cs\n * Used in the ApplicationUser.UserType property.\n */\nexport enum UserType {\n  Employee   = 1,\n  Contractor = 2,\n  Business   = 3,\n}\n"],
+  "mappings": ";AAKA,IAAY;CAAZ,SAAYA,WAAQ;AAClB,EAAAA,UAAA,OAAA,IAAA;AACA,EAAAA,UAAA,UAAA,IAAA;AACA,EAAAA,UAAA,YAAA,IAAA;AACA,EAAAA,UAAA,UAAA,IAAA;AACF,GALY,aAAA,WAAQ,CAAA,EAAA;AAYpB,IAAY;CAAZ,SAAYC,WAAQ;AAClB,EAAAA,UAAAA,UAAA,UAAA,IAAA,CAAA,IAAA;AACA,EAAAA,UAAAA,UAAA,YAAA,IAAA,CAAA,IAAA;AACA,EAAAA,UAAAA,UAAA,UAAA,IAAA,CAAA,IAAA;AACF,GAJY,aAAA,WAAQ,CAAA,EAAA;",
+  "names": ["UserRole", "UserType"]
+}

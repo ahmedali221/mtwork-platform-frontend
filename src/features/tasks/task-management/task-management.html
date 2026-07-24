@@ -1,0 +1,706 @@
+<div class="tm-page" (click)="state.closeAllMenus()">
+
+  <!-- ── Hidden file input for Import ── -->
+  <input #fileInput type="file" accept=".csv,.xlsx,.json" class="tm-hidden-input" aria-hidden="true" />
+
+  <!-- ── Toast notification ── -->
+  @if (state.toast()) {
+    <div class="tm-toast tm-toast--{{ state.toast()!.type }}" role="alert">
+      <mat-icon>{{ state.toast()!.type === 'error' ? 'error_outline' : 'check_circle_outline' }}</mat-icon>
+      <span>{{ state.toast()!.key | transloco }}</span>
+      <button class="tm-toast-close" (click)="dismissToast()" [attr.aria-label]="'common.closeDialog' | transloco">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  }
+
+  <!-- ══════════════════════════════════════════════════════════
+       BREADCRUMB + PAGE TITLE
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="tm-page-top">
+    <nav class="tm-breadcrumb" [attr.aria-label]="'common.breadcrumb' | transloco">
+      <span class="tm-bc-item tm-bc-item--link">{{ 'nav.projects' | transloco }}</span>
+      <mat-icon class="tm-bc-sep">chevron_right</mat-icon>
+      <span class="tm-bc-item tm-bc-item--link">{{ 'tasks.title' | transloco }}</span>
+      @if (state.projectTitle()) {
+        <mat-icon class="tm-bc-sep">chevron_right</mat-icon>
+        <span class="tm-bc-item tm-bc-item--active">{{ state.projectTitle() }}</span>
+      }
+    </nav>
+    <h1 class="tm-page-title">{{ state.projectTitle() || ('tasks.title' | transloco) }}</h1>
+
+    <!-- ── Controls bar ── -->
+    <div class="tm-controls">
+
+      <!-- View switcher: Table | List | Board -->
+      <div class="tm-view-switcher" role="group" [attr.aria-label]="'tasks.viewMode' | transloco">
+        <button class="tm-view-btn" [class.tm-view-btn--active]="state.activeView() === 'table'"
+          (click)="setView('table'); $event.stopPropagation()"
+          [attr.aria-label]="'tasks.view.table' | transloco">
+          <mat-icon>table_chart</mat-icon>
+          <span>{{ 'tasks.view.table' | transloco }}</span>
+        </button>
+        <button class="tm-view-btn" [class.tm-view-btn--active]="state.activeView() === 'list'"
+          (click)="setView('list'); $event.stopPropagation()"
+          [attr.aria-label]="'tasks.view.list' | transloco">
+          <mat-icon>view_list</mat-icon>
+          <span>{{ 'tasks.view.list' | transloco }}</span>
+        </button>
+        <button class="tm-view-btn" [class.tm-view-btn--active]="state.activeView() === 'board'"
+          (click)="setView('board'); $event.stopPropagation()"
+          [attr.aria-label]="'tasks.view.board' | transloco">
+          <mat-icon>view_kanban</mat-icon>
+          <span>{{ 'tasks.view.board' | transloco }}</span>
+        </button>
+      </div>
+
+      <!-- Right-side controls -->
+      <div class="tm-controls-right">
+        <!-- Search -->
+        <div class="tm-search-box">
+          <mat-icon class="tm-search-icon">search</mat-icon>
+          <input
+            class="tm-search-input"
+            type="text"
+            [placeholder]="'tasks.searchPlaceholder' | transloco"
+            [value]="state.searchQuery()"
+            (input)="onSearch($any($event.target).value)"
+            [attr.aria-label]="'tasks.searchPlaceholder' | transloco" />
+        </div>
+
+        <!-- Filter button -->
+        <button class="tm-icon-btn" (click)="toggleFilterMenu($event)"
+          [attr.aria-label]="'tasks.filter' | transloco"
+          [class.tm-icon-btn--active]="state.filterMenuOpen()">
+          <mat-icon>tune</mat-icon>
+        </button>
+
+        <!-- Sort button -->
+        <button class="tm-icon-btn" (click)="toggleSortMenu($event)"
+          [attr.aria-label]="'tasks.sort' | transloco"
+          [class.tm-icon-btn--active]="state.sortMenuOpen()">
+          <mat-icon>swap_vert</mat-icon>
+        </button>
+
+        <!-- Import button -->
+        <button class="tm-btn tm-btn--dark" (click)="triggerImport(); $event.stopPropagation()"
+          [attr.aria-label]="'tasks.import' | transloco">
+          <mat-icon>upload</mat-icon>
+          <span>{{ 'tasks.import' | transloco }}</span>
+        </button>
+
+        <!-- New Task button — Business/Admin manage the board, Employee works their own tasks -->
+        @if (!isEmployee) {
+          <button class="tm-btn tm-btn--primary" (click)="openCreatePanel(); $event.stopPropagation()"
+            [attr.aria-label]="'tasks.newTask' | transloco">
+            <mat-icon>add_circle_outline</mat-icon>
+            <span>{{ 'tasks.newTask' | transloco }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       CONTENT AREA  (main + optional detail panel)
+  ══════════════════════════════════════════════════════════════ -->
+  <div class="tm-content" [class.tm-content--panel-open]="state.detailPanelOpen()">
+
+    <!-- ── MAIN VIEW ── -->
+    <div class="tm-main">
+
+      <!-- Loading -->
+      @if (state.loading()) {
+        <div class="tm-state-center">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+      }
+
+      <!-- Error -->
+      @else if (state.error()) {
+        <div class="tm-state-center tm-state--error">
+          <mat-icon>error_outline</mat-icon>
+          <p>{{ state.error()! | transloco }}</p>
+          <button class="tm-btn tm-btn--outline" (click)="retry()">{{ 'common.retry' | transloco }}</button>
+        </div>
+      }
+
+      <!-- Empty state -->
+      @else if (state.tasks().length === 0) {
+        <div class="tm-empty">
+          <img src="assets/images/ResultNotFound.png" alt="" class="tm-empty-img" />
+          <p class="tm-empty-title">
+            {{ 'tasks.emptyProject' | transloco }}
+            <span class="tm-empty-project">{{ state.projectTitle() }}</span>
+            {{ 'tasks.emptyProjectSuffix' | transloco }}
+          </p>
+          <p class="tm-empty-desc">{{ 'tasks.emptyDesc' | transloco }}</p>
+        </div>
+      }
+
+      <!-- ════════════════════════════════════════════
+           BOARD VIEW
+      ════════════════════════════════════════════════ -->
+      @else if (state.activeView() === 'board') {
+        <div class="tm-board" cdkDropListGroup>
+          @for (col of state.kanbanColumns(); track col.id) {
+            <div class="tm-col">
+
+              <!-- Column header -->
+              <div class="tm-col-head">
+                <div class="tm-col-left">
+                  <span class="tm-col-bar" [style.background-color]="col.indicatorColor"></span>
+                  <span class="tm-col-label">{{ col.labelKey | transloco }}</span>
+                  <span class="tm-col-badge">{{ col.tasks.length }}</span>
+                </div>
+                <div class="tm-col-actions" (click)="$event.stopPropagation()">
+                  @if (!isEmployee) {
+                    <button class="tm-col-btn" (click)="startInlineCreate(col.id)"
+                      [attr.aria-label]="'tasks.addNew' | transloco">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  }
+                  <div class="tm-col-menu-wrap">
+                    <button class="tm-col-btn" (click)="toggleColumnMenu(col.id, $event)"
+                      [attr.aria-label]="'tasks.colActions' | transloco">
+                      <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    @if (state.activeColumnMenuId() === col.id) {
+                      <div class="tm-dropdown" role="menu">
+                        <div class="tm-dropdown-head">{{ 'tasks.actions.title' | transloco }}</div>
+                        <button class="tm-dropdown-item" role="menuitem" (click)="onColumnAction('edit', col)">
+                          <mat-icon>edit</mat-icon>{{ 'common.edit' | transloco }}
+                        </button>
+                        <button class="tm-dropdown-item" role="menuitem" (click)="onColumnAction('details', col)">
+                          <mat-icon>info_outline</mat-icon>{{ 'tasks.actions.showDetails' | transloco }}
+                        </button>
+                        <button class="tm-dropdown-item" role="menuitem" (click)="onColumnAction('moveDown', col)">
+                          <mat-icon>arrow_downward</mat-icon>{{ 'tasks.actions.moveDown' | transloco }}
+                        </button>
+                        <button class="tm-dropdown-item" role="menuitem" (click)="onColumnAction('moveUp', col)">
+                          <mat-icon>arrow_upward</mat-icon>{{ 'tasks.actions.moveUp' | transloco }}
+                        </button>
+                        <button class="tm-dropdown-item" role="menuitem" (click)="onColumnAction('copyLink', col)">
+                          <mat-icon>link</mat-icon>{{ 'tasks.actions.copyLink' | transloco }}
+                        </button>
+                        <button class="tm-dropdown-item tm-dropdown-item--danger" role="menuitem"
+                          (click)="onColumnAction('delete', col)">
+                          <mat-icon>delete</mat-icon>{{ 'common.delete' | transloco }}
+                        </button>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <!-- Drop zone -->
+              <div class="tm-cards"
+                cdkDropList
+                [id]="'drp-' + col.id"
+                [cdkDropListData]="col.tasks"
+                [cdkDropListConnectedTo]="colDropIds()"
+                (cdkDropListDropped)="onDrop($event, col)">
+
+                @for (task of col.tasks; track task.id) {
+                  <div class="tm-card" cdkDrag [cdkDragData]="task"
+                    (click)="openDetail(task.id)" role="button"
+                    [attr.aria-label]="task.title" tabindex="0"
+                    (keyup.enter)="openDetail(task.id)">
+
+                    <!-- Drag placeholder -->
+                    <ng-template cdkDragPlaceholder>
+                      <div class="tm-card-ghost">
+                        <mat-icon>open_with</mat-icon>
+                        <span>{{ 'tasks.dragHint' | transloco }}</span>
+                      </div>
+                    </ng-template>
+
+                    <!-- Card body -->
+                    <p class="tm-card-title">{{ task.title }}</p>
+
+                    <!-- Tags row (priority chip as tag) -->
+                    <div class="tm-card-tags">
+                      <span class="tm-tag tm-tag--prio-{{ task.priority }}">
+                        <mat-icon class="tm-tag-icon">{{ priorityIcon(task.priority) }}</mat-icon>
+                        {{ priorityLabel(task.priority) }}
+                      </span>
+                    </div>
+
+                    <!-- Footer: avatar + date + meta icons -->
+                    <div class="tm-card-footer">
+                      <div class="tm-avatars">
+                        @if (task.assigneeId) {
+                          <div class="tm-avatar" [title]="task.assigneeId">
+                            {{ task.assigneeId.substring(0,2).toUpperCase() }}
+                          </div>
+                        } @else {
+                          <div class="tm-avatar tm-avatar--empty">
+                            <mat-icon>person_outline</mat-icon>
+                          </div>
+                        }
+                      </div>
+                      <div class="tm-card-meta">
+                        <span class="tm-card-meta-item">
+                          <mat-icon>chat_bubble_outline</mat-icon>0
+                        </span>
+                        <span class="tm-card-meta-item">
+                          <mat-icon>link</mat-icon>0
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                } @empty {
+                  <div class="tm-col-empty">{{ 'tasks.colEmpty' | transloco }}</div>
+                }
+              </div>
+
+              <!-- Inline create input -->
+              @if (state.inlineCreateColId() === col.id) {
+                <div class="tm-inline-create" (click)="$event.stopPropagation()">
+                  <input class="tm-inline-input" type="text" #inlineInput
+                    [placeholder]="'tasks.taskNamePlaceholder' | transloco"
+                    [value]="inlineTitle()"
+                    (input)="inlineTitle.set($any($event.target).value)"
+                    (keyup.enter)="submitInlineCreate(col.statuses[0])"
+                    (keyup.escape)="cancelInlineCreate()" autofocus />
+                  <div class="tm-inline-btns">
+                    <button class="tm-btn tm-btn--primary-sm"
+                      [disabled]="state.saving() || !inlineTitle().trim()"
+                      (click)="submitInlineCreate(col.statuses[0])">
+                      {{ 'common.add' | transloco }}
+                    </button>
+                    <button class="tm-btn tm-btn--ghost-sm" (click)="cancelInlineCreate()">
+                      {{ 'common.cancel' | transloco }}
+                    </button>
+                  </div>
+                </div>
+              }
+
+              <!-- Add New button -->
+              @if (!isEmployee) {
+                <button class="tm-add-new" (click)="startInlineCreate(col.id); $event.stopPropagation()">
+                  <mat-icon>add_circle_outline</mat-icon>
+                  {{ 'tasks.addNew' | transloco }}
+                </button>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      <!-- ════════════════════════════════════════════
+           LIST VIEW
+      ════════════════════════════════════════════════ -->
+      @else if (state.activeView() === 'list') {
+        <div class="tm-list">
+          @for (group of state.listGroups(); track group.id) {
+            <div class="tm-group">
+
+              <!-- Group header -->
+              <button class="tm-group-head" (click)="toggleGroup(group.id)"
+                [attr.aria-expanded]="!isGroupCollapsed(group.id)">
+                <span class="tm-group-bar" [style.background-color]="group.indicatorColor"></span>
+                <span class="tm-group-label">{{ group.labelKey | transloco }}</span>
+                <span class="tm-group-badge">{{ group.tasks.length }}</span>
+                <mat-icon class="tm-group-chevron"
+                  [class.tm-group-chevron--collapsed]="isGroupCollapsed(group.id)">
+                  expand_more
+                </mat-icon>
+              </button>
+
+              <!-- Group rows -->
+              @if (!isGroupCollapsed(group.id)) {
+                @for (task of group.tasks; track task.id) {
+                  <div class="tm-list-row" (click)="openDetail(task.id)" role="button"
+                    tabindex="0" (keyup.enter)="openDetail(task.id)"
+                    [class.tm-list-row--active]="state.selectedTaskId() === task.id">
+                    <span class="tm-list-circle" aria-hidden="true"></span>
+                    <span class="tm-list-title">{{ task.title }}</span>
+                    <div class="tm-list-meta">
+                      @if (task.dueDate) {
+                        <span class="tm-list-date">
+                          <mat-icon>calendar_today</mat-icon>
+                          {{ task.dueDate | date:'MMM d' }}
+                        </span>
+                      }
+                      @if (task.assigneeId) {
+                        <div class="tm-avatars">
+                          <div class="tm-avatar tm-avatar--sm" [title]="task.assigneeId">
+                            {{ task.assigneeId.substring(0,2).toUpperCase() }}
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                } @empty {
+                  <div class="tm-list-empty">{{ 'tasks.colEmpty' | transloco }}</div>
+                }
+
+                <!-- Add Task row -->
+                @if (state.inlineCreateColId() === group.id) {
+                  <div class="tm-list-create" (click)="$event.stopPropagation()">
+                    <input class="tm-inline-input" type="text"
+                      [placeholder]="'tasks.taskNamePlaceholder' | transloco"
+                      [value]="inlineTitle()"
+                      (input)="inlineTitle.set($any($event.target).value)"
+                      (keyup.enter)="submitInlineCreate(group.statuses[0])"
+                      (keyup.escape)="cancelInlineCreate()" autofocus />
+                    <div class="tm-inline-btns">
+                      <button class="tm-btn tm-btn--primary-sm"
+                        [disabled]="state.saving() || !inlineTitle().trim()"
+                        (click)="submitInlineCreate(group.statuses[0])">
+                        {{ 'common.add' | transloco }}
+                      </button>
+                      <button class="tm-btn tm-btn--ghost-sm" (click)="cancelInlineCreate()">
+                        {{ 'common.cancel' | transloco }}
+                      </button>
+                    </div>
+                  </div>
+                } @else if (!isEmployee) {
+                  <button class="tm-list-add-task" (click)="startInlineCreate(group.id); $event.stopPropagation()">
+                    <mat-icon>add_circle_outline</mat-icon>
+                    {{ 'tasks.addTask' | transloco }}
+                  </button>
+                }
+              }
+            </div>
+          }
+        </div>
+      }
+
+      <!-- ════════════════════════════════════════════
+           TABLE VIEW
+      ════════════════════════════════════════════════ -->
+      @else {
+        <div class="tm-table-wrap">
+          <table class="tm-table" role="grid">
+            <thead>
+              <tr>
+                <th class="tm-th tm-th--check" scope="col">
+                  <input type="checkbox" class="tm-checkbox"
+                    [checked]="state.allSelected()"
+                    (change)="toggleSelectAll()"
+                    [attr.aria-label]="'tasks.selectAll' | transloco" />
+                </th>
+                <th class="tm-th" scope="col">{{ 'tasks.table.id' | transloco }}</th>
+                <th class="tm-th" scope="col">{{ 'tasks.table.summary' | transloco }}</th>
+                <th class="tm-th" scope="col">{{ 'tasks.table.category' | transloco }}</th>
+                <th class="tm-th" scope="col">{{ 'tasks.table.assignee' | transloco }}</th>
+                <th class="tm-th" scope="col">{{ 'tasks.table.dueDate' | transloco }}</th>
+                <th class="tm-th" scope="col">{{ 'tasks.table.priority' | transloco }}</th>
+                <th class="tm-th" scope="col">{{ 'tasks.table.createdAt' | transloco }}</th>
+                <th class="tm-th" scope="col">{{ 'tasks.table.updatedAt' | transloco }}</th>
+                <th class="tm-th" scope="col">{{ 'tasks.table.status' | transloco }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (task of state.filteredTasks(); track task.id) {
+                <tr class="tm-tr"
+                  [class.tm-tr--selected]="isRowSelected(task.id)"
+                  [class.tm-tr--active]="state.selectedTaskId() === task.id"
+                  (click)="openDetail(task.id)" role="row">
+
+                  <td class="tm-td tm-td--check" (click)="toggleRowSelect($event, task.id)">
+                    <input type="checkbox" class="tm-checkbox"
+                      [checked]="isRowSelected(task.id)"
+                      (change)="toggleRowSelect($event, task.id)"
+                      [attr.aria-label]="'tasks.selectRow' | transloco" />
+                  </td>
+                  <td class="tm-td tm-td--id">{{ formatDisplayId(task.id) }}</td>
+                  <td class="tm-td tm-td--summary">{{ task.summary || task.title }}</td>
+                  <td class="tm-td">
+                    <span class="tm-cat-chip">{{ task.categoryId || '—' }}</span>
+                  </td>
+                  <td class="tm-td">
+                    @if (task.assigneeId) {
+                      <div class="tm-inline-avatar">
+                        <div class="tm-avatar tm-avatar--sm">{{ task.assigneeId.substring(0,2).toUpperCase() }}</div>
+                        <span>{{ task.assigneeId }}</span>
+                      </div>
+                    } @else { <span class="tm-muted">—</span> }
+                  </td>
+                  <td class="tm-td tm-td--date">
+                    {{ task.dueDate ? (task.dueDate | date:'MMM d, yyyy') : '—' }}
+                  </td>
+                  <td class="tm-td">
+                    <span class="tm-prio-chip tm-prio-chip--{{ task.priority }}">
+                      <mat-icon class="tm-prio-icon">{{ priorityIcon(task.priority) }}</mat-icon>
+                      {{ priorityLabel(task.priority) }}
+                    </span>
+                  </td>
+                  <td class="tm-td tm-td--date">{{ task.createdAt ? (task.createdAt | date:'MMM d, yyyy') : '—' }}</td>
+                  <td class="tm-td tm-td--date">{{ task.updatedAt ? (task.updatedAt | date:'MMM d, yyyy') : '—' }}</td>
+                  <td class="tm-td">
+                    <span class="tm-status-chip" [style.border-color]="statusIndicatorColor(task.status)"
+                      [style.color]="statusIndicatorColor(task.status)">
+                      <mat-icon class="tm-status-icon">check_circle</mat-icon>
+                      {{ statusLabel(task.status) }}
+                    </span>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="10" class="tm-td-empty">{{ 'tasks.noResults' | transloco }}</td>
+                </tr>
+              }
+
+              <!-- Inline create row -->
+              @if (!isEmployee) {
+              <tr class="tm-tr-create" (click)="$event.stopPropagation()">
+                <td class="tm-td" colspan="2">
+                  <button class="tm-create-trigger" (click)="focusTableCreateInput()">
+                    <mat-icon>add</mat-icon>
+                    {{ 'tasks.addNew' | transloco }}
+                  </button>
+                </td>
+                <td class="tm-td" colspan="8">
+                  <div class="tm-table-create-row">
+                    <input #tableCreateInput class="tm-table-create-input"
+                      type="text"
+                      [placeholder]="'tasks.taskNamePlaceholder' | transloco"
+                      [value]="tableCreateTitle()"
+                      (input)="tableCreateTitle.set($any($event.target).value)"
+                      (keyup.enter)="submitTableCreate()"
+                      (keyup.escape)="tableCreateTitle.set('')" />
+                    <div class="tm-table-create-actions">
+                      <mat-icon class="tm-muted-icon">calendar_today</mat-icon>
+                      <mat-icon class="tm-muted-icon">group</mat-icon>
+                      <button class="tm-btn tm-btn--primary-sm"
+                        [disabled]="state.saving() || !tableCreateTitle().trim()"
+                        (click)="submitTableCreate()">
+                        {{ 'tasks.create' | transloco }}
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+    </div><!-- /.tm-main -->
+
+    <!-- ══════════════════════════════════════════════════════════
+         TASK DETAIL PANEL (right drawer)
+    ══════════════════════════════════════════════════════════════ -->
+    @if (state.detailPanelOpen()) {
+      <aside class="tm-detail-panel" role="complementary"
+        [attr.aria-label]="'tasks.detailPanel' | transloco"
+        (click)="$event.stopPropagation()">
+
+        <!-- Create mode -->
+        @if (state.createMode()) {
+          <div class="tm-panel-head">
+            <span class="tm-panel-id">{{ 'tasks.newTask' | transloco }}</span>
+            <button class="tm-panel-close" (click)="closeDetail()"
+              [attr.aria-label]="'common.close' | transloco">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+          <div class="tm-panel-body">
+            <p class="tm-panel-subtitle">{{ 'tasks.createHint' | transloco }}</p>
+
+            <div class="tm-create-form">
+              <!-- Title -->
+              <label class="tm-create-form-label" for="panel-task-title">
+                {{ 'tasks.table.title' | transloco }}
+              </label>
+              <input id="panel-task-title" class="tm-create-field"
+                type="text"
+                [placeholder]="'tasks.taskNamePlaceholder' | transloco"
+                [value]="panelCreateTitle()"
+                (input)="panelCreateTitle.set($any($event.target).value)"
+                (keyup.enter)="submitCreatePanel()"
+                autofocus />
+
+              <!-- Status -->
+              <label class="tm-create-form-label" for="panel-task-status">
+                {{ 'tasks.table.status' | transloco }}
+              </label>
+              <select id="panel-task-status" class="tm-create-select"
+                [value]="panelCreateStatus()"
+                (change)="panelCreateStatus.set($any($event.target).value)">
+                @for (opt of STATUS_OPTIONS; track opt.value) {
+                  <option [value]="opt.value">{{ opt.label }}</option>
+                }
+              </select>
+
+              <!-- Priority -->
+              <label class="tm-create-form-label" for="panel-task-priority">
+                {{ 'tasks.table.priority' | transloco }}
+              </label>
+              <select id="panel-task-priority" class="tm-create-select"
+                [value]="panelCreatePriority()"
+                (change)="panelCreatePriority.set($any($event.target).value)">
+                <option value="urgent">{{ 'tasks.priority.urgent' | transloco }}</option>
+                <option value="high">{{ 'tasks.priority.high' | transloco }}</option>
+                <option value="medium">{{ 'tasks.priority.medium' | transloco }}</option>
+                <option value="low">{{ 'tasks.priority.low' | transloco }}</option>
+              </select>
+
+              <div class="tm-create-form-actions">
+                <button class="tm-btn tm-btn--primary" (click)="submitCreatePanel()"
+                  [disabled]="state.saving() || !panelCreateTitle().trim()">
+                  @if (state.saving()) {
+                    <mat-spinner diameter="16"></mat-spinner>
+                  } @else {
+                    <mat-icon>add</mat-icon>
+                  }
+                  {{ 'tasks.create' | transloco }}
+                </button>
+                <button class="tm-btn tm-btn--ghost-sm" (click)="closeDetail()">
+                  {{ 'common.cancel' | transloco }}
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Detail mode -->
+        @if (!state.createMode() && state.selectedTask()) {
+          <div class="tm-panel-head">
+            <div class="tm-panel-head-left">
+              <span class="tm-panel-id">{{ formatDisplayId(state.selectedTask()!.id) }}</span>
+              <mat-icon class="tm-panel-link-icon">link</mat-icon>
+            </div>
+            <div class="tm-panel-head-right">
+              <button class="tm-icon-btn" [attr.aria-label]="'tasks.moreActions' | transloco">
+                <mat-icon>more_horiz</mat-icon>
+              </button>
+              <button class="tm-icon-btn" (click)="closeDetail()"
+                [attr.aria-label]="'common.close' | transloco">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="tm-panel-body">
+            <!-- Title -->
+            <h2 class="tm-panel-title">{{ state.selectedTask()!.title }}</h2>
+
+            <!-- Status inline dropdown -->
+            <div class="tm-panel-status-wrap" (click)="$event.stopPropagation()">
+              <button class="tm-status-badge"
+                [style.background-color]="statusIndicatorColor(state.selectedTask()!.status) + '22'"
+                [style.color]="statusIndicatorColor(state.selectedTask()!.status)"
+                [style.border-color]="statusIndicatorColor(state.selectedTask()!.status)"
+                (click)="toggleStatusDropdown()"
+                [attr.aria-label]="'tasks.changeStatus' | transloco"
+                [attr.aria-expanded]="statusDropdownOpen()">
+                {{ statusLabel(state.selectedTask()!.status) }}
+                <mat-icon>expand_more</mat-icon>
+              </button>
+              @if (statusDropdownOpen()) {
+                <div class="tm-status-dropdown" role="listbox">
+                  @for (opt of STATUS_OPTIONS; track opt.value) {
+                    <button class="tm-status-option" role="option"
+                      [class.tm-status-option--active]="state.selectedTask()!.status === opt.value"
+                      (click)="changeTaskStatus(opt.value)">
+                      <span class="tm-status-dot" [style.background-color]="statusIndicatorColor(opt.value)"></span>
+                      {{ opt.label }}
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Description -->
+            <section class="tm-panel-section">
+              <h3 class="tm-panel-section-title">{{ 'tasks.description' | transloco }}</h3>
+              <p class="tm-panel-desc">
+                {{ state.selectedTask()!.description || ('tasks.noDescription' | transloco) }}
+              </p>
+            </section>
+
+            <!-- Details grid -->
+            <section class="tm-panel-section">
+              <h3 class="tm-panel-section-title">{{ 'tasks.details' | transloco }}</h3>
+              <div class="tm-details-grid">
+                <span class="tm-detail-label">{{ 'tasks.table.id' | transloco }}</span>
+                <span class="tm-detail-value">{{ formatDisplayId(state.selectedTask()!.id) }}</span>
+
+                <span class="tm-detail-label">{{ 'tasks.table.summary' | transloco }}</span>
+                <span class="tm-detail-value">{{ state.selectedTask()!.summary || state.selectedTask()!.title }}</span>
+
+                <span class="tm-detail-label">{{ 'tasks.table.assignee' | transloco }}</span>
+                <span class="tm-detail-value">
+                  {{ state.selectedTask()!.assigneeId || '—' }}
+                </span>
+
+                <span class="tm-detail-label">{{ 'tasks.table.dueDate' | transloco }}</span>
+                <span class="tm-detail-value">
+                  {{ state.selectedTask()!.dueDate ? (state.selectedTask()!.dueDate | date:'MMM d, yyyy') : '—' }}
+                </span>
+
+                <span class="tm-detail-label">{{ 'tasks.table.priority' | transloco }}</span>
+                <span class="tm-detail-value">
+                  <span class="tm-prio-chip tm-prio-chip--{{ state.selectedTask()!.priority }}">
+                    <mat-icon class="tm-prio-icon">{{ priorityIcon(state.selectedTask()!.priority) }}</mat-icon>
+                    {{ priorityLabel(state.selectedTask()!.priority) }}
+                  </span>
+                </span>
+
+                <span class="tm-detail-label">{{ 'tasks.table.createdAt' | transloco }}</span>
+                <span class="tm-detail-value">
+                  {{ state.selectedTask()!.createdAt ? (state.selectedTask()!.createdAt | date:'MMM d, yyyy') : '—' }}
+                </span>
+
+                <span class="tm-detail-label">{{ 'tasks.table.updatedAt' | transloco }}</span>
+                <span class="tm-detail-value">
+                  {{ state.selectedTask()!.updatedAt ? (state.selectedTask()!.updatedAt | date:'MMM d, yyyy') : '—' }}
+                </span>
+              </div>
+            </section>
+
+            <!-- Activity tabs -->
+            <section class="tm-panel-section">
+              <div class="tm-tabs" role="tablist">
+                <button class="tm-tab tm-tab--active" role="tab">{{ 'tasks.tabs.all' | transloco }}</button>
+                <button class="tm-tab" role="tab">{{ 'tasks.tabs.comments' | transloco }}</button>
+                <button class="tm-tab" role="tab">{{ 'tasks.tabs.history' | transloco }}</button>
+                <button class="tm-tab" role="tab">{{ 'tasks.tabs.attachments' | transloco }}</button>
+              </div>
+              <div class="tm-activity-empty">
+                <mat-icon>history</mat-icon>
+                <p>{{ 'tasks.noActivity' | transloco }}</p>
+              </div>
+            </section>
+          </div>
+        }
+
+      </aside>
+    }
+
+  </div><!-- /.tm-content -->
+
+  <!-- ══════════════════════════════════════════════════════════
+       SELECTION ACTION BAR (fixed bottom)
+  ══════════════════════════════════════════════════════════════ -->
+  @if (state.hasSelection()) {
+    <div class="tm-selection-bar" role="toolbar"
+      [attr.aria-label]="'tasks.selectionBar' | transloco">
+      <button class="tm-sel-clear" (click)="state.clearSelection()"
+        [attr.aria-label]="'tasks.clearSelection' | transloco">
+        <mat-icon>close</mat-icon>
+      </button>
+      <span class="tm-sel-count">
+        {{ state.selectionCount() }} {{ 'tasks.itemsSelected' | transloco }}
+      </span>
+      <div class="tm-sel-actions">
+        <button class="tm-sel-btn" (click)="copySectionToClipboard()">
+          <mat-icon>content_copy</mat-icon>
+          {{ 'tasks.clipToClipboard' | transloco }}
+        </button>
+        @if (!isEmployee) {
+          <button class="tm-sel-btn tm-sel-btn--danger" (click)="deleteSelected()">
+            <mat-icon>delete</mat-icon>
+            {{ 'common.delete' | transloco }}
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+</div><!-- /.tm-page -->

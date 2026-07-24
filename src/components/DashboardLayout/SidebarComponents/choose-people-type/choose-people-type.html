@@ -1,0 +1,69 @@
+<div class="page-wrap">
+  <div class="container">
+
+    <!-- Back -->
+    <div class="back-row">
+      <button class="back-btn" (click)="onBack()" [attr.aria-label]="'common.goBack' | transloco">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+        Back
+      </button>
+    </div>
+
+    <!-- Header -->
+    <header class="page-header">
+      <h1 class="page-title">Add People</h1>
+      <p class="page-subtitle">Select what type of work you want to create.</p>
+    </header>
+
+    <!-- Cards -->
+    <div class="cards-grid">
+      @for (card of cards; track card.id) {
+        <article
+          class="people-card"
+          (click)="onSelect(card)"
+          role="button"
+          tabindex="0"
+          (keydown.enter)="onSelect(card)"
+          [attr.aria-label]="'Select ' + card.title"
+        >
+          <!-- Illustration -->
+          <div class="card-illustration" [class]="card.bgClass">
+            <img [src]="card.image" [alt]="card.imageAlt" class="card-img" />
+          </div>
+
+          <!-- Content -->
+          <div class="card-content">
+            <h2 class="card-title">{{ card.title }}</h2>
+            <p class="card-description">{{ card.description }}</p>
+
+            <!-- Footer row -->
+            <div class="card-footer">
+              <div class="info-wrapper">
+                <button
+                  class="info-btn"
+                  (click)="toggleInfo(card, $event)"
+                  [attr.aria-label]="'More info about ' + card.title"
+                  [attr.aria-expanded]="showInfoId === card.id"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                  </svg>
+                  More info
+                </button>
+                @if (showInfoId === card.id) {
+                  <div class="info-tooltip" role="tooltip">{{ card.infoText }}</div>
+                }
+              </div>
+              <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+
+  </div>
+</div>

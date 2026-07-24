@@ -1,0 +1,137 @@
+<!-- Step 3: Scope of Work -->
+<div class="card-section" >
+  <h2 class="section-title">Scope of Work</h2>
+
+  <form [formGroup]="scopeForm">
+    <div class="form-row two-columns">
+      <div class="form-group">
+        <label class="form-label">
+          Job Title <span class="required-badge">Required</span>
+        </label>
+        <input
+          type="text"
+          class="form-input"
+          formControlName="jobTitle"
+          placeholder="Enter Job Title"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Job Number <span class="required-badge">Required</span>
+        </label>
+        <input
+          type="text"
+          class="form-input"
+          formControlName="jobNumber"
+          placeholder="Enter Job Number"
+        />
+      </div>
+    </div>
+
+    <div class="form-group full-width">
+      <label class="form-label">Job Description</label>
+      <textarea
+        rows="3"
+        class="form-input textarea"
+        formControlName="jobDescription"
+        placeholder="Enter Job Description..."
+      ></textarea>
+    </div>
+  </form>
+</div>
+
+<!-- Step 3: Contracting -->
+<div class="card-section">
+  <h2 class="section-title">Contracting</h2>
+
+  <form [formGroup]="ContractingForm">
+    <div class="form-row two-columns">
+      <!-- Start Date -->
+      <div class="form-group">
+        <label class="form-label">Start Date</label>
+        <div class="input-with-icon">
+          <input
+            type="text"
+            class="form-input"
+            formControlName="contractStartDate"
+            placeholder="mm/dd/yyyy"
+            onfocus="(this.type='date')"
+            onblur="(this.type='text')"
+          />
+          <svg
+            class="input-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM5 7V6h14v1H5zm7-4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-4 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <!-- End Date -->
+      <div class="form-group">
+        <label class="form-label">
+          End Date <span class="required-badge">Required</span>
+        </label>
+        <div class="input-with-icon">
+          <input
+            type="text"
+            class="form-input"
+            formControlName="contractEndDate"
+            placeholder="mm/dd/yyyy"
+            onfocus="(this.type='date')"
+            onblur="(this.type='text')"
+          />
+          <svg
+            class="input-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM5 7V6h14v1H5zm7-4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-4 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Termination Right -->
+    <div class="form-group">
+      <label class="form-label">
+        Who has the right to terminate the Contract
+        <span class="required-badge">Required</span>
+      </label>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Select an option</mat-label>
+        <mat-select formControlName="SelectedterminationRight">
+          <mat-option
+            *ngFor="let option of TerminationOptions"
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Currency -->
+    <div class="form-group">
+      <label class="form-label">
+        Currency <span class="required-badge">Required</span>
+      </label>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Select currency</mat-label>
+        <mat-select formControlName="SelectedCurrency">
+          <mat-option *ngFor="let currency of CurrencyOptions" [value]="currency">
+            {{ currency }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</div>

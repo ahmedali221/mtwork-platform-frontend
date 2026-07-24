@@ -1,0 +1,36 @@
+<!-- Figma node 3:37872 — Impact section (tabs + 2×2 cards). All values from Dev Mode. -->
+<section class="impact">
+
+  <!-- Tabs row (3:37873): 4 × 161×56, gap 24 -->
+  <div class="impact__tabs">
+    @for (tab of tabs; track $index) {
+      <button type="button" class="impact__tab" [class.impact__tab--active]="tab.active">
+        <img class="impact__tab-icon" src="assets/images/impact/icon-comment.svg" alt="" />
+        <span>{{ lang.translations()?.impact?.tab || 'MTWork HR' }}</span>
+      </button>
+    }
+  </div>
+
+  <!-- Cards grid (3:37878): 927.74 wide, rows of [wide, narrow] / [narrow, wide], gap 16 -->
+  <div class="impact__grid">
+    @for (row of rows; track $index) {
+      <div class="impact__row">
+        @for (card of row; track $index) {
+          <article class="impact__card" [class.impact__card--wide]="card.wide">
+            <div class="impact__card-content">
+              <h3 class="impact__card-title">{{ lang.translations()?.trustedBy }}</h3>
+              <p class="impact__card-text">{{ lang.translations()?.hero?.paragraph }}</p>
+              <button type="button" class="impact__card-cta">
+                {{ lang.translations()?.nav?.getStarted || 'Learn More' }}
+              </button>
+            </div>
+            <div class="impact__card-stars" aria-hidden="true">
+              <img src="assets/images/impact/impact-stars.svg" alt="" />
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </div>
+
+</section>

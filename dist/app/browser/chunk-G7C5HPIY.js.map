@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/components/DashboardLayout/Contract/wizard/create-employee/create-employee.ts"],
+  "sourcesContent": ["import { Component } from '@angular/core';\nimport { ContractWizardShellComponent } from '../contract-wizard-shell/contract-wizard-shell';\n\n@Component({\n  selector: 'app-create-employee',\n  standalone: true,\n  imports: [ContractWizardShellComponent],\n  template: `<app-contract-wizard-shell contractType=\"Employee\" />`,\n})\nexport class CreateEmployeeComponent {}\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AASM,IAAO,2BAAP,MAAO,yBAAuB;;;mCAAvB,0BAAuB;AAAA;yFAAvB,0BAAuB,WAAA,CAAA,CAAA,qBAAA,CAAA,GAAA,OAAA,GAAA,MAAA,GAAA,QAAA,CAAA,CAAA,gBAAA,UAAA,CAAA,GAAA,UAAA,SAAA,iCAAA,IAAA,KAAA;AAAA,MAAA,KAAA,GAAA;AAFvB,IAAA,oBAAA,GAAA,6BAAA,CAAA;;kBADD,4BAA4B,GAAA,eAAA,EAAA,CAAA;AAGlC,IAAO,0BAAP;;sEAAO,yBAAuB,CAAA;UANnC;WAAU;MACT,UAAU;MACV,YAAY;MACZ,SAAS,CAAC,4BAA4B;MACtC,UAAU;KACX;;;;6EACY,yBAAuB,EAAA,WAAA,2BAAA,UAAA,qFAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
+  "names": []
+}

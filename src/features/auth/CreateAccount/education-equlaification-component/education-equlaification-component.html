@@ -1,0 +1,76 @@
+<!-- Contractor Step 2 · Education & Qualifications (Figma 3:123245).
+     Same .ca-* chrome as the frozen Step 1; 4 fields in two 2-col rows. -->
+<div class="ca-body">
+
+  <!-- Stepper — overlaps gradient header (Figma 3:123280), step 2 active -->
+  <app-stepper-component [steps]="steps" [current]="1" />
+
+  <!-- Form card (Figma 3:123260: 569 wide, single card — no side panel) -->
+  <div class="ca-card-wrap">
+    <div class="ca-card">
+
+      <!-- Logo (Figma 3:123262: navy MTWORK wordmark, 119×24) + Back -->
+      <img class="ca-card__logo" src="assets/images/createaccount/logo-incard.svg" alt="MTWork" />
+      <button type="button" class="ca-back" (click)="previous()" aria-label="Back">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Back
+      </button>
+
+      <!-- Heading (Figma 3:123265/266 — keeps the Figma copy verbatim) -->
+      <h1 class="ca-card__title">Create Contractor acccount</h1>
+      <p class="ca-card__subtitle">Sign up using the form, or the Google account you use at work</p>
+
+      <!-- Form (Figma 3:123267: 4 fields, two 2-col rows, gap 16) -->
+      <form [formGroup]="form" (ngSubmit)="next()" novalidate class="ca-form">
+
+        <!-- Qualification / Industry (3:123269) -->
+        <div class="ca-form__row">
+          <app-form-select-component [control]="form.controls.qualification" label="Qualification" placeholder="Select your Qualification…" [options]="qualifications" />
+          <app-form-select-component [control]="form.controls.industry"      label="Industry"      placeholder="Select your Industry…"      [options]="industries" />
+        </div>
+
+        <!-- University / Job Title (3:123272) -->
+        <div class="ca-form__row">
+          <app-form-select-component [control]="form.controls.university" label="University" placeholder="Select your University…" [options]="universities" />
+          <app-form-select-component [control]="form.controls.jobTitle"   label="Job Title"  placeholder="Select your Job Title…"  [options]="jobTitles" />
+        </div>
+
+        <!-- ID Number / Passport Expiry Date — backend-required (not in
+             Figma; added because Auth/register 400s without them, see
+             memory: register-missing-required-fields). -->
+        <div class="ca-form__row">
+          <app-form-input-component [control]="form.controls.idNumber" label="ID Number" placeholder="Your ID Number..." />
+          <app-form-input-component [control]="form.controls.passportExpiryDate" type="date" label="Passport Expiry Date" placeholder="" />
+        </div>
+
+        <!-- Submit (Figma 3:123276: 521×48, r12, disabled #e6e6e6) -->
+        <button type="submit" class="ca-btn ca-btn--primary" [disabled]="form.invalid || isSubmitting">
+          {{ isSubmitting ? 'Processing…' : 'Create account' }}
+        </button>
+
+      </form>
+
+      <!-- Google (Figma 3:123277: 521×48, white, border) -->
+      <button type="button" class="ca-btn ca-btn--google" (click)="signUpWithGoogle()">
+        <img src="assets/images/google.png" alt="" aria-hidden="true" width="18" height="18">
+        Sign up with Google
+      </button>
+
+      <!-- Login link (Figma 3:123278): "Already have an account · Log in" + glyph -->
+      <a routerLink="/login" class="ca-card__login" aria-label="Already have an account? Log in">
+        <span class="ca-card__login-text">Already have an account <span class="ca-card__login-link">Log in</span></span>
+        <svg class="ca-card__login-icon" width="18" height="18" viewBox="0 0 13.5 13.5" fill="currentColor" aria-hidden="true"><path d="M7.5 13.5C7.2875 13.5 7.1095 13.428 6.966 13.284C6.8225 13.14 6.7505 12.962 6.75 12.75C6.7495 12.538 6.8215 12.36 6.966 12.216C7.1105 12.072 7.2885 12 7.5 12H12V1.5H7.5C7.2875 1.5 7.1095 1.428 6.966 1.284C6.8225 1.14 6.7505 0.962 6.75 0.75C6.7495 0.538 6.8215 0.36 6.966 0.216C7.1105 0.0720001 7.2885 0 7.5 0H12C12.4125 0 12.7658 0.147 13.0598 0.441C13.3538 0.735 13.5005 1.088 13.5 1.5V12C13.5 12.4125 13.3533 12.7658 13.0598 13.0598C12.7663 13.3538 12.413 13.5005 12 13.5H7.5ZM6.13125 7.5H0.750003C0.537503 7.5 0.359503 7.428 0.216003 7.284C0.0725027 7.14 0.000502586 6.962 2.5862e-06 6.75C-0.000497414 6.538 0.0715027 6.36 0.216003 6.216C0.360503 6.072 0.538503 6 0.750003 6H6.13125L4.725 4.59375C4.5875 4.45625 4.51875 4.2875 4.51875 4.0875C4.51875 3.8875 4.5875 3.7125 4.725 3.5625C4.8625 3.4125 5.0375 3.33425 5.25 3.32775C5.4625 3.32125 5.64375 3.39325 5.79375 3.54375L8.475 6.225C8.625 6.375 8.7 6.55 8.7 6.75C8.7 6.95 8.625 7.125 8.475 7.275L5.79375 9.95625C5.64375 10.1062 5.46575 10.1782 5.25975 10.1722C5.05375 10.1662 4.8755 10.088 4.725 9.9375C4.5875 9.7875 4.522 9.6095 4.5285 9.4035C4.535 9.1975 4.60675 9.0255 4.74375 8.8875L6.13125 7.5Z"/></svg>
+      </a>
+
+      <!-- Terms (Figma 3:123279): DM Sans 12 #999, links navy -->
+      <p class="ca-card__terms">
+        By creating your account, you agree to our
+        <a href="/terms" class="ca-link">Terms of Service</a>,
+        our <a href="/talent-terms" class="ca-link">Talent Terms of Service</a>,
+        that you have read and understood our
+        <a href="/privacy" class="ca-link">Privacy Policy</a>.
+      </p>
+
+    </div>
+  </div>
+</div>

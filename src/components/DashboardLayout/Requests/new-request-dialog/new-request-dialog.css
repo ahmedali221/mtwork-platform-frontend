@@ -1,0 +1,195 @@
+/* ── Dialog shell ───────────────────────────────────────────── */
+.req-dialog {
+  width: 520px;
+  max-width: 100%;
+  background: var(--ui-surface);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.req-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 22px 24px 18px;
+  /* Already has a separator below; subtle box-shadow reinforces the
+     header→content boundary on scroll if the body grows tall. */
+  border-block-end: 1px solid var(--ui-border);
+}
+
+.req-dialog__title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.req-dialog__icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--brand-primary-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand-primary-500);
+  flex-shrink: 0;
+}
+
+.req-dialog__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ui-text);
+}
+
+.req-dialog__subtitle {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--ui-text-muted);
+}
+
+.req-dialog__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--ui-text-muted);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.req-dialog__close:hover {
+  background: var(--ui-bg-hover);
+  color: var(--ui-text);
+}
+
+/* ── Body ───────────────────────────────────────────────────── */
+.req-dialog__body {
+  padding: 22px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Fields ─────────────────────────────────────────────────── */
+.req-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.req-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.req-field__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ui-text);
+}
+
+.req-field__input,
+.req-field__textarea {
+  padding: 9px 12px;
+  border: 1px solid var(--ui-border);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--ui-text);
+  background: var(--ui-surface);
+  outline: none;
+  transition: border-color 0.15s;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.req-field__input:focus,
+.req-field__textarea:focus {
+  border-color: var(--brand-primary-500);
+  box-shadow: 0 0 0 3px var(--brand-primary-50);
+}
+
+.req-field__input--error,
+.req-field__select--error {
+  border-color: var(--functional-danger-500) !important;
+}
+
+.req-field__error {
+  font-size: 11px;
+  color: var(--functional-danger-600);
+}
+
+.req-field__select {
+  width: 100%;
+}
+
+/* ── Submit error ───────────────────────────────────────────── */
+.req-dialog__error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--functional-danger-50);
+  border: 1px solid var(--functional-danger-200);
+  border-radius: 8px;
+  color: var(--functional-danger-600);
+  font-size: 13px;
+}
+
+/* ── Actions ────────────────────────────────────────────────── */
+.req-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-block-start: 4px;
+}
+
+.req-btn {
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;                                 /* heavier hierarchy */
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s ease, opacity 0.15s ease, transform .12s ease, box-shadow .15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.req-btn--cancel {
+  background: var(--ui-bg-hover);
+  color: var(--ui-text-muted);
+}
+
+.req-btn--cancel:hover {
+  background: var(--ui-border);
+  color: var(--ui-text);
+}
+
+.req-btn--submit {
+  background: var(--brand-primary-500);
+  color: var(--ui-bg-surface);
+  /* Brand-tinted shadow for stronger primary visual weight */
+  box-shadow: 0 2px 6px rgba(79, 70, 229, .25);
+}
+
+.req-btn--submit:hover:not(:disabled) {
+  background: var(--brand-primary-600);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, .3);
+}
+.req-btn--submit:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(79, 70, 229, .25);
+}
+
+.req-btn--submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
+}

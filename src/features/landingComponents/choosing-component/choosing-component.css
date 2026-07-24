@@ -1,0 +1,198 @@
+/* ───────────────────────────────────────────────────────────────────
+   Figma 3:38102 / 3:38121 — feature split rows (inside section 3:38071).
+   White bg both themes. All values from Dev Mode.
+   ─────────────────────────────────────────────────────────────────── */
+:host {
+  display: block;
+  background: var(--landing-impact-bg);
+  font-family: var(--font-family-dm-sans);
+  /* top: columns visual bottom → container1 (976 − 897 = 79);
+     bottom: section frame padding (2028 − 1879.54) */
+  padding-block: 79px 148.46px;
+}
+
+/* Dark-mode-only: this splits block is part of the testimonials frame
+   (3:51669), which is #f7f5f2 in the Figma DARK page. Light unchanged. */
+:host-context(.dark-theme) {
+  background: var(--brand-grays-500); /* #f7f5f2 */
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(.dark-theme) {
+    background: var(--brand-grays-500);
+  }
+}
+
+.splits {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-very-large-giant); /* 64 between containers */
+  max-inline-size: 1388px;
+  margin-inline: auto;
+}
+
+.splits__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  block-size: 419.77px;
+  padding-inline: 113.48px; /* text at x 113.48, panel mirrored */
+}
+
+.splits__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-medium-lg);
+  inline-size: 523px;
+}
+
+/* badge (Buttons 165×40): pill r50, #2e358f, hairline border, white 16 */
+.splits__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 40px;
+  padding: var(--spacing-small-xs) var(--spacing-medium-md);
+  border: 1px solid var(--landing-impact-tab-border);
+  border-radius: var(--radius-50);
+  background: var(--landing-navbar-primary);
+  color: var(--landing-navbar-surface);
+  font-size: var(--subtitle-size);
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.splits__title {
+  margin: 0;
+  color: var(--brand-grays-900);
+  font-family: var(--typography-h4-font-family);
+  font-size: var(--typography-h4-font-size);
+  font-weight: var(--landing-hero-title-font-weight);
+  line-height: var(--typography-h4-line-height);
+}
+
+.splits__desc {
+  margin: 0;
+  color: var(--brand-neutral-400);
+  font-size: var(--body-size);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.splits__list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.splits__list-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small-xs);
+  color: var(--landing-navbar-primary); /* #2e358f */
+  font-size: var(--body-size);
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.splits__list-item img {
+  inline-size: 20.273px;
+  block-size: 14.504px;
+}
+
+.splits__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 111px;
+  block-size: 40px;
+  padding: var(--spacing-small-xs) var(--spacing-medium-md);
+  border: 0;
+  border-radius: var(--radius-8);
+  background: var(--landing-navbar-ink); /* #1b1b1b */
+  box-shadow: var(--landing-navbar-neutral-shadow);
+  color: var(--landing-navbar-surface);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--subtitle-size);
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* decorative panel exports (3:38118 dark / 3:38122 blue): 510×419.77 */
+.splits__panel {
+  inline-size: 510px;
+  block-size: 419.77px;
+}
+
+/* ─── Tablet stabilization (768–1100px) — stack rows, fit widths.
+   Desktop (>1100) and mobile (<768) untouched. ─────────────────────── */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .splits {
+    max-inline-size: 100%;
+    padding-inline: var(--spacing-large-xxxl); /* 40 */
+    box-sizing: border-box;
+  }
+
+  .splits__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-very-large-giant); /* 64 text→panel, as in mobile */
+    block-size: auto;
+    padding-inline: 0;
+  }
+
+  .splits__text {
+    inline-size: 100%;
+    max-inline-size: 523px;
+  }
+
+  /* decorative panel scales down to fit, keeps 510:419.77 ratio */
+  .splits__panel {
+    inline-size: min(100%, 510px);
+    block-size: auto;
+    aspect-ratio: 510 / 419.77;
+  }
+}
+
+/* ─── Mobile — Figma 3:65298 / 3:65317 ─────────────────────────────── */
+@media (max-width: 767px) {
+  :host {
+    padding-block-end: var(--spacing-large-xxl); /* mobile frame bottom 32 */
+  }
+
+  .splits {
+    max-inline-size: 345px;
+  }
+
+  .splits__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-very-large-giant); /* 64 text→panel */
+    block-size: auto;
+    padding-inline: 0;
+  }
+
+  .splits__text {
+    inline-size: 100%;
+  }
+
+  .splits__title {
+    /* Figma mobile (3:65301): H6 26, box 345×36 — single line, clipped */
+    font-size: var(--typography-h6-font-size);
+    line-height: var(--typography-h6-line-height);
+    white-space: nowrap;
+  }
+
+  .splits__panel {
+    /* Figma mobile panel: 340.78×280.47 */
+    inline-size: 340.78px;
+    block-size: 280.47px;
+  }
+}

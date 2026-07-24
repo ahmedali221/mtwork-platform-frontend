@@ -1,0 +1,200 @@
+<div class="req-dialog">
+
+  <!-- Header -->
+  <div class="req-dialog__header">
+    <div class="req-dialog__title-group">
+      <div class="req-dialog__icon-wrap">
+        <mat-icon aria-hidden="true">add_circle_outline</mat-icon>
+      </div>
+      <div>
+        <h2 class="req-dialog__title" transloco="requests.newRequest">New Request</h2>
+        <p class="req-dialog__subtitle" transloco="requests.subtitle">Submit a new request</p>
+      </div>
+    </div>
+    <button class="req-dialog__close" (click)="close()" [attr.aria-label]="'common.closeDialog' | transloco">
+      <mat-icon aria-hidden="true">close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Body -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="req-dialog__body">
+
+    <!-- Request Type (driven by Lookup/GetAllOrderType) -->
+    <div class="req-field">
+      <label class="req-field__label" for="req-type" transloco="requests.filterType">Request Type</label>
+      <mat-select
+        id="req-type"
+        formControlName="orderTypeId"
+        class="req-field__select"
+        (selectionChange)="onOrderTypeChange($event.value)"
+        [attr.aria-label]="'requests.requestType' | transloco"
+        [placeholder]="orderTypesLoading() ? ('common.loading' | transloco) : ('requests.filterType' | transloco)"
+        [class.req-field__select--error]="fieldInvalid('orderTypeId')">
+        @if (orderTypes().length === 0 && !orderTypesLoading()) {
+          <mat-option [disabled]="true">{{ 'common.noData' | transloco }}</mat-option>
+        }
+        @for (t of orderTypes(); track t.id) {
+          <mat-option [value]="t.id">{{ t.name }}</mat-option>
+        }
+      </mat-select>
+      @if (fieldInvalid('orderTypeId') && !orderTypesError()) {
+        <span class="req-field__error" transloco="common.error">This field is required</span>
+      }
+      @if (orderTypesError()) {
+        <span class="req-field__error" transloco="requests.errors.loadOrderTypes">Failed to load request types.</span>
+      }
+    </div>
+
+    <!-- Leave Type (driven by Lookup/GetAllLeaveType) — only for Leave category -->
+    @if (category() === 'leave') {
+      <div class="req-field">
+        <label class="req-field__label" for="req-leave-type" transloco="requests.leaveType">Leave Type</label>
+        <mat-select
+          id="req-leave-type"
+          formControlName="leaveTypeId"
+          class="req-field__select"
+          [attr.aria-label]="'requests.leaveType' | transloco"
+          [placeholder]="leaveTypesLoading() ? ('common.loading' | transloco) : ('requests.leaveType' | transloco)"
+          [class.req-field__select--error]="fieldInvalid('leaveTypeId')">
+          @if (leaveTypes().length === 0 && !leaveTypesLoading()) {
+            <mat-option [disabled]="true">{{ 'common.noData' | transloco }}</mat-option>
+          }
+          @for (lt of leaveTypes(); track lt.id) {
+            <mat-option [value]="lt.id">{{ lt.name }}</mat-option>
+          }
+        </mat-select>
+        @if (fieldInvalid('leaveTypeId') && !leaveTypesError()) {
+          <span class="req-field__error" transloco="common.error">This field is required</span>
+        }
+        @if (leaveTypesError()) {
+          <span class="req-field__error" transloco="requests.errors.loadLeaveTypes">Failed to load leave types.</span>
+        }
+      </div>
+    }
+
+    <!-- Leave / WFH fields -->
+    @if (category() === 'leave') {
+      <div class="req-row">
+        <div class="req-field">
+          <label class="req-field__label" for="req-start">Start Date</label>
+          <input id="req-start" type="date" formControlName="startDate" class="req-field__input"
+                 [class.req-field__input--error]="fieldInvalid('startDate')"
+                 [attr.aria-label]="'requests.startDate' | transloco" />
+        </div>
+        <div class="req-field">
+          <label class="req-field__label" for="req-end">End Date</label>
+          <input id="req-end" type="date" formControlName="endDate" class="req-field__input"
+                 [class.req-field__input--error]="fieldInvalid('endDate')"
+                 [attr.aria-label]="'requests.endDate' | transloco" />
+        </div>
+      </div>
+    }
+
+    <!-- Overtime fields -->
+    @if (category() === 'overtime') {
+      <div class="req-row">
+        <div class="req-field">
+          <label class="req-field__label" for="req-ot-date">Date</label>
+          <input id="req-ot-date" type="date" formControlName="overtimeDate" class="req-field__input"
+                 [attr.aria-label]="'requests.overtimeDate' | transloco" />
+        </div>
+        <div class="req-field">
+          <label class="req-field__label" for="req-ot-hours">Hours</label>
+          <input id="req-ot-hours" type="number" min="1" max="24" formControlName="overtimeHours"
+                 class="req-field__input"
+                 [class.req-field__input--error]="fieldInvalid('overtimeHours')"
+                 placeholder="e.g. 3" [attr.aria-label]="'requests.overtimeHours' | transloco" />
+        </div>
+      </div>
+    }
+
+    <!-- Business Trip fields -->
+    @if (category() === 'trip') {
+      <div class="req-row">
+        <div class="req-field">
+          <label class="req-field__label" for="req-trip-start">Start Date</label>
+          <input id="req-trip-start" type="date" formControlName="startDate" class="req-field__input"
+                 [attr.aria-label]="'requests.tripStartDate' | transloco" />
+        </div>
+        <div class="req-field">
+          <label class="req-field__label" for="req-trip-end">End Date</label>
+          <input id="req-trip-end" type="date" formControlName="endDate" class="req-field__input"
+                 [attr.aria-label]="'requests.tripEndDate' | transloco" />
+        </div>
+      </div>
+      <div class="req-field">
+        <label class="req-field__label" for="req-destination">Destination</label>
+        <input id="req-destination" type="text" formControlName="destination" class="req-field__input"
+               placeholder="City / Country" [attr.aria-label]="'requests.destination' | transloco" />
+      </div>
+    }
+
+    <!-- Course / Training fields -->
+    @if (category() === 'course') {
+      <div class="req-row">
+        <div class="req-field">
+          <label class="req-field__label" for="req-course-start">Start Date</label>
+          <input id="req-course-start" type="date" formControlName="startDate" class="req-field__input"
+                 [attr.aria-label]="'requests.courseStartDate' | transloco" />
+        </div>
+        <div class="req-field">
+          <label class="req-field__label" for="req-course-end">End Date</label>
+          <input id="req-course-end" type="date" formControlName="endDate" class="req-field__input"
+                 [attr.aria-label]="'requests.courseEndDate' | transloco" />
+        </div>
+      </div>
+      <div class="req-field">
+        <label class="req-field__label" for="req-course-name">Course Name</label>
+        <input id="req-course-name" type="text" formControlName="courseName" class="req-field__input"
+               placeholder="Course or training title" [attr.aria-label]="'requests.courseName' | transloco" />
+      </div>
+    }
+
+    <!-- Certificate fields -->
+    @if (category() === 'certificate') {
+      <div class="req-field">
+        <label class="req-field__label" for="req-cert-type">Certificate Type</label>
+        <mat-select id="req-cert-type" formControlName="certificateType" class="req-field__select"
+                    [attr.aria-label]="'requests.certificateType' | transloco">
+          <mat-option value="salary">Salary Certificate</mat-option>
+          <mat-option value="employment">Employment Certificate</mat-option>
+          <mat-option value="experience">Experience Letter</mat-option>
+          <mat-option value="other">Other</mat-option>
+        </mat-select>
+      </div>
+    }
+
+    <!-- Reason / Notes (all types) -->
+    @if (category()) {
+      <div class="req-field">
+        <label class="req-field__label" for="req-reason">
+          @if (category() === 'other') { Reason } @else { Notes (optional) }
+        </label>
+        <textarea id="req-reason" formControlName="reason" class="req-field__textarea" rows="3"
+                  placeholder="Add any additional notes…" [attr.aria-label]="'requests.reasonNotes' | transloco"></textarea>
+      </div>
+    }
+
+    <!-- Submit error -->
+    @if (submitError()) {
+      <div class="req-dialog__error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        {{ submitError() }}
+      </div>
+    }
+
+    <!-- Actions -->
+    <div class="req-dialog__actions">
+      <button type="button" class="req-btn req-btn--cancel" (click)="close()" transloco="common.cancel">Cancel</button>
+      <button type="submit" class="req-btn req-btn--submit" [disabled]="isSubmitting()">
+        @if (isSubmitting()) {
+          <mat-spinner diameter="16" aria-hidden="true"></mat-spinner>
+          Submitting…
+        } @else {
+          Submit Request
+        }
+      </button>
+    </div>
+
+  </form>
+</div>

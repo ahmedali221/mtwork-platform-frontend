@@ -1,0 +1,228 @@
+<div class="ct-dash" [attr.aria-label]="'dashboard.contractor.title' | transloco">
+
+  @if (isLoading()) {
+    <div class="dashboard-loading" role="status" aria-live="polite">
+      <div class="dashboard-loading__spinner"></div>
+      <p>{{ 'common.loading' | transloco }}</p>
+    </div>
+  } @else {
+
+  <!-- ── HERO BANNER ──────────────────────────────────────────── -->
+  <div class="ct-banner">
+    <div class="ct-banner__content">
+      <h2 class="ct-banner__title">{{ 'dashboard.contractor.bannerTitle' | transloco }}</h2>
+      <p class="ct-banner__sub">{{ 'dashboard.contractor.bannerSubtitle' | transloco }}</p>
+      <a routerLink="/dashboard/contracts" class="ct-banner__cta" [attr.aria-label]="'dashboard.viewContracts' | transloco">{{ 'dashboard.contractor.viewContracts' | transloco }}</a>
+    </div>
+    <div class="ct-banner__visual" aria-hidden="true">
+      <div class="ct-banner__avatar-ring">
+        <mat-icon class="ct-banner__avatar-icon">engineering</mat-icon>
+      </div>
+      <div class="ct-banner__card">
+        <span class="ct-banner__card-badge">{{ 'dashboard.contractor.badge' | transloco }}</span>
+        <p class="ct-banner__card-text">{{ 'dashboard.contractor.manageWork' | transloco }}</p>
+        <a routerLink="/dashboard/withdrawals" class="ct-banner__withdraw-btn" [attr.aria-label]="'dashboard.goToWithdrawals' | transloco">
+          <mat-icon>account_balance_wallet</mat-icon> {{ 'dashboard.contractor.withdraw' | transloco }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── UPCOMING MEETINGS ─────────────────────────────────────── -->
+  <section class="ct-section" aria-labelledby="ct-meetings-heading">
+    <div class="ct-section__header">
+      <div class="ct-section__title-group">
+        <mat-icon class="ct-section__icon">videocam</mat-icon>
+        <h3 class="ct-section__title" id="ct-meetings-heading">{{ 'dashboard.upcomingMeetings' | transloco }}</h3>
+      </div>
+      <a routerLink="/dashboard/meetings" class="ct-section__view-all" [attr.aria-label]="'dashboard.viewAllMeetings' | transloco">
+        {{ 'dashboard.viewAll' | transloco }} <mat-icon class="ct-section__arrow">expand_more</mat-icon>
+      </a>
+    </div>
+
+    @if (meetingsStatus() === 'error') {
+      <div class="ct-widget-state ct-widget-state--error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        <span>{{ 'dashboard.states.error' | transloco }}</span>
+        <button type="button" class="ct-widget-state__retry" (click)="reload()"
+                [attr.aria-label]="'common.retry' | transloco">{{ 'common.retry' | transloco }}</button>
+      </div>
+    } @else if (meetings.length === 0) {
+      <div class="ct-widget-state ct-widget-state--empty">
+        <mat-icon aria-hidden="true">event_busy</mat-icon>
+        <span>{{ 'dashboard.states.emptyMeetings' | transloco }}</span>
+      </div>
+    } @else {
+      <div class="ct-meetings-grid">
+        @for (meeting of meetings; track $index) {
+          <div class="ct-meeting-card">
+            <div class="ct-meeting-card__top">
+              <mat-icon class="ct-meeting-card__icon">video_call</mat-icon>
+              <span class="ct-meeting-card__status"
+                [class.ct-meeting-card__status--past]="meeting.status === 'past'"
+                [class.ct-meeting-card__status--now]="meeting.status === 'now'">
+                {{ meeting.status === 'now' ? ('dashboard.meeting.now' | transloco) : meeting.status === 'past' ? ('dashboard.meeting.past' | transloco) : ('dashboard.meeting.soon' | transloco) }}
+              </span>
+            </div>
+            <p class="ct-meeting-card__title">{{ meeting.title || ('dashboard.meeting.untitled' | transloco) }}</p>
+            @if (meeting.when) {
+              <p class="ct-meeting-card__time">
+                <mat-icon class="ct-meeting-card__time-icon">schedule</mat-icon>
+                {{ meeting.when }}
+              </p>
+            }
+            @if (meeting.link) {
+              <a class="ct-meeting-card__open" [href]="meeting.link" target="_blank" rel="noopener noreferrer"
+                 [attr.aria-label]="('dashboard.meeting.open' | transloco) + ': ' + (meeting.title || ('dashboard.meeting.untitled' | transloco))">{{ 'dashboard.meeting.open' | transloco }}</a>
+            }
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- ── KPI STATS ─────────────────────────────────────────────── -->
+  <div class="ct-kpi-row" role="list" [attr.aria-label]="'dashboard.kpiList' | transloco">
+    @for (stat of kpiStats; track stat.label) {
+      <div class="ct-kpi-card" role="listitem">
+        <div class="ct-kpi-card__header">
+          <div class="ct-kpi-card__icon-wrap" [style.background]="stat.iconBg">
+            <mat-icon class="ct-kpi-card__icon">{{ stat.icon }}</mat-icon>
+          </div>
+        </div>
+        <p class="ct-kpi-card__value">{{ stat.value }}</p>
+        <p class="ct-kpi-card__label">{{ stat.label | transloco }}</p>
+      </div>
+    }
+  </div>
+
+  <!-- ── PROJECTS SECTION ──────────────────────────────────────── -->
+  <section class="ct-section" aria-labelledby="ct-projects-heading">
+    <div class="ct-section__header">
+      <div class="ct-section__title-group">
+        <mat-icon class="ct-section__icon">folder</mat-icon>
+        <div>
+          <h3 class="ct-section__title" id="ct-projects-heading">{{ 'dashboard.contractor.projectsTitle' | transloco }}</h3>
+          <p class="ct-section__subtitle">{{ 'dashboard.contractor.projectsSubtitle' | transloco }}</p>
+        </div>
+      </div>
+      <a routerLink="/dashboard/projects" class="ct-section__view-all" [attr.aria-label]="'dashboard.viewAllProjects' | transloco">
+        {{ 'dashboard.viewAll' | transloco }} <mat-icon class="ct-section__arrow">expand_more</mat-icon>
+      </a>
+    </div>
+
+    <!-- Project status / by-month are backend-blocked (no status/date fields).
+         No fabricated charts — honest error/empty state instead. -->
+    @if (projectsStatus() === 'error') {
+      <div class="ct-widget-state ct-widget-state--error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        <span>{{ 'dashboard.states.error' | transloco }}</span>
+        <button type="button" class="ct-widget-state__retry" (click)="reload()"
+                [attr.aria-label]="'common.retry' | transloco">{{ 'common.retry' | transloco }}</button>
+      </div>
+    } @else {
+      <div class="ct-widget-state ct-widget-state--empty">
+        <mat-icon aria-hidden="true">donut_large</mat-icon>
+        <span>{{ 'dashboard.states.emptyProjectStatus' | transloco }}</span>
+      </div>
+    }
+  </section>
+
+  <!-- ── TASKS TIMELINE ────────────────────────────────────────── -->
+  <section class="ct-section" aria-labelledby="ct-tasks-heading">
+    <div class="ct-section__header">
+      <div class="ct-section__title-group">
+        <mat-icon class="ct-section__icon">assignment</mat-icon>
+        <div>
+          <h3 class="ct-section__title" id="ct-tasks-heading">{{ 'dashboard.contractor.tasksTimelineTitle' | transloco }}</h3>
+          <p class="ct-section__subtitle">{{ 'dashboard.contractor.tasksTimelineSub' | transloco }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- Tasks timeline is backend-blocked (no task time-series API).
+         No fabricated chart — honest empty state. -->
+    <div class="ct-widget-state ct-widget-state--empty">
+      <mat-icon aria-hidden="true">show_chart</mat-icon>
+      <span>{{ 'dashboard.states.emptyTasksTimeline' | transloco }}</span>
+    </div>
+  </section>
+
+  <!-- ── BOTTOM ROW: WITHDRAWALS + TEAMS ───────────────────────── -->
+  <div class="ct-bottom-row">
+
+    <!-- Recent Withdrawals -->
+    <section class="ct-chart-card" aria-labelledby="ct-withdrawals-heading">
+      <div class="ct-chart-card__header">
+        <div class="ct-section__title-group">
+          <mat-icon class="ct-section__icon">account_balance_wallet</mat-icon>
+          <h3 class="ct-section__title" id="ct-withdrawals-heading">{{ 'dashboard.contractor.recentWithdrawalsTitle' | transloco }}</h3>
+        </div>
+        <a routerLink="/dashboard/withdrawals" class="ct-section__view-all" [attr.aria-label]="'dashboard.viewAllWithdrawals' | transloco">
+          {{ 'dashboard.viewAll' | transloco }} <mat-icon class="ct-section__arrow">expand_more</mat-icon>
+        </a>
+      </div>
+      <ul class="ct-withdrawal-list" [attr.aria-label]="'dashboard.contractor.recentWithdrawals' | transloco">
+        @for (w of recentWithdrawals; track $index) {
+          <li class="ct-withdrawal-item">
+            <div class="ct-withdrawal__icon-wrap">
+              <mat-icon>payments</mat-icon>
+            </div>
+            <div class="ct-withdrawal__info">
+              <p class="ct-withdrawal__amount">{{ w.amount }}</p>
+              <p class="ct-withdrawal__date">{{ w.date }}</p>
+            </div>
+            <span class="ct-withdrawal__status" [ngClass]="getWithdrawalClass(w.status)">
+              {{ getWithdrawalLabel(w.status) | transloco }}
+            </span>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <!-- Quick Links -->
+    <section class="ct-chart-card" aria-labelledby="ct-links-heading">
+      <div class="ct-chart-card__header">
+        <div class="ct-section__title-group">
+          <mat-icon class="ct-section__icon">apps</mat-icon>
+          <h3 class="ct-section__title" id="ct-links-heading">{{ 'dashboard.contractor.quickAccess' | transloco }}</h3>
+        </div>
+      </div>
+      <div class="ct-quick-links">
+        <a routerLink="/dashboard/contracts" class="ct-quick-link" [attr.aria-label]="'dashboard.goToContracts' | transloco">
+          <div class="ct-quick-link__icon" style="background:var(--brand-primary-50)">
+            <mat-icon>description</mat-icon>
+          </div>
+          <span>{{ 'dashboard.nav.contracts' | transloco }}</span>
+        </a>
+        <a routerLink="/dashboard/projects" class="ct-quick-link" [attr.aria-label]="'dashboard.goToProjects' | transloco">
+          <div class="ct-quick-link__icon" style="background:var(--brand-secondary-50)">
+            <mat-icon>folder</mat-icon>
+          </div>
+          <span>{{ 'dashboard.nav.projects' | transloco }}</span>
+        </a>
+        <a routerLink="/dashboard/teams" class="ct-quick-link" [attr.aria-label]="'dashboard.goToTeams' | transloco">
+          <div class="ct-quick-link__icon" style="background:var(--functional-success-50)">
+            <mat-icon>groups</mat-icon>
+          </div>
+          <span>{{ 'dashboard.nav.teams' | transloco }}</span>
+        </a>
+        <a routerLink="/dashboard/meetings" class="ct-quick-link" [attr.aria-label]="'dashboard.goToMeetings' | transloco">
+          <div class="ct-quick-link__icon" style="background:var(--brand-accent-50)">
+            <mat-icon>event</mat-icon>
+          </div>
+          <span>{{ 'dashboard.nav.meetings' | transloco }}</span>
+        </a>
+        <a routerLink="/dashboard/withdrawals" class="ct-quick-link" [attr.aria-label]="'dashboard.goToWithdrawals' | transloco">
+          <div class="ct-quick-link__icon" style="background:var(--brand-tertiary-50)">
+            <mat-icon>account_balance_wallet</mat-icon>
+          </div>
+          <span>{{ 'dashboard.nav.withdrawals' | transloco }}</span>
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  } <!-- end @else -->
+
+</div>

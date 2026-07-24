@@ -1,0 +1,316 @@
+<!-- ============================== -->
+<!-- MAIN CONTAINER -->
+<!-- ============================== -->
+<div class="attendance-container">
+
+  <!-- ============================== -->
+  <!-- TOP BAR - Back Link & Import Button -->
+  <!-- ============================== -->
+  <div class="top-bar">
+    <!-- Back Link -->
+    <a routerLink="/attendance" class="back-link" [attr.aria-label]="'attendance.backToAttendance' | transloco">
+      <svg width="18" height="18" viewBox="0 0 24 24" class="icon-inline" aria-hidden="true">
+        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"></path>
+      </svg>
+      <span>Back</span>
+    </a>
+
+    <!-- Import Button -->
+    <button mat-flat-button color="primary" (click)="importAttendance()" class="import-btn" [disabled]="true">
+      <svg width="18" height="18" viewBox="0 0 24 24" class="icon-inline" aria-hidden="true">
+        <path d="M5 20h14v-2H5v2zm7-18L5.33 9h4.17v4h4V9h4.17L12 2z" fill="currentColor"></path>
+      </svg>
+      <span>Import</span>
+    </button>
+  </div>
+
+  <!-- ============================== -->
+  <!-- BREADCRUMB NAVIGATION -->
+  <!-- ============================== -->
+  <div class="breadcrumb-section">
+    <span>Mtwork</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" class="chev" aria-hidden="true">
+      <path d="M9.29 6.71L13.58 11 9.29 15.29 10.71 16.71 16.42 11 10.71 5.29z" fill="currentColor"></path>
+    </svg>
+    <a routerLink="/dashboard/genralattendance">Attendance</a>
+    <svg width="14" height="14" viewBox="0 0 24 24" class="chev" aria-hidden="true">
+      <path d="M9.29 6.71L13.58 11 9.29 15.29 10.71 16.71 16.42 11 10.71 5.29z" fill="currentColor"></path>
+    </svg>
+    <a routerLink="/dashboard/attendance" class="current-page">Attendance Details</a>
+  </div>
+
+  <!-- ============================== -->
+  <!-- PAGE TITLE -->
+  <!-- ============================== -->
+  <h2>Attendance Details</h2>
+
+  <!-- ============================== -->
+  <!-- EMPLOYEE HEADER CARD -->
+  <!-- ============================== -->
+  <mat-card class="employee-header-card">
+    <div class="card-content">
+      <!-- Employee Avatar with Country Flag -->
+      <div class="employee-avatar-stack">
+        <img src="assets/images/Avater.png" alt="Employee Avatar" class="employee-avatar">
+        <img src="assets/images/EgyptAvater.png" alt="Employee Country Flag" class="emp-country-flag">
+      </div>
+      
+      <!-- Employee Information -->
+      <div class="employee-main-info">
+        <div class="employee-details">
+          <h3>{{ employeeName || '—' }}</h3>
+          @if (employeeRole) {
+            <p class="muted employee-role">{{ employeeRole }}</p>
+          }
+        </div>
+        <!-- Status Badge — hidden when no status string is available -->
+        @if (employeeStatus) {
+          <span class="status-badge">{{ employeeStatus }}</span>
+        }
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- ============================== -->
+  <!-- FILTER SECTION - Search, Filter, Date, Fullscreen -->
+  <!-- ============================== -->
+  <div class="filter-section">
+    <!-- Search Input -->
+    <mat-form-field appearance="outline" class="search-input">
+      <mat-icon matPrefix class="search-icon">search</mat-icon>
+      <input matInput placeholder="Search" [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()" [attr.aria-label]="'attendance.searchRecords' | transloco">
+    </mat-form-field>
+    
+    <!-- Filter Button -->
+    <button class="filter-btn" [attr.aria-label]="'common.filters' | transloco">
+      <svg viewBox="-2.4 -2.4 28.80 28.80" xmlns="http://www.w3.org/2000/svg" fill="#000000" width="20" height="20">
+        <g fill="none" stroke="#666" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="5" x2="16" y2="5"/>
+          <line x1="4" y1="12" x2="10" y2="12"/>
+          <line x1="14" y1="12" x2="20" y2="12"/>
+          <line x1="8" y1="19" x2="20" y2="19"/>
+          <circle cx="18" cy="5" r="2"/>
+          <circle cx="12" cy="12" r="2"/>
+          <circle cx="6" cy="19" r="2"/>
+        </g>
+      </svg>
+    </button>
+    
+    <!-- Date Filter Input -->
+    <input
+      type="date"
+      class="date-filter-input"
+      [attr.aria-label]="'attendance.filterByDate' | transloco"
+      [(ngModel)]="dateInputValue"
+      (ngModelChange)="onDateInputChange($event)"
+    />
+
+    <!-- Status filter (backend `leaveType`: 0=Working, 1=Leave, 2=Meeting, 3=Other) -->
+    <select class="shift-filter-select" [attr.aria-label]="'common.filterByStatus' | transloco" [(ngModel)]="shiftFilter" (ngModelChange)="onShiftChange($event)">
+      <option value="">All Statuses</option>
+      <option value="0">Working</option>
+      <option value="1">Leave</option>
+      <option value="2">Meeting</option>
+      <option value="3">Other</option>
+    </select>
+
+    @if (hasActiveFilters) {
+      <button class="filter-reset-btn" (click)="resetFilters()" [attr.aria-label]="'common.resetFilters' | transloco" title="Reset filters">
+        <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
+        </svg>
+        Reset
+      </button>
+    }
+
+    <!-- View toggle: table | cards (shared .ui-view-toggle from styles.css) -->
+    <div class="ui-view-toggle" role="group" [attr.aria-label]="'common.switchView' | transloco">
+      <button
+        type="button"
+        class="ui-view-toggle__btn"
+        [class.ui-view-toggle__btn--active]="viewMode === 'table'"
+        (click)="setView('table')"
+        [attr.aria-label]="'common.tableView' | transloco"
+        title="Table view">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 4h18v4H3V4zm0 6h18v4H3v-4zm0 6h18v4H3v-4z" fill="currentColor"/>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="ui-view-toggle__btn"
+        [class.ui-view-toggle__btn--active]="viewMode === 'cards'"
+        (click)="setView('cards')"
+        [attr.aria-label]="'common.cardView' | transloco"
+        title="Card view">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Active filter chips -->
+  @if (hasActiveFilters) {
+    <div class="active-filters" role="status" aria-live="polite">
+      @if (searchQuery) {
+        <span class="filter-chip">Search: {{ searchQuery }}</span>
+      }
+      @if (selectedDate) {
+        <span class="filter-chip">Date: {{ selectedDate | date: 'mediumDate' }}</span>
+      }
+      @if (shiftFilter) {
+        <span class="filter-chip">Shift: {{ shiftFilter }}</span>
+      }
+    </div>
+  }
+
+  <!-- Loading state -->
+  @if (isLoading) {
+    <div class="loading-state" role="status" aria-live="polite">
+      <svg class="loading-spinner-icon" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 4V2A10 10 0 0 0 2 12h2a8 8 0 0 1 8-8z" fill="currentColor"/>
+      </svg>
+      <p>Loading…</p>
+    </div>
+  }
+
+  <!-- Error state -->
+  @if (!isLoading && loadError) {
+    <div class="error-state" role="alert">
+      <p>Couldn't load your attendance records. Please check your connection and try again.</p>
+      <button class="retry-btn" (click)="loadAttendanceRecords()" [attr.aria-label]="'common.retryLoading' | transloco">Retry</button>
+    </div>
+  }
+
+  <!-- ============================== -->
+  <!-- DATA REGION — table OR cards (shared .ui-* primitives) -->
+  <!-- ============================== -->
+  @if (!isLoading && !loadError) {
+
+    <!-- Empty state shared with both views -->
+    @if (filteredRecords.length === 0) {
+      <div class="ui-empty ui-empty--compact">
+        <svg width="48" height="48" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z" fill="currentColor"/>
+        </svg>
+        @if (hasActiveFilters) {
+          <p class="ui-empty__title">No matches</p>
+          <p class="ui-empty__sub">No records match your current filters.</p>
+          <button type="button" class="ui-empty__cta" (click)="resetFilters()" [attr.aria-label]="'common.clearFilters' | transloco">
+            Clear filters
+          </button>
+        } @else {
+          <p class="ui-empty__title">No Attendance Records</p>
+          <p class="ui-empty__sub">No attendance records have been recorded yet.</p>
+        }
+      </div>
+    }
+
+    <!-- Table view -->
+    @else if (viewMode === 'table') {
+      <div class="attendance-table-container">
+        <table mat-table [dataSource]="filteredRecords" class="full-width-table">
+
+          <!-- (Employee column intentionally removed — page is single-employee.) -->
+
+          <!-- Date — primary sortable identifier per record -->
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <td mat-cell *matCellDef="let record">
+              {{ formatDate(record.attendanceDate || record.checkInTime) || '—' }}
+              @if (record.weekDay) {
+                <span class="muted" style="margin-inline-start:6px;">· {{ record.weekDay }}</span>
+              }
+            </td>
+          </ng-container>
+
+          <!-- Status — backend `leaveType` is the daily attendance status -->
+          <ng-container matColumnDef="leaveType">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let record">
+              <span class="ui-status-badge" [class]="getStatusClass(record)">
+                {{ getStatusLabel(record) }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="checkIn">
+            <th mat-header-cell *matHeaderCellDef> Check In </th>
+            <td mat-cell *matCellDef="let record"> {{ formatDate(record.checkInTime) || '—' }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="checkOut">
+            <th mat-header-cell *matHeaderCellDef> Check Out </th>
+            <td mat-cell *matCellDef="let record"> {{ formatDate(record.checkOutTime) || '—' }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="mat-column-actions"> Actions </th>
+            <td mat-cell *matCellDef="let record" class="mat-column-actions">
+              <button mat-icon-button [matMenuTriggerFor]="menu" [attr.aria-label]="'common.actionsMenu' | transloco">
+                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 8a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4zm0 6a2 2 0 110-4 2 2 0 010 4z" fill="currentColor"/>
+                </svg>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item [disabled]="true">Edit</button>
+                <button mat-menu-item [disabled]="true">Delete</button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    }
+
+    <!-- Card view (shared .ui-cards-grid + .ui-card from styles.css) -->
+    @else {
+      <div class="ui-cards-grid">
+        @for (record of filteredRecords; track record.id ?? $index) {
+          <article class="ui-card">
+            <header class="ui-card__head">
+              <span class="ui-status-badge" [class]="getStatusClass(record)">
+                {{ getStatusLabel(record) }}
+              </span>
+              <button type="button" mat-icon-button
+                      [matMenuTriggerFor]="cardMenu"
+                      [attr.aria-label]="'Actions for record ' + (record.id ?? '')">
+                <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="5"  r="2" fill="currentColor"/>
+                  <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                  <circle cx="12" cy="19" r="2" fill="currentColor"/>
+                </svg>
+              </button>
+              <mat-menu #cardMenu="matMenu">
+                <button mat-menu-item [disabled]="true">Edit</button>
+                <button mat-menu-item [disabled]="true">Delete</button>
+              </mat-menu>
+            </header>
+
+            <div class="ui-card__body">
+              <dl class="ui-card__meta">
+                <div>
+                  <dt>Date</dt>
+                  <dd>{{ formatDate(record.attendanceDate || record.checkInTime) || '—' }}</dd>
+                </div>
+                <div>
+                  <dt>Check In</dt>
+                  <dd>{{ formatDate(record.checkInTime) || '—' }}</dd>
+                </div>
+                <div>
+                  <dt>Check Out</dt>
+                  <dd>{{ formatDate(record.checkOutTime) || '—' }}</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  }
+
+</div>
+<!-- END OF ATTENDANCE CONTAINER -->

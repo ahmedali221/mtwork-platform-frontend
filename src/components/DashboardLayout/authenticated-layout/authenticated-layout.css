@@ -1,0 +1,48 @@
+ 
+  :host {
+      display: block;
+    }
+
+    .layout-container {
+      position: relative;
+    }
+
+    main {
+      background: var(--ui-bg);
+    }
+
+ .app-container {
+      display: flex;
+      min-height: 100vh;
+      background: var(--ui-bg);
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-inline-start: 277px;
+      transition: margin-inline-start 0.3s ease;
+      min-height: 100vh;
+    }
+
+    .main-content.sidebar-collapsed {
+      margin-inline-start: 100px;
+    }
+
+    .content-area {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      background: var(--ui-bg);
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        margin-inline-start: 0;
+      }
+
+      .main-content.sidebar-collapsed {
+        margin-inline-start: 0;
+      }
+    }

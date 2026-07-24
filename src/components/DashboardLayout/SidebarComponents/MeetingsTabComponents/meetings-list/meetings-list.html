@@ -1,0 +1,667 @@
+<div class="meetings-page">
+
+  <!-- ── Breadcrumb ─────────────────────────────────────────── -->
+  <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | transloco">
+    <span class="bc-item">Mtwork</span>
+    <svg class="bc-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M5.5 3.5L10.5 8L5.5 12.5" stroke="currentColor" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="bc-item bc-active">Meetings</span>
+  </nav>
+
+  <!-- ── Page title row ───────────────────────────────────────── -->
+  <div class="page-header">
+    <div class="page-title-wrap">
+      <h1 class="page-title">All Meetings</h1>
+      <span class="count-badge">{{ filteredMeetings.length }}</span>
+    </div>
+    @if (!isEmployee) {
+      <button class="btn-create" (click)="addNewMeeting()" [attr.aria-label]="'meetings.createMeeting' | transloco">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 1.5A6.5 6.5 0 1 0 8 14.5A6.5 6.5 0 0 0 8 1.5ZM8.75 8.75H5.25
+                   V7.25H7.25V5.25H8.75V7.25H10.75V8.75H8.75Z" fill="currentColor"/>
+        </svg>
+        New Meeting
+      </button>
+    }
+  </div>
+
+  <!-- ── Toolbar: [search + filter popover] ── [expand] ── -->
+  <div class="meetings-toolbar">
+
+    <!-- Left: search + filter -->
+    <div class="toolbar-left">
+
+      <!-- Search -->
+      <div class="search-field">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91
+                   13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16
+                   12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14Z
+                   M9.5 14C7.01 14 5 11.99 5 9.5C5 7.01 7.01 5 9.5 5C11.99 5 14 7.01
+                   14 9.5C14 11.99 11.99 14 9.5 14Z" fill="currentColor"/>
+        </svg>
+        <input
+          type="text"
+          class="search-input"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="onSearchChange()"
+          placeholder="Search meetings..."
+          [attr.aria-label]="'meetings.searchMeetings' | transloco"
+        />
+      </div>
+
+      <!-- Filter button + absolute popover -->
+      <div class="filter-wrap" #filterWrap>
+        <button
+          class="btn-filter"
+          [class.btn-filter--active]="showFilters() || hasActiveFilters()"
+          (click)="toggleFilters()"
+          [attr.aria-expanded]="showFilters()"
+          aria-controls="filter-panel"
+          [attr.aria-label]="'common.toggleFilters' | transloco"
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M2.25 4.5H15.75M4.5 9H13.5M6.75 13.5H11.25"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="6"  cy="4.5"  r="1.5" fill="currentColor"/>
+            <circle cx="12" cy="9"    r="1.5" fill="currentColor"/>
+            <circle cx="9"  cy="13.5" r="1.5" fill="currentColor"/>
+          </svg>
+          @if (hasActiveFilters()) {
+            <span class="filter-active-dot" aria-hidden="true"></span>
+          }
+        </button>
+
+        <!-- Popover panel — absolute, does NOT affect layout flow -->
+        @if (showFilters()) {
+          <div class="filter-popover" id="filter-panel" role="group" [attr.aria-label]="'common.filters' | transloco">
+            <div class="popover-row">
+              <div class="filter-group">
+                <label class="filter-label" for="statusFilter">Status</label>
+                <select
+                  id="statusFilter"
+                  class="filter-select"
+                  [(ngModel)]="statusFilter"
+                  (ngModelChange)="onStatusFilterChange()"
+                  [attr.aria-label]="'common.filterByStatus' | transloco"
+                >
+                  <option value="All">All Statuses</option>
+                  <option value="Scheduled">Scheduled</option>
+                  <option value="Cancelled">Cancelled</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label class="filter-label" for="repeatFilter">Repeat</label>
+                <select
+                  id="repeatFilter"
+                  class="filter-select"
+                  [(ngModel)]="repeatFilter"
+                  (ngModelChange)="onRepeatFilterChange()"
+                  [attr.aria-label]="'meetings.filterByRepeat' | transloco"
+                >
+                  <option value="All">All Repeats</option>
+                  <option value="Daily">Daily</option>
+                  <option value="Weekly">Weekly</option>
+                  <option value="Monthly">Monthly</option>
+                  <option value="None">None</option>
+                </select>
+              </div>
+            </div>
+
+            @if (hasActiveFilters()) {
+              <div class="popover-footer">
+                <button class="btn-clear-filters" (click)="clearFilters()" [attr.aria-label]="'common.clearFilters' | transloco">
+                  Clear filters
+                </button>
+              </div>
+            }
+          </div>
+        }
+      </div><!-- /filter-wrap -->
+    </div><!-- /toolbar-left -->
+
+    <!-- Right: refresh + view toggle + fullscreen -->
+    <div class="toolbar-right">
+      <!-- Refresh -->
+      <button class="btn-filter" (click)="refresh()" [attr.aria-label]="'common.refresh' | transloco" title="Refresh">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M17.65 6.35A7.96 7.96 0 0 0 12 4C7.58 4 4 7.58 4 12s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>
+        </svg>
+      </button>
+
+      <!-- View toggle: table | cards (shared .ui-view-toggle) -->
+      <div class="ui-view-toggle" role="group" [attr.aria-label]="'common.switchView' | transloco">
+        <button type="button" class="ui-view-toggle__btn"
+                [class.ui-view-toggle__btn--active]="viewMode === 'table'"
+                (click)="setView('table')" title="Table view" [attr.aria-label]="'common.tableView' | transloco">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v4H3V4zm0 6h18v4H3v-4zm0 6h18v4H3v-4z" fill="currentColor"/></svg>
+        </button>
+        <button type="button" class="ui-view-toggle__btn"
+                [class.ui-view-toggle__btn--active]="viewMode === 'cards'"
+                (click)="setView('cards')" title="Card view" [attr.aria-label]="'common.cardView' | transloco">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" fill="currentColor"/></svg>
+        </button>
+      </div>
+
+      <button
+        class="btn-expand"
+        [class.btn-expand--active]="isFullscreen()"
+        (click)="toggleFullscreen()"
+        [attr.aria-label]="isFullscreen() ? 'Exit fullscreen' : 'Enter fullscreen'"
+        [attr.aria-pressed]="isFullscreen()"
+      >
+        @if (isFullscreen()) {
+          <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+            <path d="M8.25 3.667V8.25H3.667M18.333 8.25H13.75V3.667
+                     M13.75 18.333V13.75H18.333M3.667 13.75H8.25V18.333"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        } @else {
+          <svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+            <path d="M3.667 8.25V3.667H8.25M13.75 3.667H18.333V8.25
+                     M18.333 13.75V18.333H13.75M8.25 18.333H3.667V13.75"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        }
+      </button>
+    </div><!-- /toolbar-right -->
+
+  </div><!-- /meetings-toolbar -->
+
+  <!-- ── Loading ────────────────────────────────────────────── -->
+  @if (isLoading()) {
+    <div class="loading-state" aria-live="polite" [attr.aria-label]="'meetings.loadingMeetings' | transloco">
+      <div class="spinner" role="status"></div>
+      <span>Loading meetings...</span>
+    </div>
+  }
+
+  <!-- ── Error ──────────────────────────────────────────────── -->
+  @if (loadError() && !isLoading()) {
+    <div class="error-state" role="alert">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M10 6v4M10 14h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>{{ loadError() }}</span>
+      <button class="btn-retry" (click)="loadMeetings()">Retry</button>
+    </div>
+  }
+
+  <!-- ── Meetings list ──────────────────────────────────────── -->
+  @if (!isLoading() && !loadError()) {
+    @if (filteredMeetings.length > 0) {
+
+      <!-- ── Table view (alternate to the existing card list) ── -->
+      @if (viewMode === 'table') {
+        <div class="attendance-table-container">
+          <table class="full-width-table" style="width:100%; border-collapse:separate; border-spacing:0 8px;">
+            <thead>
+              <tr>
+                <th style="text-align:start; padding:12px 16px; font-size:12px; font-weight:600; color:var(--ui-text-muted); text-transform:uppercase;">Title</th>
+                <th style="text-align:start; padding:12px 16px; font-size:12px; font-weight:600; color:var(--ui-text-muted); text-transform:uppercase;">Date</th>
+                <th style="text-align:start; padding:12px 16px; font-size:12px; font-weight:600; color:var(--ui-text-muted); text-transform:uppercase;">Time</th>
+                <th style="text-align:start; padding:12px 16px; font-size:12px; font-weight:600; color:var(--ui-text-muted); text-transform:uppercase;">Status</th>
+                <th style="text-align:start; padding:12px 16px; font-size:12px; font-weight:600; color:var(--ui-text-muted); text-transform:uppercase;">Repeat</th>
+                <th style="text-align:end;   padding:12px 16px; font-size:12px; font-weight:600; color:var(--ui-text-muted); text-transform:uppercase;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (meeting of filteredMeetings; track meeting.id) {
+                <tr style="background: var(--ui-surface);">
+                  <td style="padding:14px 16px; cursor:pointer;" (click)="selectedMeeting.set(meeting)">
+                    {{ meeting.title }}
+                  </td>
+                  <td style="padding:14px 16px;">{{ (meeting.meetingDate | date:'mediumDate') || '—' }}</td>
+                  <td style="padding:14px 16px;">{{ meeting.startTime || '—' }}{{ meeting.endTime ? ' – ' + meeting.endTime : '' }}</td>
+                  <td style="padding:14px 16px;">{{ meeting.status || '—' }}</td>
+                  <td style="padding:14px 16px;">{{ meeting.repeatType || '—' }}</td>
+                  <td style="padding:14px 16px; text-align:end;">
+                    <button class="actions-menu-btn" [matMenuTriggerFor]="rowMtgMenu" [attr.aria-label]="'meetings.meetingOptions' | transloco">
+                      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="5"  r="2" fill="currentColor"/>
+                        <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                        <circle cx="12" cy="19" r="2" fill="currentColor"/>
+                      </svg>
+                    </button>
+                    <mat-menu #rowMtgMenu="matMenu">
+                      <button mat-menu-item (click)="selectedMeeting.set(meeting)">View Details</button>
+                    </mat-menu>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+      <!-- ── Card view (existing — preserved) ── -->
+      <div class="meetings-list">
+        @for (meeting of filteredMeetings; track meeting.id) {
+          <div class="meeting-card">
+
+            <!-- Icon -->
+            <div class="card-icon-wrap" aria-hidden="true">
+              <img src="assets/images/GoogleMeet.png" alt="" class="card-icon-img" />
+            </div>
+
+            <!-- Info -->
+            <div class="card-info">
+              <div class="card-title">
+                {{ meeting.title }}
+                @if (getParticipantNames(meeting)) {
+                  <span class="card-with"> with {{ getParticipantNames(meeting) }}</span>
+                }
+              </div>
+              <div class="card-time">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <rect x="2" y="3" width="12" height="11" rx="1.5"
+                        stroke="currentColor" stroke-width="1.3"/>
+                  <path d="M5 1.5V4M11 1.5V4M2 7H14"
+                        stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+                <span>{{ formatTime(meeting.startTime) }}</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M2 6H10M7 3L10 6L7 9"
+                        stroke="currentColor" stroke-width="1.3"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>{{ formatTime(meeting.endTime) }}</span>
+              </div>
+            </div>
+
+            <!-- Status + Open + ⋯ menu -->
+            <div class="card-actions">
+              <span
+                class="status-pill"
+                [class.pill-scheduled]="(meeting.status || 'Scheduled') === 'Scheduled'"
+                [class.pill-completed]="meeting.status === 'Completed'"
+                [class.pill-cancelled]="meeting.status === 'Cancelled'"
+              >
+                <span class="pill-dot" aria-hidden="true"></span>
+                {{ meeting.status || 'Scheduled' }}
+              </span>
+
+              <!-- Open button -->
+              <button
+                class="btn-open"
+                (click)="showMeetingDetails(meeting)"
+                [attr.aria-label]="'Open details for ' + meeting.title"
+              >Open</button>
+
+              <!-- ⋯ actions menu -->
+              <button
+                class="btn-card-menu"
+                [matMenuTriggerFor]="cardMenu"
+                [attr.aria-label]="'Options for ' + meeting.title"
+              >
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <circle cx="4.5" cy="9"   r="1.5" fill="currentColor"/>
+                  <circle cx="9"   cy="9"   r="1.5" fill="currentColor"/>
+                  <circle cx="13.5" cy="9"  r="1.5" fill="currentColor"/>
+                </svg>
+              </button>
+
+              <mat-menu #cardMenu="matMenu" class="meetings-dropdown-menu">
+                <button mat-menu-item (click)="showMeetingDetails(meeting)">
+                  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M8 3C4.36 3 1.258 5.232.25 8.5 1.258 11.768 4.36 14 8 14
+                             s6.742-2.232 7.75-5.5C14.742 5.232 11.64 3 8 3Zm0 9.167
+                             A3.667 3.667 0 1 1 8 4.833a3.667 3.667 0 0 1 0 7.334Z
+                             M8 6.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"
+                          fill="currentColor"/>
+                  </svg>
+                  View Details
+                </button>
+                @if (!isEmployee) {
+                  <button mat-menu-item (click)="openEditMeeting(meeting)">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M11.333 2a1.886 1.886 0 0 1 2.667 2.667L4.667 14 1 15
+                               l1-3.667L11.333 2Z"
+                            stroke="currentColor" stroke-width="1.3"
+                            stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Edit
+                  </button>
+                  <button mat-menu-item class="menu-item-danger" (click)="requestDelete(meeting.id)">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M2 4h12M5.333 4V2.667h5.334V4M6.667 7.333v4
+                               M9.333 7.333v4M3.333 4l.667 9.333h8L12.667 4H3.333Z"
+                            stroke="currentColor" stroke-width="1.3"
+                            stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Delete
+                  </button>
+                }
+              </mat-menu>
+            </div>
+
+          </div>
+        }
+      </div>
+      }<!-- /@else (card view) -->
+
+    } @else {
+      <!-- Empty state -->
+      <div class="empty-state">
+        <img src="assets/images/NoMeetings.png" alt="No meetings" class="empty-img" />
+        <h2 class="empty-title">You don't have any meetings scheduled</h2>
+        <p class="empty-sub">Once you create or join a meeting, it will appear here.</p>
+      </div>
+    }
+  }
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     Delete Confirmation Dialog
+     ═══════════════════════════════════════════════════════════ -->
+@if (pendingDeleteId !== null) {
+  <div
+    class="confirm-overlay"
+    (click)="cancelDelete()"
+    role="presentation"
+    aria-hidden="true"
+  ></div>
+
+  <div
+    class="confirm-dialog"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="confirm-title"
+    aria-describedby="confirm-desc"
+  >
+    <div class="confirm-icon" aria-hidden="true">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M16 9v8M16 21.5h.01"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h3 id="confirm-title" class="confirm-title">Delete Meeting</h3>
+    <p  id="confirm-desc"  class="confirm-text">
+      Are you sure you want to delete this meeting? This action cannot be undone.
+    </p>
+    <div class="confirm-actions">
+      <button
+        class="btn-confirm-cancel"
+        (click)="cancelDelete()"
+        [disabled]="isDeleting"
+      >Cancel</button>
+      <button
+        class="btn-confirm-delete"
+        (click)="confirmDelete()"
+        [disabled]="isDeleting"
+        [attr.aria-busy]="isDeleting"
+      >
+        @if (isDeleting) { Deleting... } @else { Delete }
+      </button>
+    </div>
+  </div>
+}
+
+<!-- ═══════════════════════════════════════════════════════════
+     Meeting Details Drawer  (inline <aside>, Teams pattern)
+     ═══════════════════════════════════════════════════════════ -->
+@if (selectedMeeting()) {
+
+  <!-- Backdrop -->
+  <div
+    class="drawer-overlay"
+    (click)="closeDrawer()"
+    role="presentation"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Drawer panel -->
+  <aside
+    class="meeting-drawer"
+    [class.meeting-drawer--wide]="drawerFullscreen()"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="'Details for ' + selectedMeeting()!.title"
+  >
+
+    <!-- Header -->
+    <div class="drawer-header">
+      <div class="drawer-header-left">
+        <div class="drawer-icon-box" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M15 10l4.553-2.277A1 1 0 0 1 21 8.723v6.554a1 1 0 0
+                     1-1.447.9L15 14M3 8h12a2 2 0 0 1 2 2v4a2 2 0 0
+                     1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2z"
+                  stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="drawer-header-meta">
+          <h2 class="drawer-name">{{ selectedMeeting()!.title }}</h2>
+          <span
+            class="status-pill status-pill--sm"
+            [class.pill-scheduled]="(selectedMeeting()!.status || 'Scheduled') === 'Scheduled'"
+            [class.pill-completed]="selectedMeeting()!.status === 'Completed'"
+            [class.pill-cancelled]="selectedMeeting()!.status === 'Cancelled'"
+          >
+            <span class="pill-dot" aria-hidden="true"></span>
+            {{ selectedMeeting()!.status || 'Scheduled' }}
+          </span>
+        </div>
+      </div>
+
+      <div class="drawer-header-actions">
+        <!-- Expand / Compress drawer -->
+        <button
+          class="drawer-action-btn"
+          (click)="toggleDrawerFullscreen()"
+          [attr.aria-label]="drawerFullscreen() ? 'Collapse drawer' : 'Expand drawer'"
+        >
+          @if (drawerFullscreen()) {
+            <svg width="18" height="18" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <path d="M8.25 3.667V8.25H3.667M18.333 8.25H13.75V3.667
+                       M13.75 18.333V13.75H18.333M3.667 13.75H8.25V18.333"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          } @else {
+            <svg width="18" height="18" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <path d="M3.667 8.25V3.667H8.25M13.75 3.667H18.333V8.25
+                       M18.333 13.75V18.333H13.75M8.25 18.333H3.667V13.75"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          }
+        </button>
+
+        <!-- More options (Edit / Delete) — Business/Admin only -->
+        @if (!isEmployee) {
+          <button
+            class="drawer-action-btn"
+            [matMenuTriggerFor]="drawerMenu"
+            [attr.aria-label]="'common.moreOptions' | transloco"
+          >
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <circle cx="9" cy="4.5"  r="1.5" fill="currentColor"/>
+              <circle cx="9" cy="9"    r="1.5" fill="currentColor"/>
+              <circle cx="9" cy="13.5" r="1.5" fill="currentColor"/>
+            </svg>
+          </button>
+
+          <mat-menu #drawerMenu="matMenu" class="meetings-dropdown-menu">
+            <button mat-menu-item (click)="editFromDrawer()">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M11.333 2a1.886 1.886 0 0 1 2.667 2.667L4.667 14 1 15
+                         l1-3.667L11.333 2Z"
+                      stroke="currentColor" stroke-width="1.3"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Edit Meeting
+            </button>
+            <button mat-menu-item class="menu-item-danger"
+                    (click)="requestDelete(selectedMeeting()!.id)">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2 4h12M5.333 4V2.667h5.334V4M6.667 7.333v4
+                         M9.333 7.333v4M3.333 4l.667 9.333h8L12.667 4H3.333Z"
+                      stroke="currentColor" stroke-width="1.3"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Delete Meeting
+            </button>
+          </mat-menu>
+        }
+
+        <!-- Close -->
+        <button
+          class="drawer-close"
+          (click)="closeDrawer()"
+          [attr.aria-label]="'common.closeDetailsPanel' | transloco"
+          type="button"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M15 5L5 15M5 5L15 15"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="drawer-body">
+
+      <!-- ── Meeting Details ──────────────────────────────── -->
+      <section class="drawer-section">
+        <h3 class="drawer-section-title">Meeting Details</h3>
+        <span class="drawer-section-date">{{ formatDateTime(selectedMeeting()!.startTime) }}</span>
+
+        <!-- Link -->
+        <div class="drawer-row">
+          <span class="drawer-row-label">Meeting Link</span>
+          <div class="drawer-row-value">
+            @if (selectedMeeting()!.meetingLink) {
+              <span class="drawer-row-text link-text">{{ selectedMeeting()!.meetingLink }}</span>
+              <button class="btn-copy" (click)="copyLink()" [attr.aria-label]="'meetings.copyMeetingLink' | transloco">
+                {{ linkCopied ? 'Copied!' : 'Copy' }}
+              </button>
+            } @else {
+              <span class="drawer-row-empty">N/A</span>
+            }
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="drawer-row">
+          <span class="drawer-row-label">Meeting info</span>
+          <div class="drawer-row-value">
+            <span class="drawer-row-text">
+              {{ selectedMeeting()!.meetingDescription || selectedMeeting()!.description || '—' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Starting at -->
+        <div class="drawer-row">
+          <span class="drawer-row-label">Starting at</span>
+          <div class="drawer-row-value">
+            <span class="drawer-row-text">{{ formatDateTime(selectedMeeting()!.startTime) }}</span>
+          </div>
+        </div>
+
+        <!-- Ending at -->
+        <div class="drawer-row">
+          <span class="drawer-row-label">Ending at</span>
+          <div class="drawer-row-value">
+            <span class="drawer-row-text">{{ formatDateTime(selectedMeeting()!.endTime) }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Members ─────────────────────────────────────── -->
+      <section class="drawer-section">
+        <h3 class="drawer-section-title">
+          Members
+          <span class="drawer-count-badge">
+            {{ selectedMeeting()!.participants?.length ?? 0 }}
+          </span>
+          <button
+            class="btn-add-member"
+            (click)="toggleMemberPicker()"
+            [attr.aria-label]="'meetings.addParticipant' | transloco"
+            type="button"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3"/>
+              <path d="M8 5v6M5 8h6"
+                    stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </h3>
+
+        <!-- Member picker -->
+        @if (showMemberPicker) {
+          <div class="member-picker">
+            <select
+              class="member-picker-select"
+              [(ngModel)]="selectedNewMemberId"
+              [disabled]="membersLoading || isAddingMember"
+              [attr.aria-label]="'meetings.participantSearch' | transloco"
+            >
+              <option value="" disabled selected hidden>
+                @if (membersLoading) { Loading... }
+                @else if (availableMembers.length === 0) { All members already added }
+                @else { Select a member }
+              </option>
+              @for (m of availableMembers; track m.id) {
+                <option [value]="m.id">{{ m.name }}</option>
+              }
+            </select>
+            <div class="picker-actions">
+              <button
+                class="btn-picker-confirm"
+                (click)="confirmAddMember()"
+                [disabled]="!selectedNewMemberId || isAddingMember"
+                [attr.aria-label]="'meetings.confirmAddMember' | transloco"
+              >
+                @if (isAddingMember) { Adding... } @else { Add }
+              </button>
+              <button class="btn-picker-cancel" (click)="cancelAddMember()">Cancel</button>
+            </div>
+          </div>
+        }
+
+        <!-- Members list -->
+        @if ((selectedMeeting()!.participants ?? []).length > 0) {
+          <ul class="drawer-member-list">
+            @for (member of (selectedMeeting()!.participants ?? []); track member.id) {
+              <li class="drawer-member-item">
+                <div class="drawer-member-avatar" [class]="getAvatarClass(member.name)">
+                  @if (member.avatar) {
+                    <img [src]="member.avatar" [alt]="member.name" class="drawer-member-img" />
+                  } @else {
+                    <span class="drawer-member-initials" aria-hidden="true">
+                      {{ getInitials(member.name) }}
+                    </span>
+                  }
+                </div>
+                <div class="drawer-member-info">
+                  <span class="drawer-member-name">{{ member.name }}</span>
+                  @if (member.designation || member.role) {
+                    <span class="drawer-member-role">{{ member.designation || member.role }}</span>
+                  }
+                </div>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="drawer-empty-text">No participants listed.</p>
+        }
+      </section>
+
+    </div><!-- /drawer-body -->
+
+    <!-- Footer -->
+    <div class="drawer-footer">
+      <button class="drawer-btn-close" (click)="closeDrawer()" type="button">Close</button>
+    </div>
+
+  </aside>
+}

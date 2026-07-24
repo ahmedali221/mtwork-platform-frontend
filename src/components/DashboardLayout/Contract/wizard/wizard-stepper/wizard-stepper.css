@@ -1,0 +1,110 @@
+.stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ── Each step row ───────────────────────────────────────────── */
+.step-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border-inline-start: 3px solid transparent;
+  cursor: default;
+  user-select: none;
+  outline: none;
+  transition: background 0.15s, border-color 0.15s;
+  position: relative;
+}
+
+.step-item--clickable {
+  cursor: pointer;
+}
+
+.step-item--clickable:hover {
+  background: var(--ui-bg-subtle);
+}
+
+.step-item--clickable:focus-visible {
+  outline: 2px solid var(--brand-primary-400);
+  outline-offset: 2px;
+}
+
+.step-item--active {
+  background: var(--ui-bg-subtle);
+  border-inline-start-color: var(--brand-primary-500);
+}
+
+/* ── Badge (circle) ──────────────────────────────────────────── */
+.step-item__badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--ui-border);
+  background: var(--ui-bg-surface);
+  color: var(--ui-text-muted);
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.step-item--active .step-item__badge {
+  background: var(--brand-neutral-950);
+  border-color: var(--brand-neutral-950);
+  color: var(--ui-bg-surface);
+}
+
+.step-item--completed .step-item__badge {
+  background: var(--functional-success-500);
+  border-color: var(--functional-success-500);
+  color: var(--ui-bg-surface);
+}
+
+.step-item__number {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* ── Text area ───────────────────────────────────────────────── */
+.step-item__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.step-item__status {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--functional-success-600);
+  line-height: 1.2;
+}
+
+.step-item__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ui-text-muted);
+  line-height: 1.3;
+  transition: color 0.2s;
+}
+
+.step-item--active .step-item__label {
+  color: var(--ui-text-main);
+  font-weight: 600;
+}
+
+.step-item--completed .step-item__label {
+  color: var(--ui-text-sub);
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .step-item__status { display: none; }
+  .step-item { padding: 8px 10px; gap: 10px; }
+}

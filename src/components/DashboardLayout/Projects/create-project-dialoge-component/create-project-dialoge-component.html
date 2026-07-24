@@ -1,0 +1,87 @@
+<div class="dialog-container">
+  <div class="dialog-header">
+    <h2>{{ isEditMode ? 'Edit Project' : 'Create Project' }}</h2>
+    <button mat-icon-button (click)="cancel()" [attr.aria-label]="'common.closeDialog' | transloco">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="dialog-content">
+
+    <!-- Save error banner -->
+    @if (saveError()) {
+      <div class="save-error-banner" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        {{ saveError() }}
+      </div>
+    }
+
+    <!-- Project Name (English) -->
+    <div class="form-field">
+      <mat-label>Project Name (English) <span class="required-label">*</span></mat-label>
+      <mat-form-field appearance="outline" class="full-width">
+        <input matInput [(ngModel)]="nameEn" name="nameEn"
+               placeholder="Project name in English" required
+               [attr.aria-label]="'projects.details.nameEn' | transloco">
+      </mat-form-field>
+    </div>
+
+    <!-- Project Name (Arabic) -->
+    <div class="form-field">
+      <mat-label>Project Name (Arabic)</mat-label>
+      <mat-form-field appearance="outline" class="full-width">
+        <input matInput [(ngModel)]="nameAr" name="nameAr"
+               placeholder="اسم المشروع بالعربي"
+               dir="rtl"
+               [attr.aria-label]="'projects.details.nameAr' | transloco">
+      </mat-form-field>
+    </div>
+
+    <!-- Assigned Teams (multi-select — maps to projectTeamIds) -->
+    <div class="form-field">
+      <mat-label>Assigned Teams</mat-label>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-select [(ngModel)]="selectedTeamIds" name="teams" multiple
+                    [attr.aria-label]="'projects.details.selectTeams' | transloco">
+          @if (loadingTeams()) {
+            <mat-option disabled>Loading teams…</mat-option>
+          } @else if (teams().length === 0) {
+            <mat-option disabled>No teams found — create a team first</mat-option>
+          } @else {
+            @for (team of teams(); track team.id) {
+              <mat-option [value]="+team.id">{{ teamDisplayName(team) }}</mat-option>
+            }
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Description -->
+    <div class="form-field">
+      <mat-label>Description</mat-label>
+      <mat-form-field appearance="outline" class="full-width">
+        <textarea matInput [(ngModel)]="desc" name="desc"
+                  placeholder="Brief project description…" rows="3"
+                  [attr.aria-label]="'common.description' | transloco"></textarea>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+  <div class="dialog-actions">
+    <button mat-flat-button class="cancel-button" (click)="cancel()"
+            [disabled]="isSaving" [attr.aria-label]="'common.cancel' | transloco">
+      Cancel
+    </button>
+    <button mat-flat-button color="primary" class="create-button"
+            (click)="save()" [disabled]="!(nameEn || nameAr) || isSaving"
+            [attr.aria-label]="(isEditMode ? 'projects.details.updateProject' : 'projects.details.createProject') | transloco">
+      @if (isSaving) {
+        <mat-spinner diameter="16" aria-hidden="true"></mat-spinner>
+        Saving…
+      } @else {
+        {{ isEditMode ? 'Update' : 'Create' }}
+      }
+    </button>
+  </div>
+</div>

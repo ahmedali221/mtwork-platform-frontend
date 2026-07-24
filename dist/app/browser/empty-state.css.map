@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/shared/components/empty-state/empty-state.css"],
+  "sourcesContent": ["/* Shared empty-state block \u2014 used by Messages, Notifications, and any\n   future surface that needs a \"no data yet\" panel. Uses CSS variables\n   only \u2014 never hardcoded colors. */\n\n.empty-state {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  text-align: center;\n  gap: 8px;\n  padding: 32px 16px;\n  color: var(--ui-text-muted);\n}\n\n.empty-state__icon {\n  width: 64px;\n  height: 64px;\n  border-radius: 50%;\n  display: grid;\n  place-items: center;\n  background: var(--ui-surface-hover, rgba(0, 0, 0, 0.04));\n  color: var(--ui-text-muted);\n  margin-block-end: 4px;\n}\n\n.empty-state__title {\n  margin: 0;\n  font-size: 15px;\n  font-weight: 600;\n  color: var(--ui-text);\n}\n\n.empty-state__desc {\n  margin: 0;\n  font-size: 13px;\n  color: var(--ui-text-muted);\n  max-width: 320px;\n  line-height: 1.4;\n}\n"],
+  "mappings": ";AAIA,CAAC;AACC,WAAS;AACT,kBAAgB;AAChB,eAAa;AACb,mBAAiB;AACjB,cAAY;AACZ,OAAK;AACL,WAAS,KAAK;AACd,SAAO,IAAI;AACb;AAEA,CAAC;AACC,SAAO;AACP,UAAQ;AACR,iBAAe;AACf,WAAS;AACT,eAAa;AACb,cAAY,IAAI,kBAAkB,EAAE,KAAK,CAAC,EAAE,CAAC,EAAE,CAAC,EAAE;AAClD,SAAO,IAAI;AACX,oBAAkB;AACpB;AAEA,CAAC;AACC,UAAQ;AACR,aAAW;AACX,eAAa;AACb,SAAO,IAAI;AACb;AAEA,CAAC;AACC,UAAQ;AACR,aAAW;AACX,SAAO,IAAI;AACX,aAAW;AACX,eAAa;AACf;",
+  "names": []
+}

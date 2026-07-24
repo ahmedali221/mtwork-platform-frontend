@@ -1,0 +1,85 @@
+/* Container that centers content both horizontally and vertically
+   and provides responsive padding for small screens */
+.container-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--ui-surface);
+  padding: 0 16px; /* support small screens */
+  box-sizing: border-box;
+}
+
+/* Main content wrapper
+   - centers text
+   - limits width for readability
+   - adds padding around content */
+.content {
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Image styling
+   - ensures image scales down to fit container
+   - centers image via automatic margins */
+.maintenance-image {
+  max-width: 280px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto; /* center image horizontally */
+}
+
+/* Title styling
+   - sets font size, weight, color
+   - adds top margin for spacing from image */
+.maintenance-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--brand-neutral-800);
+  margin-top: 16px;
+}
+
+/* Message text styling
+   - defines font size and muted color
+   - adds spacing below title */
+.maintenance-message {
+  font-size: 1rem;
+  color: var(--ui-text-muted);
+  margin-top: 8px;
+}
+
+/* Utility color classes for quick text styling */
+.text-muted {
+  color: var(--ui-text-secondary);
+}
+
+.text-primary {
+  color: var(--functional-info-500);
+}
+
+.fw-bold {
+  font-weight: 700;
+}
+
+/* Margin utility classes for consistent vertical rhythm */
+.mt-4 { margin-top: 1rem; }
+.mt-3 { margin-top: 0.75rem; }
+
+/* Button styling (Khalli theme)
+   - background and border colors
+   - white text for contrast */
+.btn-khalli {
+  background-color: var(--brand-primary-800);
+  border-color: var(--brand-primary-800);
+  color: var(--ui-surface);
+}
+.btn-khalli:hover,
+.btn-khalli:focus,
+.btn-khalli:active {
+  background-color: var(--brand-primary-900);
+  border-color: var(--brand-primary-900);
+  color: var(--ui-surface);
+}

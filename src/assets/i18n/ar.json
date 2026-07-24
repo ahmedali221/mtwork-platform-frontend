@@ -1,0 +1,1875 @@
+{
+  "permissions": {
+    "forbidden_action": "ليس لديك صلاحية لتنفيذ هذا الإجراء.",
+    "requires_active_contract": "هذا الإجراء متاح فقط للموظفين الذين لديهم عقد ساري المفعول.",
+    "feature_unavailable": "هذه الميزة غير متاحة لحسابك.",
+    "missing_backend_permission": "حسابك يفتقد إلى الصلاحية المطلوبة. يرجى التواصل مع المسؤول."
+  },
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "contracts": "العقود",
+    "hr": "الموارد البشرية",
+    "salary": "الرواتب",
+    "projects": "المشاريع",
+    "teams": "الفرق",
+    "meetings": "الاجتماعات",
+    "attendance": "الحضور",
+    "reports": "التقارير",
+    "taskManagement": "إدارة المهام",
+    "requests": "الطلبات",
+    "myRequests": "طلباتي",
+    "withdrawals": "السحوبات",
+    "inviteWorker": "دعوة موظف",
+    "createTeam": "إنشاء فريق",
+    "payments": "المدفوعات",
+    "companyProfile": "ملف الشركة",
+    "employees": "الموظفون",
+    "admin": {
+      "users": "المستخدمون",
+      "companies": "الشركات",
+      "settings": "الإعدادات"
+    }
+  },
+  "common": {
+    "loading": "جارٍ التحميل...",
+    "error": "حدث خطأ ما.",
+    "noData": "لا توجد بيانات.",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "search": "بحث",
+    "filter": "تصفية",
+    "actions": "إجراءات",
+    "all": "الكل",
+    "status": "الحالة",
+    "date": "التاريخ",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "address": "العنوان",
+    "currency": "العملة",
+    "amount": "المبلغ",
+    "back": "رجوع",
+    "next": "التالي",
+    "submit": "إرسال",
+    "yes": "نعم",
+    "no": "لا",
+    "confirm": "تأكيد",
+    "close": "إغلاق",
+    "view": "عرض",
+    "download": "تحميل",
+    "appName": "MTWork",
+    "isRequired": "هذا الحقل مطلوب.",
+    "retry": "إعادة المحاولة",
+    "breadcrumb": "مسار التنقل",
+    "comingSoon": "قريباً",
+    "required": "مطلوب",
+    "add": "إضافة",
+    "create": "إنشاء",
+    "saving": "جارٍ الحفظ…",
+    "refresh": "تحديث",
+    "filterOptions": "خيارات التصفية",
+    "viewAsReport": "عرض كتقرير",
+    "expandTable": "توسيع الجدول",
+    "previous": "السابق",
+    "page": "صفحة",
+    "searchPlaceholder": "بحث...",
+    "toggleSidebar": "تبديل الشريط الجانبي",
+    "settings": "الإعدادات",
+    "messages": "الرسائل",
+    "userMenu": "قائمة المستخدم",
+    "viewProfile": "عرض الملف الشخصي",
+    "signOut": "تسجيل الخروج",
+    "welcome": "مرحباً",
+    "employee": "موظف",
+    "lightMode": "الوضع الفاتح",
+    "darkMode": "الوضع الداكن",
+    "notifications": "الإشعارات",
+    "notificationsUnread": "الإشعارات، {{count}} غير مقروءة",
+    "profile": "الملف الشخصي",
+    "signOutLabel": "تسجيل الخروج",
+    "toggleLanguage": "تبديل اللغة",
+    "themeToggle": "تبديل المظهر",
+    "toggleTheme": "تبديل السمة",
+    "closeDialog": "إغلاق النافذة",
+    "teamsActions": "إجراءات الفرق",
+    "mainNavigation": "التنقل الرئيسي",
+    "toggleNavMenu": "تبديل قائمة التنقل",
+    "mtworkHome": "الرئيسية - MTWork",
+    "hidePassword": "إخفاء كلمة المرور",
+    "showPassword": "إظهار كلمة المرور",
+    "previousStep": "الخطوة السابقة",
+    "goToPrevStep": "الانتقال للخطوة السابقة",
+    "description": "الوصف",
+    "decrement": "تقليل",
+    "increment": "زيادة",
+    "uploadFile": "رفع ملف",
+    "sort": "ترتيب",
+    "priority": "الأولوية",
+    "tableView": "عرض الجدول",
+    "cardView": "عرض البطاقات",
+    "listView": "عرض القائمة",
+    "boardView": "عرض اللوحة",
+    "moreOptions": "خيارات إضافية",
+    "applyFilters": "تطبيق الفلاتر",
+    "clearFilters": "مسح الفلاتر",
+    "advancedFilters": "فلاتر متقدمة",
+    "closeFilters": "إغلاق الفلاتر",
+    "selectAll": "تحديد الكل",
+    "nextPage": "الصفحة التالية",
+    "previousPage": "الصفحة السابقة",
+    "copyToClipboard": "نسخ إلى الحافظة",
+    "moreInfo": "مزيد من المعلومات",
+    "switchView": "تبديل العرض",
+    "expandRow": "توسيع الصف",
+    "collapseRow": "طي الصف",
+    "toggleSection": "تبديل القسم",
+    "retryLoading": "إعادة التحميل",
+    "cancelEditing": "إلغاء التعديل",
+    "saveChanges": "حفظ التغييرات",
+    "loadingData": "تحميل البيانات",
+    "dueDate": "تاريخ الاستحقاق",
+    "assignee": "المسؤول",
+    "actionsMenu": "قائمة الإجراءات",
+    "closeDetailsPanel": "إغلاق لوحة التفاصيل",
+    "fullscreen": "ملء الشاشة",
+    "resetFilters": "إعادة تعيين الفلاتر",
+    "filters": "الفلاتر",
+    "filterByStatus": "تصفية حسب الحالة",
+    "rowActions": "إجراءات الصف",
+    "sortByDate": "ترتيب حسب التاريخ",
+    "startDate": "تاريخ البدء",
+    "endDate": "تاريخ الانتهاء",
+    "language": "اللغة",
+    "toggleFilters": "تبديل الفلاتر",
+    "pagination": "التنقل بين الصفحات",
+    "filterByDate": "تصفية حسب التاريخ",
+    "goBack": "العودة للخلف"
+  },
+  "dashboard": {
+    "comingSoon": "قريبًا",
+    "business": {
+      "title": "لوحة تحكم الأعمال",
+      "contracts": "العقود",
+      "hr": "الموارد البشرية",
+      "salary": "الرواتب",
+      "projects": "المشاريع",
+      "teams": "الفرق",
+      "reports": "التقارير",
+      "knowMoreHiring": "معرفة المزيد عن التوظيف",
+      "askAI": "اسأل الذكاء الاصطناعي",
+      "bannerSlides": "شرائح البانر",
+      "projectsByMgrChart": "مخطط المشاريع حسب المدير",
+      "taskStatusChart": "مخطط توزيع حالة المهام",
+      "tasksByPriorityChart": "مخطط المهام حسب الأولوية",
+      "tasksTimelineChart": "مخطط جدول المهام الزمني",
+      "teamSizeChart": "مخطط حجم الفريق",
+      "tasksPerTeamChart": "مخطط المهام لكل فريق",
+      "recentAttendance": "سجلات الحضور الأخيرة",
+      "bannerTitle": "ابدأ توظيف المقاولين في كل مكان مع MTWork",
+      "bannerSubtitle": "وظّف المقاولين بـ 3 طرق تعاقد مختلفة: ثابت، بالمهمة، أو بالمرحلة.",
+      "knowMore": "اعرف المزيد",
+      "developerBadge": "مطور واجهات أمامية",
+      "developerDesc": "في مصر بخبرة تزيد عن 3 سنوات",
+      "developerDescPre": "في مصر بخبرة",
+      "developerDescAccent": "أكثر من 3 سنوات",
+      "askAi": "اسأل الذكاء",
+      "projectsTitle": "المشاريع",
+      "projectsSubtitle": "نظرة سريعة على المشاريع وكيفية إدارتها.",
+      "projectStatusSub": "توزيع المشاريع حسب الحالة — نظرة سريعة على نسبة الإنجاز.",
+      "projectsByManager": "المشاريع حسب المدير",
+      "projectsByManagerSub": "اعرف من يدير مشاريعك وعدد المشاريع لكل منهم.",
+      "tasksTitle": "المهام",
+      "tasksSubtitle": "نظرة سريعة على المهام وكيفية إدارتها.",
+      "taskStatusDist": "توزيع حالة المهام",
+      "taskStatusSub": "عرض حالة المهام المضافة حديثاً.",
+      "tasksTimeline": "الجدول الزمني للمهام",
+      "tasksTimelineSub": "يعرض المهام المنشأة أو المكتملة عبر الزمن.",
+      "teamsTitle": "الفرق",
+      "teamsSubtitle": "نظرة سريعة على أداء فريقك وإدارته.",
+      "teamSizeOverview": "نظرة عامة على حجم الفريق",
+      "teamSizeOverviewSub": "عرض حجم الفريق.",
+      "tasksPerTeam": "المهام لكل فريق",
+      "tasksPerTeamSub": "اعرف من يدير مشاريعك وعدد المشاريع لكل منهم.",
+      "tasksOverview": "نظرة عامة على المهام",
+      "recentAttendanceTitle": "الحضور الأخير",
+      "tagWebDesign": "تصميم ويب",
+      "tagUIUX": "واجهة وتجربة المستخدم",
+      "checkIn": "تسجيل الدخول:"
+    },
+    "employee": {
+      "title": "لوحة تحكم الموظف",
+      "submitRequest": "تقديم طلب",
+      "viewAttendance": "عرض تفاصيل الحضور",
+      "attendanceChart": "مخطط الحضور الشهري",
+      "viewSalary": "عرض تفاصيل الراتب",
+      "salaryChart": "مخطط تاريخ الراتب",
+      "recentRequests": "طلبات الإجازة الأخيرة",
+      "bannerTitle": "مرحباً بعودتك! أدر عملك مع MTWork",
+      "bannerSubtitle": "اطلع على عقودك، تتبع حضورك، قدّم طلبات الإجازة، وتحقق من راتبك — كل شيء في مكان واحد.",
+      "myContracts": "عقودي",
+      "badge": "موظف",
+      "manageWork": "أدر عملك",
+      "request": "طلب",
+      "monthlyAttendance": "الحضور الشهري",
+      "attendanceSub": "أيام حضورك وغيابك خلال كل شهر.",
+      "salaryHistory": "سجل الرواتب",
+      "salarySub": "راتبك الشهري خلال آخر 6 أشهر.",
+      "recentRequestsTitle": "الطلبات الأخيرة",
+      "quickAccess": "الوصول السريع"
+    },
+    "contractor": {
+      "title": "لوحة تحكم المقاول",
+      "tasksTimelineChart": "مخطط جدول المهام الزمني",
+      "projectsByMonthChart": "مخطط المشاريع الشهري",
+      "recentWithdrawals": "طلبات السحب الأخيرة",
+      "bannerTitle": "أدر مشاريعك وعقودك مع MTWork",
+      "bannerSubtitle": "تتبع عقودك النشطة، اسحب أرباحك، وتعاون مع فرقك — كل شيء في مكان واحد.",
+      "viewContracts": "عرض العقود",
+      "badge": "مقاول",
+      "manageWork": "أدر عملك عالمياً",
+      "withdraw": "سحب",
+      "projectsTitle": "المشاريع",
+      "projectsSubtitle": "تتبع مشاريعك النشطة والمكتملة.",
+      "projectStatusSub": "توزيع مشاريعك حسب الحالة.",
+      "projectsByMonth": "المشاريع حسب الشهر",
+      "projectsByMonthSub": "التوزيع الشهري بين المكتمل والنشط.",
+      "tasksTimelineTitle": "الجدول الزمني للمهام",
+      "tasksTimelineSub": "المهام المنشأة أو المكتملة عبر الزمن.",
+      "recentWithdrawalsTitle": "السحوبات الأخيرة",
+      "quickAccess": "الوصول السريع"
+    },
+    "kpi": {
+      "activeContracts": "العقود النشطة",
+      "lastSalary": "آخر راتب",
+      "attendanceRate": "نسبة الحضور",
+      "pendingRequests": "الطلبات المعلقة",
+      "totalProjects": "إجمالي المشاريع",
+      "activeProjects": "المشاريع النشطة",
+      "totalTasks": "إجمالي المهام",
+      "completedTasks": "المهام المكتملة",
+      "teams": "الفرق",
+      "pendingWithdrawals": "السحوبات المعلقة",
+      "employees": "الموظفون",
+      "totalContracts": "إجمالي العقود"
+    },
+    "states": {
+      "error": "تعذّر تحميل هذه البيانات.",
+      "emptyMeetings": "لا توجد اجتماعات قادمة.",
+      "emptyTasks": "لا توجد مهام لعرضها.",
+      "emptyAttendance": "لا توجد سجلات حضور.",
+      "emptyCharts": "لا توجد بيانات مشاريع للرسم البياني بعد.",
+      "emptyRequests": "لا توجد طلبات لعرضها.",
+      "emptySalary": "لا يوجد سجل رواتب متاح.",
+      "emptyProjectStatus": "لا توجد بيانات حالة المشاريع.",
+      "emptyTasksTimeline": "لا توجد بيانات الجدول الزمني للمهام."
+    },
+    "meetings": "الاجتماعات القادمة",
+    "requests": "أحدث الطلبات",
+    "withdrawals": "أحدث السحوبات",
+    "kpiList": "مؤشرات الأداء الرئيسية",
+    "timePeriod": "الفترة الزمنية",
+    "viewAllMeetings": "عرض جميع الاجتماعات",
+    "viewAllProjects": "عرض جميع المشاريع",
+    "viewAllTasks": "عرض جميع المهام",
+    "viewAllTeams": "عرض جميع الفرق",
+    "viewAllAttendance": "عرض جميع سجلات الحضور",
+    "viewAllWithdrawals": "عرض جميع طلبات السحب",
+    "viewAllRequests": "عرض جميع الطلبات",
+    "projectStatusChart": "مخطط حالة المشاريع",
+    "recentTasks": "المهام الأخيرة",
+    "viewContracts": "عرض عقودك",
+    "goToContracts": "الانتقال إلى العقود",
+    "goToProjects": "الانتقال إلى المشاريع",
+    "goToTeams": "الانتقال إلى الفرق",
+    "goToMeetings": "الانتقال إلى الاجتماعات",
+    "goToWithdrawals": "الانتقال إلى السحوبات",
+    "goToAttendance": "الانتقال إلى الحضور",
+    "goToRequests": "الانتقال إلى الطلبات",
+    "goToSalary": "الانتقال إلى الراتب",
+    "upcomingMeetings": "الاجتماعات القادمة",
+    "viewAll": "عرض الكل",
+    "fromLastMonth": "عن الشهر الماضي",
+    "lastMonth": "الشهر الماضي",
+    "last3Months": "آخر 3 أشهر",
+    "lastYear": "السنة الماضية",
+    "projectStatusOverview": "نظرة عامة على حالة المشاريع",
+    "meeting": {
+      "now": "الآن",
+      "past": "منتهي",
+      "soon": "قريباً",
+      "open": "فتح",
+      "untitled": "اجتماع بدون عنوان"
+    },
+    "status": {
+      "completed": "مكتمل",
+      "inProgress": "قيد التنفيذ",
+      "notStarted": "لم يبدأ"
+    },
+    "nav": {
+      "contracts": "العقود",
+      "attendance": "الحضور",
+      "requests": "الطلبات",
+      "salary": "الراتب",
+      "meetings": "الاجتماعات",
+      "projects": "المشاريع",
+      "teams": "الفرق",
+      "withdrawals": "السحوبات"
+    }
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "noAccount": "ليس لديك حساب؟",
+    "register": "إنشاء حساب",
+    "haveAccount": "لديك حساب بالفعل؟",
+    "signIn": "تسجيل الدخول",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "verifyOTP": "التحقق من الرمز",
+    "sendOTP": "إرسال الرمز",
+    "errors": {
+      "invalidEmail": "البريد الإلكتروني غير صالح",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "loginFailed": "فشل تسجيل الدخول. يرجى التحقق من بياناتك."
+    }
+  },
+  "contracts": {
+    "title": "العقود",
+    "createNew": "إنشاء عقد",
+    "filters": {
+      "all": "الكل",
+      "country": "الدولة",
+      "type": "نوع العقد",
+      "status": "الحالة",
+      "search": "ابحث في العقود...",
+      "searchPlaceholder": "بحث بالاسم أو المعرّف…",
+      "contractType": "نوع العقد",
+      "clearAll": "مسح الفلاتر"
+    },
+    "tabs": {
+      "all": "الكل",
+      "active": "نشط",
+      "draft": "مسودة",
+      "terminated": "منتهي",
+      "employees": "الموظفون",
+      "contractors": "المتعاقدون"
+    },
+    "types": {
+      "fixedSalary": "راتب ثابت",
+      "payByTask": "دفع بالمهمة",
+      "milestone": "مراحل",
+      "employee": "موظف",
+      "employeeContract": "عقد موظف",
+      "fixedPayContract": "عقد بأجر ثابت",
+      "perTaskContract": "عقد لكل مهمة",
+      "perProjectContract": "عقد لكل مشروع"
+    },
+    "status": {
+      "active": "نشط",
+      "draft": "مسودة",
+      "terminated": "منتهي",
+      "initiated": "تم البدء",
+      "reviewed": "تمت المراجعة",
+      "approved": "تمت الموافقة",
+      "canceled": "ملغى"
+    },
+    "columns": {
+      "contractor": "المقاول",
+      "type": "نوع العقد",
+      "startDate": "تاريخ البدء",
+      "endDate": "تاريخ الانتهاء",
+      "salary": "الراتب",
+      "status": "الحالة",
+      "actions": "إجراءات"
+    },
+    "details": {
+      "title": "تفاصيل العقد",
+      "fallbackTitle": "تفاصيل العقد",
+      "employerInfo": "معلومات صاحب العمل",
+      "contractorInfo": "معلومات المقاول",
+      "contractInfo": "معلومات العقد",
+      "paymentInfo": "معلومات الدفع",
+      "attachments": "المرفقات",
+      "sections": {
+        "basic": "المعلومات الأساسية",
+        "authorized": "المفوّض",
+        "attachments": "المرفقات",
+        "employer": "معلومات صاحب العمل",
+        "worker": "معلومات العامل",
+        "contracting": "التعاقد",
+        "salary": "ساعات العمل والرواتب"
+      },
+      "edit": "تعديل",
+      "fields": {
+        "companyName": "اسم الشركة",
+        "lastName": "الاسم الأخير",
+        "country": "الدولة",
+        "postCode": "الرمز البريدي",
+        "taxDescription": "الوصف الضريبي",
+        "linkedIn": "رابط LinkedIn",
+        "firstName": "الاسم الأول",
+        "authorizedId": "رقم هوية المفوّض",
+        "city": "المدينة",
+        "email": "البريد الإلكتروني",
+        "address": "العنوان",
+        "entityName": "اسم الجهة",
+        "officialNumber": "الرقم الرسمي",
+        "phoneNumber": "رقم الهاتف",
+        "emailAddress": "البريد الإلكتروني",
+        "name": "الاسم",
+        "role": "الدور",
+        "startDate": "تاريخ البدء",
+        "endDate": "تاريخ الانتهاء",
+        "contractDuration": "مدة العقد",
+        "trialPeriod": "فترة التجربة",
+        "typeOfWork": "نوع العمل",
+        "vacationDays": "أيام الإجازة",
+        "terminateDuringTrial": "الإنهاء خلال التجربة",
+        "terminateContract": "إنهاء العقد",
+        "noticePeriod": "فترة الإشعار",
+        "workingHoursPerDay": "ساعات العمل/اليوم",
+        "workingDays": "أيام العمل",
+        "totalWorkingHours": "إجمالي ساعات العمل",
+        "salary": "الراتب",
+        "currency": "العملة",
+        "billingCycle": "دورة الفواتير",
+        "includeAllowances": "تضمين جميع البدلات"
+      },
+      "salariesSubsection": "الرواتب والمزايا الأخرى",
+      "noAttachments": "لا توجد مرفقات بعد.",
+      "uploadedOn": "رُفع في ",
+      "units": {
+        "hours": "ساعة",
+        "days": "يوم"
+      },
+      "confirmDelete": {
+        "message": "هل أنت متأكد من حذف هذا العقد؟ لا يمكن التراجع عن هذا الإجراء.",
+        "cancel": "إلغاء",
+        "confirm": "حذف"
+      },
+      "menu": {
+        "markReviewed": "تعليم كمراجَع",
+        "approve": "موافقة",
+        "downloadPdf": "تحميل PDF",
+        "delete": "حذف"
+      },
+      "approveContract": "الموافقة على العقد",
+      "deleteContract": "حذف العقد",
+      "downloadContractPDF": "تحميل ملف PDF للعقد",
+      "markContractReviewed": "وضع علامة مراجعة على العقد",
+      "editBasicInfo": "تعديل المعلومات الأساسية",
+      "editWorkerInfo": "تعديل معلومات العامل",
+      "editEmployerInfo": "تعديل معلومات صاحب العمل",
+      "editContracting": "تعديل معلومات التعاقد",
+      "editAuthorized": "تعديل المفوض",
+      "editWorkTime": "تعديل وقت العمل والرواتب",
+      "editAttachments": "تعديل المرفقات",
+      "toggleBasicInfo": "عرض/إخفاء المعلومات الأساسية",
+      "toggleWorkerInfo": "عرض/إخفاء معلومات العامل",
+      "toggleEmployerInfo": "عرض/إخفاء معلومات صاحب العمل",
+      "toggleContracting": "عرض/إخفاء التعاقد",
+      "toggleAuthorized": "عرض/إخفاء قسم المفوض",
+      "toggleWorkTime": "عرض/إخفاء وقت العمل والرواتب",
+      "toggleAttachments": "عرض/إخفاء المرفقات",
+      "deleteAttachment": "حذف المرفق",
+      "downloadAttachment": "تحميل المرفق",
+      "moreOptions": "المزيد من الخيارات"
+    },
+    "actions": {
+      "view": "عرض التفاصيل",
+      "edit": "تعديل",
+      "download": "تحميل PDF",
+      "downloadPdf": "تحميل PDF",
+      "activate": "تفعيل",
+      "terminate": "إنهاء",
+      "delete": "حذف",
+      "deleteConfirm": "حذف هذا العقد؟ لا يمكن التراجع."
+    },
+    "noContracts": "لا توجد عقود",
+    "errors": {
+      "load": "فشل تحميل العقود.",
+      "create": "فشل إنشاء العقد.",
+      "update": "فشل تحديث العقد."
+    },
+    "list": {
+      "title": "العقود",
+      "newContract": "عقد جديد",
+      "newContractAriaLabel": "إنشاء عقد جديد",
+      "viewAsReport": "عرض كتقرير",
+      "loading": "جارٍ تحميل العقود…",
+      "loadError": "فشل تحميل العقود. يرجى المحاولة مجدداً."
+    },
+    "table": {
+      "workId": "معرّف العمل",
+      "employee": "الموظف",
+      "contractType": "النوع",
+      "startDate": "تاريخ البدء",
+      "endDate": "تاريخ الانتهاء",
+      "createdAt": "تاريخ الإنشاء",
+      "country": "البلد",
+      "manager": "المدير",
+      "actions": "إجراءات",
+      "selectAll": "تحديد جميع العقود",
+      "selectContract": "تحديد العقد",
+      "actionsFor": "إجراءات للعقد {{id}}"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي",
+      "itemsPerPage": "في الصفحة",
+      "nav": "التنقل بين الصفحات",
+      "summary": "الصفحة {{current}} من {{total}}"
+    },
+    "empty": {
+      "title": "لا توجد عقود",
+      "subtitle": "لا توجد عقود تطابق الفلاتر الحالية.",
+      "imageAlt": "صورة لا توجد عقود"
+    },
+    "wizard": {
+      "identity": "الهوية",
+      "representative": "الممثل",
+      "taskAmount": "مبلغ المهمة",
+      "stageAmount": "مبلغ المرحلة",
+      "deleteTask": "حذف المهمة",
+      "deleteStage": "حذف المرحلة",
+      "allowancesCheckbox": "مربع الاختيار - البدلات",
+      "terminateActive": "من له حق الإنهاء خلال فترة النشاط",
+      "terminateTrial": "من له حق الإنهاء خلال فترة التجربة",
+      "terminateContract": "من له حق إنهاء العقد"
+    }
+  },
+  "hr": {
+    "title": "الموارد البشرية",
+    "employees": {
+      "name": "الموظف",
+      "jobTitle": "المسمى الوظيفي",
+      "salary": "الراتب",
+      "contract": "العقد",
+      "startDate": "تاريخ البدء",
+      "endDate": "تاريخ الانتهاء"
+    },
+    "requests": {
+      "key": "مفتاح الطلب",
+      "employee": "الموظف",
+      "type": "النوع",
+      "startDate": "تاريخ البدء",
+      "endDate": "تاريخ الانتهاء",
+      "reason": "السبب",
+      "status": "الحالة",
+      "totalDays": "إجمالي الأيام"
+    },
+    "noEmployees": "لا يوجد موظفون",
+    "noRequests": "لا توجد طلبات",
+    "filters": {
+      "all": "الكل",
+      "approved": "موافق عليه",
+      "pending": "معلق",
+      "rejected": "مرفوض",
+      "search": "بحث…",
+      "status": "الحالة",
+      "department": "القسم"
+    },
+    "columns": {
+      "employee": "الموظف",
+      "position": "المنصب",
+      "contract": "العقد",
+      "status": "الحالة",
+      "actions": "إجراءات"
+    },
+    "dialog": {
+      "createTitle": "طلب إجازة جديد",
+      "viewTitle": "تفاصيل الطلب"
+    },
+    "errors": {
+      "load": "فشل تحميل بيانات الموارد البشرية.",
+      "loadEmployees": "فشل تحميل الموظفين.",
+      "loadRequests": "فشل تحميل الطلبات.",
+      "submitRequest": "فشل إرسال الطلب. يرجى المحاولة مرة أخرى.",
+      "notEmployee": "هذا الإجراء متاح فقط للموظفين الذين لديهم عقد نشط."
+    },
+    "status": {
+      "pending": "معلق",
+      "approved": "موافق عليه",
+      "rejected": "مرفوض",
+      "canceled": "ملغى"
+    },
+    "toasts": {
+      "requestSubmitted": "تم إرسال الطلب بنجاح."
+    },
+    "tabs": {
+      "employees": "الموظفون",
+      "requests": "طلبات الإجازة"
+    },
+    "actions": {
+      "newRequest": "طلب جديد",
+      "approve": "موافقة",
+      "reject": "رفض",
+      "cancel": "إلغاء",
+      "submit": "إرسال"
+    },
+    "form": {
+      "requestType": "نوع الطلب",
+      "startDate": "تاريخ البدء",
+      "endDate": "تاريخ الانتهاء",
+      "reason": "السبب",
+      "reasonPlaceholder": "اشرح السبب باختصار…",
+      "endBeforeStart": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء."
+    },
+    "emptyState": {
+      "noEmployees": "لا يوجد موظفون",
+      "noEmployeesDesc": "لم يتم إضافة أي موظفين بعد.",
+      "noEmployeesSearch": "لا يوجد موظفون مطابقون لبحثك.",
+      "noRequests": "لا توجد طلبات",
+      "noRequestsDesc": "لم يتم تقديم أي طلبات إجازة بعد.",
+      "noRequestsSearch": "لا توجد طلبات مطابقة للفلاتر."
+    }
+  },
+  "employees": {
+    "title": "الموظفون",
+    "filters": {
+      "search": "البحث عن الموظفين…"
+    },
+    "columns": {
+      "name": "الاسم",
+      "jobTitle": "المسمى الوظيفي",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "type": "النوع",
+      "qualification": "المؤهل",
+      "university": "الجامعة",
+      "industry": "المجال",
+      "location": "الموقع",
+      "dateOfBirth": "تاريخ الميلاد"
+    },
+    "userTypes": {
+      "employee": "موظف",
+      "contractor": "متعاقد",
+      "business": "شركة"
+    },
+    "actions": {
+      "viewProfile": "عرض الملف الشخصي"
+    },
+    "dialog": {
+      "title": "الملف الشخصي للموظف"
+    },
+    "errors": {
+      "load": "فشل تحميل الموظفين.",
+      "loadDetail": "فشل تحميل الملف الكامل — يتم عرض المعلومات المتاحة."
+    },
+    "emptyState": {
+      "noEmployees": "لا يوجد موظفون",
+      "noEmployeesDesc": "لم تتم إضافة أي موظفين إلى شركتك حتى الآن.",
+      "noResultsSearch": "لا يوجد موظفون مطابقون لبحثك."
+    }
+  },
+  "requests": {
+    "title": "طلباتي",
+    "newRequest": "طلب جديد",
+    "searchPlaceholder": "ابحث في الطلبات...",
+    "filterType": "نوع الطلب",
+    "filterStatus": "الحالة",
+    "allTypes": "جميع الأنواع",
+    "allStatuses": "جميع الحالات",
+    "noRequests": "لا توجد طلبات",
+    "types": {
+      "annualLeave": "إجازة سنوية",
+      "sickLeave": "إجازة مرضية",
+      "workFromHome": "عمل عن بُعد",
+      "overtime": "عمل إضافي",
+      "businessTrip": "رحلة عمل",
+      "course": "دورة تدريبية",
+      "certificate": "شهادة خدمة",
+      "other": "أخرى"
+    },
+    "status": {
+      "pending": "معلق",
+      "approved": "موافق عليه",
+      "rejected": "مرفوض",
+      "canceled": "ملغى"
+    },
+    "columns": {
+      "type": "نوع الطلب",
+      "date": "التاريخ",
+      "status": "الحالة"
+    },
+    "errors": {
+      "load": "فشل تحميل الطلبات.",
+      "loadOrderTypes": "فشل تحميل أنواع الطلبات.",
+      "loadLeaveTypes": "فشل تحميل أنواع الإجازات.",
+      "submit": "فشل إرسال الطلب.",
+      "selectType": "يرجى اختيار نوع الطلب.",
+      "selectLeaveType": "يرجى اختيار نوع الإجازة.",
+      "fillRequired": "يرجى تعبئة جميع الحقول المطلوبة."
+    },
+    "leaveType": "نوع الإجازة",
+    "subtitle": "إدارة جميع طلبات الموظفين",
+    "breadcrumb": "طلباتي",
+    "import": "استيراد",
+    "sort": {
+      "label": "ترتيب",
+      "newest": "الأحدث أولاً",
+      "oldest": "الأقدم أولاً"
+    },
+    "filter": {
+      "allStatuses": "جميع الحالات",
+      "pending": "معلق",
+      "approved": "موافق عليه",
+      "rejected": "مرفوض",
+      "canceled": "ملغى"
+    },
+    "table": {
+      "key": "مفتاح الطلب",
+      "employee": "بيانات الموظف",
+      "type": "نوع الطلب",
+      "creationDate": "التاريخ",
+      "status": "الحالة",
+      "actions": "إجراءات"
+    },
+    "loading": "جارٍ تحميل الطلبات…",
+    "retry": "إعادة المحاولة",
+    "emptyState": {
+      "title": "لا توجد طلبات",
+      "subtitle": "إدارة جميع طلبات الموظفين"
+    },
+    "actions": {
+      "viewDetails": "عرض التفاصيل",
+      "approve": "موافقة على الطلب",
+      "deny": "رفض الطلب"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي",
+      "goToPage": "انتقل إلى الصفحة"
+    },
+    "requestType": "نوع الطلب",
+    "selectRequestType": "اختر نوع الطلب",
+    "startDate": "تاريخ البدء",
+    "endDate": "تاريخ الانتهاء",
+    "selectStartDate": "اختر تاريخ البدء",
+    "selectEndDate": "اختر تاريخ الانتهاء",
+    "requestReason": "سبب الطلب",
+    "attachFile": "إرفاق ملف",
+    "submitRequest": "إرسال الطلب",
+    "cancelRequest": "إلغاء الطلب",
+    "approveRequest": "قبول الطلب",
+    "rejectRequest": "رفض الطلب",
+    "closeRequestDialog": "إغلاق نافذة الطلب",
+    "requestRow": "صف الطلب",
+    "filterByType": "تصفية حسب النوع",
+    "overtimeDate": "تاريخ العمل الإضافي",
+    "overtimeHours": "ساعات العمل الإضافي",
+    "tripStartDate": "تاريخ بداية الرحلة",
+    "tripEndDate": "تاريخ نهاية الرحلة",
+    "destination": "الوجهة",
+    "courseStartDate": "تاريخ بداية الدورة",
+    "courseEndDate": "تاريخ نهاية الدورة",
+    "courseName": "اسم الدورة",
+    "certificateType": "نوع الشهادة",
+    "reasonNotes": "السبب أو الملاحظات",
+    "searchRequests": "البحث عن الطلبات",
+    "requestsTable": "الطلبات"
+  },
+  "salary": {
+    "title": "الرواتب",
+    "overview": "نظرة عامة",
+    "history": "السجل",
+    "paySalary": "دفع الراتب",
+    "balance": {
+      "currentBalance": "الرصيد الحالي"
+    },
+    "lastSalary": "آخر راتب",
+    "totalPaid": "إجمالي المدفوع",
+    "noHistory": "لا يوجد سجل رواتب",
+    "columns": {
+      "employee": "الموظف",
+      "amount": "المبلغ",
+      "date": "التاريخ",
+      "status": "الحالة",
+      "currency": "العملة"
+    },
+    "errors": {
+      "load": "فشل تحميل بيانات الرواتب.",
+      "loadSalary": "فشل تحميل بيانات الراتب.",
+      "loadBalance": "فشل تحميل الرصيد.",
+      "loadHistory": "فشل تحميل سجل المدفوعات.",
+      "loadWithdrawals": "فشل تحميل السحوبات.",
+      "invalidEmployee": "يرجى اختيار موظف صحيح.",
+      "paySalary": "فشل دفع الراتب. حاول مرة أخرى.",
+      "submitWithdrawal": "فشل إرسال طلب السحب.",
+      "notAuthenticated": "انتهت جلستك. يرجى تسجيل الدخول مجدداً.",
+      "insufficientBalance": "الرصيد غير كافٍ.",
+      "withdrawalProcessFailed": "تعذّر تنفيذ الطلب. يرجى التحقق من الرصيد أو التواصل مع الدعم."
+    },
+    "tabs": {
+      "overview": "نظرة عامة",
+      "history": "السجل",
+      "withdrawals": "السحوبات"
+    },
+    "actions": {
+      "paySalary": "صرف الراتب",
+      "requestWithdrawal": "طلب سحب",
+      "approve": "موافقة",
+      "reject": "رفض"
+    },
+    "paymentTypes": {
+      "salary": "الراتب",
+      "firstPatch": "الدفعة الأولى",
+      "lastPatch": "الدفعة الأخيرة",
+      "task": "مهمة",
+      "stage": "مرحلة",
+      "balance_recharge": "شحن الرصيد",
+      "subscription": "الاشتراك",
+      "registration": "التسجيل"
+    },
+    "dialog": {
+      "paySalaryTitle": "صرف الراتب",
+      "withdrawTitle": "طلب سحب رصيد"
+    },
+    "form": {
+      "employee": "الموظف",
+      "paymentType": "نوع الدفع",
+      "amount": "المبلغ",
+      "amountOptional": "المبلغ (اختياري)",
+      "reasonOptional": "السبب (اختياري)",
+      "fullName": "الاسم الكامل",
+      "iban": "رقم الآيبان",
+      "availableBalance": "الرصيد المتاح"
+    },
+    "table": {
+      "employee": "الموظف",
+      "paymentType": "النوع",
+      "amount": "المبلغ",
+      "date": "التاريخ",
+      "status": "الحالة",
+      "reason": "السبب",
+      "requestedBy": "طلب بواسطة"
+    },
+    "withdrawStatus": {
+      "pending": "قيد الانتظار",
+      "approved": "مقبول",
+      "rejected": "مرفوض"
+    },
+    "employeeSalary": {
+      "title": "راتبي",
+      "contractType": "نوع العقد",
+      "currency": "العملة"
+    },
+    "emptyState": {
+      "noSalary": "لا توجد بيانات راتب",
+      "noSalaryDesc": "لم تتوفر معلومات الراتب بعد.",
+      "noHistory": "لا يوجد سجل مدفوعات",
+      "noHistoryDesc": "لم يتم تسجيل أي مدفوعات بعد.",
+      "noWithdrawals": "لا توجد سحوبات",
+      "noWithdrawalsDesc": "لم يتم تقديم أي طلبات سحب بعد."
+    },
+    "status": {
+      "paid": "مدفوع",
+      "pending": "معلق"
+    }
+  },
+  "chat": {
+    "title": "المحادثات",
+    "placeholder": "اكتب رسالة…",
+    "send": "إرسال",
+    "noMessages": "لا توجد رسائل بعد",
+    "online": "متصل",
+    "offline": "غير متصل",
+    "toggleBtn": "المحادثة",
+    "close": "إغلاق",
+    "to": "إلى",
+    "recipientPlaceholder": "ابحث عن زميل…",
+    "messagePlaceholder": "اكتب رسالة…",
+    "empty": "لا توجد رسائل بعد. ابدأ محادثة!",
+    "sendError": "فشل إرسال الرسالة.",
+    "status": {
+      "connected": "متصل",
+      "connecting": "جارٍ الاتصال…",
+      "disconnected": "غير متصل",
+      "error": "خطأ في الاتصال"
+    },
+    "unreadMessages": "رسائل غير مقروءة"
+  },
+  "profile": {
+    "title": "ملفي الشخصي",
+    "subtitle": "عرض وإدارة معلوماتك الشخصية",
+    "loading": "جارٍ تحميل الملف الشخصي…",
+    "sections": {
+      "personal": "المعلومات الشخصية",
+      "address": "العنوان والموقع",
+      "identity": "الهوية والبيانات البنكية",
+      "education": "التعليم والوظيفة",
+      "edit": "تعديل الملف الشخصي",
+      "security": "الأمان"
+    },
+    "fields": {
+      "firstName": "الاسم الأول",
+      "lastName": "الاسم الأخير",
+      "email": "البريد الإلكتروني",
+      "phoneNumber": "رقم الهاتف",
+      "gender": "الجنس",
+      "birthDate": "تاريخ الميلاد",
+      "country": "الدولة",
+      "city": "المدينة",
+      "address": "العنوان",
+      "nationalId": "الهوية الوطنية",
+      "passportNumber": "رقم جواز السفر",
+      "ibanNumber": "رقم الآيبان",
+      "jobTitle": "المسمى الوظيفي",
+      "qualification": "المؤهل",
+      "university": "الجامعة",
+      "cv": "السيرة الذاتية",
+      "passport": "جواز السفر",
+      "nationalIdFile": "ملف الهوية الوطنية"
+    },
+    "placeholders": {
+      "country": "اختر الدولة…",
+      "city": "اختر المدينة…",
+      "jobTitle": "اختر المسمى الوظيفي…",
+      "qualification": "اختر المؤهل…",
+      "university": "اختر الجامعة…"
+    },
+    "gender": {
+      "male": "ذكر",
+      "female": "أنثى",
+      "unspecified": "—"
+    },
+    "role": {
+      "employee": "موظف",
+      "contractor": "متعاقد",
+      "business": "صاحب عمل",
+      "admin": "مدير النظام",
+      "unknown": "مستخدم"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "actions": {
+      "edit": "تعديل",
+      "save": "حفظ التغييرات",
+      "saving": "جارٍ الحفظ…",
+      "cancel": "إلغاء",
+      "retry": "إعادة المحاولة",
+      "uploadAvatar": "تغيير الصورة",
+      "uploading": "جارٍ الرفع…",
+      "download": "تنزيل"
+    },
+    "banners": {
+      "saved": "تم تحديث الملف الشخصي بنجاح.",
+      "passwordChanged": "تم تغيير كلمة المرور بنجاح."
+    },
+    "errors": {
+      "load": "فشل تحميل الملف الشخصي. يرجى المحاولة مجددًا.",
+      "save": "فشل حفظ التغييرات. يرجى المحاولة مجددًا.",
+      "avatarUpload": "فشل رفع الصورة. يرجى المحاولة مجددًا.",
+      "avatarSave": "تم رفع الصورة لكن تعذّر تحديث الملف الشخصي.",
+      "password": "فشل تغيير كلمة المرور. يرجى التحقق من كلمة المرور الحالية.",
+      "firstNameRequired": "الاسم الأول مطلوب.",
+      "lastNameRequired": "الاسم الأخير مطلوب."
+    },
+    "password": {
+      "current": "كلمة المرور الحالية",
+      "new": "كلمة المرور الجديدة",
+      "confirm": "تأكيد كلمة المرور الجديدة",
+      "submit": "تغيير كلمة المرور",
+      "submitting": "جارٍ التغيير…",
+      "currentRequired": "كلمة المرور الحالية مطلوبة.",
+      "newMinLength": "يجب أن تكون كلمة المرور الجديدة 8 أحرف على الأقل.",
+      "mismatch": "كلمتا المرور غير متطابقتين."
+    }
+  },
+  "reports": {
+    "title": "التقارير",
+    "meetings": {
+      "title": "تقارير الاجتماعات",
+      "sub": "عرض عدد الاجتماعات لكل شهر.",
+      "heading": "الاجتماعات",
+      "open": "مفتوح",
+      "statusNow": "جارٍ الآن",
+      "statusSoon": "قادم",
+      "statusPast": "منتهي",
+      "noMeetings": "لا توجد اجتماعات.",
+      "viewAll": "عرض الكل"
+    },
+    "projects": {
+      "title": "تقارير المشاريع",
+      "sub": "مراقبة معدل إنجاز مشاريعك.",
+      "byManager": {
+        "title": "المشاريع حسب المدير",
+        "sub": "اعرف من يدير مشاريعك وعددها.",
+        "filter": "الشهر الماضي"
+      },
+      "noProjects": "لا توجد بيانات مشاريع",
+      "heading": "المشاريع",
+      "seeAll": "عرض الكل",
+      "statusOverview": {
+        "title": "نظرة عامة على الحالة",
+        "sub": "المشاريع حسب الحالة",
+        "filter": "تصفية",
+        "completed": "مكتمل",
+        "inProgress": "قيد التنفيذ",
+        "notStarted": "لم يبدأ"
+      }
+    },
+    "contracts": {
+      "heading": "تقارير العقود PDF",
+      "sub": "تحميل تقارير PDF للعقود"
+    },
+    "errors": {
+      "meetings": "فشل تحميل الاجتماعات.",
+      "projects": "فشل تحميل المشاريع.",
+      "contracts": "فشل تحميل العقود."
+    },
+    "periodFilter": "الشهر الماضي",
+    "downloadBtn": "تحميل PDF",
+    "downloading": "جارٍ التحميل…",
+    "noContracts": "لا توجد عقود.",
+    "columns": {
+      "contract": "العقد",
+      "contractor": "المتعاقد",
+      "status": "الحالة",
+      "action": "إجراء"
+    }
+  },
+  "withdrawals": {
+    "title": "السحوبات",
+    "subtitle": "تتبع طلبات السحب الخاصة بك",
+    "requestBtn": "طلب سحب",
+    "searchPlaceholder": "ابحث برقم الطلب أو السبب…",
+    "filterByStatus": "تصفية حسب الحالة",
+    "emptyTitle": "لا توجد طلبات سحب",
+    "emptyDesc": "لم تقدم أي طلبات سحب بعد.",
+    "stats": {
+      "totalRequested": "إجمالي المطلوب",
+      "pending": "الطلبات المعلقة",
+      "totalApproved": "إجمالي الموافقة",
+      "availableBalance": "الرصيد المتاح"
+    },
+    "table": {
+      "id": "رقم الطلب",
+      "amount": "المبلغ",
+      "reason": "السبب",
+      "status": "الحالة",
+      "date": "التاريخ"
+    },
+    "errors": {
+      "load": "فشل تحميل سجل السحوبات.",
+      "notAuthenticated": "انتهت جلستك. يرجى تسجيل الدخول مجدداً."
+    },
+    "pagination": {
+      "previous": "الصفحة السابقة",
+      "next": "الصفحة التالية",
+      "page": "صفحة",
+      "nav": "التصفح"
+    }
+  },
+  "tasks": {
+    "title": "إدارة المهام",
+    "subtitle": "جميع مهامك عبر جميع المشاريع",
+    "searchPlaceholder": "ابحث عن المهام…",
+    "emptyTitle": "لا توجد مهام",
+    "emptyDesc": "يتم إنشاء المهام داخل المشاريع. انتقل إلى المشاريع للبدء.",
+    "goToProjects": "الذهاب إلى المشاريع",
+    "noResults": "لا توجد مهام تطابق الفلاتر",
+    "colEmpty": "لا توجد مهام",
+    "viewMode": "وضع العرض",
+    "view": {
+      "table": "جدول",
+      "list": "قائمة",
+      "board": "لوحة"
+    },
+    "filter": "تصفية",
+    "sort": "ترتيب",
+    "import": "استيراد",
+    "newTask": "مهمة جديدة",
+    "addNew": "إضافة جديدة",
+    "addTask": "إضافة مهمة",
+    "colActions": "إجراءات العمود",
+    "dragHint": "اسحب المهمة لنقلها",
+    "taskNamePlaceholder": "اسم المهمة...",
+    "create": "إنشاء",
+    "createHint": "أدخل تفاصيل المهمة لإنشائها",
+    "emptyProject": "لا توجد مهام في مشروع",
+    "emptyProjectSuffix": "",
+    "moreActions": "مزيد من الإجراءات",
+    "changeStatus": "تغيير الحالة",
+    "detailPanel": "تفاصيل المهمة",
+    "description": "الوصف",
+    "noDescription": "لم يتم توفير وصف.",
+    "details": "التفاصيل",
+    "noActivity": "لا يوجد نشاط بعد.",
+    "selectAll": "تحديد الكل",
+    "selectRow": "تحديد الصف",
+    "itemsSelected": "عنصر محدد",
+    "clipToClipboard": "نسخ إلى الحافظة",
+    "clearSelection": "إلغاء التحديد",
+    "selectionBar": "إجراءات التحديد",
+    "stats": {
+      "total": "إجمالي المهام",
+      "inProgress": "قيد التنفيذ",
+      "done": "مكتملة",
+      "highPriority": "أولوية عالية"
+    },
+    "status": {
+      "todo": "للتنفيذ",
+      "inProgress": "قيد التنفيذ",
+      "inprogress": "قيد التنفيذ",
+      "done": "منجز",
+      "completed": "مكتمل",
+      "onHold": "معلق",
+      "onhold": "معلق",
+      "cancelled": "ملغى",
+      "pending": "معلق",
+      "review": "مراجعة"
+    },
+    "priority": {
+      "urgent": "عاجل",
+      "high": "عالي",
+      "medium": "متوسط",
+      "low": "منخفض"
+    },
+    "table": {
+      "title": "المهمة",
+      "summary": "الملخص",
+      "category": "الفئة",
+      "project": "المشروع",
+      "priority": "الأولوية",
+      "status": "الحالة",
+      "dueDate": "تاريخ الاستحقاق",
+      "assignee": "المسند إليه",
+      "id": "المعرّف",
+      "createdAt": "تاريخ الإنشاء",
+      "updatedAt": "آخر تحديث",
+      "selectAll": "تحديد جميع المهام",
+      "selectRow": "تحديد المهمة"
+    },
+    "tabs": {
+      "all": "الكل",
+      "comments": "التعليقات",
+      "history": "السجل",
+      "attachments": "المرفقات"
+    },
+    "actions": {
+      "viewProject": "عرض المشروع",
+      "title": "إجراءات",
+      "showDetails": "عرض التفاصيل",
+      "moveDown": "تحريك للأسفل",
+      "moveUp": "تحريك للأعلى",
+      "copyLink": "نسخ الرابط",
+      "edit": "تعديل",
+      "delete": "حذف"
+    },
+    "errors": {
+      "load": "فشل تحميل المهام.",
+      "create": "فشل إنشاء المهمة. يرجى المحاولة مرة أخرى.",
+      "update": "فشل تحديث المهمة. يرجى المحاولة مرة أخرى.",
+      "delete": "فشل حذف المهمة. تم استعادتها.",
+      "status": "فشل تغيير الحالة. تم التراجع عن التغيير."
+    }
+  },
+  "attendance": {
+    "checkIn": "تسجيل الحضور",
+    "checkOut": "تسجيل الانصراف",
+    "checkedInAt": "تم تسجيل الحضور الساعة {{time}}",
+    "checkedOutAt": "تم تسجيل الانصراف الساعة {{time}}",
+    "attendanceRow": "صف الحضور",
+    "viewDetails": "عرض التفاصيل",
+    "downloadReport": "تنزيل التقرير",
+    "filterByEmployee": "تصفية حسب الموظف",
+    "filterByDate": "تصفية حسب التاريخ",
+    "exportAttendance": "تصدير سجل الحضور",
+    "employeeAttendance": "حضور الموظف",
+    "monthPicker": "اختيار الشهر",
+    "closeAttendanceDetails": "إغلاق تفاصيل الحضور",
+    "attendanceStatus": "حالة الحضور",
+    "importAttendance": "استيراد سجل الحضور",
+    "searchRecords": "البحث في سجلات الحضور",
+    "filterByShift": "تصفية حسب نوع الوردية",
+    "backToAttendance": "العودة إلى الحضور",
+    "errors": {
+      "checkInFailed": "فشل تسجيل الحضور. يرجى المحاولة مرة أخرى.",
+      "checkOutFailed": "فشل تسجيل الانصراف. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "meetings": {
+    "createMeeting": "إنشاء اجتماع",
+    "closeMeetingDetails": "إغلاق تفاصيل الاجتماع",
+    "meetingOptions": "خيارات الاجتماع",
+    "joinMeeting": "الانضمام للاجتماع",
+    "editMeeting": "تعديل الاجتماع",
+    "deleteMeeting": "حذف الاجتماع",
+    "meetingRow": "صف الاجتماع",
+    "closeCreateMeeting": "إغلاق نافذة إنشاء الاجتماع",
+    "selectDate": "اختيار التاريخ",
+    "selectTime": "اختيار الوقت",
+    "addParticipant": "إضافة مشارك",
+    "removeParticipant": "إزالة مشارك",
+    "participantSearch": "البحث عن مشارك",
+    "meetingLink": "رابط الاجتماع",
+    "copyMeetingLink": "نسخ رابط الاجتماع",
+    "searchMeetings": "البحث عن الاجتماعات",
+    "filterByRepeat": "تصفية حسب التكرار",
+    "confirmAddMember": "تأكيد إضافة العضو",
+    "meetingTitle": "عنوان الاجتماع",
+    "meetingDescription": "وصف الاجتماع",
+    "meetingDate": "تاريخ الاجتماع",
+    "startTime": "وقت البدء",
+    "endTime": "وقت الانتهاء",
+    "repeatFrequency": "تكرار الاجتماع",
+    "saveMeeting": "حفظ الاجتماع",
+    "cancelMeeting": "إلغاء",
+    "loadingMeetings": "تحميل الاجتماعات"
+  },
+  "projects": {
+    "title": "المشاريع",
+    "createBtn": "إنشاء مشروع",
+    "searchPlaceholder": "ابحث في المشاريع...",
+    "filterCategory": "فئة المشروع",
+    "filterStatus": "حالة المشروع",
+    "allCategories": "جميع الفئات",
+    "allStatuses": "جميع الحالات",
+    "noProjects": "لا توجد مشاريع",
+    "columns": {
+      "key": "مفتاح المشروع",
+      "name": "اسم المشروع",
+      "created": "تاريخ الإنشاء",
+      "assigners": "المعينون",
+      "manager": "المدير",
+      "url": "رابط المشروع",
+      "status": "حالة المشروع",
+      "actions": "إجراءات"
+    },
+    "menu": {
+      "details": "عرض التفاصيل",
+      "draft": "نقل إلى المسودة",
+      "delete": "حذف المشروع"
+    },
+    "assigners": "المعينون",
+    "errors": {
+      "load": "فشل تحميل المشاريع."
+    },
+    "list": {
+      "refresh": "تحديث المشاريع",
+      "copyUrl": "نسخ رابط المشروع",
+      "selectAll": "تحديد جميع المشاريع"
+    },
+    "details": {
+      "addTask": "إضافة مهمة",
+      "addNewTask": "إضافة مهمة جديدة",
+      "newTask": "مهمة جديدة",
+      "newTaskName": "اسم المهمة الجديدة",
+      "saveTask": "حفظ المهمة",
+      "editTask": "تعديل المهمة",
+      "editSelectedTask": "تعديل المهمة المحددة",
+      "deleteSelectedTasks": "حذف المهام المحددة",
+      "selectAllTasks": "تحديد جميع المهام",
+      "columnOptions": "خيارات العمود",
+      "taskTitle": "عنوان المهمة",
+      "selectColor": "اختيار اللون",
+      "nameEn": "اسم المشروع بالإنجليزية",
+      "nameAr": "اسم المشروع بالعربية",
+      "selectTeams": "اختيار الفرق المعينة",
+      "createProject": "إنشاء مشروع",
+      "updateProject": "تحديث المشروع"
+    }
+  },
+  "payments": {
+    "title": "المدفوعات",
+    "balance": "رصيد الشركة",
+    "recharge": "شحن الرصيد",
+    "history": "سجل المدفوعات",
+    "noHistory": "لا يوجد سجل مدفوعات",
+    "subscription": {
+      "title": "خطط الاشتراك",
+      "monthly": "شهري",
+      "yearly": "سنوي",
+      "currentPlan": "الخطة الحالية",
+      "upgrade": "ترقية",
+      "subscribe": "اشترك الآن",
+      "active": "نشط",
+      "expired": "منتهي",
+      "cancelled": "ملغى",
+      "success": "اشتراكك نشط الآن!",
+      "features": {
+        "contracts": "عقود غير محدودة",
+        "hr": "إدارة إجازات الموارد البشرية",
+        "salary": "معالجة الرواتب والسحوبات",
+        "teamProject": "إدارة الفرق والمشاريع",
+        "attendance": "تتبع الحضور",
+        "support": "دعم أولوي"
+      }
+    },
+    "columns": {
+      "amount": "المبلغ",
+      "type": "النوع",
+      "status": "الحالة",
+      "date": "التاريخ",
+      "description": "الوصف"
+    },
+    "errors": {
+      "load": "فشل تحميل بيانات المدفوعات.",
+      "subscriptionLoad": "فشل تحميل بيانات الاشتراك.",
+      "subscribe": "فشل طلب الاشتراك. يرجى المحاولة مرة أخرى.",
+      "companyNotFound": "الشركة غير موجودة. يرجى تسجيل الدخول مرة أخرى.",
+      "invalidAmount": "يرجى إدخال مبلغ أكبر من الصفر."
+    },
+    "balanceRecharge": {
+      "title": "شحن الرصيد",
+      "subtitle": "أضف أموالاً إلى محفظة شركتك لدفع الرواتب وإدارة العقود",
+      "currentBalance": "الرصيد الحالي",
+      "loading": "جارٍ التحميل...",
+      "chooseAmount": "اختر المبلغ",
+      "presetLabel": "مبالغ الشحن المسبقة",
+      "customLabel": "أو أدخل مبلغاً مخصصاً (USD)",
+      "customAriaLabel": "مبلغ الشحن المخصص بالدولار الأمريكي",
+      "chargedLabel": "سيتم خصم",
+      "submitAriaLabel": "الانتقال إلى صفحة الدفع عبر Stripe",
+      "redirecting": "جارٍ التحويل إلى Stripe...",
+      "paySecurely": "ادفع بأمان عبر Stripe",
+      "securityNote": "تُعالَج المدفوعات بأمان عبر Stripe. لا نحتفظ ببيانات بطاقتك.",
+      "errors": {
+        "loadBalance": "فشل تحميل الرصيد",
+        "noSession": "تعذّر إنشاء جلسة الدفع",
+        "sessionFailed": "فشلت جلسة الدفع. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "paymentReturn": {
+      "verifyingAriaLabel": "جارٍ التحقق من الدفع...",
+      "verifyingTitle": "جارٍ التحقق من دفعتك",
+      "verifyingSubtitle": "يرجى الانتظار، سيستغرق هذا لحظة فقط...",
+      "successTitle": "تمت عملية الدفع بنجاح!",
+      "successSubtitle": "تم تحديث رصيدك. يمكنك الآن دفع الرواتب وإدارة العقود.",
+      "rechargeAgain": "شحن مرة أخرى",
+      "rechargeAgainAriaLabel": "شحن الرصيد مرة أخرى",
+      "goToDashboard": "الذهاب إلى لوحة التحكم",
+      "goToDashboardAriaLabel": "الذهاب إلى لوحة التحكم",
+      "failedTitle": "فشلت عملية الدفع",
+      "failedFallback": "تعذّر إتمام عملية الدفع.",
+      "tryAgain": "حاول مرة أخرى",
+      "tryAgainAriaLabel": "حاول الشحن مرة أخرى",
+      "noSessionTitle": "رابط دفع غير صالح",
+      "noSessionSubtitle": "لم يتم العثور على معرّف الجلسة في هذا الرابط. يرجى بدء شحن جديد من صفحة المدفوعات.",
+      "rechargeBalance": "شحن الرصيد",
+      "rechargeBalanceAriaLabel": "الذهاب إلى شحن الرصيد",
+      "errors": {
+        "notCompleted": "لم تكتمل عملية الدفع",
+        "sessionNotFound": "جلسة الدفع غير موجودة. ربما انتهت صلاحيتها أو تمت معالجتها مسبقاً.",
+        "verifyFailed": "فشل التحقق من الدفع. يرجى التواصل مع الدعم."
+      }
+    },
+    "subscriptionPricing": {
+      "subtitle": "اختر الخطة التي تناسب احتياجات عملك",
+      "loading": "جارٍ تحميل الخطط...",
+      "loadingAriaLabel": "جارٍ تحميل خطط الاشتراك",
+      "activePlanLabel": "الخطة النشطة:",
+      "renews": "يتجدد",
+      "monthlyPlanAriaLabel": "الخطة الشهرية",
+      "yearlyPlanAriaLabel": "الخطة السنوية",
+      "monthlyDescription": "فوترة شهرية مرنة",
+      "yearlyDescription": "أفضل قيمة — يُفوتر سنوياً",
+      "perMonth": "/ شهر",
+      "perYear": "/ سنة",
+      "equivTo": "ما يعادل",
+      "processing": "جارٍ المعالجة...",
+      "subscribeMonthly": "اشتراك شهري",
+      "subscribeYearly": "اشتراك سنوي",
+      "twoMonthsFree": "شهران مجانيان",
+      "save": "وفّر",
+      "noPlans": "لا تتوفر خطط اشتراك حالياً. يرجى المراجعة لاحقاً.",
+      "monthlyActiveAriaLabel": "الخطة الشهرية مفعّلة مسبقاً",
+      "yearlyActiveAriaLabel": "الخطة السنوية مفعّلة مسبقاً",
+      "subscribeMonthlyAriaLabel": "اشترك في الخطة الشهرية",
+      "subscribeYearlyAriaLabel": "اشترك في الخطة السنوية"
+    }
+  },
+  "teams": {
+    "createTeam": "إنشاء فريق",
+    "teamOptions": "خيارات الفريق",
+    "editTeam": "تعديل الفريق",
+    "deleteTeam": "حذف الفريق",
+    "teamRow": "صف الفريق",
+    "addMember": "إضافة عضو",
+    "removeMember": "إزالة عضو",
+    "memberSearch": "البحث عن عضو",
+    "closeCreateTeam": "إغلاق نافذة إنشاء الفريق",
+    "teamDetails": "تفاصيل الفريق",
+    "viewTeamMembers": "عرض أعضاء الفريق",
+    "teamAvatar": "صورة الفريق",
+    "searchTeams": "البحث عن الفرق",
+    "filterTeams": "تصفية الفرق",
+    "teamName": "اسم الفريق",
+    "selectMembers": "اختيار أعضاء الفريق",
+    "sendViaEmail": "الإرسال عبر البريد الإلكتروني",
+    "selectIcon": "اختيار أيقونة الفريق",
+    "teamsPagination": "التنقل بين صفحات الفرق",
+    "emailInvite": "عنوان البريد الإلكتروني للدعوة"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب.",
+    "email": "يرجى إدخال بريد إلكتروني صالح.",
+    "invalid": "هذه القيمة غير صالحة.",
+    "minLength": "الحد الأدنى للطول لم يُستوفَ.",
+    "min": "يجب أن تكون القيمة {{min}} على الأقل.",
+    "minAmount": "يجب أن يكون المبلغ أكبر من صفر."
+  },
+  "wizard": {
+    "loading": "جارٍ تحميل العقد…",
+    "selectContract": "اختيار العقد",
+    "stepper": {
+      "ariaLabel": "خطوات معالج العقد",
+      "step": "خطوة",
+      "completed": "مكتمل"
+    },
+    "steps": {
+      "employerInfo": "معلومات صاحب العمل",
+      "employerInfoDesc": "أدخل تفاصيل جهة التوظيف والممثل المفوض.",
+      "contractorInfo": "معلومات المقاول",
+      "contractorInfoDesc": "أدخل البيانات الشخصية للمقاول ومعلومات الحساب البنكي.",
+      "scopeOfWorkDesc": "حدد المسمى الوظيفي ورقم الوظيفة ووصفاً مختصراً للعمل.",
+      "contractingDesc": "حدد تواريخ العقد وفترة التجربة وحقوق الإنهاء.",
+      "financialDesc": "حدد شروط الدفع ودورة الفواتير وجداول دفعات الدفع.",
+      "scopeOfWork": "نطاق العمل",
+      "contracting": "التعاقد",
+      "financial": "الشروط المالية",
+      "scopeContracting": "النطاق والتعاقد",
+      "tasks": "المهام",
+      "stages": "المراحل",
+      "workingTime": "ساعات العمل"
+    },
+    "title": {
+      "fixedSalary": "عقد راتب ثابت جديد",
+      "payByTask": "عقد دفع بالمهمة جديد",
+      "milestone": "عقد مرحلي جديد",
+      "employee": "عقد موظف جديد",
+      "editFixedSalary": "تعديل عقد الراتب الثابت",
+      "editPayByTask": "تعديل عقد الدفع بالمهمة",
+      "editMilestone": "تعديل العقد المرحلي",
+      "editEmployee": "تعديل عقد الموظف"
+    },
+    "footer": {
+      "saveDraft": "حفظ كمسودة",
+      "saveChanges": "حفظ التغييرات"
+    },
+    "options": {
+      "selectPlaceholder": "اختر…",
+      "yes": "نعم",
+      "no": "لا",
+      "currency": {
+        "sar": "ريال سعودي — SAR",
+        "usd": "دولار أمريكي — USD",
+        "eur": "يورو — EUR",
+        "gbp": "جنيه إسترليني — GBP",
+        "aed": "درهم إماراتي — AED"
+      },
+      "billingCycle": {
+        "monthly": "شهري",
+        "quarterly": "ربع سنوي",
+        "annually": "سنوي",
+        "oneTime": "مرة واحدة"
+      }
+    }
+  },
+  "contractor": {
+    "name": "الاسم الكامل",
+    "nationality": "الجنسية",
+    "idNumber": "رقم الهوية / الإقامة",
+    "phoneNumber": "رقم الهاتف",
+    "emailAddress": "البريد الإلكتروني",
+    "jobTitle": "المسمى الوظيفي",
+    "address": "العنوان",
+    "bankName": "اسم البنك",
+    "iban": "رقم الآيبان",
+    "bankingSection": "البيانات البنكية"
+  },
+  "scope": {
+    "jobTitle": "المسمى الوظيفي",
+    "jobNumber": "رقم الوظيفة",
+    "jobDescription": "وصف الوظيفة"
+  },
+  "contracting": {
+    "durationSection": "مدة العقد",
+    "terminationSection": "حقوق الإنهاء",
+    "startDate": "تاريخ البداية",
+    "endDate": "تاريخ النهاية",
+    "trialPeriod": "فترة التجربة",
+    "trialPeriodPlaceholder": "مثال: 90 يوماً",
+    "noticePeriod": "فترة الإشعار",
+    "noticePeriodPlaceholder": "مثال: 30 يوماً",
+    "rightToTerminateTrial": "حق الإنهاء خلال فترة التجربة",
+    "rightToTerminateDuring": "حق الإنهاء خلال مدة العقد",
+    "rightToTerminate": "حق الإنهاء (عام)"
+  },
+  "financial": {
+    "paymentTermsSection": "شروط الدفع",
+    "firstBatchSection": "الدفعة الأولى",
+    "lastBatchSection": "الدفعة الأخيرة",
+    "currency": "العملة",
+    "billingCycle": "دورة الفواتير",
+    "amount": "إجمالي قيمة العقد",
+    "periodFrom": "الفترة من",
+    "periodTo": "الفترة إلى",
+    "paymentAmount": "مبلغ الدفعة"
+  },
+  "employer": {
+    "entityName": "اسم الجهة",
+    "officialNumber": "رقم التسجيل الرسمي",
+    "phoneNumber": "رقم الهاتف",
+    "emailAddress": "البريد الإلكتروني",
+    "address": "العنوان",
+    "representative": "الممثل المفوض",
+    "representativeIdentity": "رقم هوية الممثل",
+    "representativeEmail": "بريد الممثل الإلكتروني",
+    "representativeDescription": "وصف الممثل",
+    "representativeSection": "الممثل المفوض",
+    "representativeRole": "الممثل",
+    "representativePhone": "هاتف الممثل"
+  },
+  "login": {
+    "welcome": "مرحباً بعودتك",
+    "subtitle": "سجّل الدخول للمتابعة",
+    "emailLabel": "البريد الإلكتروني",
+    "emailPlaceholder": "بريدك الإلكتروني...",
+    "passwordLabel": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور ...",
+    "forgotPassword": "نسيت كلمة المرور ؟",
+    "submit": "التالي",
+    "loading": "جارٍ تسجيل الدخول…",
+    "privacy": "نحن نحترم بياناتك. بإرسال هذا النموذج، فإنك توافق على أن نتواصل معك بخصوص منتجاتنا وخدماتنا، وفقاً لسياسة الخصوصية الخاصة بنا.",
+    "signUpPrompt": "مقاول أو موظف؟",
+    "signUpLink": "سجّل من هنا ؟",
+    "socialGroup": "تسجيل الدخول عبر حساب تواصل اجتماعي",
+    "signInApple": "تسجيل الدخول بـ Apple",
+    "forgotPasswordTitle": "نسيت كلمة المرور",
+    "forgotPasswordSubtitle": "أدخل بريدك الإلكتروني للتأكد من أنك صاحب الحساب الذي تحاول الوصول إليه",
+    "fpEmailLabel": "البريد الإلكتروني",
+    "fpEmailPlaceholder": "بريدك الإلكتروني...",
+    "fpSendLink": "إرسال رابط الإعادة",
+    "fpSending": "جارٍ الإرسال…",
+    "fpSuccess": "تحقق من صندوق الوارد! تم إرسال رابط إعادة التعيين.",
+    "openForgotDialog": "فتح نافذة نسيان كلمة المرور",
+    "forgotPasswordDialog": "نافذة نسيان كلمة المرور",
+    "signInSSO": "تسجيل الدخول بـ SSO",
+    "signInGoogle": "تسجيل الدخول بـ Google",
+    "signInFacebook": "تسجيل الدخول بـ Facebook"
+  },
+  "otp": {
+    "title": "أدخل رمز التحقق",
+    "subtitleStart": "انتقل إلى",
+    "subtitleEnd": "للتحقق من الرمز",
+    "resend": "إعادة الإرسال",
+    "reset": "إعادة تعيين",
+    "verifying": "جارٍ التحقق…",
+    "backAria": "العودة إلى تسجيل الدخول",
+    "codeAria": "رمز التحقق لمرة واحدة",
+    "cellAria": "خانة",
+    "resendAria": "إعادة إرسال رمز التحقق",
+    "errors": {
+      "invalid": "رمز غير صالح أو منتهي الصلاحية. يرجى المحاولة مرة أخرى.",
+      "resendFailed": "تعذر إعادة إرسال الرمز. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "signup": {
+    "title": "كيف ستستخدم MTwork؟",
+    "subtitle": "اختر أحد الخيارات أدناه",
+    "haveAccount": "لديك حساب بالفعل",
+    "login": "تسجيل الدخول",
+    "loginAria": "لديك حساب بالفعل؟ تسجيل الدخول",
+    "cards": {
+      "business": {
+        "title": "كشركة",
+        "body": "وظّف في أكثر من 150 دولة دون فتح كيان، مع الالتزام بالضرائب والقوانين المحلية، وادفع لفريقك العالمي"
+      },
+      "contractor": {
+        "title": "مقاول",
+        "body": "وظّف في أكثر من 150 دولة دون فتح كيان، مع الالتزام بالضرائب والقوانين المحلية، وادفع لفريقك العالمي"
+      },
+      "employee": {
+        "title": "موظف",
+        "body": "وظّف في أكثر من 150 دولة دون فتح كيان، مع الالتزام بالضرائب والقوانين المحلية، وادفع لفريقك العالمي"
+      }
+    }
+  },
+  "messages": {
+    "title": "الرسائل",
+    "list": "المحادثات",
+    "thread": "المحادثة",
+    "searchPlaceholder": "ابحث في المحادثات...",
+    "composerPlaceholder": "اكتب رسالة...",
+    "send": "إرسال",
+    "empty": {
+      "conversations": {
+        "title": "لا توجد رسائل بعد",
+        "desc": "ابدأ محادثة وستظهر رسائلك هنا."
+      },
+      "thread": {
+        "title": "لا توجد رسائل في هذه المحادثة",
+        "desc": "أرسل الرسالة الأولى لكسر الصمت."
+      },
+      "select": {
+        "title": "اختر محادثة",
+        "desc": "اختر شخصًا من القائمة لبدء المراسلة."
+      }
+    },
+    "conversations": "قائمة المحادثات"
+  },
+  "notifications": {
+    "title": "الإشعارات",
+    "markAllRead": "تعليم الكل كمقروء",
+    "filterLabel": "تصفية الإشعارات",
+    "filterAll": "الكل",
+    "filterUnread": "غير المقروءة",
+    "empty": {
+      "all": {
+        "title": "لا توجد إشعارات لديك",
+        "desc": "سنخبرك هنا عندما يحتاج شيء ما إلى انتباهك."
+      },
+      "unread": {
+        "title": "أنت على اطلاع بكل شيء",
+        "desc": "لا توجد إشعارات غير مقروءة الآن."
+      }
+    }
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "profile": {
+      "title": "الملف الشخصي",
+      "sub": "معلومات حسابك.",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "role": "الدور",
+      "readonlyNote": "معلومات الملف الشخصي للقراءة فقط هنا. تواصل مع المسؤول للتعديل."
+    },
+    "password": {
+      "title": "كلمة المرور",
+      "sub": "غيّر كلمة مرور حسابك.",
+      "current": "كلمة المرور الحالية",
+      "new": "كلمة المرور الجديدة",
+      "confirm": "تأكيد كلمة المرور الجديدة",
+      "save": "تحديث كلمة المرور",
+      "mismatch": "كلمات المرور غير متطابقة.",
+      "tooShort": "يجب أن تكون كلمة المرور 8 أحرف على الأقل."
+    },
+    "preferences": {
+      "title": "التفضيلات",
+      "sub": "خصّص تجربتك.",
+      "language": "اللغة",
+      "languageSub": "اختر لغتك المفضلة.",
+      "theme": "المظهر",
+      "themeSub": "اختر مظهرك المفضل.",
+      "themeLight": "فاتح",
+      "themeDark": "داكن"
+    },
+    "sections": "أقسام الإعدادات"
+  },
+  "admin": {
+    "title": "لوحة الإدارة",
+    "login": {
+      "title": "تسجيل دخول المدير",
+      "subtitle": "وصول المسؤول الأعلى",
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "submit": "تسجيل الدخول",
+      "backToLogin": "العودة لتسجيل دخول المستخدم",
+      "errors": {
+        "failed": "بيانات الاعتماد غير صحيحة. يرجى المحاولة مرة أخرى."
+      },
+      "emailAriaLabel": "البريد الإلكتروني للمشرف",
+      "passwordAriaLabel": "كلمة مرور المشرف",
+      "signInLabel": "تسجيل الدخول كمشرف"
+    },
+    "users": {
+      "title": "إدارة المستخدمين",
+      "subtitle": "إدارة جميع مستخدمي المنصة",
+      "searchPlaceholder": "البحث بالاسم أو البريد الإلكتروني...",
+      "columns": {
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "type": "نوع المستخدم",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "userTypes": {
+        "1": "موظف",
+        "2": "متعاقد",
+        "3": "أعمال"
+      },
+      "status": {
+        "active": "نشط",
+        "suspended": "موقوف"
+      },
+      "actions": {
+        "suspend": "إيقاف",
+        "activate": "تفعيل",
+        "view": "عرض"
+      },
+      "empty": "لا يوجد مستخدمون.",
+      "errors": {
+        "load": "فشل تحميل المستخدمين.",
+        "suspend": "فشل تحديث حالة المستخدم."
+      },
+      "listTitle": "قائمة المستخدمين",
+      "search": "البحث عن المستخدمين"
+    },
+    "companies": {
+      "title": "إدارة الشركات",
+      "subtitle": "إدارة جميع الشركات المسجلة",
+      "searchPlaceholder": "البحث عن شركات...",
+      "columns": {
+        "name": "اسم الشركة",
+        "email": "البريد الإلكتروني",
+        "phone": "الهاتف",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "status": {
+        "active": "نشط",
+        "suspended": "موقوف"
+      },
+      "actions": {
+        "suspend": "إيقاف",
+        "delete": "حذف",
+        "view": "عرض"
+      },
+      "confirmSuspend": "هل أنت متأكد من إيقاف هذه الشركة؟",
+      "confirmDelete": "هل أنت متأكد من حذف هذه الشركة نهائياً؟ لا يمكن التراجع عن هذا الإجراء.",
+      "empty": "لا توجد شركات.",
+      "errors": {
+        "load": "فشل تحميل الشركات.",
+        "suspend": "فشل إيقاف الشركة.",
+        "delete": "فشل حذف الشركة."
+      },
+      "list": "قائمة الشركات",
+      "search": "البحث عن الشركات"
+    },
+    "settings": {
+      "title": "إعدادات النظام",
+      "subtitle": "الإعدادات العامة للمنصة",
+      "registrationFee": "رسوم التسجيل الأول",
+      "contractFees": "رسوم العقود",
+      "employeePercentage": "نسبة الموظف العادي",
+      "errors": {
+        "load": "فشل تحميل إعدادات النظام."
+      }
+    },
+    "dashboard": {
+      "title": "لوحة تحكم المشرف",
+      "subtitle": "نظرة عامة على المنصة",
+      "kpiList": "مؤشرات الأداء الرئيسية للمنصة",
+      "viewAll": "عرض الكل",
+      "kpi": {
+        "totalCompanies": "إجمالي الشركات",
+        "totalUsers": "إجمالي المستخدمين",
+        "pendingWithdrawals": "طلبات السحب المعلقة",
+        "totalContracts": "إجمالي العقود"
+      },
+      "recentCompanies": {
+        "title": "أحدث الشركات",
+        "viewAll": "عرض جميع الشركات",
+        "active": "نشطة",
+        "suspended": "موقوفة",
+        "empty": "لا توجد شركات."
+      },
+      "pendingWithdrawals": {
+        "title": "طلبات السحب المعلقة",
+        "pending": "معلق",
+        "empty": "لا توجد طلبات سحب معلقة."
+      },
+      "quickActions": {
+        "title": "إجراءات سريعة",
+        "users": "المستخدمون",
+        "companies": "الشركات",
+        "settings": "الإعدادات",
+        "permissions": "الصلاحيات"
+      },
+      "errors": {
+        "load": "فشل تحميل بيانات لوحة التحكم."
+      }
+    },
+    "withdrawals": {
+      "title": "طلبات السحب",
+      "subtitle": "مراجعة ومعالجة طلبات سحب الموظفين",
+      "pendingCount": "معلقة",
+      "processedCount": "معالجة",
+      "pendingTitle": "الطلبات المعلقة",
+      "processedTitle": "الطلبات المعالجة",
+      "emptyPending": "لا توجد طلبات سحب معلقة.",
+      "emptyProcessed": "لا توجد طلبات سحب معالجة بعد.",
+      "columns": {
+        "employee": "اسم الموظف",
+        "company": "الشركة",
+        "amount": "المبلغ",
+        "requestDate": "تاريخ الطلب",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "status": {
+        "pending": "معلق",
+        "approved": "مقبول",
+        "rejected": "مرفوض"
+      },
+      "actions": {
+        "approve": "قبول",
+        "reject": "رفض"
+      },
+      "errors": {
+        "load": "فشل تحميل طلبات السحب.",
+        "process": "فشل في معالجة الطلب. يرجى المحاولة مجدداً."
+      }
+    }
+  },
+  "session": {
+    "expired": "انتهت الجلسة — يرجى تسجيل الدخول مجدداً.",
+    "signedOut": "تم تسجيل الخروج.",
+    "expiringTitle": "ستنتهي الجلسة قريباً",
+    "expiringBody": "ستنتهي جلستك خلال",
+    "expiringPrompt": "هل تريد تمديد الجلسة؟",
+    "extendBtn": "تمديد الجلسة",
+    "signOutBtn": "تسجيل الخروج"
+  },
+  "errors": {
+    "noConnection": "لا يوجد اتصال بالإنترنت — يرجى التحقق من الشبكة.",
+    "tooManyReqs": "طلبات كثيرة جداً — يرجى الانتظار لحظة والمحاولة مجدداً.",
+    "serverError": "حدث خطأ في الخادم — يرجى المحاولة لاحقاً.",
+    "resetFailed": "فشل إرسال بريد إعادة التعيين. يرجى المحاولة مجدداً.",
+    "ok": "موافق"
+  },
+  "forgotPassword": {
+    "title": "نسيان كلمة المرور",
+    "subtitle": "أدخل عنوان بريدك الإلكتروني لإعادة تعيين كلمة مرور حسابك",
+    "emailLabel": "البريد الإلكتروني",
+    "emailPlaceholder": "بريدك الإلكتروني...",
+    "emailAriaLabel": "عنوان البريد الإلكتروني",
+    "sendReset": "إرسال رابط إعادة التعيين",
+    "sendResetAriaLabel": "إرسال رابط إعادة التعيين",
+    "sending": "جارٍ الإرسال...",
+    "successTitle": "تم إرسال بريد إعادة التعيين!",
+    "successSub": "يرجى التحقق من صندوق الوارد واتباع التعليمات.",
+    "backToLogin": "العودة لتسجيل الدخول",
+    "back": "رجوع"
+  },
+  "companies": {
+    "profile": {
+      "title": "تفاصيل الشركة",
+      "editBasicInfo": "تعديل المعلومات الأساسية",
+      "editAddressDesc": "تعديل العنوان والوصف",
+      "form": "نموذج تعديل ملف الشركة",
+      "loading": "جارٍ تحميل ملف الشركة",
+      "saveProfile": "حفظ ملف الشركة",
+      "cancelEditing": "إلغاء التعديل",
+      "selectCountry": "اختيار الدولة",
+      "selectIndustry": "اختيار القطاع",
+      "retryLoading": "إعادة المحاولة"
+    }
+  },
+  "roles": {
+    "admin": "مدير",
+    "business": "صاحب عمل",
+    "employee": "موظف",
+    "contractor": "مقاول"
+  }
+}

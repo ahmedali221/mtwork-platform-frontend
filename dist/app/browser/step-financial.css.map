@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/components/DashboardLayout/Contract/wizard/steps/step-financial/step-financial.css"],
+  "sourcesContent": ["/* Component-specific overrides only \u2014 shared styles in ../step-form.css */\n\n/* Remove number input spinners for cleaner look */\ninput[type=\"number\"].field__input::-webkit-inner-spin-button,\ninput[type=\"number\"].field__input::-webkit-outer-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\ninput[type=\"number\"].field__input {\n  -moz-appearance: textfield;\n}\n"],
+  "mappings": ";AAGA,KAAK,CAAC,YAAc,CAAC,YAAY;AACjC,KAAK,CAAC,YAAc,CADC,YACY;AAC/B,sBAAoB;AACpB,UAAQ;AACV;AACA,KAAK,CAAC,YAAc,CALC;AAMnB,mBAAiB;AACnB;",
+  "names": []
+}

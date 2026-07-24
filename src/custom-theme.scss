@@ -1,0 +1,70 @@
+@use '@angular/material' as mat;
+
+
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+
+  /* Improve cross-browser text size adjust */
+  -webkit-text-size-adjust: 100%;
+  /* Avoid unprefixed text-size-adjust to prevent compat warnings */
+  text-size-adjust: 100%;
+}
+
+body {
+  color-scheme: light;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+
+  /* Safari prefix for user select */
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Allow dark mode to advertise correct color-scheme to UA and components */
+:root.dark-theme body {
+  color-scheme: dark;
+}
+
+/* Backdrop filter support for Safari */
+.backdrop-blur-support {
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Edge fallback for width: stretch */
+.w-stretch {
+  /* Fallbacks: Safari/Edge */
+  width: -webkit-fill-available;
+  width: fill-available; /* old spec */
+}
+
+/* Avoid non-standard text-decoration-skip prefix usage */
+/* If used elsewhere, prefer text-decoration-skip-ink */
+
+/* Scrollbar compatibility notes: provide class-based usage to avoid global warnings */
+@supports (scrollbar-width: thin) {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+}
+@supports (scrollbar-gutter: stable) {
+  .scrollbar-gutter-stable {
+    scrollbar-gutter: stable;
+  }
+}
+
+/* Use text-wrap as progressive enhancement with fallback */
+@supports (text-wrap: balance) {
+  .text-wrap-balance {
+    text-wrap: balance;
+  }
+}

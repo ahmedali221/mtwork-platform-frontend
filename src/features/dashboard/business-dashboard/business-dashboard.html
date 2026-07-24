@@ -1,0 +1,474 @@
+<div class="biz-dash" [attr.aria-label]="'dashboard.business.title' | transloco">
+
+  @if (isLoading()) {
+    <div class="dashboard-loading" role="status" aria-live="polite">
+      <div class="dashboard-loading__spinner"></div>
+      <p>{{ 'common.loading' | transloco }}</p>
+    </div>
+  } @else {
+
+  <!-- ══════════════════════════════════════════════════
+       HERO BANNER
+  ══════════════════════════════════════════════════ -->
+  <div class="biz-banner">
+    <!-- Decorative star (top-end) -->
+    <img class="biz-banner__star" src="assets/images/dashboard/banner-star.svg" alt="" aria-hidden="true" />
+
+    <div class="biz-banner__content">
+      <h2 class="biz-banner__title">{{ 'dashboard.business.bannerTitle' | transloco }}</h2>
+      <p class="biz-banner__subtitle">
+        {{ 'dashboard.business.bannerSubtitle' | transloco }}
+      </p>
+      <a class="biz-banner__cta" routerLink="/dashboard/contracts" [attr.aria-label]="'dashboard.business.knowMoreHiring' | transloco">{{ 'dashboard.business.knowMore' | transloco }}</a>
+    </div>
+
+    <div class="biz-banner__visual">
+      <div class="biz-banner__avatar">
+        <img class="biz-banner__avatar-photo" src="assets/images/dashboard/banner-person-256.png" alt="" aria-hidden="true" />
+        <img class="biz-banner__avatar-flag" src="assets/images/dashboard/banner-flag-eg.svg" alt="" aria-hidden="true" />
+      </div>
+      <div class="biz-banner__card">
+        <span class="biz-banner__card-badge">{{ 'dashboard.business.developerBadge' | transloco }}</span>
+        <p class="biz-banner__card-text">
+          <span>{{ 'dashboard.business.developerDescPre' | transloco }} </span><span class="biz-banner__card-accent">{{ 'dashboard.business.developerDescAccent' | transloco }}</span>
+        </p>
+        <button type="button" class="biz-banner__ai-btn" [attr.aria-label]="'dashboard.business.askAi' | transloco">
+          {{ 'dashboard.business.askAi' | transloco }}
+          <img class="biz-banner__ai-icon" src="assets/images/dashboard/banner-ai-icon.svg" alt="" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+
+    <div class="biz-banner__dots" role="tablist" [attr.aria-label]="'dashboard.business.bannerSlides' | transloco">
+      @for (dot of [0,1,2,3,4]; track dot) {
+        <button
+          class="biz-banner__dot"
+          [class.active]="currentSlide() === dot"
+          (click)="setSlide(dot)"
+          [attr.aria-label]="'Slide ' + (dot + 1)"
+          role="tab"
+          [attr.aria-selected]="currentSlide() === dot"
+        ></button>
+      }
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       UPCOMING MEETINGS
+  ══════════════════════════════════════════════════ -->
+  <section class="biz-section" aria-labelledby="meetings-heading">
+    <div class="biz-section__header">
+      <div class="biz-section__title-group">
+        <mat-icon class="biz-section__icon">videocam</mat-icon>
+        <h3 class="biz-section__title" id="meetings-heading">{{ 'dashboard.upcomingMeetings' | transloco }}</h3>
+      </div>
+      <a routerLink="/dashboard/meetings" class="biz-btn-gray" [attr.aria-label]="'dashboard.viewAllMeetings' | transloco">
+        {{ 'dashboard.viewAll' | transloco }} <mat-icon class="biz-btn-icon">expand_more</mat-icon>
+      </a>
+    </div>
+
+    @if (meetingsStatus() === 'error') {
+      <!-- ER-1/ER-3: failed to load — distinct from empty, with retry -->
+      <div class="biz-widget-state biz-widget-state--error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        <span>{{ 'dashboard.states.error' | transloco }}</span>
+        <button type="button" class="biz-widget-state__retry" (click)="reload()"
+                [attr.aria-label]="'common.retry' | transloco">{{ 'common.retry' | transloco }}</button>
+      </div>
+    } @else if (meetings.length === 0) {
+      <!-- E-1: loaded but no meetings -->
+      <div class="biz-widget-state biz-widget-state--empty">
+        <mat-icon aria-hidden="true">event_busy</mat-icon>
+        <span>{{ 'dashboard.states.emptyMeetings' | transloco }}</span>
+      </div>
+    } @else {
+      <div class="biz-meetings-grid">
+        @for (meeting of meetings; track $index) {
+          <div class="biz-meeting-card">
+            <div class="biz-meeting-card__top">
+              <div class="biz-meeting-card__id">
+                <span class="biz-meeting-card__icon-wrap" aria-hidden="true">
+                  <mat-icon class="biz-meeting-card__icon">videocam</mat-icon>
+                </span>
+                <p class="biz-meeting-card__title">{{ meeting.title }}</p>
+              </div>
+              <span
+                class="biz-meeting-card__status"
+                [class.biz-meeting-card__status--past]="meeting.status === 'past'"
+                [class.biz-meeting-card__status--now]="meeting.status === 'now'"
+              >
+                <span class="biz-meeting-card__status-dot" aria-hidden="true"></span>
+                {{ (meeting.status === 'now' ? ('dashboard.meeting.now' | transloco) : meeting.status === 'past' ? ('dashboard.meeting.past' | transloco) : ('dashboard.meeting.soon' | transloco)) }}
+              </span>
+            </div>
+            <div class="biz-meeting-card__bottom">
+              <p class="biz-meeting-card__time">
+                <mat-icon class="biz-meeting-card__time-icon">schedule</mat-icon>
+                {{ meeting.date }} {{ meeting.time }}
+              </p>
+              @if (meeting.link) {
+                <a class="biz-meeting-card__open" [href]="meeting.link" target="_blank" rel="noopener noreferrer"
+                   [attr.aria-label]="('dashboard.meeting.open' | transloco) + ': ' + meeting.title">{{ 'dashboard.meeting.open' | transloco }}</a>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       KPI STATS
+  ══════════════════════════════════════════════════ -->
+  <div class="biz-kpi-row" role="list" [attr.aria-label]="'dashboard.kpiList' | transloco">
+    @for (stat of kpiStats; track stat.label) {
+      <div class="biz-kpi-card" role="listitem">
+        <div class="biz-kpi-card__header">
+          <div class="biz-kpi-card__icon-wrap">
+            <mat-icon class="biz-kpi-card__icon">{{ stat.icon }}</mat-icon>
+          </div>
+          <span
+            class="biz-kpi-card__change"
+            [class.biz-kpi-card__change--up]="stat.up"
+            [class.biz-kpi-card__change--down]="!stat.up"
+            [attr.aria-label]="(stat.up ? 'Up' : 'Down') + ' ' + stat.change + '% from last month'"
+          >
+            <mat-icon>{{ stat.up ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+            {{ stat.change }}%
+          </span>
+        </div>
+        <p class="biz-kpi-card__value">{{ stat.value }}</p>
+        <p class="biz-kpi-card__label">{{ stat.label | transloco }}</p>
+        <p class="biz-kpi-card__sub">{{ stat.up ? '+' : '-' }}{{ stat.change }}% {{ 'dashboard.fromLastMonth' | transloco }}</p>
+      </div>
+    }
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       PROJECTS WIDGET CARD
+  ══════════════════════════════════════════════════ -->
+  <section class="biz-section" aria-labelledby="projects-heading">
+    <div class="biz-widget-card">
+      <div class="biz-widget-header">
+        <div class="biz-widget-header__left">
+          <div class="biz-widget-icon-wrap">
+            <mat-icon class="biz-widget-icon">folder</mat-icon>
+          </div>
+          <div>
+            <h3 class="biz-widget-title" id="projects-heading">{{ 'dashboard.business.projectsTitle' | transloco }}</h3>
+            <p class="biz-widget-subtitle">{{ 'dashboard.business.projectsSubtitle' | transloco }}</p>
+          </div>
+        </div>
+        <a routerLink="/dashboard/projects" class="biz-btn-primary" [attr.aria-label]="'dashboard.viewAllProjects' | transloco">
+          {{ 'dashboard.viewAll' | transloco }} <mat-icon class="biz-btn-icon">expand_more</mat-icon>
+        </a>
+      </div>
+
+      <div class="biz-widget-inner">
+        @if (chartsStatus() === 'error') {
+          <!-- ER-1/ER-3: project data failed to load -->
+          <div class="biz-widget-state biz-widget-state--error" role="alert">
+            <mat-icon aria-hidden="true">error_outline</mat-icon>
+            <span>{{ 'dashboard.states.error' | transloco }}</span>
+            <button type="button" class="biz-widget-state__retry" (click)="reload()"
+                    [attr.aria-label]="'common.retry' | transloco">{{ 'common.retry' | transloco }}</button>
+          </div>
+        } @else if (kpiStats[0].value === 0) {
+          <!-- E-4: loaded but no projects → no chart data -->
+          <div class="biz-widget-state biz-widget-state--empty">
+            <mat-icon aria-hidden="true">bar_chart</mat-icon>
+            <span>{{ 'dashboard.states.emptyCharts' | transloco }}</span>
+          </div>
+        } @else {
+        <div class="biz-charts-row">
+          <!-- Project Status Donut -->
+          <div class="biz-chart-card">
+            <div class="biz-chart-card__header">
+              <div>
+                <p class="biz-chart-card__title">{{ 'dashboard.projectStatusOverview' | transloco }}</p>
+                <p class="biz-chart-card__sub">{{ 'dashboard.business.projectStatusSub' | transloco }}</p>
+              </div>
+              <select class="biz-select" [attr.aria-label]="'dashboard.timePeriod' | transloco" title="Select period">
+                <option>{{ 'dashboard.lastMonth' | transloco }}</option>
+                <option>{{ 'dashboard.last3Months' | transloco }}</option>
+                <option>{{ 'dashboard.lastYear' | transloco }}</option>
+              </select>
+            </div>
+            <div class="biz-chart-donut-wrap">
+              <div class="biz-chart-canvas-wrap" style="height:188px;">
+                <canvas baseChart [data]="projectStatusData" [options]="projectStatusOptions" [type]="'doughnut'" [attr.aria-label]="'dashboard.projectStatusChart' | transloco"></canvas>
+              </div>
+              <div class="biz-donut-center" aria-hidden="true">{{ projectCompletedPercent }}%</div>
+            </div>
+            <div class="biz-legend">
+              <span class="biz-legend__pill biz-legend__pill--success">{{ 'dashboard.status.completed' | transloco }}</span>
+              <span class="biz-legend__pill biz-legend__pill--warning">{{ 'dashboard.status.inProgress' | transloco }}</span>
+              <span class="biz-legend__pill biz-legend__pill--neutral">{{ 'dashboard.status.notStarted' | transloco }}</span>
+            </div>
+          </div>
+
+          <!-- Projects by Manager Bar -->
+          <div class="biz-chart-card">
+            <div class="biz-chart-card__header">
+              <div>
+                <p class="biz-chart-card__title">{{ 'dashboard.business.projectsByManager' | transloco }}</p>
+                <p class="biz-chart-card__sub">{{ 'dashboard.business.projectsByManagerSub' | transloco }}</p>
+              </div>
+              <select class="biz-select" [attr.aria-label]="'dashboard.timePeriod' | transloco" title="Select period">
+                <option>{{ 'dashboard.lastMonth' | transloco }}</option>
+                <option>{{ 'dashboard.last3Months' | transloco }}</option>
+              </select>
+            </div>
+            <div class="biz-chart-canvas-wrap" style="height:240px;">
+              <canvas baseChart [data]="projectsByManagerData" [options]="projectsByManagerOptions" [type]="'bar'" [attr.aria-label]="'dashboard.business.projectsByMgrChart' | transloco"></canvas>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       TASKS WIDGET CARD
+  ══════════════════════════════════════════════════ -->
+  <section class="biz-section" aria-labelledby="tasks-heading">
+    <div class="biz-widget-card">
+      <div class="biz-widget-header">
+        <div class="biz-widget-header__left">
+          <div class="biz-widget-icon-wrap">
+            <mat-icon class="biz-widget-icon">assignment</mat-icon>
+          </div>
+          <div>
+            <h3 class="biz-widget-title" id="tasks-heading">{{ 'dashboard.business.tasksTitle' | transloco }}</h3>
+            <p class="biz-widget-subtitle">{{ 'dashboard.business.tasksSubtitle' | transloco }}</p>
+          </div>
+        </div>
+        <a routerLink="/dashboard/task-management" class="biz-btn-primary" [attr.aria-label]="'dashboard.viewAllTasks' | transloco">
+          {{ 'dashboard.viewAll' | transloco }} <mat-icon class="biz-btn-icon">expand_more</mat-icon>
+        </a>
+      </div>
+
+      <div class="biz-widget-inner">
+        <div class="biz-charts-row">
+          <!-- Task Status Donut -->
+          <div class="biz-chart-card">
+            <div class="biz-chart-card__header">
+              <div>
+                <p class="biz-chart-card__title">{{ 'dashboard.business.taskStatusDist' | transloco }}</p>
+                <p class="biz-chart-card__sub">{{ 'dashboard.business.taskStatusSub' | transloco }}</p>
+              </div>
+              <select class="biz-select" [attr.aria-label]="'dashboard.timePeriod' | transloco" title="Select period">
+                <option>{{ 'dashboard.lastMonth' | transloco }}</option>
+              </select>
+            </div>
+            <div class="biz-chart-donut-wrap">
+              <div class="biz-chart-canvas-wrap" style="height:188px;">
+                <canvas baseChart [data]="taskStatusData" [options]="taskStatusOptions" [type]="'doughnut'" [attr.aria-label]="'dashboard.business.taskStatusChart' | transloco"></canvas>
+              </div>
+              <div class="biz-donut-center" aria-hidden="true">
+                <span class="biz-donut-center__val">1.8</span>
+                <span class="biz-donut-center__label">Days</span>
+              </div>
+            </div>
+            <div class="biz-legend biz-legend--squares">
+              <span class="biz-legend__sq-item"><span class="biz-legend__sq biz-legend__sq--success"></span>{{ 'dashboard.status.completed' | transloco }}</span>
+              <span class="biz-legend__sq-item"><span class="biz-legend__sq biz-legend__sq--neutral"></span>{{ 'dashboard.status.notStarted' | transloco }}</span>
+              <span class="biz-legend__sq-item"><span class="biz-legend__sq biz-legend__sq--primary"></span>{{ 'dashboard.status.inProgress' | transloco }}</span>
+            </div>
+          </div>
+
+          <!-- Tasks by Priority Stacked Bar -->
+          <div class="biz-chart-card">
+            <div class="biz-chart-card__header">
+              <div>
+                <p class="biz-chart-card__title">{{ 'dashboard.business.projectsByManager' | transloco }}</p>
+                <p class="biz-chart-card__sub">{{ 'dashboard.business.projectsByManagerSub' | transloco }}</p>
+              </div>
+              <select class="biz-select" [attr.aria-label]="'dashboard.timePeriod' | transloco" title="Select period">
+                <option>{{ 'dashboard.lastMonth' | transloco }}</option>
+              </select>
+            </div>
+            <div class="biz-chart-canvas-wrap" style="height:240px;">
+              <canvas baseChart [data]="tasksByPriorityData" [options]="tasksByPriorityOptions" [type]="'bar'" [attr.aria-label]="'dashboard.business.tasksByPriorityChart' | transloco"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tasks Timeline Area — full width inside widget-inner -->
+        <div class="biz-chart-card">
+          <div class="biz-chart-card__header">
+            <div>
+              <p class="biz-chart-card__title">{{ 'dashboard.business.tasksTimeline' | transloco }}</p>
+              <p class="biz-chart-card__sub">{{ 'dashboard.business.tasksTimelineSub' | transloco }}</p>
+            </div>
+            <select class="biz-select" [attr.aria-label]="'dashboard.timePeriod' | transloco" title="Select period">
+              <option>{{ 'dashboard.lastMonth' | transloco }}</option>
+            </select>
+          </div>
+          <div class="biz-chart-canvas-wrap" style="height:240px;">
+            <canvas baseChart [data]="tasksTimelineData" [options]="tasksTimelineOptions" [type]="'line'" [attr.aria-label]="'dashboard.business.tasksTimelineChart' | transloco"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       TEAMS WIDGET CARD
+  ══════════════════════════════════════════════════ -->
+  <section class="biz-section" aria-labelledby="teams-heading">
+    <div class="biz-widget-card">
+      <div class="biz-widget-header">
+        <div class="biz-widget-header__left">
+          <div class="biz-widget-icon-wrap">
+            <mat-icon class="biz-widget-icon">groups</mat-icon>
+          </div>
+          <div>
+            <h3 class="biz-widget-title" id="teams-heading">{{ 'dashboard.business.teamsTitle' | transloco }}</h3>
+            <p class="biz-widget-subtitle">{{ 'dashboard.business.teamsSubtitle' | transloco }}</p>
+          </div>
+        </div>
+        <a routerLink="/dashboard/teams" class="biz-btn-primary" [attr.aria-label]="'dashboard.viewAllTeams' | transloco">
+          {{ 'dashboard.viewAll' | transloco }} <mat-icon class="biz-btn-icon">expand_more</mat-icon>
+        </a>
+      </div>
+
+      <div class="biz-widget-inner">
+        <div class="biz-charts-row">
+          <!-- Team Size Bar -->
+          <div class="biz-chart-card">
+            <div class="biz-chart-card__header">
+              <div>
+                <p class="biz-chart-card__title">{{ 'dashboard.business.teamSizeOverview' | transloco }}</p>
+                <p class="biz-chart-card__sub">{{ 'dashboard.business.teamSizeOverviewSub' | transloco }}</p>
+              </div>
+              <select class="biz-select" [attr.aria-label]="'dashboard.timePeriod' | transloco" title="Select period">
+                <option>{{ 'dashboard.lastMonth' | transloco }}</option>
+              </select>
+            </div>
+            <div class="biz-chart-canvas-wrap" style="height:220px;">
+              <canvas baseChart [data]="teamSizeData" [options]="teamSizeOptions" [type]="'bar'" [attr.aria-label]="'dashboard.business.teamSizeChart' | transloco"></canvas>
+            </div>
+          </div>
+
+          <!-- Tasks per Team Stacked Bar -->
+          <div class="biz-chart-card">
+            <div class="biz-chart-card__header">
+              <div>
+                <p class="biz-chart-card__title">{{ 'dashboard.business.tasksPerTeam' | transloco }}</p>
+                <p class="biz-chart-card__sub">{{ 'dashboard.business.tasksPerTeamSub' | transloco }}</p>
+              </div>
+              <select class="biz-select" [attr.aria-label]="'dashboard.timePeriod' | transloco" title="Select period">
+                <option>{{ 'dashboard.lastMonth' | transloco }}</option>
+              </select>
+            </div>
+            <div class="biz-chart-legend-row">
+              <span class="biz-legend__sq-item"><span class="biz-legend__sq biz-legend__sq--success"></span>{{ 'dashboard.status.completed' | transloco }}</span>
+              <span class="biz-legend__sq-item"><span class="biz-legend__sq biz-legend__sq--neutral"></span>{{ 'dashboard.status.notStarted' | transloco }}</span>
+              <span class="biz-legend__sq-item"><span class="biz-legend__sq biz-legend__sq--primary"></span>{{ 'dashboard.status.inProgress' | transloco }}</span>
+            </div>
+            <div class="biz-chart-canvas-wrap" style="height:200px;">
+              <canvas baseChart [data]="tasksPerTeamData" [options]="tasksPerTeamOptions" [type]="'bar'" [attr.aria-label]="'dashboard.business.tasksPerTeamChart' | transloco"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+       BOTTOM ROW: TASKS OVERVIEW + RECENT ATTENDANCE
+  ══════════════════════════════════════════════════ -->
+  <div class="biz-bottom-row">
+
+    <!-- Tasks Overview -->
+    <section class="biz-bottom-card" aria-labelledby="tasks-overview-heading">
+      <div class="biz-bottom-card__header">
+        <div class="biz-bottom-card__title-group">
+          <div class="biz-bottom-icon-wrap" aria-hidden="true">
+            <mat-icon class="biz-bottom-icon">assignment</mat-icon>
+          </div>
+          <h3 class="biz-bottom-title" id="tasks-overview-heading">{{ 'dashboard.business.tasksOverview' | transloco }}</h3>
+        </div>
+        <a routerLink="/dashboard/task-management" class="biz-btn-gray" [attr.aria-label]="'dashboard.viewAllTasks' | transloco">
+          {{ 'dashboard.viewAll' | transloco }} <mat-icon class="biz-btn-icon">expand_more</mat-icon>
+        </a>
+      </div>
+
+      @if (taskItems.length === 0) {
+        <!-- E-2: no task data (no Task API integrated this phase) -->
+        <div class="biz-widget-state biz-widget-state--empty">
+          <mat-icon aria-hidden="true">assignment_turned_in</mat-icon>
+          <span>{{ 'dashboard.states.emptyTasks' | transloco }}</span>
+        </div>
+      } @else {
+        <ul class="biz-task-list" [attr.aria-label]="'dashboard.recentTasks' | transloco">
+          @for (task of taskItems; track $index) {
+            <li class="biz-task-item">
+              <div class="biz-task-item__left">
+                <div class="biz-task-item__icon-wrap" aria-hidden="true">
+                  <mat-icon class="biz-task-item__icon">task_alt</mat-icon>
+                </div>
+                <div>
+                  <p class="biz-task-item__name">{{ task.name }}</p>
+                  <div class="biz-task-item__tags">
+                    <span class="biz-tag biz-tag--orange">{{ 'dashboard.business.tagWebDesign' | transloco }}</span>
+                    <span class="biz-tag biz-tag--primary">{{ 'dashboard.business.tagUIUX' | transloco }}</span>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="biz-status-pill"
+                [class.biz-status-pill--done]="task.status === 'done'"
+                [class.biz-status-pill--progress]="task.status === 'in-progress'"
+                [class.biz-status-pill--not-started]="task.status === 'not-started'"
+                [attr.aria-label]="getStatusLabel(task.status)"
+              >{{ getStatusLabel(task.status) }}</span>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+
+    <!-- Recent Attendance -->
+    <section class="biz-bottom-card" aria-labelledby="attendance-heading">
+      <div class="biz-bottom-card__header">
+        <div class="biz-bottom-card__title-group">
+          <div class="biz-bottom-icon-wrap" aria-hidden="true">
+            <mat-icon class="biz-bottom-icon">how_to_reg</mat-icon>
+          </div>
+          <h3 class="biz-bottom-title" id="attendance-heading">{{ 'dashboard.business.recentAttendanceTitle' | transloco }}</h3>
+        </div>
+        <a routerLink="/dashboard/attendance" class="biz-btn-gray" [attr.aria-label]="'dashboard.viewAllAttendance' | transloco">
+          {{ 'dashboard.viewAll' | transloco }} <mat-icon class="biz-btn-icon">expand_more</mat-icon>
+        </a>
+      </div>
+
+      @if (attendanceItems.length === 0) {
+        <!-- E-3: no attendance data (no Attendance API integrated this phase) -->
+        <div class="biz-widget-state biz-widget-state--empty">
+          <mat-icon aria-hidden="true">badge</mat-icon>
+          <span>{{ 'dashboard.states.emptyAttendance' | transloco }}</span>
+        </div>
+      } @else {
+        <ul class="biz-attendance-list" [attr.aria-label]="'dashboard.business.recentAttendance' | transloco">
+          @for (item of attendanceItems; track $index) {
+            <li class="biz-attendance-item">
+              <div class="biz-attendance-item__avatar" aria-hidden="true">{{ getInitials(item.name) }}</div>
+              <div class="biz-attendance-item__info">
+                <p class="biz-attendance-item__name">{{ item.name }}</p>
+                <p class="biz-attendance-item__role">{{ item.role }}</p>
+              </div>
+              <p class="biz-attendance-item__checkin">{{ 'dashboard.business.checkIn' | transloco }} {{ item.time }}</p>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+
+  </div>
+
+  } <!-- end @else -->
+
+</div>

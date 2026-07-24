@@ -1,0 +1,234 @@
+<div class="step" [formGroup]="formGroup">
+
+  <!-- Card 1: Employer information -->
+  <div class="step-card">
+    <h2 class="step-card__title">{{ 'wizard.steps.employerInfo' | transloco }}</h2>
+
+    <div class="step__grid">
+
+      <!-- Entity name -->
+      <div class="field">
+        <label class="field__label" for="entityName">
+          {{ 'employer.entityName' | transloco }}
+          <span class="field__badge">{{ 'common.required' | transloco }}</span>
+        </label>
+        <input
+          id="entityName"
+          type="text"
+          class="field__input"
+          [class.field__input--error]="isInvalid('entityName')"
+          formControlName="entityName"
+          [attr.aria-label]="'employer.entityName' | transloco"
+          [attr.aria-invalid]="isInvalid('entityName')"
+          [attr.aria-describedby]="isInvalid('entityName') ? 'entityName-err' : null"
+          autocomplete="organization"
+        />
+        @if (isInvalid('entityName')) {
+          <span id="entityName-err" class="field__error" role="alert">
+            {{ errorKey('entityName') | transloco }}
+          </span>
+        }
+      </div>
+
+      <!-- Official number -->
+      <div class="field">
+        <label class="field__label" for="officialNumber">
+          {{ 'employer.officialNumber' | transloco }}
+          <span class="field__badge">{{ 'common.required' | transloco }}</span>
+        </label>
+        <input
+          id="officialNumber"
+          type="text"
+          class="field__input"
+          [class.field__input--error]="isInvalid('officialNumber')"
+          formControlName="officialNumber"
+          [attr.aria-label]="'employer.officialNumber' | transloco"
+          [attr.aria-invalid]="isInvalid('officialNumber')"
+          [attr.aria-describedby]="isInvalid('officialNumber') ? 'officialNumber-err' : null"
+        />
+        @if (isInvalid('officialNumber')) {
+          <span id="officialNumber-err" class="field__error" role="alert">
+            {{ errorKey('officialNumber') | transloco }}
+          </span>
+        }
+      </div>
+
+      <!-- Phone number -->
+      <div class="field">
+        <label class="field__label" for="empPhone">
+          {{ 'employer.phoneNumber' | transloco }}
+          <span class="field__badge">{{ 'common.required' | transloco }}</span>
+        </label>
+        <input
+          id="empPhone"
+          type="tel"
+          class="field__input"
+          [class.field__input--error]="isInvalid('phoneNumber')"
+          formControlName="phoneNumber"
+          [attr.aria-label]="'employer.phoneNumber' | transloco"
+          [attr.aria-invalid]="isInvalid('phoneNumber')"
+          [attr.aria-describedby]="isInvalid('phoneNumber') ? 'empPhone-err' : null"
+          autocomplete="tel"
+        />
+        @if (isInvalid('phoneNumber')) {
+          <span id="empPhone-err" class="field__error" role="alert">
+            {{ errorKey('phoneNumber') | transloco }}
+          </span>
+        }
+      </div>
+
+      <!-- Email address -->
+      <div class="field">
+        <label class="field__label" for="empEmail">
+          {{ 'employer.emailAddress' | transloco }}
+          <span class="field__badge">{{ 'common.required' | transloco }}</span>
+        </label>
+        <input
+          id="empEmail"
+          type="email"
+          class="field__input"
+          [class.field__input--error]="isInvalid('emailAddress')"
+          formControlName="emailAddress"
+          [attr.aria-label]="'employer.emailAddress' | transloco"
+          [attr.aria-invalid]="isInvalid('emailAddress')"
+          [attr.aria-describedby]="isInvalid('emailAddress') ? 'empEmail-err' : null"
+          autocomplete="email"
+        />
+        @if (isInvalid('emailAddress')) {
+          <span id="empEmail-err" class="field__error" role="alert">
+            {{ errorKey('emailAddress') | transloco }}
+          </span>
+        }
+      </div>
+
+      <!-- Address (full width textarea) -->
+      <div class="field field--full">
+        <label class="field__label" for="empAddress">
+          {{ 'employer.address' | transloco }}
+        </label>
+        <textarea
+          id="empAddress"
+          class="field__input field__textarea"
+          formControlName="address"
+          [attr.aria-label]="'employer.address' | transloco"
+          autocomplete="street-address"
+          rows="3"
+        ></textarea>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Card 2: Representative section -->
+  <div class="step-card">
+    <div class="step__grid">
+
+      <!-- Representative (name) -->
+      <div class="field">
+        <label class="field__label" for="representative">
+          {{ 'employer.representative' | transloco }}
+          <span class="field__badge">{{ 'common.required' | transloco }}</span>
+        </label>
+        <input
+          id="representative"
+          type="text"
+          class="field__input"
+          [class.field__input--error]="isInvalid('representative')"
+          formControlName="representative"
+          [attr.aria-label]="'employer.representative' | transloco"
+          [attr.aria-invalid]="isInvalid('representative')"
+          [attr.aria-describedby]="isInvalid('representative') ? 'representative-err' : null"
+        />
+        @if (isInvalid('representative')) {
+          <span id="representative-err" class="field__error" role="alert">
+            {{ errorKey('representative') | transloco }}
+          </span>
+        }
+      </div>
+
+      <!-- Representative role (second "Representative" field per Figma) -->
+      <div class="field">
+        <label class="field__label" for="representativeRole">
+          {{ 'employer.representativeRole' | transloco }}
+          <span class="field__badge">{{ 'common.required' | transloco }}</span>
+        </label>
+        <input
+          id="representativeRole"
+          type="text"
+          class="field__input"
+          formControlName="representativeRole"
+          [attr.aria-label]="'employer.representativeRole' | transloco"
+        />
+      </div>
+
+      <!-- Representative identity -->
+      <div class="field">
+        <label class="field__label" for="representativeIdentity">
+          {{ 'employer.representativeIdentity' | transloco }}
+        </label>
+        <input
+          id="representativeIdentity"
+          type="text"
+          class="field__input"
+          formControlName="representativeIdentity"
+          [attr.aria-label]="'employer.representativeIdentity' | transloco"
+        />
+      </div>
+
+      <!-- Representative phone number -->
+      <div class="field">
+        <label class="field__label" for="representativePhone">
+          {{ 'employer.representativePhone' | transloco }}
+        </label>
+        <input
+          id="representativePhone"
+          type="tel"
+          class="field__input"
+          formControlName="representativePhone"
+          [attr.aria-label]="'employer.representativePhone' | transloco"
+          autocomplete="tel"
+        />
+      </div>
+
+      <!-- Representative email (full width) -->
+      <div class="field field--full">
+        <label class="field__label" for="representativeEmail">
+          {{ 'employer.representativeEmail' | transloco }}
+          <span class="field__badge">{{ 'common.required' | transloco }}</span>
+        </label>
+        <input
+          id="representativeEmail"
+          type="email"
+          class="field__input"
+          [class.field__input--error]="isInvalid('representativeEmail')"
+          formControlName="representativeEmail"
+          [attr.aria-label]="'employer.representativeEmail' | transloco"
+          [attr.aria-invalid]="isInvalid('representativeEmail')"
+          [attr.aria-describedby]="isInvalid('representativeEmail') ? 'representativeEmail-err' : null"
+          autocomplete="email"
+        />
+        @if (isInvalid('representativeEmail')) {
+          <span id="representativeEmail-err" class="field__error" role="alert">
+            {{ errorKey('representativeEmail') | transloco }}
+          </span>
+        }
+      </div>
+
+      <!-- Representative description (full width textarea) -->
+      <div class="field field--full">
+        <label class="field__label" for="representativeDescription">
+          {{ 'employer.representativeDescription' | transloco }}
+        </label>
+        <textarea
+          id="representativeDescription"
+          class="field__input field__textarea"
+          formControlName="representativeDescription"
+          [attr.aria-label]="'employer.representativeDescription' | transloco"
+          rows="3"
+        ></textarea>
+      </div>
+
+    </div>
+  </div>
+
+</div>

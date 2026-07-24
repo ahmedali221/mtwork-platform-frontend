@@ -1,0 +1,343 @@
+:root {
+  --primary-color: var(--brand-primary-600);
+  --primary-hover: var(--brand-primary-600);
+  --secondary-color: var(--brand-neutral-50);
+  --border-color: var(--ui-border);
+  --text-dark: var(--ui-text-primary);
+  --text-gray: var(--ui-text-muted);
+  --badge-bg: var(--brand-accent-50);
+  --badge-text: var(--brand-accent-500);
+  --success-color: var(--functional-success-600);
+  --error-color: var(--functional-danger-500);
+  --input-bg: var(--ui-bg-surface);
+  --light-gray-bg: var(--ui-bg-subtle); /* Added for the overall background */
+  --lighter-gray-bg: var(--brand-neutral-100); /* For input background */
+}
+
+body {
+  font-family: var(--font-family-primary);
+  background-color: var(--light-gray-bg);
+  padding: 20px;
+}
+img{
+  width:40px;
+  height:40px;
+}
+/* ========== CARD SECTION ========== */
+.card-section {
+  background: var(--input-bg);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--brand-neutral-950) 6%, transparent);
+  border: 1px solid var(--border-color); /* Changed border width */
+  margin-bottom: 24px;
+  animation: slideUp 0.3s ease;
+  margin-inline-start: 5px;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color); /* Changed border width */
+}
+
+.section-title {
+  font-size: 25px;
+  font-weight: bolder;
+  color: var(--text-dark);
+  letter-spacing: -0.3px;
+}
+
+/* ========== BUTTONS ========== */
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.delete-button {
+  color: var(--text-gray);
+}
+
+.delete-button:hover {
+  background-color: var(--secondary-color);
+  color: var(--error-color);
+}
+
+.add-task-button {
+  background-color: var(--brand-primary-600);
+  color: var(--brand-neutral-500);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.add-task-button:hover {
+  background-color: var(--primary-hover);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+
+/* ========== FORM ELEMENTS ========== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px; /* Added margin-bottom */
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.required-badge {
+  display: inline-block;
+  background: var(--badge-bg); /* Use new badge-bg variable */
+  color: var(--badge-text);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background-color: var(--functional-warning-300);
+}
+
+.form-input {
+  padding: 12px 16px;
+  border: 1px solid var(--border-color); /* Changed border width */
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text-dark);
+ background-color: var(--brand-neutral-100); /* Changed to lighter-gray-bg */
+  transition: all 0.2s ease;
+  font-family: inherit;
+  width: 100%;
+}
+
+.form-input::placeholder {
+  color: var(--text-gray); /* Changed placeholder color */
+  font-weight: 400;
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary-500) 10%, transparent);
+  background: var(--input-bg);
+}
+
+.form-input:hover {
+  border-color: var(--brand-neutral-300);
+}
+
+.form-input.textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+  border: 1px solid var(--border-color); /* Changed border width */
+  background-color: var(--brand-neutral-100); /* Changed to lighter-gray-bg */
+}
+
+/* Input with icon (for date) */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon .form-input {
+  padding-inline-end: 40px; /* Make space for the icon */
+}
+
+.input-with-icon .input-icon {
+  position: absolute;
+  inset-inline-end: 12px;
+  color: var(--text-gray);
+  width: 20px;
+  height: 20px;
+  pointer-events: none; /* Allow clicks to pass through to the input */
+}
+
+/* Input with spinner (for amount) */
+.input-with-spinner {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color); /* Changed border width */
+  border-radius: 8px;
+ 
+   background-color: var(--brand-neutral-100);
+}
+
+.input-with-spinner .form-input {
+  flex-grow: 1;
+  border: none;
+  background: none;
+  padding: 12px 16px;
+  border-radius: 0;
+   background-color: var(--brand-neutral-100);
+}
+
+.input-with-spinner .form-input:focus {
+  box-shadow: none;
+  background: none;
+}
+
+.spinner-buttons {
+  display: flex;
+  flex-direction: column;
+  border-inline-start: 1px solid var(--border-color);
+}
+
+.spinner-button {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: var(--text-gray);
+  transition: background-color 0.2s ease;
+}
+
+.spinner-button:hover {
+  background-color: var(--secondary-color);
+}
+
+.spinner-button:first-child {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.spinner-icon {
+  width: 16px;
+  height: 16px;
+}
+
+
+
+
+   /* File Upload */
+    .file-upload-container {
+      display: flex;
+      align-items: center;
+      border: 2px dashed var(--brand-neutral-950);
+      border-radius: 8px;
+      padding: 12px 16px;
+      background-color: var(--lighter-gray-bg);
+      justify-content: flex-start;
+      gap: 15px;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .upload-button {
+      background-color: var(--brand-neutral-950);
+      color: var(--brand-neutral-500);
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: background-color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .upload-button:hover {
+      background-color: var(--ui-text-sub);
+    }
+
+    .file-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-gray);
+      font-size: 13px;
+    }
+
+    .file-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--text-gray);
+    }
+
+    .file-name {
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .card-section {
+    padding: 20px;
+  }
+
+  .section-title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-section {
+    padding: 16px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .form-label {
+    font-size: 13px;
+  }
+
+  .form-input {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .required-badge {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+
+  .file-upload-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px;
+    
+  }
+}

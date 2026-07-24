@@ -1,0 +1,250 @@
+/* ── Page shell — uses global .page-container; keep only overrides ── */
+.employees-page { gap: 0; }
+
+/* ── Breadcrumb ───────────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  margin-block-end: 8px;
+}
+
+.breadcrumb__item { color: var(--ui-text-muted); }
+.breadcrumb__item--active { color: var(--brand-primary-500); font-weight: 500; }
+.breadcrumb__sep { color: var(--ui-text-muted); }
+
+/* ── Page header ──────────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-block-end: 24px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ui-text-main);
+  margin: 0;
+}
+
+/* ── Filter toolbar ───────────────────────────────────────────── */
+.filters-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--ui-bg-surface);
+  border-block-end: 1px solid var(--ui-border);
+  flex-wrap: wrap;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  max-width: 260px;
+  height: 36px;
+  background: var(--ui-bg-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 8px;
+  padding-inline: 10px;
+}
+
+.search-input-wrapper svg { flex-shrink: 0; color: var(--ui-text-muted); }
+
+.search-input-wrapper input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  color: var(--ui-text-sub);
+}
+
+.search-input-wrapper input::placeholder { color: var(--ui-text-muted); }
+
+.clear-filters-btn {
+  background: none;
+  border: none;
+  color: var(--ui-text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  margin-inline-start: auto;
+  transition: color 0.15s;
+}
+
+.clear-filters-btn:hover { color: var(--brand-primary-500); }
+
+/* ── Loading / Error ──────────────────────────────────────────── */
+.loading-spinner {
+  text-align: center;
+  padding: 48px;
+  color: var(--ui-text-muted);
+  font-size: 14px;
+  background: var(--ui-bg-surface);
+}
+
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--functional-danger-500);
+  font-size: 14px;
+  background: var(--ui-bg-surface);
+}
+
+.retry-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  background: none;
+  font-size: 13px;
+  color: var(--ui-text-main);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.retry-btn:hover { background: var(--ui-bg-subtle); }
+
+/* ── Table ────────────────────────────────────────────────────── */
+.employees-page .table-container {
+  border-radius: 0 0 var(--radius-12) var(--radius-12);
+  border-block-start: none;
+}
+
+.employees-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--ui-bg-surface);
+}
+
+.employees-table th,
+.employees-table td {
+  padding: 12px 16px;
+  text-align: start;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.employees-table th {
+  background: var(--ui-bg-surface);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--ui-text-muted);
+  border-block-end: 1px solid var(--ui-border);
+}
+
+.employees-table tbody tr {
+  border-block-end: 1px solid var(--ui-border);
+  transition: background 0.15s;
+}
+
+.employees-table tbody tr:last-child { border-block-end: none; }
+.employees-table tbody tr:hover { background: color-mix(in srgb, var(--brand-primary-50) 40%, transparent); }
+
+.employees-table td { color: var(--ui-text-main); vertical-align: middle; }
+
+/* ── Employee cell ────────────────────────────────────────────── */
+.employee-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ui-bg-surface);
+  flex-shrink: 0;
+  text-transform: uppercase;
+  background: var(--brand-primary-400);
+}
+
+.employee-name { font-size: 13px; font-weight: 500; color: var(--ui-text-main); }
+.employee-role { font-size: 11px; color: var(--ui-text-muted); }
+
+.type-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  white-space: nowrap;
+  background: var(--ui-bg-subtle);
+  color: var(--ui-text-sub);
+  border: 1px solid var(--ui-border);
+}
+
+/* ── Actions ──────────────────────────────────────────────────── */
+.action-menu-btn {
+  background: none;
+  border: 1px solid var(--ui-border);
+  color: var(--ui-text-main);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px 12px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.action-menu-btn:hover { background: var(--ui-bg-subtle); }
+
+/* ── Expand row ───────────────────────────────────────────────── */
+.expand-btn {
+  background: none;
+  border: none;
+  color: var(--ui-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.expand-panel { padding: 12px 16px; background: var(--ui-bg-subtle); }
+
+.expand-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.expand-grid dt { font-size: 11px; color: var(--ui-text-muted); margin-block-end: 2px; }
+.expand-grid dd { font-size: 13px; color: var(--ui-text-main); margin: 0; }
+
+/* ── Empty state ──────────────────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 64px 24px;
+  text-align: center;
+  background: var(--ui-bg-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 0 0 var(--radius-12) var(--radius-12);
+  color: var(--ui-text-muted);
+}
+
+.empty-state h2 { font-size: 16px; font-weight: 600; color: var(--ui-text-main); margin: 0 0 4px; }
+.empty-state p { font-size: 14px; color: var(--ui-text-muted); margin: 0; max-width: 360px; }
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .filters-container { padding: 10px 12px; }
+  .employees-table th:nth-child(n+4),
+  .employees-table td:nth-child(n+4) { display: none; }
+}

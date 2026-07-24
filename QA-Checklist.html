@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTWork Platform — QA Checklist</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0f1117;
+    --surface:   #1a1d27;
+    --surface2:  #22263a;
+    --border:    #2e3250;
+    --primary:   #6366f1;
+    --success:   #22c55e;
+    --warning:   #f59e0b;
+    --danger:    #ef4444;
+    --text:      #e2e8f0;
+    --muted:     #94a3b8;
+    --radius:    10px;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+  }
+
+  /* ── Header ── */
+  .qa-header {
+    max-width: 900px;
+    margin: 0 auto 32px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .qa-title { font-size: 1.6rem; font-weight: 700; color: var(--text); }
+  .qa-subtitle { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    max-width: 900px;
+    margin: 0 auto 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+  }
+  .progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .progress-label { font-size: 0.85rem; color: var(--muted); }
+  .progress-count { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    border-radius: 99px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  /* ── App link bar ── */
+  .app-links {
+    max-width: 900px;
+    margin: 0 auto 24px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .app-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: border-color 0.2s;
+  }
+  .app-link:hover { border-color: var(--primary); }
+  .app-link svg { width: 14px; height: 14px; }
+
+  /* ── Sections ── */
+  .section {
+    max-width: 900px;
+    margin: 0 auto 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .section-header:hover { background: #262b42; }
+  .section-title-row { display: flex; align-items: center; gap: 10px; }
+  .section-icon { font-size: 1.1rem; }
+  .section-title { font-size: 0.95rem; font-weight: 600; }
+  .section-meta { display: flex; align-items: center; gap: 10px; }
+  .section-badge {
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-done   { background: #14532d; color: #86efac; }
+  .badge-todo   { background: #1e1b4b; color: #a5b4fc; }
+  .badge-warn   { background: #451a03; color: #fcd34d; }
+  .chevron { color: var(--muted); font-size: 1rem; transition: transform 0.2s; }
+  .section-body { padding: 0; }
+  .section-body.collapsed { display: none; }
+
+  /* ── Check items ── */
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 20px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item:hover { background: rgba(99,102,241,0.05); }
+  .check-item.checked { background: rgba(34,197,94,0.04); }
+  .check-item.na { background: rgba(148,163,184,0.04); opacity: 0.6; }
+
+  .check-item input[type="checkbox"] { display: none; }
+  .check-box {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    background: var(--surface2);
+  }
+  .check-item.checked .check-box {
+    background: var(--success);
+    border-color: var(--success);
+  }
+  .check-item.checked .check-box::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 700; }
+
+  .check-content { flex: 1; min-width: 0; }
+  .check-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--text);
+  }
+  .check-item.checked .check-label { text-decoration: line-through; color: var(--muted); }
+  .check-desc {
+    font-size: 0.775rem;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+  .check-tag {
+    font-size: 0.68rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .tag-rtl   { background: #1e3a5f; color: #93c5fd; }
+  .tag-ltr   { background: #1a2e1a; color: #86efac; }
+  .tag-a11y  { background: #2d1b4e; color: #c4b5fd; }
+  .tag-i18n  { background: #1c2333; color: #7dd3fc; }
+  .tag-ui    { background: #3b1f00; color: #fcd34d; }
+  .tag-api   { background: #1a1f2e; color: #6ee7b7; }
+
+  /* ── Route links inside checklist ── */
+  .route-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    color: var(--primary);
+    text-decoration: none;
+    background: rgba(99,102,241,0.1);
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-inline-start: 6px;
+    vertical-align: middle;
+  }
+  .route-link:hover { background: rgba(99,102,241,0.2); }
+
+  /* ── Group labels ── */
+  .group-label {
+    padding: 8px 20px 5px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Controls ── */
+  .controls {
+    max-width: 900px;
+    margin: 0 auto 24px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn:hover { border-color: var(--primary); color: var(--primary); }
+  .btn-danger:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* ── Summary box ── */
+  .summary {
+    max-width: 900px;
+    margin: 0 auto 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    text-align: center;
+  }
+  .summary-num { font-size: 1.8rem; font-weight: 800; }
+  .summary-num.green { color: var(--success); }
+  .summary-num.blue  { color: var(--primary); }
+  .summary-num.amber { color: var(--warning); }
+  .summary-lbl { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+  /* ── Footer note ── */
+  .footer-note {
+    max-width: 900px;
+    margin: 32px auto 0;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="qa-header">
+  <div>
+    <div class="qa-title">🧪 MTWork Platform — QA Checklist</div>
+    <div class="qa-subtitle">Phase 4 — Manual verification checklist · All dev phases complete</div>
+  </div>
+  <div style="text-align:right;">
+    <div style="font-size:0.75rem;color:var(--muted);">E2E Tests</div>
+    <div style="font-size:1rem;font-weight:700;color:var(--success);">36 / 36 ✓</div>
+    <div style="font-size:0.7rem;color:var(--muted);">5 skipped (admin)</div>
+  </div>
+</div>
+
+<!-- ── Progress ── -->
+<div class="progress-wrap">
+  <div class="progress-row">
+    <span class="progress-label">Manual QA Progress</span>
+    <span class="progress-count" id="progressCount">0 / 0</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<!-- ── Summary cards ── -->
+<div class="summary">
+  <div class="summary-card">
+    <div class="summary-num green" id="sumDone">0</div>
+    <div class="summary-lbl">Done</div>
+  </div>
+  <div class="summary-card">
+    <div class="summary-num blue" id="sumTodo">0</div>
+    <div class="summary-lbl">Remaining</div>
+  </div>
+  <div class="summary-card">
+    <div class="summary-num amber" id="sumSections">0</div>
+    <div class="summary-lbl">Sections</div>
+  </div>
+</div>
+
+<!-- ── Quick links to the live app ── -->
+<div class="app-links">
+  <a href="http://localhost:4200" target="_blank" class="app-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    Landing Page
+  </a>
+  <a href="http://localhost:4200/login" target="_blank" class="app-link">🔐 Login</a>
+  <a href="http://localhost:4200/dashboard" target="_blank" class="app-link">📊 Dashboard</a>
+  <a href="http://localhost:4200/dashboard/contracts" target="_blank" class="app-link">📄 Contracts</a>
+  <a href="http://localhost:4200/dashboard/hr" target="_blank" class="app-link">👥 HR</a>
+  <a href="http://localhost:4200/dashboard/salary" target="_blank" class="app-link">💰 Salary</a>
+  <a href="http://localhost:4200/dashboard/requests" target="_blank" class="app-link">📋 Requests</a>
+  <a href="http://localhost:4200/dashboard/payments" target="_blank" class="app-link">💳 Payments</a>
+  <a href="http://localhost:4200/dashboard/reports" target="_blank" class="app-link">📈 Reports</a>
+</div>
+
+<!-- ── Controls ── -->
+<div class="controls">
+  <button class="btn" onclick="expandAll()">Expand All</button>
+  <button class="btn" onclick="collapseAll()">Collapse All</button>
+  <button class="btn" onclick="checkAll()">Check All</button>
+  <button class="btn btn-danger" onclick="resetAll()">Reset Progress</button>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 1 — Auth Flow
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-auth">
+  <div class="section-header" onclick="toggleSection('s-auth')">
+    <div class="section-title-row">
+      <span class="section-icon">🔐</span>
+      <span class="section-title">Auth Flow</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-auth">0/0</span>
+      <span class="chevron" id="chev-s-auth">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-auth">
+    <div class="group-label">Login · /login</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Login form renders correctly in LTR <span class="check-tag tag-ltr">LTR</span></div><div class="check-desc">Email + password fields, submit button, forgot password link all visible and aligned</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Login form renders correctly in RTL <span class="check-tag tag-rtl">RTL</span></div><div class="check-desc">Switch browser/OS language to Arabic. Fields and labels should flip and align right</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Wrong credentials shows Arabic error <span class="check-tag tag-i18n">i18n</span></div><div class="check-desc">In Arabic mode, error message from API must appear in Arabic (the API returns translated messages)</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Empty form — submit button disabled or validation visible <span class="check-tag tag-a11y">a11y</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Tab key navigates through all form fields in correct order <span class="check-tag tag-a11y">a11y</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Forgot password modal opens, accepts email, shows confirmation <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">MT_token stored in localStorage after successful login <span class="check-tag tag-api">API</span></div><div class="check-desc">Check DevTools → Application → Local Storage → MT_token exists</div></div></div>
+
+    <div class="group-label">Session · Guards</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Unauthenticated access to /dashboard redirects to /login <span class="check-tag tag-ui">Guard</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Logout clears localStorage and redirects to /login <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">After logout, browser Back button does NOT return to dashboard <span class="check-tag tag-ui">Security</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Mobile: login page fully usable on 375px screen <span class="check-tag tag-ui">Mobile</span></div><div class="check-desc">Use DevTools device simulation → iPhone SE (375×667)</div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 2 — Dashboard Shell
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-shell">
+  <div class="section-header" onclick="toggleSection('s-shell')">
+    <div class="section-title-row">
+      <span class="section-icon">🧩</span>
+      <span class="section-title">Dashboard Shell (Sidebar + Header)</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-shell">0/0</span>
+      <span class="chevron" id="chev-s-shell">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-shell">
+    <div class="group-label">Sidebar</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Sidebar opens and collapses with hamburger button <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Collapsed sidebar shows icons only (width: 100px) <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Sidebar in RTL mode — icons and labels aligned to right side <span class="check-tag tag-rtl">RTL</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Active nav item highlighted on current route <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Business Owner sees Business nav items only (no Admin items) <span class="check-tag tag-ui">RBAC</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Employee sees Employee nav items only (no HR, Contracts) <span class="check-tag tag-ui">RBAC</span></div></div></div>
+
+    <div class="group-label">Header</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">User avatar shows correct initials <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">User dropdown shows role badge ("Business Owner" / "Employee") <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Role badge text in Arabic when language is AR <span class="check-tag tag-i18n">i18n</span></div><div class="check-desc">roles.business = "صاحب عمل", roles.employee = "موظف"</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Dark / Light mode toggle works and persists on refresh <span class="check-tag tag-ui">Theme</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Header search bar is visible and accepts input <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Mobile (375px): sidebar hidden by default, hamburger visible <span class="check-tag tag-ui">Mobile</span></div></div></div>
+
+    <div class="group-label">No Hardcoded Colors</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">authenticated-header.css — 0 hardcoded hex colors <span class="check-tag tag-ui">CSS</span></div><div class="check-desc">Run: grep -n "#[0-9a-fA-F]{3,6}" src/components/DashboardLayout/authenticated-header/authenticated-header.css</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">sidebar.css — 0 hardcoded hex colors <span class="check-tag tag-ui">CSS</span></div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 3 — Contracts Module
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-contracts">
+  <div class="section-header" onclick="toggleSection('s-contracts')">
+    <div class="section-title-row">
+      <span class="section-icon">📄</span>
+      <span class="section-title">Contracts Module</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-contracts">0/0</span>
+      <span class="chevron" id="chev-s-contracts">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-contracts">
+    <div class="group-label">Contract List · /dashboard/contracts</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Page loads with contract table or empty state <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">"New Contract" link navigates to /dashboard/typepeople <span class="check-tag tag-ui">Navigation</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Tab filters (All / Employees / Contractors / Draft) work <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Contract row expands / shows detail on click <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Status change dialog (Approve / Cancel) opens and calls API <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">PDF download via /Report/generate-pdf triggers file download <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">RTL: table columns, action buttons align correctly in Arabic <span class="check-tag tag-rtl">RTL</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Mobile: table scrollable horizontally, no content clipped <span class="check-tag tag-ui">Mobile</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">contract-list.css — 0 hardcoded hex colors <span class="check-tag tag-ui">CSS</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">contract-details-dialoge.css — 0 hardcoded hex colors <span class="check-tag tag-ui">CSS</span></div><div class="check-desc">This was flagged as ~40 occurrences in CLAUDE.md — verify it is fixed</div></div></div>
+
+    <div class="group-label">Contract Creation Wizard</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Choose People Type page loads at /dashboard/typepeople <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Fixed Salary Contract wizard completes all steps <span class="check-tag tag-ui">Flow</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Validation errors shown in Arabic when lang = AR <span class="check-tag tag-i18n">i18n</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">File upload (Attachment API) works in contract form <span class="check-tag tag-api">API</span></div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 4 — HR Module
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-hr">
+  <div class="section-header" onclick="toggleSection('s-hr')">
+    <div class="section-title-row">
+      <span class="section-icon">👥</span>
+      <span class="section-title">HR Module</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-hr">0/0</span>
+      <span class="chevron" id="chev-s-hr">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-hr">
+    <div class="group-label">HR List · /dashboard/hr (Business Owner only)</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Employees tab loads with list or empty state <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">"Leave Requests" tab loads with list or empty state <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Approve / Reject leave request calls ChangeStatus API <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Search filter narrows employee list in real time <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Status filter (Pending / Approved / Rejected) works on requests tab <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Table/Card view toggle works <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">RTL: tab buttons, table, action menus flip correctly <span class="check-tag tag-rtl">RTL</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Employee role — /dashboard/hr redirects to /dashboard (access denied) <span class="check-tag tag-ui">RBAC</span></div></div></div>
+
+    <div class="group-label">Leave Requests · /dashboard/requests (Employee)</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Employee can access /dashboard/requests (not blocked) <span class="check-tag tag-ui">RBAC</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">"New Request" dialog opens and submits to /OrderRequest/Create <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Request type dropdown shows all types (Annual Leave, Sick Leave, etc.) <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Submitted request appears in list after refresh <span class="check-tag tag-api">API</span></div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 5 — Salary & Withdrawals
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-salary">
+  <div class="section-header" onclick="toggleSection('s-salary')">
+    <div class="section-title-row">
+      <span class="section-icon">💰</span>
+      <span class="section-title">Salary & Withdrawals</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-salary">0/0</span>
+      <span class="chevron" id="chev-s-salary">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-salary">
+    <div class="group-label">Salary Page · /dashboard/salary</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Company balance card displays current balance (Business Owner) <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">"Pay Salary" button opens dialog (Business Owner only) <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Pay Salary dialog — employee dropdown populated from API <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">History tab shows previous payments <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Employee view: shows personal salary info (not company balance) <span class="check-tag tag-ui">RBAC</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Insufficient balance shows error from API message field <span class="check-tag tag-api">Error</span></div></div></div>
+
+    <div class="group-label">Withdrawals · /dashboard/withdrawals</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Employee can submit withdrawal request (IBAN + amount) <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Withdrawal history shows status badges (Pending / Approved / Rejected) <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">RTL: currency amounts display correctly (number alignment) <span class="check-tag tag-rtl">RTL</span></div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 6 — Payments (Stripe)
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-payments">
+  <div class="section-header" onclick="toggleSection('s-payments')">
+    <div class="section-title-row">
+      <span class="section-icon">💳</span>
+      <span class="section-title">Payments (Stripe)</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-payments">0/0</span>
+      <span class="chevron" id="chev-s-payments">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-payments">
+    <div class="group-label">Balance Recharge · /dashboard/payments</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Balance recharge form loads, amount field accepts input <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Clicking Pay → redirects to Stripe checkout session URL <span class="check-tag tag-api">API</span></div><div class="check-desc">POST /Payment/create-checkout-session must return a valid Stripe URL</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Return URL (/dashboard/payments/return) verifies session and shows success <span class="check-tag tag-api">API</span></div></div></div>
+
+    <div class="group-label">Subscription · /dashboard/subscription</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Pricing cards (monthly / yearly) load from /CompanySubscription/GetAmounts <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Active subscription badge shown if already subscribed <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Non-Business users cannot access /dashboard/subscription (guard blocks) <span class="check-tag tag-ui">RBAC</span></div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 7 — Reports
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-reports">
+  <div class="section-header" onclick="toggleSection('s-reports')">
+    <div class="section-title-row">
+      <span class="section-icon">📈</span>
+      <span class="section-title">Reports</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-reports">0/0</span>
+      <span class="chevron" id="chev-s-reports">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-reports">
+    <div class="group-label">Report List · /dashboard/reports</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Report list page loads without 404 <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Clicking "Download PDF" calls /Report/generate-pdf?ContractId= and downloads file <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Downloaded PDF opens correctly in browser PDF viewer <span class="check-tag tag-ui">UI</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Permission gate: only permitted users see this route <span class="check-tag tag-ui">RBAC</span></div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 8 — Other Features
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-other">
+  <div class="section-header" onclick="toggleSection('s-other')">
+    <div class="section-title-row">
+      <span class="section-icon">🗂️</span>
+      <span class="section-title">Other Features (Projects / Teams / Meetings / Attendance)</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-other">0/0</span>
+      <span class="chevron" id="chev-s-other">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-other">
+    <div class="group-label">Projects · /dashboard/projects</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Projects list loads (cards or table) <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Clicking a project navigates to /dashboard/projects/:id <span class="check-tag tag-ui">Navigation</span></div></div></div>
+
+    <div class="group-label">Teams · /dashboard/teams</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Teams list loads with members or empty state <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Invite member dialog opens from sidebar + button <span class="check-tag tag-ui">UI</span></div></div></div>
+
+    <div class="group-label">Meetings · /dashboard/meetings</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Meetings list loads (upcoming / past) <span class="check-tag tag-api">API</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Create meeting opens dialog and submits to API <span class="check-tag tag-api">API</span></div></div></div>
+
+    <div class="group-label">Attendance · /dashboard/genralattendance</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Attendance page loads for Business + Employee <span class="check-tag tag-api">API</span></div></div></div>
+
+    <div class="group-label">Task Management · /dashboard/task-management</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Task list loads or shows empty state <span class="check-tag tag-api">API</span></div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 9 — Global: RTL / i18n
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-rtl">
+  <div class="section-header" onclick="toggleSection('s-rtl')">
+    <div class="section-title-row">
+      <span class="section-icon">🌐</span>
+      <span class="section-title">Global — RTL / i18n</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-rtl">0/0</span>
+      <span class="chevron" id="chev-s-rtl">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-rtl">
+    <div class="group-label">Language Switch</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Language toggle switches between EN and AR without page reload <span class="check-tag tag-i18n">i18n</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Selected language persists on refresh (saved to localStorage) <span class="check-tag tag-i18n">i18n</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">All nav labels in Arabic when AR selected <span class="check-tag tag-i18n">i18n</span></div><div class="check-desc">Check sidebar nav items: Dashboard, Contracts, HR, Salary — all in Arabic</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">All error messages from API display in Arabic (lang header sent) <span class="check-tag tag-i18n">i18n</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">No hardcoded English strings visible when AR is active <span class="check-tag tag-i18n">i18n</span></div><div class="check-desc">Look for any English text in dialogs, buttons, tables, empty states</div></div></div>
+
+    <div class="group-label">Layout Direction</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">HTML dir="rtl" applied to root element when Arabic is active <span class="check-tag tag-rtl">RTL</span></div><div class="check-desc">Check DevTools → Elements → &lt;html dir="rtl"&gt;</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Sidebar moves to the RIGHT side in RTL <span class="check-tag tag-rtl">RTL</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Tables: columns in correct RTL order (rightmost = first) <span class="check-tag tag-rtl">RTL</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Forms: labels aligned right, inputs text-align right in RTL <span class="check-tag tag-rtl">RTL</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">No margin-left / padding-left CSS — all use logical properties <span class="check-tag tag-rtl">RTL</span></div><div class="check-desc">Run: grep -rn "margin-left\|padding-left" src --include="*.css" (should return 0)</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Icons (arrows, chevrons) flip direction in RTL <span class="check-tag tag-rtl">RTL</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Landing page sections stack correctly in RTL mobile view <span class="check-tag tag-rtl">RTL</span></div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 10 — Accessibility
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-a11y">
+  <div class="section-header" onclick="toggleSection('s-a11y')">
+    <div class="section-title-row">
+      <span class="section-icon">♿</span>
+      <span class="section-title">Accessibility (a11y)</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-a11y">0/0</span>
+      <span class="chevron" id="chev-s-a11y">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-a11y">
+    <div class="group-label">Keyboard Navigation</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Tab through Login page reaches all controls <span class="check-tag tag-a11y">a11y</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Tab through Sidebar reaches all nav links <span class="check-tag tag-a11y">a11y</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Focus ring visible on all focused elements (:focus-visible) <span class="check-tag tag-a11y">a11y</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Dialogs trap focus (Tab stays inside open dialog) <span class="check-tag tag-a11y">a11y</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Escape key closes open dialogs and dropdowns <span class="check-tag tag-a11y">a11y</span></div></div></div>
+
+    <div class="group-label">ARIA Attributes</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">All icon-only buttons have aria-label <span class="check-tag tag-a11y">a11y</span></div><div class="check-desc">Hamburger, theme toggle, settings, notifications — check aria-label exists</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">All images have alt attributes <span class="check-tag tag-a11y">a11y</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Tables have aria-label attributes <span class="check-tag tag-a11y">a11y</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">User menu has role="menu" and items have role="menuitem" <span class="check-tag tag-a11y">a11y</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Loading spinners have role="status" or aria-label <span class="check-tag tag-a11y">a11y</span></div></div></div>
+
+    <div class="group-label">Color Contrast</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Text on surface backgrounds meets WCAG AA (4.5:1 ratio) <span class="check-tag tag-a11y">a11y</span></div><div class="check-desc">Use browser DevTools accessibility panel or axe extension</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Status badges (Approved / Pending / Rejected) meet contrast requirements <span class="check-tag tag-a11y">a11y</span></div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 11 — CSS / No Hardcoded Hex Colors
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-css">
+  <div class="section-header" onclick="toggleSection('s-css')">
+    <div class="section-title-row">
+      <span class="section-icon">🎨</span>
+      <span class="section-title">CSS — Hardcoded Hex Colors (37 remaining)</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-warn" id="badge-s-css">0/0</span>
+      <span class="chevron" id="chev-s-css">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-css">
+    <div class="group-label">Priority Files (from CLAUDE.md Phase 1)</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">contract-details-dialoge.css — verify fixed (~40 occurrences originally) <span class="check-tag tag-ui">CSS</span></div><div class="check-desc">grep -c "#[0-9a-fA-F]{3,6}" src/components/DashboardLayout/Contract/contract-details-dialoge/contract-details-dialoge.css</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">contract-list.css — verify fixed (~15 occurrences originally) <span class="check-tag tag-ui">CSS</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">authenticated-header.css — verify fixed (~10 occurrences originally) <span class="check-tag tag-ui">CSS</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">landingComponents/**/*.css — verify fixed (8+ files originally) <span class="check-tag tag-ui">CSS</span></div></div></div>
+
+    <div class="group-label">Full Audit Command</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Run audit: total hex count in component CSS files = 0 <span class="check-tag tag-ui">CSS</span></div><div class="check-desc" style="font-family:monospace;background:#11141f;padding:6px 10px;border-radius:4px;margin-top:6px;">grep -rn "#[0-9a-fA-F]{3,6}" src --include="*.css" | grep -v "styles.css" | wc -l</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Dark mode: all colors switch correctly (no hardcoded white/black visible) <span class="check-tag tag-ui">Theme</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Light mode: all surfaces and text readable with correct contrast <span class="check-tag tag-ui">Theme</span></div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 12 — Mobile Responsiveness
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-mobile">
+  <div class="section-header" onclick="toggleSection('s-mobile')">
+    <div class="section-title-row">
+      <span class="section-icon">📱</span>
+      <span class="section-title">Mobile Responsiveness</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-mobile">0/0</span>
+      <span class="chevron" id="chev-s-mobile">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-mobile">
+    <div class="group-label">375px (iPhone SE) — Critical breakpoint</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Landing page: sections stack vertically, no horizontal scroll <span class="check-tag tag-ui">Mobile</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Login form: full width, no overflow <span class="check-tag tag-ui">Mobile</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Dashboard: sidebar hidden, hamburger button visible in header <span class="check-tag tag-ui">Mobile</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Dashboard: sidebar opens as overlay on hamburger tap <span class="check-tag tag-ui">Mobile</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Contracts table: scrollable horizontally on small screen <span class="check-tag tag-ui">Mobile</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Dialogs: full-width on mobile, not clipped at edges <span class="check-tag tag-ui">Mobile</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Salary page: balance cards stack vertically <span class="check-tag tag-ui">Mobile</span></div></div></div>
+
+    <div class="group-label">768px (Tablet)</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Dashboard: sidebar visible in collapsed state (icons only) <span class="check-tag tag-ui">Mobile</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Tables display correctly without horizontal scroll <span class="check-tag tag-ui">Mobile</span></div></div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 13 — Pre-Production Build
+═══════════════════════════════════════════════════════════ -->
+<div class="section" id="s-build">
+  <div class="section-header" onclick="toggleSection('s-build')">
+    <div class="section-title-row">
+      <span class="section-icon">🚀</span>
+      <span class="section-title">Pre-Production Build (Phase 12)</span>
+    </div>
+    <div class="section-meta">
+      <span class="section-badge badge-todo" id="badge-s-build">0/0</span>
+      <span class="chevron" id="chev-s-build">▼</span>
+    </div>
+  </div>
+  <div class="section-body" id="body-s-build">
+    <div class="group-label">Build</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">ng build --configuration production completes with 0 errors <span class="check-tag tag-ui">Build</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Build output has no TypeScript errors <span class="check-tag tag-ui">Build</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Main bundle size &lt; 1MB (initial chunk) <span class="check-tag tag-ui">Performance</span></div><div class="check-desc">Check angular build output for bundle sizes. Warn above 1MB.</div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">environment.prod.ts points to https://api.mtwork.com/api/ <span class="check-tag tag-api">Config</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">No console.log statements in production code <span class="check-tag tag-ui">Cleanup</span></div><div class="check-desc">grep -rn "console.log" src --include="*.ts" | grep -v "spec\|node_modules"</div></div></div>
+
+    <div class="group-label">Post-Deployment</div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">All routes accessible directly (no 404 on refresh) — requires server-side redirect <span class="check-tag tag-ui">Deploy</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">API calls go to production URL (not localhost) <span class="check-tag tag-api">Config</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">HTTPS enforced — no mixed-content warnings in console <span class="check-tag tag-ui">Security</span></div></div></div>
+    <div class="check-item" onclick="toggle(this)"><div class="check-box"></div><div class="check-content"><div class="check-label">Stripe webhook URL updated for production domain <span class="check-tag tag-api">Config</span></div></div></div>
+  </div>
+</div>
+
+
+<div class="footer-note">
+  MTWork Platform QA Checklist · Phase 4 · Progress saved automatically in localStorage<br>
+  E2E: 36/36 ✓ · Unit Tests: Phase 2 ✓ · Build: Phase 12 ⬜
+</div>
+
+
+<script>
+  const STORAGE_KEY = 'mtwork_qa_v1';
+
+  // ── Load saved state ──────────────────────────────────────────────────
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+  }
+  function saveState(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  // ── Toggle single item ────────────────────────────────────────────────
+  function toggle(el) {
+    el.classList.toggle('checked');
+    persistAll();
+    updateProgress();
+  }
+
+  // ── Persist all check states ──────────────────────────────────────────
+  function persistAll() {
+    const items = document.querySelectorAll('.check-item');
+    const state = {};
+    items.forEach((item, i) => { state[i] = item.classList.contains('checked'); });
+    saveState(state);
+  }
+
+  // ── Restore saved states ──────────────────────────────────────────────
+  function restoreAll() {
+    const state = loadState();
+    const items = document.querySelectorAll('.check-item');
+    items.forEach((item, i) => {
+      if (state[i]) item.classList.add('checked');
+      else item.classList.remove('checked');
+    });
+  }
+
+  // ── Section collapse ──────────────────────────────────────────────────
+  function toggleSection(id) {
+    const body = document.getElementById('body-' + id);
+    const chev = document.getElementById('chev-' + id);
+    const collapsed = body.classList.toggle('collapsed');
+    chev.textContent = collapsed ? '▶' : '▼';
+  }
+  function expandAll()   { document.querySelectorAll('.section-body').forEach(b => { b.classList.remove('collapsed'); }); document.querySelectorAll('.chevron').forEach(c => c.textContent = '▼'); }
+  function collapseAll() { document.querySelectorAll('.section-body').forEach(b => { b.classList.add('collapsed');    }); document.querySelectorAll('.chevron').forEach(c => c.textContent = '▶'); }
+
+  // ── Check / Reset all ─────────────────────────────────────────────────
+  function checkAll()  { document.querySelectorAll('.check-item').forEach(i => i.classList.add('checked'));    persistAll(); updateProgress(); }
+  function resetAll()  { if (!confirm('Reset all progress?')) return; document.querySelectorAll('.check-item').forEach(i => i.classList.remove('checked')); persistAll(); updateProgress(); }
+
+  // ── Update progress numbers ───────────────────────────────────────────
+  function updateProgress() {
+    const sections = document.querySelectorAll('.section');
+    let totalDone = 0, totalAll = 0;
+
+    sections.forEach(sec => {
+      const id = sec.id;
+      const items = sec.querySelectorAll('.check-item');
+      const done  = sec.querySelectorAll('.check-item.checked').length;
+      const all   = items.length;
+      totalDone += done; totalAll += all;
+
+      const badge = document.getElementById('badge-' + id);
+      if (badge) {
+        badge.textContent = done + '/' + all;
+        badge.className = 'section-badge ' + (done === all && all > 0 ? 'badge-done' : (done > 0 ? 'badge-warn' : 'badge-todo'));
+      }
+    });
+
+    const pct = totalAll > 0 ? Math.round((totalDone / totalAll) * 100) : 0;
+    document.getElementById('progressCount').textContent = totalDone + ' / ' + totalAll + ' (' + pct + '%)';
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('sumDone').textContent = totalDone;
+    document.getElementById('sumTodo').textContent = totalAll - totalDone;
+    document.getElementById('sumSections').textContent = sections.length;
+  }
+
+  // ── Init ──────────────────────────────────────────────────────────────
+  restoreAll();
+  updateProgress();
+</script>
+</body>
+</html>

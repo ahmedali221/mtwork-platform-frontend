@@ -1,0 +1,239 @@
+/* ───────────────────────────────────────────────────────────────────
+   Figma 3:38140 — Blog section. White bg both themes (dark frame 3:51738
+   is identical). All values from Dev Mode. No Tailwind dark: variants.
+   ─────────────────────────────────────────────────────────────────── */
+:host {
+  display: block;
+  background: var(--landing-impact-bg);
+  font-family: var(--font-family-dm-sans);
+  overflow: hidden;
+}
+
+.blog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-medium-lg); /* 16 header → grid (frame 162 − 146) */
+  padding-block: var(--spacing-large-massive) 0; /* 56 frame gap */
+  max-inline-size: 1435px;
+  margin-inline: auto;
+}
+
+/* ─── Header (3:38141): gap 16, centered ──────────────────────────── */
+.blog__header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-medium-lg);
+  inline-size: var(--landing-hero-title-max-width); /* 848.02 */
+  text-align: center;
+}
+
+/* wavey (3:38142): abs (330.51, −10), 756×57 — blue rect behind "Blog" */
+.blog__wavey {
+  position: absolute;
+  inset-inline-start: 330.51px;
+  inset-block-start: -10px;
+  inline-size: 756px;
+  block-size: 57px;
+  max-inline-size: none;
+}
+
+.blog__title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: var(--landing-navbar-surface); /* white over the wavey */
+  font-family: var(--typography-h4-font-family);
+  font-size: var(--typography-h4-font-size);
+  font-weight: var(--landing-hero-title-font-weight);
+  line-height: var(--typography-h4-line-height);
+}
+
+.blog__subtitle {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  max-inline-size: var(--landing-hero-body-max-width); /* 555.99 */
+  color: var(--brand-neutral-400);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--body-size);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* header CTA (Buttons 165×40): #f87748 pill, hairline border, white 16 */
+.blog__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 165px;
+  block-size: 40px;
+  padding: var(--spacing-small-xs) var(--spacing-medium-md);
+  border: 1px solid var(--landing-impact-tab-border);
+  border-radius: var(--radius-50);
+  background: var(--landing-hr-highlight-bg); /* #f87748 */
+  color: var(--landing-navbar-surface);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--subtitle-size);
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* ─── Cards (3:38151): 3 × 390×454, gap 16 ────────────────────────── */
+.blog__grid {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-medium-lg);
+  inline-size: 100%;
+}
+
+.blog__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-medium-xl); /* 24 */
+  inline-size: 390px;
+  block-size: 454px;
+  padding: var(--spacing-medium-lg); /* 16 */
+  border-radius: var(--radius-8);
+  background: var(--ui-bg-surface); /* white */
+  box-shadow: 0 6px 24px 0 rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.09);
+  overflow: hidden;
+}
+
+.blog__card-media {
+  inline-size: 100%;
+  block-size: 262px;
+  border-radius: var(--radius-8);
+  background: var(--background-bg-netural, #e6e6e6);
+  overflow: hidden;
+}
+
+.blog__card-media img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.blog__card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  inline-size: 100%;
+}
+
+.blog__card-title {
+  margin: 0;
+  color: var(--brand-grays-900);
+  font-family: var(--typography-title-font-family);
+  font-size: var(--title-size); /* 22 */
+  font-weight: var(--title-font-weight-bold);
+  line-height: 1.4;
+}
+
+/* card tag (Tag): #feede6 chip, r12, h32, px12, #f87748 16 */
+.blog__card-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-small-xxxs);
+  block-size: 32px;
+  padding-inline: var(--spacing-medium-md);
+  border-radius: var(--radius-12);
+  background: var(--landing-analysis-bar-light); /* #feede6 */
+  color: var(--landing-hr-highlight-bg);          /* #f87748 */
+  font-size: var(--subtitle-size);
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.blog__card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 121px;
+  block-size: 40px;
+  padding: var(--spacing-small-xs) var(--spacing-medium-md);
+  border: 0;
+  border-radius: var(--radius-8);
+  background: var(--landing-navbar-ink); /* #1b1b1b */
+  box-shadow: var(--landing-navbar-neutral-shadow);
+  color: var(--landing-navbar-surface);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--subtitle-size);
+  font-weight: 400;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* ─── Mobile — Figma 3:65336 (393): cards stack, 342 wide ──────────── */
+/* ─── Tablet stabilization (768–1100px) — fit header/wavey, wrap grid
+   to 2-up. Desktop (>1100) and mobile (<768) untouched. ────────────── */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .blog {
+    padding-inline: var(--spacing-large-xxxl); /* 40 */
+    box-sizing: border-box;
+    max-inline-size: 100%;
+  }
+
+  .blog__header {
+    inline-size: 100%;
+    max-inline-size: var(--landing-hero-title-max-width); /* 848 cap */
+  }
+
+  /* blue wavey behind "Blog" — recenter + cap so it stops overflowing */
+  .blog__wavey {
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    inline-size: min(90%, 756px);
+    max-inline-size: 90%;
+  }
+
+  /* 3×390 (1202) won't fit → wrap to 2-up centered */
+  .blog__grid {
+    flex-wrap: wrap;
+    max-inline-size: 796px; /* 2×390 + 16 */
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .blog__header {
+    inline-size: 100%;
+    padding-inline: var(--spacing-medium-lg);
+  }
+
+  .blog__wavey {
+    /* (124.5, −5.82), 554.62×41.82 */
+    inset-inline-start: 124.5px;
+    inset-block-start: -5.82px;
+    inline-size: 554.62px;
+    block-size: 41.82px;
+  }
+
+  .blog__title {
+    /* Figma mobile (3:65344): H6 26 / 1.4 */
+    font-size: var(--typography-h6-font-size);
+    line-height: var(--typography-h6-line-height);
+  }
+
+  .blog__subtitle {
+    /* Figma mobile (3:65345): box 264.69, wraps to 2 lines */
+    max-inline-size: 264.69px;
+  }
+
+  .blog__grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .blog__card {
+    inline-size: 342px;
+  }
+}

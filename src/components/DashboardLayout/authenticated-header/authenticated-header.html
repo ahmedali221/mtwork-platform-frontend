@@ -1,0 +1,142 @@
+<header class="header" [class.sidebar-collapsed]="!sidebarService.isOpen()">
+
+  <!-- Left: toggle + user welcome -->
+  <div class="left-section">
+    <button class="hamburger-btn" (click)="onToggleSidebar()" [attr.aria-label]="'common.toggleSidebar' | transloco" [title]="'common.toggleSidebar' | transloco">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <div class="user-info">
+      <div class="user-avatar-small" aria-hidden="true">
+        <mat-icon>person</mat-icon>
+      </div>
+      <div class="user-text">
+        <p class="user-name">{{ 'common.welcome' | transloco }}</p>
+        <p class="user-company">{{ userEmail || ('common.appName' | transloco) }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Center: search + filter combined -->
+  <div class="center-section">
+    <div class="search-bar">
+      <div class="search-left">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input
+          type="text"
+          class="search-input"
+          [placeholder]="'common.search' | transloco"
+          [(ngModel)]="searchQuery"
+          [attr.aria-label]="'common.search' | transloco"
+          (ngModelChange)="onSearchChange()"
+        />
+      </div>
+      <div class="search-divider" aria-hidden="true"></div>
+      <div class="search-filter">
+        <span class="filter-label">{{ 'common.employee' | transloco }}</span>
+        <mat-icon class="filter-arrow">expand_more</mat-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: icon buttons + avatar -->
+  <div class="right-section">
+    <div class="icon-group">
+      <button class="icon-btn" (click)="themeService.toggleTheme()"
+              [attr.aria-label]="themeService.isDarkMode() ? ('common.lightMode' | transloco) : ('common.darkMode' | transloco)"
+              [title]="themeService.isDarkMode() ? ('common.lightMode' | transloco) : ('common.darkMode' | transloco)">
+        <mat-icon>{{ themeService.isDarkMode() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+      <button class="icon-btn" routerLink="/dashboard/account-settings"
+              [attr.aria-label]="'common.settings' | transloco" [title]="'common.settings' | transloco">
+        <mat-icon>settings</mat-icon>
+      </button>
+      <button class="icon-btn" routerLink="/dashboard/messages"
+              [attr.aria-label]="'common.messages' | transloco" [title]="'common.messages' | transloco">
+        <mat-icon>chat_bubble_outline</mat-icon>
+      </button>
+      <button class="icon-btn icon-btn--has-badge" routerLink="/dashboard/notifications"
+              [attr.aria-label]="'common.notifications' | transloco"
+              [title]="'common.notifications' | transloco">
+        <mat-icon>notifications_none</mat-icon>
+        @if (unreadNotifications() > 0) {
+          <span class="icon-badge" aria-hidden="true">
+            {{ unreadNotifications() > 99 ? '99+' : unreadNotifications() }}
+          </span>
+        }
+      </button>
+    </div>
+
+    <div class="user-avatar-wrapper">
+      <button
+        class="user-avatar"
+        [title]="userEmail"
+        (click)="toggleUserMenu()"
+        [attr.aria-expanded]="userMenuOpen()"
+        aria-haspopup="true"
+        [attr.aria-label]="'common.userMenu' | transloco">
+        {{ userInitials }}
+        <span class="avatar-dot" aria-hidden="true"></span>
+      </button>
+      <span class="avatar-arrow-tip" aria-hidden="true">
+        <mat-icon>expand_more</mat-icon>
+      </span>
+
+      <!-- User profile dropdown -->
+      @if (userMenuOpen()) {
+        <div class="user-menu-dropdown" role="menu">
+          <!-- Profile header -->
+          <div class="menu-profile-header">
+            <div class="menu-avatar">{{ userInitials }}</div>
+            <div class="menu-user-info">
+              <p class="menu-user-email">{{ userEmail }}</p>
+              @if (roleMeta) {
+                <span class="menu-role-badge" [class]="roleMeta.cssClass">{{ roleMeta.labelKey | transloco }}</span>
+              }
+            </div>
+          </div>
+
+          <div class="menu-divider" aria-hidden="true"></div>
+
+          <!-- Actions -->
+          <ul class="menu-list" role="none">
+            <li role="none">
+              <button
+                type="button"
+                class="menu-item"
+                role="menuitem"
+                [attr.aria-label]="'common.viewProfile' | transloco"
+                routerLink="/dashboard/profile"
+                (click)="closeUserMenu()"
+              >
+                <mat-icon class="menu-item-icon">person_outline</mat-icon>
+                <span>{{ 'common.profile' | transloco }}</span>
+              </button>
+            </li>
+            <li role="none">
+              <button
+                type="button"
+                class="menu-item"
+                role="menuitem"
+                [attr.aria-label]="'common.settings' | transloco"
+                routerLink="/dashboard/account-settings"
+                (click)="closeUserMenu()"
+              >
+                <mat-icon class="menu-item-icon">settings</mat-icon>
+                <span>{{ 'common.settings' | transloco }}</span>
+              </button>
+            </li>
+          </ul>
+
+          <div class="menu-divider" aria-hidden="true"></div>
+
+          <button class="menu-item menu-item--danger" role="menuitem" (click)="onLogout()" [attr.aria-label]="'common.signOut' | transloco">
+            <mat-icon class="menu-item-icon">logout</mat-icon>
+            <span>{{ 'common.signOutLabel' | transloco }}</span>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+
+</header>

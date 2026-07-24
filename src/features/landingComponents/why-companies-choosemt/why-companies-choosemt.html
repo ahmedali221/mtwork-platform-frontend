@@ -1,0 +1,19 @@
+<div class="bg-brand-grays-500 dark:bg-brand-neutral-950 py-12 px-6 text-center">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-2xl font-semibold">
+      <span class="why-choose__title-highlight text-brand-grays-500 px-2 py-1 rounded">
+        {{ lang.translations()?.whyChoose?.titleHighlight }}
+      </span>
+      <span class="text-brand-neutral-950 font-bold">
+        {{ lang.translations()?.whyChoose?.titleRest }}
+      </span>
+    </h2>
+    <p class="mt-4 text-brand-neutral-500 text-lg">
+      {{ lang.translations()?.whyChoose?.description }}
+    </p>
+    <button class="why-choose__cta mt-6 text-brand-grays-500 px-6 py-2 rounded transition"
+            [attr.aria-label]="lang.translations()?.whyChoose?.learnMore">
+      {{ lang.translations()?.whyChoose?.learnMore }}
+    </button>
+  </div>
+</div>

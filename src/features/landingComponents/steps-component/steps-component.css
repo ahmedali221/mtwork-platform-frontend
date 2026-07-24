@@ -1,0 +1,527 @@
+/* ───────────────────────────────────────────────────────────────────
+   Figma 3:38156 — "How it works" steps section. Light bg #f7f5f2 BOTH
+   themes (dark frame 3:51754 is identical — no dark overrides). All
+   values from Dev Mode; non-flipping tokens only.
+   ─────────────────────────────────────────────────────────────────── */
+:host {
+  display: block;
+  background: var(--brand-grays-500); /* #f7f5f2 — Bg-Light_Gray */
+}
+
+.steps {
+  inline-size: min(100%, 1435px);
+  margin-inline: auto;
+  padding-block: 32px;   /* py — Large/Xxl */
+  padding-inline: 40px;  /* px — Large/Xxxl */
+  box-sizing: border-box;
+  font-family: var(--font-family-dm-sans);
+}
+
+/* Container (3:38157): justify-between, left 668.609 + right 604, gap auto */
+.steps__container {
+  inline-size: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ─── Left dashboard mock (3:38158): 668.609 × 487.774 ────────────── */
+.steps__visual {
+  position: relative;
+  flex: 0 0 auto;
+  inline-size: 668.609px;
+  block-size: 487.774px;
+}
+
+.steps__people-card,
+.steps__profit-card,
+.steps__payroll-card {
+  position: absolute;
+  background: var(--landing-impact-bg);  /* white both themes */
+  border-radius: var(--radius-12);       /* radius-12 */
+  box-shadow: 0 8px 28px 0 rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+/* people/filter card (3:38160): (85.17, 128.774) 495×223, p16 */
+.steps__people-card {
+  inset-block-start: 128.774px;
+  inset-inline-start: 85.17px;
+  inline-size: 495px;
+  block-size: 223px;
+  padding: 16px;
+}
+
+/* filter row (3:38161): 463×35.278, gap 13.229 */
+.steps__filters {
+  inline-size: 463px;
+  block-size: 35.278px;
+  display: flex;
+  align-items: center;
+  gap: 13.229px;
+}
+
+/* filter buttons (3:38163/166/169): 0.551 border rgba(13,13,13,.25),
+   radius 8.819, p8.819, text 13.229 #999, chevron arrow */
+.steps__filter {
+  block-size: 35.278px;
+  border: 0.551px solid var(--landing-impact-tab-border);
+  border-radius: 8.819px;
+  background: var(--landing-impact-bg);
+  color: var(--brand-neutral-400); /* #999 */
+  font-size: 13.229px;
+  line-height: 1.5;
+  padding-inline: 8.819px 26px;
+  position: relative;
+  white-space: nowrap;
+}
+
+.steps__filter:nth-child(1),
+.steps__filter:nth-child(3) {
+  inline-size: 88.486px;
+}
+
+.steps__filter:nth-child(2) {
+  inline-size: 113.486px;
+}
+
+/* chevron — Icons/Arrow rotated 90° (points down): 15.434×7.717 box */
+.steps__chevron {
+  position: absolute;
+  inset-inline-end: 8.819px;
+  inset-block-start: 50%;
+  inline-size: 7px;
+  block-size: 7px;
+  border-inline-end: 1.5px solid var(--brand-neutral-400);
+  border-block-end: 1.5px solid var(--brand-neutral-400);
+  transform: translateY(-65%) rotate(45deg);
+}
+
+/* add-filter button (3:38172): 30×32, warning bg rgba(252,190,4,.4),
+   radius-8, white plus-circle */
+.steps__filter-action {
+  margin-inline-start: auto;
+  inline-size: 30px;
+  block-size: 32px;
+  border: 0;
+  border-radius: var(--radius-8);
+  background: var(--landing-steps-filter-add);
+  position: relative;
+}
+
+.steps__filter-action::before,
+.steps__filter-action::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  background: var(--landing-impact-bg);
+  transform: translate(-50%, -50%);
+}
+
+.steps__filter-action::before {
+  inline-size: 11px;
+  block-size: 1.5px;
+}
+
+.steps__filter-action::after {
+  inline-size: 1.5px;
+  block-size: 11px;
+}
+
+/* divider (3:38173): 463 wide hairline */
+.steps__divider {
+  inline-size: 463px;
+  block-size: 0.551px;
+  margin-block-start: 16px;
+  background: var(--landing-impact-tab-border);
+}
+
+/* avatars (3:38174): baked row export — 455 wide, 4 circles 98.755 + flags */
+.steps__avatars {
+  inline-size: 455px;
+  block-size: 98.755px;
+  margin-block-start: 16px;
+}
+
+.steps__avatars img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+/* profit card (3:38191): (0,0) 139×196.052, p16, center, gap12 */
+.steps__profit-card {
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 139px;
+  block-size: 196.052px;
+  padding: 16px;
+}
+
+/* payroll card (3:38211): (496.609, 281.774) 172×206, p 11.5/16 */
+.steps__payroll-card {
+  inset-block-start: 281.774px;
+  inset-inline-start: 496.609px;
+  inline-size: 172px;
+  block-size: 206px;
+  padding: 11.5px 16px;
+}
+
+.steps__mini-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* profit heading "Profit" = subtitle 16 #1b1b1b */
+.steps__mini-heading strong {
+  color: var(--brand-neutral-950); /* #1b1b1b */
+  font-size: var(--subtitle-size); /* 16 */
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.steps__mini-heading span {
+  color: var(--brand-neutral-400); /* #999 */
+  font-size: var(--caption-size);  /* 12 */
+  line-height: 1.5;
+}
+
+/* line chart (3:38195): 107×79.903, 6 gridlines + #00afef line + 3 dots */
+.steps__line-chart {
+  position: relative;
+  inline-size: 107px;
+  block-size: 79.903px;
+  margin-block-start: 12px;
+}
+
+.steps__line-chart > span {
+  position: absolute;
+  inset-block: 0;
+  inline-size: 0.551px;
+  background: var(--landing-impact-tab-border);
+}
+
+.steps__line-chart > span:nth-child(1) { inset-inline-start: 0; }
+.steps__line-chart > span:nth-child(2) { inset-inline-start: 21.4px; }
+.steps__line-chart > span:nth-child(3) { inset-inline-start: 42.8px; }
+.steps__line-chart > span:nth-child(4) { inset-inline-start: 64.2px; }
+.steps__line-chart > span:nth-child(5) { inset-inline-start: 85.6px; }
+.steps__line-chart > span:nth-child(6) { inset-inline-start: 107px; }
+
+.steps__line-chart svg {
+  position: absolute;
+  inset: 0;
+}
+
+.steps__line-chart path {
+  fill: none;
+  stroke: var(--brand-secondary-500); /* #00afef */
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.steps__dot {
+  position: absolute;
+  inline-size: 8.576px;
+  block-size: 8.576px;
+  border-radius: var(--radius-full);
+  background: var(--brand-secondary-500);
+}
+
+/* dot positions (3:38206/207/208) relative to chart top-left (16,16 pad,
+   chart starts at y 64.149 within card; offsets normalised to chart box) */
+.steps__dot--one {
+  inset-inline-start: 22.055px;
+  inset-block-start: 66.742px;
+}
+
+.steps__dot--two {
+  inset-inline-start: 43.211px;
+  inset-block-start: 33.876px;
+}
+
+.steps__dot--three {
+  inset-inline-start: 69.5px;
+  inset-block-start: 61.224px;
+}
+
+/* open ring at the rising endpoint (3:38209) */
+.steps__dot--end {
+  inline-size: 10.236px;
+  block-size: 10.236px;
+  inset-inline-start: 92px;
+  inset-block-start: 0;
+  background: var(--landing-impact-bg);
+  border: 2px solid var(--brand-secondary-500);
+}
+
+/* payroll bars (3:38223): 135 wide, 7 bars 10.04, gap 12, #2e358f */
+.steps__bar-chart {
+  inline-size: 135px;
+  block-size: 89.898px;
+  margin-block-start: 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.steps__bar-chart span {
+  display: block;
+  flex: 1 0 0;
+  block-size: var(--bar-height);
+  border-radius: var(--radius-4) var(--radius-4) 0 0;
+  background: var(--landing-navbar-primary); /* #2e358f */
+}
+
+.steps__metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.steps__profit-card .steps__metric {
+  margin-block-start: 12px;
+}
+
+.steps__payroll-card .steps__metric {
+  margin-block-start: 24px;
+}
+
+.steps__metric strong {
+  color: var(--brand-neutral-950); /* #1b1b1b */
+  font-size: var(--subtitle-size); /* 16 */
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.steps__metric span {
+  color: var(--landing-steps-growth); /* #36c220 */
+  font-size: var(--caption-size);     /* 12 */
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* ─── Right step list (3:38238): numbers col + copy, gap 25, py12 ──── */
+.steps__content {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;
+  padding-block: 12px;
+}
+
+/* number column (3:38239): 56 wide, gap 7, connector lines #00afef */
+.steps__timeline {
+  inline-size: 56px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+/* number badge (3:38240): #ccf1ff, radius-8, px8 py6, H4 36/1.3 #201b13 */
+.steps__number {
+  inline-size: 56px;
+  block-size: 59px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-8);
+  background: var(--brand-secondary-100); /* #ccf1ff */
+  color: var(--brand-grays-900);          /* #201b13 */
+  font-family: var(--typography-h4-font-family);
+  font-size: var(--h4-size);              /* 36 */
+  font-weight: var(--h4-font-weight-bold);
+  line-height: 1.3;
+}
+
+.steps__line {
+  flex: 1 0 0;
+  inline-size: 3px;
+  background: var(--brand-secondary-500); /* #00afef */
+}
+
+/* copy column (3:38248): 523 wide, gap 88 between items */
+.steps__copy {
+  inline-size: 523px;
+  display: flex;
+  flex-direction: column;
+  gap: 88px;
+}
+
+.steps__item {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* title → desc */
+}
+
+/* step title (3:38250): H5 32 / 1.4 bold #201b13 */
+.steps__item h3 {
+  margin: 0;
+  color: var(--brand-grays-900); /* #201b13 */
+  font-family: var(--typography-h5-font-family);
+  font-size: var(--h5-size); /* 32 */
+  font-weight: var(--h5-font-weight-bold, 700);
+  line-height: 1.4;
+}
+
+/* step desc (3:38251): body 18 / 1.5 #999 */
+.steps__item p {
+  margin: 0;
+  color: var(--brand-neutral-400); /* #999 */
+  font-size: var(--body-size); /* 18 */
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* ─── Mobile — Figma 3:65351 (393): visual scaled, steps stack ──────── */
+@media (max-width: 1100px) {
+  .steps {
+    inline-size: 100%;
+    padding: 32px 24px;
+  }
+
+  .steps__container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 700px) {
+  /* visual frame (3:65353): 336.95 × 245.82 (~0.504 of desktop) */
+  .steps__visual {
+    inline-size: 100%;
+    max-inline-size: 337px;
+    block-size: 246px;
+    margin-inline: auto;
+  }
+
+  /* people card (3:65355): (42.92, 64.90) 249.46×112.38, p8.06 */
+  .steps__people-card {
+    inset-block-start: 64.9px;
+    inset-inline-start: 42.92px;
+    inline-size: 249.46px;
+    block-size: 112.38px;
+    padding: 8.063px;
+    border-radius: var(--radius-8);
+  }
+
+  .steps__filters {
+    inline-size: 233.33px;
+    block-size: 17.778px;
+    gap: 6.664px;
+  }
+
+  .steps__filter {
+    block-size: 17.778px;
+    border-radius: 4.44px;
+    font-size: 6.66px;
+    line-height: 1.5;
+    padding-inline: 4.44px 13px;
+  }
+
+  .steps__filter:nth-child(1),
+  .steps__filter:nth-child(3) {
+    inline-size: 44.89px;
+  }
+
+  .steps__filter:nth-child(2) {
+    inline-size: 57.89px;
+  }
+
+  .steps__chevron {
+    inline-size: 3.5px;
+    block-size: 3.5px;
+    inset-inline-end: 4.44px;
+    border-width: 1px;
+  }
+
+  .steps__filter-action {
+    inline-size: 15.12px;
+    block-size: 16.13px;
+    border-radius: 4px;
+  }
+
+  .steps__filter-action::before { inline-size: 6px; block-size: 1px; }
+  .steps__filter-action::after  { inline-size: 1px; block-size: 6px; }
+
+  .steps__divider {
+    inline-size: 233.33px;
+    margin-block-start: 8.063px;
+  }
+
+  /* avatars (3:65369): baked row 229.30 × 49.768 */
+  .steps__avatars {
+    inline-size: 229.3px;
+    block-size: 49.768px;
+    margin-block-start: 8.063px;
+  }
+
+  /* profit card (3:65384): scaled to ~70 wide */
+  .steps__profit-card {
+    inline-size: 70px;
+    block-size: 98px;
+    padding: 8.063px;
+    border-radius: var(--radius-8);
+  }
+
+  /* payroll card (3:65406): (250.27, 142.0) 86.68×103.81 */
+  .steps__payroll-card {
+    inset-block-start: 142px;
+    inset-inline-start: 250.27px;
+    inline-size: 86.68px;
+    block-size: 103.81px;
+    padding: 5.84px 8.063px;
+    border-radius: var(--radius-8);
+  }
+
+  .steps__mini-heading strong,
+  .steps__mini-heading span,
+  .steps__metric span {
+    font-size: 6px;
+    line-height: 1.5;
+  }
+
+  .steps__line-chart {
+    inline-size: 53.92px;
+    block-size: 40.27px;
+    margin-block-start: 6px;
+  }
+
+  .steps__bar-chart {
+    inline-size: 70.55px;
+    block-size: 45.3px;
+    gap: 6px;
+  }
+
+  .steps__metric strong {
+    font-size: 8px;
+    line-height: 1.5;
+  }
+
+  /* steps stack (3:65433): numbers 56 + copy 264, gap 25 */
+  .steps__content {
+    inline-size: 100%;
+    gap: 25px;
+  }
+
+  .steps__copy {
+    inline-size: auto;
+    flex: 1 1 0;
+    gap: 88px;
+  }
+
+  /* mobile title block 90px = 2 lines H5 32/1.4; desc body 18 (3:65445/6) */
+  .steps__item h3 {
+    font-size: var(--h5-size); /* 32 */
+    line-height: 1.4;
+  }
+
+  .steps__item p {
+    font-size: var(--body-size); /* 18 */
+    line-height: 1.5;
+  }
+}

@@ -1,0 +1,112 @@
+/* ── Page shell ─────────────────────────────────────────────── */
+.adm-settings {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.adm-settings__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ui-text-primary);
+  margin: 0 0 0.25rem;
+}
+
+.adm-settings__subtitle {
+  font-size: 0.875rem;
+  color: var(--ui-text-muted);
+  margin: 0;
+}
+
+/* ── State blocks ───────────────────────────────────────────── */
+.adm-settings__state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem;
+  border-radius: var(--radius-lg, 12px);
+  background: var(--ui-bg-surface);
+  color: var(--ui-text-muted);
+  font-size: 0.9375rem;
+}
+
+.adm-settings__state--error {
+  color: var(--functional-danger-600);
+  background: var(--functional-danger-50);
+}
+
+/* ── Cards grid ─────────────────────────────────────────────── */
+.adm-settings__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.adm-settings__card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--ui-bg-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--radius-lg, 12px);
+  transition: box-shadow 0.15s;
+}
+
+.adm-settings__card:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.adm-settings__card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md, 8px);
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.adm-settings__card-icon mat-icon {
+  font-size: 1.375rem;
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.adm-settings__card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.adm-settings__card-label {
+  font-size: 0.8125rem;
+  color: var(--ui-text-muted);
+  font-weight: 500;
+}
+
+.adm-settings__card-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ui-text-primary);
+}
+
+/* ── Spinner ────────────────────────────────────────────────── */
+.adm-settings__spinner {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--ui-border);
+  border-top-color: var(--brand-primary-500);
+  border-radius: 50%;
+  animation: adm-spin 0.7s linear infinite;
+}
+
+@keyframes adm-spin {
+  to { transform: rotate(360deg); }
+}

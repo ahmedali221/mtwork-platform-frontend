@@ -1,0 +1,204 @@
+<div class="dialog-container">
+
+  <!-- ── Header ── -->
+  <div class="dialog-header">
+    <h2 class="dialog-title">
+      {{ (isCreate ? 'hr.dialog.createTitle' : 'hr.dialog.viewTitle') | transloco }}
+    </h2>
+    <button class="close-btn" (click)="close()"
+            [attr.aria-label]="'common.close' | transloco">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M2 2l14 14M16 2L2 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       CREATE MODE — Reactive Form
+  ══════════════════════════════════════ -->
+  @if (isCreate) {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="dialog-body" novalidate>
+
+      <!-- Leave Type (from API) -->
+      <div class="form-field" [class.has-error]="fieldInvalid('leaveTypeId')">
+        <label for="leaveTypeId" class="field-label">
+          {{ 'hr.form.requestType' | transloco }}
+          <span class="required" aria-hidden="true">*</span>
+        </label>
+        @if (leaveTypesLoading) {
+          <p class="field-loading" role="status">{{ 'common.loading' | transloco }}</p>
+        } @else {
+          <select id="leaveTypeId" formControlName="leaveTypeId" class="field-select"
+                  [attr.aria-required]="true"
+                  [attr.aria-invalid]="fieldInvalid('leaveTypeId')">
+            <option [ngValue]="0" disabled>{{ 'hr.form.requestType' | transloco }}</option>
+            @for (type of leaveTypes; track type.id) {
+              <option [ngValue]="type.id">{{ type.name }}</option>
+            }
+          </select>
+        }
+        @if (fieldInvalid('leaveTypeId')) {
+          <span class="field-error" role="alert">
+            {{ 'hr.form.requestType' | transloco }} {{ 'common.isRequired' | transloco }}
+          </span>
+        }
+      </div>
+
+      <!-- Date Row -->
+      <div class="form-row">
+        <!-- Start Date -->
+        <div class="form-field" [class.has-error]="fieldInvalid('startDate')">
+          <label for="startDate" class="field-label">
+            {{ 'hr.form.startDate' | transloco }}
+            <span class="required" aria-hidden="true">*</span>
+          </label>
+          <input id="startDate" type="date" formControlName="startDate" class="field-input"
+                 [attr.aria-required]="true"
+                 [attr.aria-invalid]="fieldInvalid('startDate')">
+          @if (fieldInvalid('startDate')) {
+            <span class="field-error" role="alert">
+              {{ 'hr.form.startDate' | transloco }} {{ 'common.isRequired' | transloco }}
+            </span>
+          }
+        </div>
+
+        <!-- End Date -->
+        <div class="form-field" [class.has-error]="fieldInvalid('endDate')">
+          <label for="endDate" class="field-label">
+            {{ 'hr.form.endDate' | transloco }}
+            <span class="required" aria-hidden="true">*</span>
+          </label>
+          <input id="endDate" type="date" formControlName="endDate" class="field-input"
+                 [attr.aria-required]="true"
+                 [attr.aria-invalid]="fieldInvalid('endDate')">
+          @if (fieldInvalid('endDate')) {
+            <span class="field-error" role="alert">
+              {{ 'hr.form.endDate' | transloco }} {{ 'common.isRequired' | transloco }}
+            </span>
+          }
+        </div>
+      </div>
+
+      <!-- Cross-field date error -->
+      @if (form.errors?.['endBeforeStart'] && form.touched) {
+        <p class="form-level-error" role="alert">
+          {{ 'hr.form.endBeforeStart' | transloco }}
+        </p>
+      }
+
+      <!-- Reason -->
+      <div class="form-field">
+        <label for="reason" class="field-label">
+          {{ 'hr.form.reason' | transloco }}
+        </label>
+        <textarea id="reason" formControlName="reason" class="field-textarea" rows="4"
+                  [placeholder]="'hr.form.reasonPlaceholder' | transloco"
+                  [attr.aria-label]="'hr.form.reason' | transloco">
+        </textarea>
+      </div>
+
+      <!-- Submit error -->
+      @if (submitError) {
+        <p class="form-level-error" role="alert">{{ submitError | transloco }}</p>
+      }
+
+      <!-- Footer -->
+      <div class="dialog-footer">
+        <button type="button" class="btn-secondary" (click)="close()"
+                [attr.aria-label]="'hr.actions.cancel' | transloco">
+          {{ 'hr.actions.cancel' | transloco }}
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="isSubmitting"
+                [attr.aria-label]="'hr.actions.submit' | transloco">
+          @if (isSubmitting) {
+            <span class="spinner" aria-hidden="true"></span>
+          }
+          {{ isSubmitting ? ('common.loading' | transloco) : ('hr.actions.submit' | transloco) }}
+        </button>
+      </div>
+
+    </form>
+  }
+
+  <!-- ══════════════════════════════════════
+       VIEW MODE — Request Details
+  ══════════════════════════════════════ -->
+  @if (!isCreate) {
+
+    @if (detailLoading()) {
+      <div class="dialog-body">
+        <p class="field-loading" role="status">{{ 'common.loading' | transloco }}</p>
+      </div>
+    } @else if (detailError()) {
+      <div class="dialog-body">
+        <p class="form-level-error" role="alert">{{ 'hr.errors.loadRequests' | transloco }}</p>
+      </div>
+    } @else if (detail(); as d) {
+      <div class="dialog-body">
+
+        <!-- Status badge -->
+        <div class="status-row">
+          <span class="status-badge" [ngClass]="getStatusClass(d.orderStatus)">
+            {{ getStatusKey(d.orderStatus) | transloco }}
+          </span>
+          @if (d.createDate) {
+            <span class="created-at">{{ d.createDate | date: 'mediumDate' }}</span>
+          }
+        </div>
+
+        <!-- Info rows -->
+        <div class="info-section">
+          @if (d.employee?.employeeName) {
+            <div class="info-row">
+              <span class="info-label">{{ 'hr.requests.employee' | transloco }}</span>
+              <span class="info-value">{{ d.employee!.employeeName }}</span>
+            </div>
+          }
+          <div class="info-row">
+            <span class="info-label">{{ 'hr.requests.type' | transloco }}</span>
+            <span class="info-value">{{ d.leaveType?.nameEn || d.orderType?.nameEn || d.leaveTypeId || '—' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">{{ 'hr.requests.startDate' | transloco }}</span>
+            <span class="info-value">{{ d.startDate | date: 'mediumDate' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">{{ 'hr.requests.endDate' | transloco }}</span>
+            <span class="info-value">{{ d.endDate | date: 'mediumDate' }}</span>
+          </div>
+          @if (d.requestComments) {
+            <div class="info-row info-row-column">
+              <span class="info-label">{{ 'hr.requests.reason' | transloco }}</span>
+              <p class="info-value reason-text">{{ d.requestComments }}</p>
+            </div>
+          }
+        </div>
+
+        <!-- Footer -->
+        <div class="dialog-footer">
+          <button class="btn-secondary" (click)="close()"
+                  [attr.aria-label]="'common.close' | transloco">
+            {{ 'common.close' | transloco }}
+          </button>
+
+          @if (isPending) {
+            <button class="btn-reject" (click)="reject()" [disabled]="isActioning"
+                    [attr.aria-label]="'hr.actions.reject' | transloco">
+              {{ 'hr.actions.reject' | transloco }}
+            </button>
+            <button class="btn-approve" (click)="approve()" [disabled]="isActioning"
+                    [attr.aria-label]="'hr.actions.approve' | transloco">
+              @if (isActioning) {
+                <span class="spinner" aria-hidden="true"></span>
+              }
+              {{ 'hr.actions.approve' | transloco }}
+            </button>
+          }
+        </div>
+
+      </div>
+    }
+
+  }
+
+</div>

@@ -1,0 +1,73 @@
+<label class="upload-label">
+  {{ label }}
+  @if (required) {
+    <span class="required-label">Required</span>
+  }
+</label>
+
+<div class="upload-wrapper">
+
+  <!-- Upload button -->
+  <button type="button" class="upload-btn" (click)="triggerFileInput(fileInput)">
+    Upload
+  </button>
+
+  <!-- Upload area -->
+  <div class="upload-area"
+       (click)="triggerFileInput(fileInput)"
+       (drop)="onDrop($event)"
+       (dragover)="onDragOver($event)"
+       (dragleave)="onDragLeave($event)"
+       [class.dragging]="isDragging">
+
+    <input
+      type="file"
+      class="file-input"
+      #fileInput
+      [accept]="getAcceptAttribute()"
+      (change)="onSelect($event)"
+    />
+
+    <!-- BEFORE UPLOAD -->
+    @if (!file && !isUploading) {
+      <span class="upload-placeholder-text">
+        Drag or upload PDF,Png,Jpg
+      </span>
+    }
+
+    <!-- DURING UPLOAD -->
+    @if (isUploading) {
+      <div class="upload-progress-box">
+        <div class="progress-title">Uploading...</div>
+
+        <div class="progress-info">
+          <span>{{ uploadProgress }}%</span>
+          <span>{{ timeRemaining }} sec remaining</span>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="uploadProgress"></div>
+        </div>
+
+        <div class="progress-actions">
+          <button class="pause-btn" (click)="pauseUpload(); $event.stopPropagation()">⏸</button>
+          <button class="cancel-btn" (click)="cancelUpload(); $event.stopPropagation()">❌</button>
+        </div>
+      </div>
+    }
+
+    <!-- AFTER UPLOAD SUCCESS -->
+    @if (file && !isUploading) {
+      <div class="file-box">
+        <div class="file-icon">📄</div>
+
+        <div class="file-details">
+          <div class="file-name">{{ fileName }}</div>
+          <div class="file-size">{{ fileSize }}</div>
+        </div>
+
+        <button class="delete-btn" (click)="removeFile(); $event.stopPropagation()">❌</button>
+      </div>
+    }
+  </div>
+</div>

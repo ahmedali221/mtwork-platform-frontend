@@ -1,0 +1,61 @@
+<!-- Figma node 3:37939 (light) / 3:51537 (dark) / 3:65135 (mobile) — Compliance section.
+     Bg flips #f7f5f2 → #282828 in dark (project uses .dark-theme, no Tailwind dark: variants). -->
+<section class="compliance">
+
+  <!-- Intro (3:37946) -->
+  <div class="compliance__intro">
+    <img class="compliance__intro-wavey" src="assets/images/compliance/wavey-intro.png" alt="" aria-hidden="true" />
+    <img class="compliance__intro-wavey--mobile" src="assets/images/compliance/wavey-intro-mobile.png" alt="" aria-hidden="true" />
+    <h2 class="compliance__title">
+      {{ lang.translations()?.compliance?.titlePart1 }}<sup class="compliance__tm">™</sup>
+      <span class="compliance__title-highlight">{{ lang.translations()?.compliance?.titlePart2 }}</span>
+      {{ lang.translations()?.compliance?.titlePart3 }}
+    </h2>
+    <p class="compliance__desc">{{ lang.translations()?.compliance?.description }}</p>
+    <button type="button" class="compliance__cta compliance__cta--tertiary">
+      {{ lang.translations()?.compliance?.getStarted }}
+    </button>
+  </div>
+
+  <!-- 3 compliance cards (3:37956): 402×412, gap 24 -->
+  <div class="compliance__cards">
+    @for (n of [1, 2, 3]; track n) {
+      <article class="compliance__card">
+        <img class="compliance__card-art" [src]="'assets/images/compliance/card-illustration-' + n + '.png'" alt="" aria-hidden="true" />
+        <div class="compliance__card-text">
+          <h3 class="compliance__card-title">
+            {{ lang.translations()?.compliance?.trustedByPrefix }}
+            {{ totalTrustedCompanies }}
+            {{ lang.translations()?.compliance?.trustedBySuffix }}
+          </h3>
+          <p class="compliance__card-desc">{{ lang.translations()?.compliance?.cardDescription }}</p>
+        </div>
+      </article>
+    }
+  </div>
+
+  <!-- Why band (3:38060) -->
+  <div class="compliance__why">
+    <img class="compliance__why-wavey" src="assets/images/compliance/wavey-why.png" alt="" aria-hidden="true" />
+    <h2 class="compliance__title compliance__title--why">
+      <span class="compliance__title-highlight compliance__title-highlight--why">{{ lang.translations()?.whyChoose?.titleHighlight }}</span>
+      {{ lang.translations()?.whyChoose?.titleRest }}
+    </h2>
+    <p class="compliance__desc compliance__desc--why">{{ lang.translations()?.whyChoose?.description }}</p>
+    <button type="button" class="compliance__cta compliance__cta--primary">
+      {{ lang.translations()?.whyChoose?.learnMore }}
+    </button>
+  </div>
+
+  <!-- 6 service cards (3:38064): 441×244, gap 24 -->
+  <div class="compliance__services">
+    @for (_ of portalCount; track $index) {
+      <article class="compliance__service">
+        <span class="compliance__service-icon" aria-hidden="true"></span>
+        <h3 class="compliance__service-title">{{ lang.translations()?.compliance?.portalTitle }}</h3>
+        <p class="compliance__service-desc">{{ lang.translations()?.compliance?.portalDescription }}</p>
+      </article>
+    }
+  </div>
+
+</section>

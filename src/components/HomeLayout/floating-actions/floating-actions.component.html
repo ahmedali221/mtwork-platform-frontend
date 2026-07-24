@@ -1,0 +1,32 @@
+<!-- Floating action buttons — Figma 3:65493 (calls, left) + 3:51872 (Chatbot Widget, right) -->
+
+<!-- Left group: WhatsApp + Phone (Figma "calls" instances) -->
+<div class="fab-left" aria-label="Quick contact">
+  <a
+    class="fab-btn fab-btn--whatsapp"
+    [href]="whatsappLink"
+    [attr.aria-label]="languageService.translations()?.footer?.social?.whatsapp || 'WhatsApp'"
+  >
+    <img class="fab-btn__icon fab-btn__icon--whatsapp" src="assets/images/floating/whatsapp.svg" alt="" />
+  </a>
+
+  <a
+    class="fab-btn fab-btn--phone"
+    [href]="phoneLink"
+    [attr.aria-label]="'Call'"
+  >
+    <img class="fab-btn__icon fab-btn__icon--phone" src="assets/images/floating/phone.svg" alt="" />
+  </a>
+</div>
+
+<!-- Right: Chatbot / assistant (Figma "Chatbot Widget") -->
+<div class="fab-right" data-node-id="3:51872">
+  <span class="fab-right__widget" aria-hidden="true"></span>
+  <a
+    class="fab-right__button"
+    [href]="assistantLink"
+    [attr.aria-label]="'Open assistant'"
+  >
+    <img class="fab-right__icon" src="assets/images/floating/chat.svg" alt="" />
+  </a>
+</div>

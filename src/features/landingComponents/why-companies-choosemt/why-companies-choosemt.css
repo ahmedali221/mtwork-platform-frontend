@@ -1,0 +1,10 @@
+
+/* Title highlight — replaces inline style="background-color:var(--brand-primary-600)" */
+.why-choose__title-highlight {
+  background-color: var(--brand-primary-600);
+}
+
+/* CTA button — replaces inline style="background-color:var(--brand-primary-600)" */
+.why-choose__cta {
+  background-color: var(--brand-primary-600);
+}

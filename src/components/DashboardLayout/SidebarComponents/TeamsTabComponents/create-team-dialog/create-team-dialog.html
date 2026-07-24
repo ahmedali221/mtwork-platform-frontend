@@ -1,0 +1,125 @@
+<div class="ct-dialog">
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <div class="ct-header">
+    <h2 class="ct-title">{{ isEditMode ? 'Edit Team' : 'Create Team' }}</h2>
+    <button class="ct-close" (click)="cancel()" [attr.aria-label]="'common.closeDialog' | transloco" type="button">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ── Body ────────────────────────────────────────────────── -->
+  <div class="ct-body">
+
+    <!-- Team Name -->
+    <div class="ct-field">
+      <label class="ct-label" for="ct-team-name">
+        Team Name
+        <span class="ct-required">Required</span>
+      </label>
+      <input
+        id="ct-team-name"
+        class="ct-input"
+        type="text"
+        [(ngModel)]="teamData.teamName"
+        name="teamName"
+        placeholder="HR, Employees, Contractors"
+        [attr.aria-label]="'teams.teamName' | transloco"
+        required
+      />
+    </div>
+
+    <!-- Members -->
+    <div class="ct-field">
+      <label class="ct-label" for="ct-members">Members</label>
+      @if (membersLoading) {
+        <div class="ct-input ct-loading" aria-busy="true">Loading members…</div>
+      } @else {
+        <select
+          id="ct-members"
+          class="ct-select ct-select-multi"
+          [(ngModel)]="teamData.assigners"
+          name="assigners"
+          multiple
+          [disabled]="availableAssigners.length === 0"
+          [attr.aria-label]="'teams.selectMembers' | transloco"
+          size="4"
+        >
+          @for (member of availableAssigners; track member.id) {
+            <option [value]="member.id">
+              {{ member.name || member.email }}{{ member.designation ? ' — ' + member.designation : '' }}
+            </option>
+          }
+        </select>
+        @if (availableAssigners.length === 0) {
+          <p class="ct-hint">No employees found in your company.</p>
+        }
+      }
+    </div>
+
+    @if (!isEditMode) {
+      <!-- Send via Email -->
+      <div class="ct-field">
+        <label class="ct-label" for="ct-email">Send via Email</label>
+        <input
+          id="ct-email"
+          class="ct-input"
+          type="email"
+          [(ngModel)]="teamData.sendViaEmail"
+          name="sendViaEmail"
+          placeholder="Enter email address"
+          [attr.aria-label]="'teams.sendViaEmail' | transloco"
+        />
+      </div>
+
+      <!-- Team Icon -->
+      <div class="ct-field">
+        <label class="ct-label" for="ct-icon">Team Icon</label>
+        <select
+          id="ct-icon"
+          class="ct-select ct-select-single"
+          [(ngModel)]="teamData.teamIcon"
+          name="teamIcon"
+          [attr.aria-label]="'teams.selectIcon' | transloco"
+        >
+          <option value="">Select an icon</option>
+          @for (icon of availableIcons; track icon) {
+            <option [value]="icon">{{ icon | titlecase }}</option>
+          }
+        </select>
+      </div>
+    }
+
+    @if (saveError()) {
+      <div class="ct-error" role="alert" aria-live="polite">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM7.25 5h1.5v4.5h-1.5V5Zm0 6h1.5v1.5h-1.5V11Z" fill="currentColor"/>
+        </svg>
+        <span>{{ saveError() }}</span>
+      </div>
+    }
+
+  </div>
+
+  <!-- ── Footer ──────────────────────────────────────────────── -->
+  <div class="ct-footer">
+    <button class="ct-btn ct-btn-cancel" (click)="cancel()" type="button">Cancel</button>
+    <button
+      class="ct-btn ct-btn-create"
+      (click)="save()"
+      type="button"
+      [disabled]="!teamData.teamName.trim() || saving"
+      [attr.aria-busy]="saving"
+    >
+      @if (saving) {
+        <span class="ct-spinner" aria-hidden="true"></span>
+        Saving…
+      } @else {
+        {{ isEditMode ? 'Save Changes' : 'Create Team' }}
+      }
+    </button>
+  </div>
+
+</div>

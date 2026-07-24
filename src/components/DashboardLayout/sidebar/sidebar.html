@@ -1,0 +1,39 @@
+<aside class="sidebar" [class.collapsed]="!sidebarService.isOpen()" [class.open]="sidebarService.isOpen()" role="navigation" [attr.aria-label]="'common.mainNavigation' | transloco">
+  <div class="logo-section">
+    <img class="logo-img" src="assets/images/dashboard/sidebar-logo.svg" [attr.alt]="'common.appName' | transloco" />
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul>
+      @for (item of navigationItems(); track item.route) {
+        <li>
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            class="nav-link"
+            [attr.aria-label]="item.labelKey | transloco"
+          >
+            <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+            @if (sidebarService.isOpen()) {
+              <span class="label">{{ item.labelKey | transloco }}</span>
+            }
+          </a>
+
+          @if (item.hasAdd && sidebarService.isOpen()) {
+            <button mat-icon-button [matMenuTriggerFor]="teamsMenu" class="add-btn" [attr.aria-label]="'common.teamsActions' | transloco">
+              <mat-icon>add</mat-icon>
+            </button>
+            <mat-menu #teamsMenu="matMenu">
+              <button mat-menu-item (click)="openInviteMembersDialog()">
+                <mat-icon>person_add</mat-icon><span>{{ 'nav.inviteWorker' | transloco }}</span>
+              </button>
+              <button mat-menu-item (click)="openCreateTeamDialog()">
+                <mat-icon>group_add</mat-icon><span>{{ 'nav.createTeam' | transloco }}</span>
+              </button>
+            </mat-menu>
+          }
+        </li>
+      }
+    </ul>
+  </nav>
+</aside>

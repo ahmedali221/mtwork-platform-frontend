@@ -1,0 +1,164 @@
+<div class="step" [formGroup]="formGroup">
+
+  <div class="step__header">
+    <h2 class="step__title">{{ 'wizard.steps.contracting' | transloco }}</h2>
+    <p class="step__desc">{{ 'wizard.steps.contractingDesc' | transloco }}</p>
+  </div>
+
+  <!-- Contract duration -->
+  <div class="step__section-header">
+    <span class="step__section-title">{{ 'contracting.durationSection' | transloco }}</span>
+  </div>
+
+  <div class="step__grid">
+
+    <!-- Start date -->
+    <div class="field">
+      <label class="field__label" for="startDate">
+        {{ 'contracting.startDate' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="startDate" type="date" class="field__input"
+        [class.field__input--error]="isInvalid('startDate')"
+        formControlName="startDate"
+        [attr.aria-label]="'contracting.startDate' | transloco"
+        [attr.aria-invalid]="isInvalid('startDate')"
+        [attr.aria-describedby]="isInvalid('startDate') ? 'startDate-err' : null" />
+      @if (isInvalid('startDate')) {
+        <span id="startDate-err" class="field__error" role="alert">
+          {{ errorKey('startDate') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- End date -->
+    <div class="field">
+      <label class="field__label" for="endDate">
+        {{ 'contracting.endDate' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="endDate" type="date" class="field__input"
+        [class.field__input--error]="isInvalid('endDate')"
+        formControlName="endDate"
+        [attr.aria-label]="'contracting.endDate' | transloco"
+        [attr.aria-invalid]="isInvalid('endDate')"
+        [attr.aria-describedby]="isInvalid('endDate') ? 'endDate-err' : null" />
+      @if (isInvalid('endDate')) {
+        <span id="endDate-err" class="field__error" role="alert">
+          {{ errorKey('endDate') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Trial period -->
+    <div class="field">
+      <label class="field__label" for="trialPeriod">
+        {{ 'contracting.trialPeriod' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="trialPeriod" type="text" class="field__input"
+        [class.field__input--error]="isInvalid('trialPeriod')"
+        formControlName="trialPeriod"
+        [attr.aria-label]="'contracting.trialPeriod' | transloco"
+        [attr.aria-invalid]="isInvalid('trialPeriod')"
+        [attr.aria-describedby]="isInvalid('trialPeriod') ? 'trialPeriod-err' : null"
+        [placeholder]="'contracting.trialPeriodPlaceholder' | transloco" />
+      @if (isInvalid('trialPeriod')) {
+        <span id="trialPeriod-err" class="field__error" role="alert">
+          {{ errorKey('trialPeriod') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Notice period (optional) -->
+    <div class="field">
+      <label class="field__label" for="noticePeriod">
+        {{ 'contracting.noticePeriod' | transloco }}
+      </label>
+      <input id="noticePeriod" type="text" class="field__input"
+        formControlName="noticePeriod"
+        [attr.aria-label]="'contracting.noticePeriod' | transloco"
+        [placeholder]="'contracting.noticePeriodPlaceholder' | transloco" />
+    </div>
+
+  </div>
+
+  <!-- Termination rights -->
+  <div class="step__section-header">
+    <span class="step__section-title">{{ 'contracting.terminationSection' | transloco }}</span>
+  </div>
+
+  <div class="step__grid">
+
+    <!-- Right to terminate during trial -->
+    <div class="field">
+      <label class="field__label" for="rightToTerminateTrial">
+        {{ 'contracting.rightToTerminateTrial' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <select id="rightToTerminateTrial" class="field__input"
+        [class.field__input--error]="isInvalid('rightToTerminateTrial')"
+        formControlName="rightToTerminateTrial"
+        [attr.aria-label]="'contracting.rightToTerminateTrial' | transloco"
+        [attr.aria-invalid]="isInvalid('rightToTerminateTrial')"
+        [attr.aria-describedby]="isInvalid('rightToTerminateTrial') ? 'rightToTerminateTrial-err' : null">
+        <option value="">{{ 'wizard.options.selectPlaceholder' | transloco }}</option>
+        <option value="Yes">{{ 'wizard.options.yes' | transloco }}</option>
+        <option value="No">{{ 'wizard.options.no' | transloco }}</option>
+      </select>
+      @if (isInvalid('rightToTerminateTrial')) {
+        <span id="rightToTerminateTrial-err" class="field__error" role="alert">
+          {{ errorKey('rightToTerminateTrial') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Right to terminate during contract -->
+    <div class="field">
+      <label class="field__label" for="rightToTerminateDuring">
+        {{ 'contracting.rightToTerminateDuring' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <select id="rightToTerminateDuring" class="field__input"
+        [class.field__input--error]="isInvalid('rightToTerminateDuring')"
+        formControlName="rightToTerminateDuring"
+        [attr.aria-label]="'contracting.rightToTerminateDuring' | transloco"
+        [attr.aria-invalid]="isInvalid('rightToTerminateDuring')"
+        [attr.aria-describedby]="isInvalid('rightToTerminateDuring') ? 'rightToTerminateDuring-err' : null">
+        <option value="">{{ 'wizard.options.selectPlaceholder' | transloco }}</option>
+        <option value="Yes">{{ 'wizard.options.yes' | transloco }}</option>
+        <option value="No">{{ 'wizard.options.no' | transloco }}</option>
+      </select>
+      @if (isInvalid('rightToTerminateDuring')) {
+        <span id="rightToTerminateDuring-err" class="field__error" role="alert">
+          {{ errorKey('rightToTerminateDuring') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Right to terminate (general) -->
+    <div class="field">
+      <label class="field__label" for="rightToTerminate">
+        {{ 'contracting.rightToTerminate' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <select id="rightToTerminate" class="field__input"
+        [class.field__input--error]="isInvalid('rightToTerminate')"
+        formControlName="rightToTerminate"
+        [attr.aria-label]="'contracting.rightToTerminate' | transloco"
+        [attr.aria-invalid]="isInvalid('rightToTerminate')"
+        [attr.aria-describedby]="isInvalid('rightToTerminate') ? 'rightToTerminate-err' : null">
+        <option value="">{{ 'wizard.options.selectPlaceholder' | transloco }}</option>
+        <option value="Yes">{{ 'wizard.options.yes' | transloco }}</option>
+        <option value="No">{{ 'wizard.options.no' | transloco }}</option>
+      </select>
+      @if (isInvalid('rightToTerminate')) {
+        <span id="rightToTerminate-err" class="field__error" role="alert">
+          {{ errorKey('rightToTerminate') | transloco }}
+        </span>
+      }
+    </div>
+
+  </div>
+
+</div>

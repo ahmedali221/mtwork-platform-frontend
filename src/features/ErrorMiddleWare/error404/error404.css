@@ -1,0 +1,60 @@
+.container-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh; /* خليها أقل شوية عشان الزر والنص يبانوا فوق */
+  background-color: var(--ui-surface);
+}
+
+.content {
+  text-align: center;
+  max-width: 600px;
+  padding: 20px;
+  margin: auto;
+}
+
+.error-image {
+  max-width: 380px; /* حجم مناسب للصورة */
+  height: auto;
+}
+
+.error-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--brand-neutral-800);
+}
+
+.error-message {
+  font-size: 1rem;
+  color: var(--ui-text-muted);
+  margin-top: 8px;
+}
+
+.navigateIcon {
+  width: 24px;
+  height: 24px;
+  margin-inline-end: 6px;
+  vertical-align: middle; /* يخلي الأيقونة على نفس خط النص */
+}
+
+.nav-hint {
+  margin-top: 12px;
+  font-size: 1rem;
+  color: var(--ui-text-sub);
+
+  display: inline-flex;   /* محاذاة الأيقونة والنص بجانب بعضهما */
+  align-items: center;      /* محاذاة عمودية مركزية */
+  gap: 6px;                 /* مسافة بين الأيقونة والنص */
+}
+.btn-khalli {
+  background-color: var(--brand-primary-800);
+  border-color: var(--brand-primary-800);
+  color: var(--ui-surface);
+}
+.btn-khalli:hover,
+.btn-khalli:focus,
+.btn-khalli:active {
+  background-color: var(--brand-primary-900);
+  border-color: var(--brand-primary-900);
+  color: var(--ui-surface);
+}

@@ -1,0 +1,24 @@
+<div class="form-group">
+  <label [for]="label">
+    {{ label }}
+    <span *ngIf="required" class="required-label">Required</span>
+  </label>
+
+  <input
+    [id]="label"
+    [type]="type"
+    [formControl]="formControl"
+    [placeholder]="placeholder"
+    [class.is-invalid]="invalid"
+    [attr.aria-invalid]="invalid"
+    [attr.aria-describedby]="invalid ? label + '-error' : null"
+  />
+
+  <div
+    *ngIf="invalid"
+    [id]="label + '-error'"
+    class="error-message text-danger"
+    role="alert">
+    {{ errorText }}
+  </div>
+</div>

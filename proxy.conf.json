@@ -1,0 +1,15 @@
+{
+  "/api": {
+    "target": "https://api.mtwork.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "info"
+  },
+  "/chatHub": {
+    "target": "https://api.mtwork.com",
+    "secure": true,
+    "changeOrigin": true,
+    "ws": true,
+    "logLevel": "info"
+  }
+}

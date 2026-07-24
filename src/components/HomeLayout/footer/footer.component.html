@@ -1,0 +1,88 @@
+<footer class="lp-footer">
+  <div class="lp-footer__inner">
+    <div class="lp-footer__grid">
+      <div class="lp-footer__brand">
+        <span class="lp-footer__logo" aria-label="MTWork">
+          @for (segment of logoSegments; track segment.src) {
+            <img
+              class="lp-footer__logo-segment"
+              [src]="segment.src"
+              alt=""
+              [style.width.px]="segment.width"
+              [style.height.px]="segment.height"
+            />
+          }
+        </span>
+        <p class="lp-footer__description">
+          {{ languageService.translations()?.footer?.description }}
+        </p>
+        <div class="lp-footer__social">
+          @for (social of socials; track social.key) {
+            <a
+              class="lp-footer__social-link"
+              href="#"
+              [attr.aria-label]="languageService.translations()?.footer?.social?.[social.key]"
+            >
+              <i [class]="social.icon"></i>
+            </a>
+          }
+        </div>
+      </div>
+
+      <div class="lp-footer__column">
+        <h4 class="lp-footer__heading">
+          {{ languageService.translations()?.footer?.howItWorks }}
+        </h4>
+        <ul class="lp-footer__links">
+          <li><a href="#">{{ languageService.translations()?.footer?.hireEmployee }}</a></li>
+          <li><a href="#">{{ languageService.translations()?.footer?.hireContractor }}</a></li>
+          <li><a href="#">{{ languageService.translations()?.footer?.runPayroll }}</a></li>
+          <li><a href="#">{{ languageService.translations()?.footer?.integrations }}</a></li>
+        </ul>
+      </div>
+
+      <div class="lp-footer__column">
+        <h4 class="lp-footer__heading">
+          {{ languageService.translations()?.footer?.solutions }}
+        </h4>
+        <ul class="lp-footer__links">
+          <li><a href="#">{{ languageService.translations()?.footer?.hireEmployee }}</a></li>
+          <li><a href="#">{{ languageService.translations()?.footer?.hireContractor }}</a></li>
+          <li><a href="#">{{ languageService.translations()?.footer?.runPayroll }}</a></li>
+          <li><a href="#">{{ languageService.translations()?.footer?.integrations }}</a></li>
+        </ul>
+      </div>
+
+      <div class="lp-footer__column">
+        <h4 class="lp-footer__heading">
+          {{ languageService.translations()?.footer?.resources }}
+        </h4>
+        <ul class="lp-footer__links">
+          <li><a href="#">{{ languageService.translations()?.footer?.hireEmployee }}</a></li>
+          <li><a href="#">{{ languageService.translations()?.footer?.hireContractor }}</a></li>
+          <li><a href="#">{{ languageService.translations()?.footer?.runPayroll }}</a></li>
+          <li><a href="#">{{ languageService.translations()?.footer?.integrations }}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="lp-footer__divider"></div>
+
+    <div class="lp-footer__bottom">
+      <p class="lp-footer__copyright">
+        {{ languageService.translations()?.footer?.allRightsReserved }}
+      </p>
+      <div class="lp-footer__policies">
+        <a href="#">
+          {{ languageService.translations()?.footer?.privacyPolicy }}
+        </a>
+        <a href="#">
+          {{ languageService.translations()?.footer?.cookiesPolicy }}
+        </a>
+        <a href="#">
+          {{ languageService.translations()?.footer?.termsOfUse }}
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,164 @@
+      * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in;
+            font-family: var(--font-family-primary);
+            background: var(--ui-bg);
+            min-height: 100vh;
+            padding: 20px;
+            margin-inline-start: 277px;
+            width: calc(100% - 277px);
+        }
+
+        .ImgSection {
+            width: 80%;
+            max-width: 400px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .ImgSection img {
+            width: 100%;
+            height: auto;
+        }
+
+        .Headersection {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .InternetIcon {
+            width: 35px;
+            height: 35px;
+        }
+
+        .error-code {
+            font-weight: 700;
+            font-size: 26px;
+            color: var(--ui-text-main);
+        }
+
+        .headerText {
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--ui-text-main);
+        }
+
+        .message {
+            color: var(--brand-neutral-400);
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 2px 0;
+        }
+
+        .connection-hint {
+            color: var(--brand-neutral-400);
+            font-size: 15px;
+            margin: 15px 0 25px 0;
+        }
+
+        .connection-hint strong {
+            color: var(--functional-info-400);
+            font-weight: 600;
+        }
+
+        .reload-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--brand-primary-400);
+            color: var(--brand-neutral-500);
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px color-mix(in srgb, var(--brand-primary-500) 25%, transparent);
+        }
+
+        .reload-button:hover {
+            background-color: var(--brand-primary-500);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px color-mix(in srgb, var(--brand-primary-500) 35%, transparent);
+        }
+
+        .reload-button:active {
+            transform: translateY(0);
+        }
+
+        .reload-button svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin-inline-start: 0;
+                width: 100%;
+            }
+
+            .ImgSection {
+                width: 90%;
+                max-width: 300px;
+            }
+
+            .error-code,
+            .headerText {
+                font-size: 22px;
+            }
+
+            .InternetIcon {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .ImgSection {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .error-code,
+            .headerText {
+                font-size: 20px;
+            }
+
+            .message,
+            .connection-hint {
+                font-size: 14px;
+            }
+
+            .reload-button {
+                font-size: 14px;
+                padding: 9px 20px;
+            }
+        }

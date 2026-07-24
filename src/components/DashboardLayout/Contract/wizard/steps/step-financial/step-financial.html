@@ -1,0 +1,213 @@
+<div class="step" [formGroup]="formGroup">
+
+  <div class="step__header">
+    <h2 class="step__title">{{ 'wizard.steps.financial' | transloco }}</h2>
+    <p class="step__desc">{{ 'wizard.steps.financialDesc' | transloco }}</p>
+  </div>
+
+  <!-- Payment terms -->
+  <div class="step__section-header">
+    <span class="step__section-title">{{ 'financial.paymentTermsSection' | transloco }}</span>
+  </div>
+
+  <div class="step__grid">
+
+    <!-- Currency -->
+    <div class="field">
+      <label class="field__label" for="currency">
+        {{ 'financial.currency' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <select id="currency" class="field__input"
+        [class.field__input--error]="isInvalid('currency')"
+        formControlName="currency"
+        [attr.aria-label]="'financial.currency' | transloco"
+        [attr.aria-invalid]="isInvalid('currency')"
+        [attr.aria-describedby]="isInvalid('currency') ? 'currency-err' : null">
+        <option value="">{{ 'wizard.options.selectPlaceholder' | transloco }}</option>
+        <option value="SAR">{{ 'wizard.options.currency.sar' | transloco }}</option>
+        <option value="USD">{{ 'wizard.options.currency.usd' | transloco }}</option>
+        <option value="EUR">{{ 'wizard.options.currency.eur' | transloco }}</option>
+        <option value="GBP">{{ 'wizard.options.currency.gbp' | transloco }}</option>
+        <option value="AED">{{ 'wizard.options.currency.aed' | transloco }}</option>
+      </select>
+      @if (isInvalid('currency')) {
+        <span id="currency-err" class="field__error" role="alert">
+          {{ errorKey('currency') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Billing cycle -->
+    <div class="field">
+      <label class="field__label" for="billingCycle">
+        {{ 'financial.billingCycle' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <select id="billingCycle" class="field__input"
+        [class.field__input--error]="isInvalid('billingCycle')"
+        formControlName="billingCycle"
+        [attr.aria-label]="'financial.billingCycle' | transloco"
+        [attr.aria-invalid]="isInvalid('billingCycle')"
+        [attr.aria-describedby]="isInvalid('billingCycle') ? 'billingCycle-err' : null">
+        <option value="">{{ 'wizard.options.selectPlaceholder' | transloco }}</option>
+        <option value="Monthly">{{ 'wizard.options.billingCycle.monthly' | transloco }}</option>
+        <option value="Quarterly">{{ 'wizard.options.billingCycle.quarterly' | transloco }}</option>
+        <option value="Annually">{{ 'wizard.options.billingCycle.annually' | transloco }}</option>
+        <option value="One-Time">{{ 'wizard.options.billingCycle.oneTime' | transloco }}</option>
+      </select>
+      @if (isInvalid('billingCycle')) {
+        <span id="billingCycle-err" class="field__error" role="alert">
+          {{ errorKey('billingCycle') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Total amount -->
+    <div class="field field--full">
+      <label class="field__label" for="amount">
+        {{ 'financial.amount' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="amount" type="number" min="1" class="field__input"
+        [class.field__input--error]="isInvalid('amount')"
+        formControlName="amount"
+        [attr.aria-label]="'financial.amount' | transloco"
+        [attr.aria-invalid]="isInvalid('amount')"
+        [attr.aria-describedby]="isInvalid('amount') ? 'amount-err' : null" />
+      @if (isInvalid('amount')) {
+        <span id="amount-err" class="field__error" role="alert">
+          {{ errorKey('amount') | transloco }}
+        </span>
+      }
+    </div>
+
+  </div>
+
+  <!-- First payment batch -->
+  <div class="step__section-header">
+    <span class="step__section-title">{{ 'financial.firstBatchSection' | transloco }}</span>
+  </div>
+
+  <div class="step__grid">
+
+    <div class="field">
+      <label class="field__label" for="firstBatchFrom">
+        {{ 'financial.periodFrom' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="firstBatchFrom" type="date" class="field__input"
+        [class.field__input--error]="isInvalid('firstBatchFrom')"
+        formControlName="firstBatchFrom"
+        [attr.aria-label]="'financial.periodFrom' | transloco"
+        [attr.aria-invalid]="isInvalid('firstBatchFrom')"
+        [attr.aria-describedby]="isInvalid('firstBatchFrom') ? 'firstBatchFrom-err' : null" />
+      @if (isInvalid('firstBatchFrom')) {
+        <span id="firstBatchFrom-err" class="field__error" role="alert">
+          {{ errorKey('firstBatchFrom') | transloco }}
+        </span>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="firstBatchTo">
+        {{ 'financial.periodTo' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="firstBatchTo" type="date" class="field__input"
+        [class.field__input--error]="isInvalid('firstBatchTo')"
+        formControlName="firstBatchTo"
+        [attr.aria-label]="'financial.periodTo' | transloco"
+        [attr.aria-invalid]="isInvalid('firstBatchTo')"
+        [attr.aria-describedby]="isInvalid('firstBatchTo') ? 'firstBatchTo-err' : null" />
+      @if (isInvalid('firstBatchTo')) {
+        <span id="firstBatchTo-err" class="field__error" role="alert">
+          {{ errorKey('firstBatchTo') | transloco }}
+        </span>
+      }
+    </div>
+
+    <div class="field field--full">
+      <label class="field__label" for="firstPaymentAmount">
+        {{ 'financial.paymentAmount' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="firstPaymentAmount" type="number" min="1" class="field__input"
+        [class.field__input--error]="isInvalid('firstPaymentAmount')"
+        formControlName="firstPaymentAmount"
+        [attr.aria-label]="'financial.paymentAmount' | transloco"
+        [attr.aria-invalid]="isInvalid('firstPaymentAmount')"
+        [attr.aria-describedby]="isInvalid('firstPaymentAmount') ? 'firstPaymentAmount-err' : null" />
+      @if (isInvalid('firstPaymentAmount')) {
+        <span id="firstPaymentAmount-err" class="field__error" role="alert">
+          {{ errorKey('firstPaymentAmount') | transloco }}
+        </span>
+      }
+    </div>
+
+  </div>
+
+  <!-- Last payment batch -->
+  <div class="step__section-header">
+    <span class="step__section-title">{{ 'financial.lastBatchSection' | transloco }}</span>
+  </div>
+
+  <div class="step__grid">
+
+    <div class="field">
+      <label class="field__label" for="lastBatchFrom">
+        {{ 'financial.periodFrom' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="lastBatchFrom" type="date" class="field__input"
+        [class.field__input--error]="isInvalid('lastBatchFrom')"
+        formControlName="lastBatchFrom"
+        [attr.aria-label]="'financial.periodFrom' | transloco"
+        [attr.aria-invalid]="isInvalid('lastBatchFrom')"
+        [attr.aria-describedby]="isInvalid('lastBatchFrom') ? 'lastBatchFrom-err' : null" />
+      @if (isInvalid('lastBatchFrom')) {
+        <span id="lastBatchFrom-err" class="field__error" role="alert">
+          {{ errorKey('lastBatchFrom') | transloco }}
+        </span>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="lastBatchTo">
+        {{ 'financial.periodTo' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="lastBatchTo" type="date" class="field__input"
+        [class.field__input--error]="isInvalid('lastBatchTo')"
+        formControlName="lastBatchTo"
+        [attr.aria-label]="'financial.periodTo' | transloco"
+        [attr.aria-invalid]="isInvalid('lastBatchTo')"
+        [attr.aria-describedby]="isInvalid('lastBatchTo') ? 'lastBatchTo-err' : null" />
+      @if (isInvalid('lastBatchTo')) {
+        <span id="lastBatchTo-err" class="field__error" role="alert">
+          {{ errorKey('lastBatchTo') | transloco }}
+        </span>
+      }
+    </div>
+
+    <div class="field field--full">
+      <label class="field__label" for="lastPaymentAmount">
+        {{ 'financial.paymentAmount' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="lastPaymentAmount" type="number" min="1" class="field__input"
+        [class.field__input--error]="isInvalid('lastPaymentAmount')"
+        formControlName="lastPaymentAmount"
+        [attr.aria-label]="'financial.paymentAmount' | transloco"
+        [attr.aria-invalid]="isInvalid('lastPaymentAmount')"
+        [attr.aria-describedby]="isInvalid('lastPaymentAmount') ? 'lastPaymentAmount-err' : null" />
+      @if (isInvalid('lastPaymentAmount')) {
+        <span id="lastPaymentAmount-err" class="field__error" role="alert">
+          {{ errorKey('lastPaymentAmount') | transloco }}
+        </span>
+      }
+    </div>
+
+  </div>
+
+</div>

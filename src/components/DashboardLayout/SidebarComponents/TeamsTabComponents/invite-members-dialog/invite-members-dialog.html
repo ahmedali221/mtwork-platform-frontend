@@ -1,0 +1,82 @@
+<div class="im-dialog">
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <div class="im-header">
+    <h2 class="im-title">Invite Members</h2>
+    <button class="im-close" (click)="close()" [attr.aria-label]="'common.closeDialog' | transloco" type="button">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ── Body ────────────────────────────────────────────────── -->
+  <div class="im-body">
+    <p class="im-sub">Add members by email address. Press Enter or comma to add multiple.</p>
+
+    <!-- Email chips + input -->
+    <div class="im-chips-field">
+      @for (email of emails; track $index) {
+        <span class="im-chip">
+          <span class="im-chip-text">{{ email }}</span>
+          <button
+            class="im-chip-remove"
+            (click)="removeEmail($index)"
+            [attr.aria-label]="'Remove ' + email"
+            type="button"
+          >
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+              <path d="M8 2L2 8M2 2L8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </span>
+      }
+      <input
+        class="im-chip-input"
+        type="email"
+        [(ngModel)]="inputEmail"
+        (keydown)="onKeydown($event)"
+        (blur)="addEmailFromInput()"
+        [placeholder]="emails.length === 0 ? 'Add More Members' : ''"
+        [attr.aria-label]="'teams.emailInvite' | transloco"
+        autocomplete="off"
+      />
+    </div>
+
+    @if (sendError()) {
+      <div class="im-message im-message--error" role="alert" aria-live="polite">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM7.25 5h1.5v4.5h-1.5V5Zm0 6h1.5v1.5h-1.5V11Z" fill="currentColor"/>
+        </svg>
+        <span>{{ sendError() }}</span>
+      </div>
+    }
+
+    @if (sendSuccess()) {
+      <div class="im-message im-message--success" role="status" aria-live="polite">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M13.5 4.5L6 12 2.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Invitations sent successfully!
+      </div>
+    }
+  </div>
+
+  <!-- ── Footer ──────────────────────────────────────────────── -->
+  <div class="im-footer">
+    <button class="im-btn im-btn-cancel" (click)="close()" type="button">Cancel</button>
+    <button
+      class="im-btn im-btn-invite"
+      (click)="submitInvite()"
+      type="button"
+      [disabled]="sending || (emails.length === 0 && !inputEmail.trim())"
+      [attr.aria-busy]="sending"
+    >
+      @if (sending) {
+        <span class="im-spinner" aria-hidden="true"></span>
+      }
+      {{ buttonLabel }}
+    </button>
+  </div>
+
+</div>

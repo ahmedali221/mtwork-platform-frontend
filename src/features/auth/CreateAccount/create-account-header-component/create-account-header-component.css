@@ -1,0 +1,24 @@
+.bar {
+  background: transparent;
+}
+
+.container.bar-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--brand-neutral-950);
+}
+
+.actions .btn-primary {
+  background: var(--ui-surface);
+  border: 1px solid var(--brand-neutral-200);
+  padding: 6px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+}

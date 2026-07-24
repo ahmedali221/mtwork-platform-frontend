@@ -1,0 +1,286 @@
+/* ── OTP page (Figma 3:124181) ──────────────────────────────────
+   Standalone cream surface. Tokens mirror the frozen login freeze:
+   --login-primary is the true brand navy #2e358f (lives in
+   --landing-navbar-primary; --brand-primary-500 is #4242C0, NOT navy).
+   Figma has NO dark variant for this frame, but the surface is the cream
+   page + white card, so dark mode reads fine with the standard --ui-* flips. */
+.otp-page {
+  --login-primary: var(--landing-navbar-primary);   /* #2e358f */
+  --otp-surface-white: #ffffff;
+  --otp-field-bg: var(--brand-grays-500);            /* #f7f5f2 */
+  min-height: 100vh;
+  background: var(--brand-grays-50);                 /* Bg-Light_Gray #f7f5f2 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Top bar (Figma 3:124182: x32 y40, h32) ─────────────────────── */
+.otp-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 32px 0;
+}
+
+.otp-topbar__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.971px;
+  padding: 3.942px;
+  text-decoration: none;
+}
+
+/* Logo segments — #282828 art tinted to the page text colour */
+.otp-topbar__logo-segment {
+  display: block;
+  filter: var(--otp-logo-filter, none);
+}
+
+.otp-topbar__controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Lang button — Figma 3:124185: white bg, dark text, r8, h32, gap 6 */
+.otp-ctrl--lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: var(--radius-8);
+  background: var(--otp-surface-white);
+  border: 0;
+  color: var(--brand-neutral-950);
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-size);
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Theme group — Figma 3:124186: white container r8 h32 */
+.otp-ctrl--theme-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 4px;
+  border-radius: var(--radius-8);
+  background: var(--otp-surface-white);
+}
+
+.otp-ctrl__theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: var(--radius-6);
+  border: 0;
+  background: transparent;
+  color: var(--brand-neutral-400);
+  font-size: var(--caption-size);
+  font-family: var(--font-family-dm-sans);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* Active = Bg-Suger_Black #282828, white text (Figma 3:124188) */
+.otp-ctrl__theme-btn--active {
+  background: var(--brand-neutral-900);
+  color: #ffffff;
+}
+
+/* ── Main + Card ────────────────────────────────────────────────── */
+.otp-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* Figma 3:124189 "Container Login" 426 wide: white fill, 0.5px hairline
+   border rgba(13,13,13,0.25), radius 20, padding 24, gap 24, flex column. */
+.otp-card {
+  width: 100%;
+  max-width: 426px;
+  background: var(--otp-surface-white);
+  border: 0.5px solid rgba(13, 13, 13, 0.25);
+  border-radius: var(--radius-20);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Back (Figma 3:124190): arrow + "Back", DM Sans Bold 18, h48 ── */
+.otp-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+  width: fit-content;
+  padding: 12px 16px 12px 0;
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--body-size);
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--brand-grays-900);   /* #201b13 Text/DarkGray */
+  text-decoration: none;
+}
+
+.otp-back:hover { color: var(--login-primary); }
+
+/* ── Head (Figma 3:124191): title + subtitle, gap 4 ─────────────── */
+.otp-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Title "Enter OTP Code" — IBM Plex Sans Bold H5 32/1.4, #201b13 */
+.otp-head__title {
+  font-family: var(--font-family-ibm-plex-sans);
+  font-size: var(--h5-size);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--brand-grays-900);
+  margin: 0;
+}
+
+/* Subtitle — Work Sans Regular 18/1.5, #999; email span navy #2e358f */
+.otp-head__subtitle {
+  font-family: var(--font-family-work-sans);
+  font-size: var(--body-size);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--brand-neutral-400);
+  margin: 0;
+}
+
+.otp-head__email {
+  color: var(--login-primary);
+}
+
+/* ── Body (Figma 3:124194: digit group + CTA, gap 32) ───────────── */
+.otp-body {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Cells + Resend group (Figma 3:124195, gap 4) */
+.otp-digits-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* 4 cells (Figma 3:124196): equal tracks fill the 378px row exactly, h56,
+   white, 1px #ccc, r12, gap 8. Grid (not flex) so the 4 cells fill the full
+   width with no sub-pixel rounding leak — matches Figma 88.5px each. */
+.otp-cells {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.otp-cell {
+  min-width: 0;
+  width: 100%;
+  height: 56px;
+  border: 1px solid var(--brand-grays-300, #cccccc);   /* Border/LightGray */
+  border-radius: var(--radius-12);
+  background: var(--otp-surface-white);
+  color: var(--brand-neutral-950);
+  font-family: var(--font-family-ibm-plex-sans);
+  font-size: var(--h5-size);
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Active cell — focus ring in brand navy (consistent with login inputs) */
+.otp-cell:focus {
+  border-color: var(--login-primary);
+  box-shadow: inset 0 0 0 1px var(--login-primary);
+}
+
+/* Resend (Figma 3:124197): sm button h32, replace icon + DM Sans 12 #1b1b1b */
+.otp-resend {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  width: fit-content;
+  padding: 8px;
+  border: 0;
+  border-radius: var(--radius-8);
+  background: transparent;
+  color: var(--brand-neutral-950);   /* Text/Black #1b1b1b */
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-size);
+  font-weight: 400;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.otp-resend:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.otp-resend:not(:disabled):hover {
+  opacity: 0.7;
+}
+
+.otp-error {
+  font-size: var(--caption-2-size);
+  color: var(--functional-danger-500);
+  margin: 0;
+}
+
+/* Reset CTA (Figma 3:124198): full-width, h48, Bg-Black #1b1b1b, r12,
+   DM Sans Regular 18 white. */
+.otp-btn {
+  width: 100%;
+  height: 48px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: var(--radius-12);
+  background: var(--brand-neutral-950);
+  color: #ffffff;
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--body-size);
+  font-weight: 400;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.otp-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.otp-btn:not(:disabled):hover {
+  opacity: 0.88;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────
+   No Figma mobile frame; the centered card already fluid-fits. Pad
+   the topbar in on small screens to match the page gutter. */
+@media (max-width: 480px) {
+  .otp-topbar {
+    padding: 24px 16px 0;
+  }
+  .otp-main {
+    padding: 16px;
+  }
+}

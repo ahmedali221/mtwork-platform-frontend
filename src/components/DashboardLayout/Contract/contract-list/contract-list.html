@@ -1,0 +1,463 @@
+<div class="contracts-page">
+  <div class="page-content">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" [attr.aria-label]="'common.breadcrumb' | transloco">
+      <span class="breadcrumb__item">{{ 'common.appName' | transloco }}</span>
+      <span class="breadcrumb__sep">›</span>
+      <span class="breadcrumb__item breadcrumb__item--active">{{ 'contracts.list.title' | transloco }}</span>
+    </nav>
+
+    <!-- Page header -->
+    <div class="page-header">
+      <h1 class="page-title">{{ 'contracts.list.title' | transloco }}</h1>
+      @if (!reportMode) {
+        <a
+          [routerLink]="['/dashboard', 'typepeople']"
+          class="new-contract-btn btn-create"
+          [attr.aria-label]="'contracts.list.newContractAriaLabel' | transloco"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 3.33331V12.6666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3.33398 8H12.6673" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          {{ 'contracts.list.newContract' | transloco }}
+        </a>
+      }
+    </div>
+
+    <!-- Tabs + report toggle (always visible so user can leave report mode) -->
+    <div class="tabs-container">
+      <div class="tabs" role="tablist">
+        <button role="tab" class="tab-item"
+          [class.active]="selectedTab === 'All'"
+          [attr.aria-selected]="selectedTab === 'All'"
+          [disabled]="reportMode"
+          (click)="selectTab('All')">{{ 'contracts.tabs.all' | transloco }}</button>
+        <button role="tab" class="tab-item"
+          [class.active]="selectedTab === 'Employees'"
+          [attr.aria-selected]="selectedTab === 'Employees'"
+          [disabled]="reportMode"
+          (click)="selectTab('Employees')">{{ 'contracts.tabs.employees' | transloco }}</button>
+        <button role="tab" class="tab-item"
+          [class.active]="selectedTab === 'Contractors'"
+          [attr.aria-selected]="selectedTab === 'Contractors'"
+          [disabled]="reportMode"
+          (click)="selectTab('Contractors')">{{ 'contracts.tabs.contractors' | transloco }}</button>
+        <button role="tab" class="tab-item"
+          [class.active]="selectedTab === 'Draft'"
+          [attr.aria-selected]="selectedTab === 'Draft'"
+          [disabled]="reportMode"
+          (click)="selectTab('Draft')">{{ 'contracts.tabs.draft' | transloco }}</button>
+      </div>
+
+      <button class="view-as-report-btn"
+              [class.view-as-report-btn--active]="reportMode"
+              (click)="toggleReport()"
+              [attr.aria-pressed]="reportMode"
+              [attr.aria-label]="'contracts.list.viewAsReport' | transloco">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M12.6667 9.33333H3.33333V12C3.33333 12.3536 3.47381 12.6924 3.72386 12.9424C3.97391 13.1925 4.31268 13.3333 4.66667 13.3333H11.3333C11.6873 13.3333 12.0261 13.1925 12.2761 12.9424C12.5262 12.6924 12.6667 12.3536 12.6667 12V9.33333Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M12.6667 4.66667H3.33333V7.33333C3.33333 7.68732 3.47381 8.02609 3.72386 8.27614C3.97391 8.52619 4.31268 8.66667 4.66667 8.66667H11.3333C11.6873 8.66667 12.0261 8.52619 12.2761 8.27614C12.5262 8.02609 12.6667 7.68732 12.6667 7.33333V4.66667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        {{ 'contracts.list.viewAsReport' | transloco }}
+      </button>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════
+         REPORT MODE — read-only, no filters, no expand, no actions
+    ════════════════════════════════════════════════════════════ -->
+    @if (reportMode) {
+
+      @if (isLoading()) {
+        <div class="loading-spinner" role="status" aria-live="polite">
+          <div class="spinner"></div>
+          <p>{{ 'contracts.list.loading' | transloco }}</p>
+        </div>
+      } @else if (filteredContracts.length === 0) {
+        <div class="empty-state" role="status">
+          <h2 class="empty-state__title">{{ 'contracts.empty.title' | transloco }}</h2>
+          <p class="empty-state__sub">{{ 'contracts.empty.subtitle' | transloco }}</p>
+        </div>
+      } @else {
+        <div class="contracts-table-wrapper" data-mode="report">
+          <table class="contracts-table contracts-table--report" role="grid"
+                 [attr.aria-label]="'contracts.list.title' | transloco">
+            <thead>
+              <tr>
+                <th scope="col">{{ 'contracts.table.workId'      | transloco }}</th>
+                <th scope="col">{{ 'contracts.table.employee'     | transloco }}</th>
+                <th scope="col">{{ 'contracts.table.country'      | transloco }}</th>
+                <th scope="col">{{ 'contracts.table.startDate'    | transloco }}</th>
+                <th scope="col">{{ 'contracts.table.endDate'      | transloco }}</th>
+                <th scope="col">{{ 'contracts.table.contractType' | transloco }}</th>
+                <th scope="col">{{ 'contracts.table.manager'      | transloco }}</th>
+                <th scope="col">{{ 'contracts.table.createdAt'    | transloco }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (contract of filteredContracts; track contract.id) {
+                <tr>
+                  <td>{{ contract.workId }}</td>
+                  <td>{{ contract.empoleeOrContractor?.name || '—' }}</td>
+                  <td>{{ contract.country?.name || '—' }}</td>
+                  <td>{{ contract.startDate || '—' }}</td>
+                  <td>{{ contract.endDate || '—' }}</td>
+                  <td>{{ contract.contractType }}</td>
+                  <td>{{ contract.manager?.name || '—' }}</td>
+                  <td>{{ contract.createdTime || '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+    } @else {
+      <!-- ════════════════════════════════════════════════════════════
+           NORMAL MODE — filters + view toggle (table | cards) + expand
+      ════════════════════════════════════════════════════════════ -->
+
+      <!-- Filters -->
+      <div class="filters-container">
+        <div class="search-input-wrapper">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M7.33333 12.6667C10.2789 12.6667 12.6667 10.2789 12.6667 7.33333C12.6667 4.38781 10.2789 2 7.33333 2C4.38781 2 2 4.38781 2 7.33333C2 10.2789 4.38781 12.6667 7.33333 12.6667Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 14L11.1 11.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input type="text"
+            [placeholder]="'contracts.filters.searchPlaceholder' | transloco"
+            [(ngModel)]="searchQuery"
+            (ngModelChange)="onServerFilterChange()"
+            [attr.aria-label]="'contracts.filters.searchPlaceholder' | transloco" />
+        </div>
+
+        <div class="dropdowns">
+          <div class="dropdown">
+            <select [(ngModel)]="countryFilter"
+                    (ngModelChange)="onServerFilterChange()"
+                    [attr.aria-label]="'contracts.filters.country' | transloco">
+              @for (country of countries; track country.value) {
+                <option [value]="country.value">{{ country.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="dropdown">
+            <select [(ngModel)]="contractTypeFilter"
+                    (ngModelChange)="onServerFilterChange()"
+                    [attr.aria-label]="'contracts.filters.contractType' | transloco">
+              @for (type of contractTypes; track type.value) {
+                <option [value]="type.value">{{ type.labelKey | transloco }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="dropdown">
+            <select [(ngModel)]="workStatusFilter"
+                    (ngModelChange)="onServerFilterChange()"
+                    [attr.aria-label]="'contracts.filters.status' | transloco">
+              @for (status of workStatuses; track status.value) {
+                <option [value]="status.value">{{ status.labelKey | transloco }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- View toggle (table | cards) — same pattern as Teams/Meetings -->
+        <div class="ui-view-toggle" role="group" [attr.aria-label]="'common.switchView' | transloco">
+          <button type="button" class="ui-view-toggle__btn"
+                  [class.ui-view-toggle__btn--active]="viewMode === 'table'"
+                  (click)="setView('table')" title="Table view" [attr.aria-label]="'common.tableView' | transloco">
+            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18v4H3V4zm0 6h18v4H3v-4zm0 6h18v4H3v-4z" fill="currentColor"/></svg>
+          </button>
+          <button type="button" class="ui-view-toggle__btn"
+                  [class.ui-view-toggle__btn--active]="viewMode === 'cards'"
+                  (click)="setView('cards')" title="Card view" [attr.aria-label]="'common.cardView' | transloco">
+            <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" fill="currentColor"/></svg>
+          </button>
+        </div>
+
+        @if (hasActiveFilters()) {
+          <button class="clear-filters-btn" (click)="clearAllFilters()"
+                  [attr.aria-label]="'contracts.filters.clearAll' | transloco">
+            {{ 'contracts.filters.clearAll' | transloco }}
+          </button>
+        }
+      </div>
+
+      <!-- Loading -->
+      @if (isLoading()) {
+        <div class="loading-spinner" role="status" aria-live="polite">
+          <div class="spinner"></div>
+          <p>{{ 'contracts.list.loading' | transloco }}</p>
+        </div>
+      }
+
+      <!-- Error -->
+      @if (!isLoading() && hasError()) {
+        <div class="empty-state" role="alert">
+          <mat-icon class="empty-state__icon" aria-hidden="true">error_outline</mat-icon>
+          <h2 class="empty-state__title">{{ 'common.error' | transloco }}</h2>
+          <p class="empty-state__sub">{{ 'contracts.list.loadError' | transloco }}</p>
+          <button class="btn-primary" (click)="loadContracts()">
+            {{ 'common.retry' | transloco }}
+          </button>
+        </div>
+      }
+
+      @if (!isLoading() && !hasError()) {
+        @if (filteredContracts.length > 0) {
+
+          <!-- ── Table view ── -->
+          @if (viewMode === 'table') {
+            <div class="contracts-table-wrapper">
+              <table class="contracts-table" role="grid"
+                     [attr.aria-label]="'contracts.list.title' | transloco">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <input type="checkbox" (change)="onSelectAll($event)"
+                             [attr.aria-label]="'contracts.table.selectAll' | transloco" />
+                    </th>
+                    <th scope="col" style="width:40px"></th>
+                    <th scope="col">{{ 'contracts.table.workId'       | transloco }}</th>
+                    <th scope="col">{{ 'contracts.table.employee'      | transloco }}</th>
+                    <th scope="col">{{ 'contracts.table.country'       | transloco }}</th>
+                    <th scope="col">{{ 'contracts.table.startDate'     | transloco }}</th>
+                    <th scope="col">{{ 'contracts.table.endDate'       | transloco }}</th>
+                    <th scope="col">{{ 'contracts.table.contractType'  | transloco }}</th>
+                    <th scope="col">{{ 'contracts.table.manager'       | transloco }}</th>
+                    <th scope="col">{{ 'contracts.table.createdAt'     | transloco }}</th>
+                    <th scope="col" [attr.aria-label]="'contracts.table.actions' | transloco"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (contract of filteredContracts; track contract.id) {
+                    <tr>
+                      <td>
+                        <input type="checkbox" [(ngModel)]="contract.isSelected"
+                               (change)="onContractSelected(contract)"
+                               [attr.aria-label]="'contracts.table.selectContract' | transloco" />
+                      </td>
+                      <td>
+                        <button type="button" class="expand-btn"
+                                (click)="toggleExpand(contract.id)"
+                                [attr.aria-expanded]="expandedRowId === contract.id"
+                                [attr.aria-label]="expandedRowId === contract.id ? 'Collapse row' : 'Expand row'">
+                          <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"
+                               [style.transform]="expandedRowId === contract.id ? 'rotate(90deg)' : 'rotate(0)'">
+                            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </button>
+                      </td>
+                      <td class="clickable-row" (click)="openContractDetails(contract)" role="button" tabindex="0" (keydown.enter)="openContractDetails(contract)">
+                        {{ contract.workId }}
+                      </td>
+                      <td>
+                        <div class="employee-info">
+                          <div class="avatar-badge" [ngClass]="getAvatarColorClass(contract.empoleeOrContractor?.name ?? '')" aria-hidden="true">
+                            {{ getInitials(contract.empoleeOrContractor?.name ?? '') }}
+                          </div>
+                          <div>
+                            <div class="name">{{ contract.empoleeOrContractor?.name }}</div>
+                            <div class="role">{{ contract.empoleeOrContractor?.role }}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="country-info">
+                          @if (contract.country?.flag) {
+                            <img [src]="contract.country!.flag" [alt]="contract.country!.name + ' flag'" class="flag" />
+                          }
+                          <span>{{ contract.country?.name }}</span>
+                        </div>
+                      </td>
+                      <td>{{ contract.startDate }}</td>
+                      <td>{{ contract.endDate }}</td>
+                      <td>
+                        <span class="contract-type-badge" [class.milestone]="contract.contractType === 'Milestone'">
+                          {{ contract.contractType }}
+                        </span>
+                      </td>
+                      <td>
+                        <div class="manager-info">
+                          <div class="avatar-badge" [ngClass]="getAvatarColorClass(contract.manager?.name ?? '')" aria-hidden="true">
+                            {{ getInitials(contract.manager?.name ?? '') }}
+                          </div>
+                          <div>
+                            <div class="name">{{ contract.manager?.name }}</div>
+                            <div class="role">{{ contract.manager?.role }}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>{{ contract.createdTime }}</td>
+                      <td class="action-cell">
+                        <button class="action-menu-btn"
+                                (click)="toggleMenu(contract.id, $event)"
+                                [attr.aria-label]="'contracts.table.actionsFor' | transloco : { id: contract.workId }"
+                                [attr.aria-expanded]="activeMenuId() === contract.id"
+                                aria-haspopup="menu">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <circle cx="8" cy="3" r="1.2" fill="currentColor"/>
+                            <circle cx="8" cy="8" r="1.2" fill="currentColor"/>
+                            <circle cx="8" cy="13" r="1.2" fill="currentColor"/>
+                          </svg>
+                        </button>
+
+                        @if (activeMenuId() === contract.id) {
+                          <div class="context-menu" role="menu" (click)="$event.stopPropagation()">
+                            @if (deleteConfirmId() === contract.id) {
+                              <div class="context-menu__confirm">
+                                <p class="context-menu__confirm-text">{{ 'contracts.actions.deleteConfirm' | transloco }}</p>
+                                <div class="context-menu__confirm-actions">
+                                  <button class="context-menu__confirm-btn context-menu__confirm-btn--cancel"
+                                          (click)="cancelQuickDelete($event)">
+                                    {{ 'common.cancel' | transloco }}
+                                  </button>
+                                  <button class="context-menu__confirm-btn context-menu__confirm-btn--delete"
+                                          (click)="confirmQuickDelete(contract, $event)"
+                                          [disabled]="isDeleting()">
+                                    @if (isDeleting()) {
+                                      <span class="btn-spinner"></span>
+                                    } @else {
+                                      {{ 'contracts.actions.delete' | transloco }}
+                                    }
+                                  </button>
+                                </div>
+                              </div>
+                            } @else {
+                              <button class="context-menu__item" role="menuitem" (click)="editContract(contract, $event)">
+                                {{ 'contracts.actions.edit' | transloco }}
+                              </button>
+                              <button class="context-menu__item" role="menuitem" (click)="quickDownloadPdf(contract, $event)">
+                                {{ 'contracts.actions.downloadPdf' | transloco }}
+                              </button>
+                              <div class="context-menu__divider" role="separator"></div>
+                              <button class="context-menu__item context-menu__item--danger" role="menuitem" (click)="requestQuickDelete(contract.id, $event)">
+                                {{ 'contracts.actions.delete' | transloco }}
+                              </button>
+                            }
+                          </div>
+                        }
+                      </td>
+                    </tr>
+                    @if (expandedRowId === contract.id) {
+                      <tr class="expand-row">
+                        <td colspan="11">
+                          <div class="expand-panel">
+                            <dl class="expand-grid">
+                              <div><dt>{{ 'contracts.table.workId' | transloco }}</dt><dd>{{ contract.workId || '-' }}</dd></div>
+                              <div><dt>{{ 'contracts.table.contractType' | transloco }}</dt><dd>{{ contract.contractType || '-' }}</dd></div>
+                              <div><dt>{{ 'contracts.table.startDate' | transloco }}</dt><dd>{{ contract.startDate || '-' }}</dd></div>
+                              <div><dt>{{ 'contracts.table.endDate' | transloco }}</dt><dd>{{ contract.endDate || '-' }}</dd></div>
+                              <div><dt>{{ 'contracts.table.country' | transloco }}</dt><dd>{{ contract.country?.name || '-' }}</dd></div>
+                              <div><dt>{{ 'contracts.table.manager' | transloco }}</dt><dd>{{ contract.manager?.name || '-' }}</dd></div>
+                              <div><dt>{{ 'contracts.table.createdAt' | transloco }}</dt><dd>{{ contract.createdTime || '-' }}</dd></div>
+                            </dl>
+                          </div>
+                        </td>
+                      </tr>
+                    }
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+
+          @if (viewMode === 'cards') {
+            <div class="ui-cards-grid">
+              @for (contract of filteredContracts; track contract.id) {
+                <article class="ui-card">
+                  <header class="ui-card__head">
+                    <div class="employee-info">
+                      <div class="avatar-badge" [ngClass]="getAvatarColorClass(contract.empoleeOrContractor?.name ?? '')" aria-hidden="true">
+                        {{ getInitials(contract.empoleeOrContractor?.name ?? '') }}
+                      </div>
+                      <div>
+                        <div class="name">{{ contract.empoleeOrContractor?.name || '-' }}</div>
+                        <div class="role">#{{ contract.workId }}</div>
+                      </div>
+                    </div>
+                    <button type="button" class="expand-btn"
+                            (click)="toggleExpand(contract.id)"
+                            [attr.aria-expanded]="expandedRowId === contract.id">
+                      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"
+                           [style.transform]="expandedRowId === contract.id ? 'rotate(90deg)' : 'rotate(0)'">
+                        <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+                  </header>
+
+                  <dl class="ui-card__meta">
+                    <div>
+                      <dt>{{ 'contracts.table.contractType' | transloco }}</dt>
+                      <dd>
+                        <span class="contract-type-badge" [class.milestone]="contract.contractType === 'Milestone'">
+                          {{ contract.contractType }}
+                        </span>
+                      </dd>
+                    </div>
+                    <div><dt>{{ 'contracts.table.country' | transloco }}</dt><dd>{{ contract.country?.name || '-' }}</dd></div>
+                    <div><dt>{{ 'contracts.table.startDate' | transloco }}</dt><dd>{{ contract.startDate || '-' }}</dd></div>
+                    <div><dt>{{ 'contracts.table.endDate' | transloco }}</dt><dd>{{ contract.endDate || '-' }}</dd></div>
+                  </dl>
+
+                  @if (expandedRowId === contract.id) {
+                    <div class="expand-panel">
+                      <dl class="expand-grid">
+                        <div><dt>{{ 'contracts.table.manager' | transloco }}</dt><dd>{{ contract.manager?.name || '-' }}</dd></div>
+                        <div><dt>{{ 'contracts.table.createdAt' | transloco }}</dt><dd>{{ contract.createdTime || '-' }}</dd></div>
+                      </dl>
+                    </div>
+                  }
+
+                  <footer class="ui-card__foot">
+                    <button class="action-menu-btn" (click)="openContractDetails(contract)">
+                      {{ 'contracts.actions.view' | transloco }}
+                    </button>
+                  </footer>
+                </article>
+              }
+            </div>
+          }
+
+          <div class="pagination-container">
+            <div class="items-per-page">
+              <label for="itemsPerPage">{{ 'contracts.pagination.itemsPerPage' | transloco }}</label>
+              <select id="itemsPerPage" [ngModel]="paginationInfo.itemsPerPage" (change)="onItemsPerPageChange($event)">
+                <option [value]="10">10</option>
+                <option [value]="20">20</option>
+                <option [value]="50">50</option>
+              </select>
+            </div>
+            <div class="pagination-controls" role="navigation">
+              <button class="pagination-btn" [disabled]="paginationInfo.currentPage === 1" (click)="onPageChange(paginationInfo.currentPage - 1)">
+                {{ 'contracts.pagination.previous' | transloco }}
+              </button>
+              @for (page of pagesArray; track page) {
+                <button class="pagination-btn" [class.active]="paginationInfo.currentPage === page" (click)="onPageChange(page)">
+                  {{ page }}
+                </button>
+              }
+              <button class="pagination-btn" [disabled]="paginationInfo.currentPage === paginationInfo.totalPages" (click)="onPageChange(paginationInfo.currentPage + 1)">
+                {{ 'contracts.pagination.next' | transloco }}
+              </button>
+            </div>
+          </div>
+
+        } @else {
+          <div class="empty-state" role="status">
+            <h2 class="empty-state__title">{{ 'contracts.empty.title' | transloco }}</h2>
+            <p class="empty-state__sub">{{ 'contracts.empty.subtitle' | transloco }}</p>
+            <a [routerLink]="['/dashboard', 'typepeople']" class="new-contract-btn">
+              {{ 'contracts.list.newContract' | transloco }}
+            </a>
+          </div>
+        }
+      }
+
+    }
+
+  </div>
+</div>

@@ -1,0 +1,122 @@
+/* ── Page (Figma frame fill = #f7f5f2 cream, NOT the grayer grays-50) ─ */
+.ca-page {
+  min-height: 100vh;
+  background: #f7f5f2;                /* Bg-Light_Gray — exact Figma page */
+  font-family: var(--font-family-dm-sans);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Gradient header band (Figma 3:123380: 235px) ────────────────
+   Figma gradient is SOFT — sampled top-to-bottom at x720 it runs
+   #7f84be (top) → #c2c3e0 (~y120) → #e9e7ed (~y200) → #ffffff (bottom).
+   NOT a solid-navy band; a gentle muted-lavender → white fade. */
+.ca-gradient-header {
+  --login-primary: var(--landing-navbar-primary);   /* #2e358f */
+  position: relative;
+  height: 235px;
+  background: linear-gradient(
+    to bottom,
+    #7f84be 0%,
+    #c2c3e0 51%,
+    #e9e7ed 85%,
+    #ffffff 100%
+  );
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Pattern overlay (Figma 3:123383 "Pattern" frame) — white rounded
+   pill-lines + circles, layered ABOVE the gradient, clipped to the band.
+   Asset is 635×235 (= header height) white-on-transparent; tiled across
+   the full width at natural size (no stretch). Subtle texture opacity. */
+.ca-gradient-header__pattern {
+  position: absolute;
+  inset: 0;
+  background-image: url("/assets/images/createaccount/header-pattern.svg");
+  background-repeat: repeat-x;
+  background-position: top left;
+  background-size: 635px 235px;       /* natural size — no distortion */
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ── Topbar inside header (Figma 3:123388: x32 y35, h32) ───────── */
+.ca-topbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 35px 32px 0;
+}
+
+/* Header logo — exact Figma dark #282828 wordmark asset (119×24), no
+   contrast inversion (Figma node 3:123389 is dark, not white). */
+.ca-topbar__logo {
+  display: block;
+  width: 119px;
+  height: 24px;
+}
+
+.ca-topbar__controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Lang btn — Figma: white #fff bg, dark text, r8, h32 (frozen auth chrome) */
+.ca-ctrl--lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: var(--radius-8);
+  background: #ffffff;
+  border: 0;
+  color: var(--brand-neutral-950);
+  font-size: var(--caption-size);
+  font-family: var(--font-family-dm-sans);
+  font-weight: 400;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Theme group — white container r8 h32 holding Light + Dark */
+.ca-ctrl--theme-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 4px;
+  border-radius: var(--radius-8);
+  background: #ffffff;
+}
+
+.ca-ctrl__theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: var(--radius-6);
+  border: 0;
+  background: transparent;
+  color: var(--brand-neutral-400);
+  font-size: var(--caption-size);
+  font-family: var(--font-family-dm-sans);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.ca-ctrl__theme-btn--active {
+  background: var(--brand-neutral-900);
+  color: #ffffff;
+}
+
+/* ── Main content area ───────────────────────────────────────── */
+.ca-main {
+  flex: 1;
+  padding-block-end: 48px;
+}

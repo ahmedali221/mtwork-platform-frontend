@@ -1,0 +1,178 @@
+<div class="step" [formGroup]="formGroup">
+
+  <div class="step__header">
+    <h2 class="step__title">{{ 'wizard.steps.contractorInfo' | transloco }}</h2>
+    <p class="step__desc">{{ 'wizard.steps.contractorInfoDesc' | transloco }}</p>
+  </div>
+
+  <div class="step__grid">
+
+    <!-- Full name -->
+    <div class="field">
+      <label class="field__label" for="contractorName">
+        {{ 'contractor.name' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="contractorName" type="text" class="field__input"
+        [class.field__input--error]="isInvalid('contractorName')"
+        formControlName="contractorName"
+        [attr.aria-label]="'contractor.name' | transloco"
+        [attr.aria-invalid]="isInvalid('contractorName')"
+        [attr.aria-describedby]="isInvalid('contractorName') ? 'contractorName-err' : null"
+        autocomplete="name" />
+      @if (isInvalid('contractorName')) {
+        <span id="contractorName-err" class="field__error" role="alert">
+          {{ errorKey('contractorName') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Nationality -->
+    <div class="field">
+      <label class="field__label" for="nationality">
+        {{ 'contractor.nationality' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="nationality" type="text" class="field__input"
+        [class.field__input--error]="isInvalid('nationality')"
+        formControlName="nationality"
+        [attr.aria-label]="'contractor.nationality' | transloco"
+        [attr.aria-invalid]="isInvalid('nationality')"
+        [attr.aria-describedby]="isInvalid('nationality') ? 'nationality-err' : null" />
+      @if (isInvalid('nationality')) {
+        <span id="nationality-err" class="field__error" role="alert">
+          {{ errorKey('nationality') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- ID number -->
+    <div class="field">
+      <label class="field__label" for="cIdNumber">
+        {{ 'contractor.idNumber' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="cIdNumber" type="text" class="field__input"
+        [class.field__input--error]="isInvalid('idNumber')"
+        formControlName="idNumber"
+        [attr.aria-label]="'contractor.idNumber' | transloco"
+        [attr.aria-invalid]="isInvalid('idNumber')"
+        [attr.aria-describedby]="isInvalid('idNumber') ? 'cIdNumber-err' : null" />
+      @if (isInvalid('idNumber')) {
+        <span id="cIdNumber-err" class="field__error" role="alert">
+          {{ errorKey('idNumber') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Phone -->
+    <div class="field">
+      <label class="field__label" for="cPhone">
+        {{ 'contractor.phoneNumber' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="cPhone" type="tel" class="field__input"
+        [class.field__input--error]="isInvalid('phoneNumber')"
+        formControlName="phoneNumber"
+        [attr.aria-label]="'contractor.phoneNumber' | transloco"
+        [attr.aria-invalid]="isInvalid('phoneNumber')"
+        [attr.aria-describedby]="isInvalid('phoneNumber') ? 'cPhone-err' : null"
+        autocomplete="tel" />
+      @if (isInvalid('phoneNumber')) {
+        <span id="cPhone-err" class="field__error" role="alert">
+          {{ errorKey('phoneNumber') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Email -->
+    <div class="field">
+      <label class="field__label" for="cEmail">
+        {{ 'contractor.emailAddress' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="cEmail" type="email" class="field__input"
+        [class.field__input--error]="isInvalid('emailAddress')"
+        formControlName="emailAddress"
+        [attr.aria-label]="'contractor.emailAddress' | transloco"
+        [attr.aria-invalid]="isInvalid('emailAddress')"
+        [attr.aria-describedby]="isInvalid('emailAddress') ? 'cEmail-err' : null"
+        autocomplete="email" />
+      @if (isInvalid('emailAddress')) {
+        <span id="cEmail-err" class="field__error" role="alert">
+          {{ errorKey('emailAddress') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- Job title (optional) -->
+    <div class="field">
+      <label class="field__label" for="cJobTitle">
+        {{ 'contractor.jobTitle' | transloco }}
+      </label>
+      <input id="cJobTitle" type="text" class="field__input"
+        formControlName="jobTitle"
+        [attr.aria-label]="'contractor.jobTitle' | transloco" />
+    </div>
+
+    <!-- Address (optional, full width) -->
+    <div class="field field--full">
+      <label class="field__label" for="cAddress">
+        {{ 'contractor.address' | transloco }}
+      </label>
+      <input id="cAddress" type="text" class="field__input"
+        formControlName="address"
+        [attr.aria-label]="'contractor.address' | transloco"
+        autocomplete="street-address" />
+    </div>
+
+  </div>
+
+  <!-- Banking section -->
+  <div class="step__section-header">
+    <span class="step__section-title">{{ 'contractor.bankingSection' | transloco }}</span>
+  </div>
+
+  <div class="step__grid">
+
+    <!-- Bank name -->
+    <div class="field">
+      <label class="field__label" for="bankName">
+        {{ 'contractor.bankName' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="bankName" type="text" class="field__input"
+        [class.field__input--error]="isInvalid('bankName')"
+        formControlName="bankName"
+        [attr.aria-label]="'contractor.bankName' | transloco"
+        [attr.aria-invalid]="isInvalid('bankName')"
+        [attr.aria-describedby]="isInvalid('bankName') ? 'bankName-err' : null" />
+      @if (isInvalid('bankName')) {
+        <span id="bankName-err" class="field__error" role="alert">
+          {{ errorKey('bankName') | transloco }}
+        </span>
+      }
+    </div>
+
+    <!-- IBAN -->
+    <div class="field">
+      <label class="field__label" for="iban">
+        {{ 'contractor.iban' | transloco }}
+        <span class="field__required" aria-hidden="true">*</span>
+      </label>
+      <input id="iban" type="text" class="field__input"
+        [class.field__input--error]="isInvalid('iban')"
+        formControlName="iban"
+        [attr.aria-label]="'contractor.iban' | transloco"
+        [attr.aria-invalid]="isInvalid('iban')"
+        [attr.aria-describedby]="isInvalid('iban') ? 'iban-err' : null" />
+      @if (isInvalid('iban')) {
+        <span id="iban-err" class="field__error" role="alert">
+          {{ errorKey('iban') | transloco }}
+        </span>
+      }
+    </div>
+
+  </div>
+
+</div>

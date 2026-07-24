@@ -1,0 +1,153 @@
+<div class="admin-dash" [attr.aria-label]="'admin.dashboard.title' | transloco">
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="admin-dash__header">
+    <div>
+      <h1 class="admin-dash__title">{{ 'admin.dashboard.title' | transloco }}</h1>
+      <p class="admin-dash__subtitle">{{ 'admin.dashboard.subtitle' | transloco }}</p>
+    </div>
+  </header>
+
+  @if (isLoading()) {
+    <!-- ── Loading ──────────────────────────────────────────── -->
+    <div class="admin-dash__state" role="status" aria-live="polite">
+      <span class="admin-dash__spinner" aria-hidden="true"></span>
+      <span>{{ 'common.loading' | transloco }}</span>
+    </div>
+  } @else if (loadError()) {
+    <!-- ── Page-level error ─────────────────────────────────── -->
+    <div class="admin-dash__state admin-dash__state--error" role="alert">
+      <mat-icon aria-hidden="true">error_outline</mat-icon>
+      <span>{{ 'admin.dashboard.errors.load' | transloco }}</span>
+      <button class="admin-dash__retry" (click)="retry()" [attr.aria-label]="'common.retry' | transloco">
+        {{ 'common.retry' | transloco }}
+      </button>
+    </div>
+  } @else {
+
+    <!-- ── KPI ROW ────────────────────────────────────────────
+         Every value comes from a live endpoint. -->
+    <div class="admin-dash__kpi-row" role="list" [attr.aria-label]="'admin.dashboard.kpiList' | transloco">
+      @for (kpi of kpis(); track kpi.id) {
+        <div class="admin-kpi-card" role="listitem">
+          <div class="admin-kpi-card__icon-wrap" aria-hidden="true">
+            <mat-icon class="admin-kpi-card__icon">{{ kpi.icon }}</mat-icon>
+          </div>
+          <div class="admin-kpi-card__body">
+            <p class="admin-kpi-card__value">{{ kpi.value }}</p>
+            <p class="admin-kpi-card__label">{{ kpi.label | transloco }}</p>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- ── CONTENT GRID ───────────────────────────────────────── -->
+    <div class="admin-dash__grid">
+
+      <!-- ── Recent Companies ─────────────────────────────────── -->
+      <section class="admin-card" aria-labelledby="admin-recent-companies-heading">
+        <div class="admin-card__header">
+          <div class="admin-card__title-group">
+            <mat-icon class="admin-card__icon" aria-hidden="true">domain</mat-icon>
+            <h2 class="admin-card__title" id="admin-recent-companies-heading">
+              {{ 'admin.dashboard.recentCompanies.title' | transloco }}
+            </h2>
+          </div>
+          <a routerLink="/dashboard/companies" class="admin-card__link"
+             [attr.aria-label]="'admin.dashboard.recentCompanies.viewAll' | transloco">
+            {{ 'admin.dashboard.viewAll' | transloco }}
+            <mat-icon aria-hidden="true">chevron_right</mat-icon>
+          </a>
+        </div>
+
+        @if (recentCompanies().length === 0) {
+          <p class="admin-card__empty">{{ 'admin.dashboard.recentCompanies.empty' | transloco }}</p>
+        } @else {
+          <ul class="admin-list" [attr.aria-label]="'admin.dashboard.recentCompanies.title' | transloco">
+            @for (company of recentCompanies(); track company.id) {
+              <li class="admin-list__item">
+                <div class="admin-list__lead">
+                  @if (company.logoPath) {
+                    <img class="admin-list__logo" [src]="company.logoPath" [alt]="company.name || ''" />
+                  } @else {
+                    <span class="admin-list__logo-placeholder" aria-hidden="true">{{ companyInitials(company.name) }}</span>
+                  }
+                  <div class="admin-list__text">
+                    <p class="admin-list__primary">{{ company.name || '—' }}</p>
+                    <p class="admin-list__secondary">{{ company.email || '—' }}</p>
+                  </div>
+                </div>
+                <span class="admin-badge"
+                      [class.admin-badge--active]="company.isActive !== false"
+                      [class.admin-badge--suspended]="company.isActive === false">
+                  {{ (company.isActive === false
+                      ? 'admin.dashboard.recentCompanies.suspended'
+                      : 'admin.dashboard.recentCompanies.active') | transloco }}
+                </span>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      <!-- ── Pending Withdrawals Summary ──────────────────────── -->
+      <section class="admin-card" aria-labelledby="admin-pending-withdrawals-heading">
+        <div class="admin-card__header">
+          <div class="admin-card__title-group">
+            <mat-icon class="admin-card__icon" aria-hidden="true">account_balance_wallet</mat-icon>
+            <h2 class="admin-card__title" id="admin-pending-withdrawals-heading">
+              {{ 'admin.dashboard.pendingWithdrawals.title' | transloco }}
+            </h2>
+          </div>
+          <span class="admin-card__count" aria-hidden="true">{{ pendingWithdrawals().length }}</span>
+        </div>
+
+        @if (pendingWithdrawals().length === 0) {
+          <p class="admin-card__empty">{{ 'admin.dashboard.pendingWithdrawals.empty' | transloco }}</p>
+        } @else {
+          <ul class="admin-list" [attr.aria-label]="'admin.dashboard.pendingWithdrawals.title' | transloco">
+            @for (entry of pendingWithdrawalsPreview(); track entry.id) {
+              <li class="admin-list__item">
+                <div class="admin-list__lead">
+                  <span class="admin-list__logo-placeholder" aria-hidden="true">
+                    {{ companyInitials(entry.employeeName || entry.fullName) }}
+                  </span>
+                  <div class="admin-list__text">
+                    <p class="admin-list__primary">{{ entry.employeeName || entry.fullName || '—' }}</p>
+                    <p class="admin-list__secondary">{{ entry.amount }}</p>
+                  </div>
+                </div>
+                <span class="admin-badge admin-badge--pending">
+                  {{ 'admin.dashboard.pendingWithdrawals.pending' | transloco }}
+                </span>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+    </div>
+
+    <!-- ── Quick Actions ──────────────────────────────────────── -->
+    <section class="admin-card" aria-labelledby="admin-quick-actions-heading">
+      <div class="admin-card__header">
+        <div class="admin-card__title-group">
+          <mat-icon class="admin-card__icon" aria-hidden="true">bolt</mat-icon>
+          <h2 class="admin-card__title" id="admin-quick-actions-heading">
+            {{ 'admin.dashboard.quickActions.title' | transloco }}
+          </h2>
+        </div>
+      </div>
+      <div class="admin-actions">
+        @for (action of quickActions; track action.route) {
+          <a class="admin-action" [routerLink]="action.route" [attr.aria-label]="action.label | transloco">
+            <mat-icon class="admin-action__icon" aria-hidden="true">{{ action.icon }}</mat-icon>
+            <span class="admin-action__label">{{ action.label | transloco }}</span>
+          </a>
+        }
+      </div>
+    </section>
+
+  }
+
+</div>

@@ -1,0 +1,33 @@
+.container-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh; /* shorter than full page because of dashboard layout */
+  background-color: var(--ui-bg-subtle);
+}
+
+.content {
+  text-align: center;
+  max-width: 500px;
+  padding: 20px;
+}
+
+.error-image {
+  width: 100%;              /* allow image to scale within the container    */
+  max-width: 200px;           /* maximum width to ensure good fit on screens  */
+  height: auto;             /* preserve aspect ratio                          */
+  display: block;
+  margin: 0 auto;            /* center the image inside the container           */
+}
+
+.error-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--brand-neutral-800);
+}
+
+.error-message {
+  font-size: 0.95rem;
+  color: var(--ui-text-muted);
+  margin-top: 8px;
+}

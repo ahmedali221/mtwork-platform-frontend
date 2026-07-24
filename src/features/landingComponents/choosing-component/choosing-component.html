@@ -1,0 +1,52 @@
+<!-- Figma nodes 3:38102 / 3:38121 — feature split containers (inside section 3:38071) -->
+<section class="splits">
+
+  <!-- Container 1: text left, panel right (3:38102) -->
+  <div class="splits__row">
+    <div class="splits__text">
+      <span class="splits__badge">{{ lang.translations()?.hero?.badge || 'Payroll Managment' }}</span>
+      <h2 class="splits__title">
+        {{ lang.translations()?.creatingImpact?.titlePrefix }}
+        {{ lang.translations()?.creatingImpact?.titleHighlight }}
+      </h2>
+      <p class="splits__desc">{{ lang.translations()?.creatingImpact?.description }}</p>
+      <ul class="splits__list">
+        @for (_ of [1, 2, 3]; track $index) {
+          <li class="splits__list-item">
+            <img src="assets/images/testimonials/check-arrow.svg" alt="" aria-hidden="true" />
+            <span>{{ lang.translations()?.choosing?.feature || 'Real Success Growth' }}</span>
+          </li>
+        }
+      </ul>
+      <button type="button" class="splits__cta" (click)="onGetStarted()">
+        {{ lang.translations()?.compliance?.getStarted }}
+      </button>
+    </div>
+    <img class="splits__panel" src="assets/images/testimonials/split-panel-dark.png" alt="" aria-hidden="true" />
+  </div>
+
+  <!-- Container 2: panel left, text right (3:38121) -->
+  <div class="splits__row">
+    <img class="splits__panel" src="assets/images/testimonials/split-panel-blue.png" alt="" aria-hidden="true" />
+    <div class="splits__text">
+      <span class="splits__badge">{{ lang.translations()?.hero?.badge || 'Payroll Managment' }}</span>
+      <h2 class="splits__title">
+        {{ lang.translations()?.creatingImpact?.titlePrefix }}
+        {{ lang.translations()?.creatingImpact?.titleHighlight }}
+      </h2>
+      <p class="splits__desc">{{ lang.translations()?.creatingImpact?.description }}</p>
+      <ul class="splits__list">
+        @for (_ of [1, 2, 3]; track $index) {
+          <li class="splits__list-item">
+            <img src="assets/images/testimonials/check-arrow.svg" alt="" aria-hidden="true" />
+            <span>{{ lang.translations()?.choosing?.feature || 'Real Success Growth' }}</span>
+          </li>
+        }
+      </ul>
+      <button type="button" class="splits__cta" (click)="onGetStarted()">
+        {{ lang.translations()?.compliance?.getStarted }}
+      </button>
+    </div>
+  </div>
+
+</section>

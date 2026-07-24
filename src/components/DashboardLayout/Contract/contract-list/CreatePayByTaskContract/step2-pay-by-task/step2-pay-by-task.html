@@ -1,0 +1,62 @@
+<!-- app-step-two-create-fixed-salary-component.html -->
+<div class="contractor-information-step" [formGroup]="parentForm">
+  <div class="card-section">
+    <h2 class="section-title">Contractor Information</h2>
+    <div class="form-grid">
+      <div class="form-field">
+        <label class="form-label">First Name <span class="required-badge">Required</span></label>
+        <input type="text" class="form-input" formControlName="firstName" placeholder="First Name" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Last Name <span class="required-badge">Required</span></label>
+        <input type="text" class="form-input" formControlName="lastName" placeholder="Last Name" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">National ID <span class="required-badge">Required</span></label>
+        <input type="text" class="form-input" formControlName="nationalID" placeholder="National ID" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">End Date</label>
+        <div class="input-with-icon">
+          <input type="text" class="form-input" formControlName="endDate" placeholder="Select End Date" />
+          <!-- In a real Angular app, you'd use an actual datepicker or an icon component -->
+          <img src="assets/calendar-icon.png" alt="Calendar" class="input-icon" />
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Birth Date <span class="required-badge">Required</span></label>
+        <input type="text" class="form-input" formControlName="dateOfBirth" placeholder="Select Birth Date" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Phone Number <span class="required-badge">Required</span></label>
+        <input type="tel" class="form-input" formControlName="phoneNumber" placeholder="Phone Number" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card-section">
+    <!-- No section title needed if it's a continuation of contractor info, or add one if it's a distinct sub-section -->
+    <div class="form-grid-secondary">
+      <div class="form-field">
+        <label class="form-label">Country <span class="required-badge">Required</span></label>
+        <input type="text" class="form-input" formControlName="country" placeholder="Country" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Tax residency of the contractor</label>
+        <input type="text" class="form-input" formControlName="contractorCity" placeholder="City of Residence" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" formControlName="contractorEmail" placeholder="Email Address" />
+      </div>
+      <div class="form-field">
+        <label class="form-label">Nationality</label>
+        <input type="text" class="form-input" formControlName="contractorNationality" placeholder="Nationality" />
+      </div>
+      <div class="form-field full-width">
+        <label class="form-label">Contractor Address</label>
+        <input type="text" class="form-input" formControlName="contractorAddress" placeholder="Full Address" />
+      </div>
+    </div>
+  </div>
+</div>

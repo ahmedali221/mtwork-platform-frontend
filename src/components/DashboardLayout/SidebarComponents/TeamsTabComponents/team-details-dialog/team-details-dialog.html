@@ -1,0 +1,95 @@
+<div class="td-panel">
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <div class="td-header">
+    <div class="td-header-left">
+      <div class="td-icon-box" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2ZM16 18H8V16H16V18ZM16 14H8V12H16V14ZM13 9V3.5L18.5 9H13Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="td-header-meta">
+        <h2 class="td-name">{{ team.name }}</h2>
+        <span class="td-members-count">{{ team.members.length }} Member{{ team.members.length !== 1 ? 's' : '' }}</span>
+      </div>
+    </div>
+    <button class="td-close" (click)="close()" [attr.aria-label]="'common.closeDetailsPanel' | transloco" type="button">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ── Scrollable body ─────────────────────────────────────── -->
+  <div class="td-body">
+
+    <!-- About section -->
+    <section class="td-section">
+      <h3 class="td-section-title">About</h3>
+      <p class="td-description">
+        {{ team.description || 'No description provided for this team.' }}
+      </p>
+      @if (team.createdAt) {
+        <div class="td-meta-row">
+          <svg class="td-meta-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M5 1.5V4M11 1.5V4M2 7H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          <span class="td-meta-label">Created</span>
+          <span class="td-meta-value">{{ team.createdAt | date:'MMM d, y' }}</span>
+        </div>
+      }
+    </section>
+
+    <!-- Members section -->
+    <section class="td-section">
+      <h3 class="td-section-title">
+        Team Members
+        <span class="td-count-badge">{{ team.members.length }}</span>
+      </h3>
+
+      @if (team.members.length === 0) {
+        <div class="td-empty-members">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <path d="M18 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12ZM9 32a9 9 0 0 1 18 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <p>No members have been added yet.</p>
+        </div>
+      } @else {
+        <ul class="td-member-list">
+          @for (member of team.members; track member.id) {
+            <li class="td-member-item">
+              <div class="td-member-avatar">
+                @if (member.avatar && !member.avatar.includes('Avater.png')) {
+                  <img
+                    [src]="member.avatar"
+                    [alt]="(member.name || '') + ' avatar'"
+                    class="td-member-img"
+                  >
+                } @else {
+                  <span class="td-member-initials" aria-hidden="true">{{ getInitials(member.name) }}</span>
+                }
+              </div>
+              <div class="td-member-info">
+                <span class="td-member-name">{{ member.name || member.email || '—' }}</span>
+                @if (member.designation || member.role) {
+                  <span class="td-member-role">{{ member.designation || member.role }}</span>
+                }
+              </div>
+              @if (member.email && member.name) {
+                <span class="td-member-email">{{ member.email }}</span>
+              }
+            </li>
+          }
+        </ul>
+      }
+    </section>
+
+  </div>
+
+  <!-- ── Footer ──────────────────────────────────────────────── -->
+  <div class="td-footer">
+    <button class="td-btn-close" (click)="close()" type="button">Close</button>
+  </div>
+
+</div>

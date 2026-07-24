@@ -1,0 +1,102 @@
+/* ── Stepper (Figma 3:123419 "Stepper Horizontal", 515×58) ───────
+   3 steps: 32px circle + label below (top 42); trail flex-1 2px #b3b3b3.
+   Active = filled navy circle + navy Medium-14 label; inactive = light
+   circle outline + number + dark Medium-14 label. Sits over the fading
+   gradient bottom (cream), so dark text — NOT white. */
+.stepper {
+  --login-primary: var(--landing-navbar-primary);   /* #2e358f */
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 515px;                       /* Figma 3:123419 exact */
+  max-width: 100%;
+  margin-inline: auto;
+  position: relative;
+  z-index: 2;
+  /* Figma stepper top y108.85 within the 235 band; .ca-body starts at the
+     band bottom (235), so raise 235 − 109 = 126px up into the gradient. */
+  margin-block-start: -126px;
+}
+
+/* ── Each step item — fixed 32px (circle width); label overflows ── */
+.stepper__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 32px;
+  position: relative;
+  height: 58px;
+}
+
+/* ── Connector trail — from this circle's left edge back to the gap
+   midpoint between it and the previous circle. 2px #b3b3b3. ─────── */
+.stepper__line {
+  position: absolute;
+  inset-block-start: 15px;            /* circle vertical center */
+  inset-inline-end: 32px;             /* start at this circle's left edge */
+  /* span the inter-circle gap: (515 - 3×32)/2 = 209.5px */
+  width: 209.5px;
+  height: 2px;
+  background: #b3b3b3;
+  z-index: 0;
+}
+
+.stepper__line--done { background: var(--login-primary); }
+
+/* ── Circle ──────────────────────────────────────────────────── */
+.stepper__circle {
+  position: relative;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-dm-sans);
+  font-size: var(--caption-size);     /* 12 */
+  font-weight: 400;
+  /* default (inactive): light outline circle, gray number */
+  background: #ffffff;
+  border: 1.5px solid #b3b3b3;
+  color: var(--brand-neutral-400);    /* #999 */
+  transition: background 0.25s, border-color 0.25s, color 0.25s;
+}
+
+/* active step — filled navy with white dot/number */
+.stepper__item--active .stepper__circle {
+  background: var(--login-primary);
+  border-color: var(--login-primary);
+  color: #ffffff;
+}
+
+/* completed step */
+.stepper__item--done .stepper__circle {
+  background: var(--login-primary);
+  border-color: var(--login-primary);
+  color: #ffffff;
+}
+
+/* ── Label (Figma: DM Sans Medium 14, below circle) ───────────── */
+.stepper__label {
+  position: absolute;
+  inset-block-start: 42px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-family-dm-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--brand-neutral-950);    /* #1b1b1b inactive */
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* active label — navy primary */
+.stepper__item--active .stepper__label {
+  color: var(--login-primary);        /* #2e358f */
+}
+
+.stepper__item--done .stepper__label {
+  color: var(--login-primary);
+}

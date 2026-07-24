@@ -1,0 +1,33 @@
+<!-- Figma node 3:38140 (light) / 3:51738 (dark, identical) / 3:65336 (mobile) — Blog section -->
+<section class="blog">
+
+  <!-- Header (3:38141) -->
+  <div class="blog__header">
+    <img class="blog__wavey" src="assets/images/blog/wavey-blog.svg" alt="" aria-hidden="true" />
+    <h2 class="blog__title">{{ languageService.translations()?.blog?.title }}</h2>
+    <p class="blog__subtitle">{{ languageService.translations()?.blog?.subtitle }}</p>
+    <button type="button" class="blog__cta">
+      {{ languageService.translations()?.blog?.categoryTag }}
+    </button>
+  </div>
+
+  <!-- Blog cards (3:38151): 3 × 390×454, gap 16 -->
+  <div class="blog__grid">
+    @for (post of blogPosts; track post.id) {
+      <article class="blog__card">
+        <div class="blog__card-media">
+          <img [src]="post.image" alt="" aria-hidden="true" />
+        </div>
+        <div class="blog__card-text">
+          <h3 class="blog__card-title">{{ post.title }}</h3>
+          <span class="blog__card-tag">{{ post.category }}</span>
+        </div>
+        <button type="button" class="blog__card-cta"
+                [attr.aria-label]="languageService.translations()?.blog?.readMore">
+          {{ languageService.translations()?.blog?.readMore }}
+        </button>
+      </article>
+    }
+  </div>
+
+</section>

@@ -1,0 +1,101 @@
+<section class="page-container return-page" aria-live="polite" aria-atomic="true">
+
+  <!-- Loading state -->
+  @if (state() === 'loading') {
+    <div class="card state-card state-card--loading" role="status">
+      <mat-spinner diameter="56" [attr.aria-label]="'payments.paymentReturn.verifyingAriaLabel' | transloco"></mat-spinner>
+      <h2 class="state-card__title">{{ 'payments.paymentReturn.verifyingTitle' | transloco }}</h2>
+      <p class="state-card__subtitle">{{ 'payments.paymentReturn.verifyingSubtitle' | transloco }}</p>
+    </div>
+  }
+
+  <!-- Success state -->
+  @if (state() === 'success') {
+    <div class="card state-card state-card--success" role="status">
+      <div class="state-icon state-icon--success" aria-hidden="true">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <h2 class="state-card__title">{{ 'payments.paymentReturn.successTitle' | transloco }}</h2>
+      @if (paidAmount() !== null) {
+        <p class="state-card__amount">
+          {{ currency() }} {{ paidAmount()! | number: '1.2-2' }}
+        </p>
+      }
+      <p class="state-card__subtitle">
+        {{ 'payments.paymentReturn.successSubtitle' | transloco }}
+      </p>
+      <div class="state-actions">
+        <a
+          routerLink="/dashboard/payments"
+          class="btn btn--primary"
+          [attr.aria-label]="'payments.paymentReturn.rechargeAgainAriaLabel' | transloco"
+        >
+          <mat-icon aria-hidden="true">add_circle</mat-icon>
+          {{ 'payments.paymentReturn.rechargeAgain' | transloco }}
+        </a>
+        <a
+          routerLink="/dashboard"
+          class="btn btn--secondary"
+          [attr.aria-label]="'payments.paymentReturn.goToDashboardAriaLabel' | transloco"
+        >
+          <mat-icon aria-hidden="true">dashboard</mat-icon>
+          {{ 'payments.paymentReturn.goToDashboard' | transloco }}
+        </a>
+      </div>
+    </div>
+  }
+
+  <!-- Failed state -->
+  @if (state() === 'failed') {
+    <div class="card state-card state-card--failed" role="alert">
+      <div class="state-icon state-icon--failed" aria-hidden="true">
+        <mat-icon>cancel</mat-icon>
+      </div>
+      <h2 class="state-card__title">{{ 'payments.paymentReturn.failedTitle' | transloco }}</h2>
+      <p class="state-card__subtitle">
+        {{ errorMessage() ?? ('payments.paymentReturn.failedFallback' | transloco) }}
+      </p>
+      <div class="state-actions">
+        <a
+          routerLink="/dashboard/payments"
+          class="btn btn--primary"
+          [attr.aria-label]="'payments.paymentReturn.tryAgainAriaLabel' | transloco"
+        >
+          <mat-icon aria-hidden="true">refresh</mat-icon>
+          {{ 'payments.paymentReturn.tryAgain' | transloco }}
+        </a>
+        <a
+          routerLink="/dashboard"
+          class="btn btn--secondary"
+          [attr.aria-label]="'payments.paymentReturn.goToDashboardAriaLabel' | transloco"
+        >
+          {{ 'payments.paymentReturn.goToDashboard' | transloco }}
+        </a>
+      </div>
+    </div>
+  }
+
+  <!-- No session state -->
+  @if (state() === 'no-session') {
+    <div class="card state-card state-card--failed" role="alert">
+      <div class="state-icon state-icon--failed" aria-hidden="true">
+        <mat-icon>link_off</mat-icon>
+      </div>
+      <h2 class="state-card__title">{{ 'payments.paymentReturn.noSessionTitle' | transloco }}</h2>
+      <p class="state-card__subtitle">
+        {{ 'payments.paymentReturn.noSessionSubtitle' | transloco }}
+      </p>
+      <div class="state-actions">
+        <a
+          routerLink="/dashboard/payments"
+          class="btn btn--primary"
+          [attr.aria-label]="'payments.paymentReturn.rechargeBalanceAriaLabel' | transloco"
+        >
+          <mat-icon aria-hidden="true">account_balance_wallet</mat-icon>
+          {{ 'payments.paymentReturn.rechargeBalance' | transloco }}
+        </a>
+      </div>
+    </div>
+  }
+
+</section>

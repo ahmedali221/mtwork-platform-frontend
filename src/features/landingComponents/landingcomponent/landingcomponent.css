@@ -1,0 +1,588 @@
+.landing-page {
+  --background-bg-white: var(--landing-hero-section-bg);
+  --background-bg-white-2: var(--landing-hero-section-bg);
+  --background-bg-light-gray: var(--brand-grays-500);
+  --background-bg-light-neutral: var(--brand-neutral-50);
+  --text-dark-gray: var(--brand-grays-900);
+  --text-black: var(--brand-neutral-950);
+  --text-gray: var(--brand-neutral-400);
+  --border-gray: var(--brand-neutral-200);
+  --ui-bg: var(--landing-hero-section-bg);
+  --ui-surface: var(--landing-hero-section-bg);
+  --ui-bg-surface: var(--landing-hero-section-bg);
+  --ui-text-main: var(--brand-neutral-950);
+  --ui-text-sub: var(--brand-neutral-600);
+  --ui-text-muted: var(--brand-neutral-400);
+  overflow-x: hidden;
+  background: var(--background-bg-white);
+}
+
+.landing-hero {
+  /* 104px navbar→content / 85px below content — Figma hero frame 1440×603 */
+  position: relative;
+  min-height: auto;
+  padding: var(--landing-hero-top-gap) var(--spacing-medium-lg) var(--landing-hero-bottom-gap);
+  overflow: hidden;
+  background: var(--landing-hero-section-bg);
+}
+
+.landing-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--landing-hero-glow);
+  pointer-events: none;
+}
+
+.landing-hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-medium-lg);
+  max-inline-size: var(--landing-hero-content-max-width);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.landing-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: var(--spacing-small-xs) var(--spacing-medium-md);
+  border: var(--border-width-thin) solid var(--landing-hero-badge-border);
+  border-radius: var(--radius-50);
+  background: var(--landing-hero-badge-bg);
+  box-shadow: var(--landing-hero-badge-shadow);
+  color: var(--landing-navbar-surface); /* Figma: white in both themes */
+  font-family: var(--typography-subtitle-font-family);
+  font-size: var(--typography-subtitle-font-size);
+  font-weight: var(--landing-hero-badge-font-weight);
+  line-height: var(--typography-subtitle-line-height);
+  white-space: nowrap;
+}
+
+.landing-hero__title-frame {
+  display: flex;
+  justify-content: center;
+  inline-size: min(100%, var(--landing-hero-title-max-width));
+}
+
+.landing-hero__title {
+  max-inline-size: var(--landing-hero-title-max-width);
+  margin: 0;
+  color: var(--landing-hero-title-color);
+  font-family: var(--typography-h3-font-family);
+  font-size: var(--typography-h3-font-size);
+  font-weight: var(--landing-hero-title-font-weight);
+  line-height: var(--landing-hero-title-line-height);
+  letter-spacing: var(--landing-hero-title-letter-spacing);
+  overflow-wrap: anywhere;
+}
+
+.landing-hero__title-highlighted,
+.landing-hero__title-rest {
+  position: relative;
+  z-index: var(--landing-hero-title-text-z-index);
+}
+
+.landing-hero__title-highlight-text {
+  /* Skewed orange shape from Figma (Rectangle 43, node 3:37677) — left edge slanted */
+  display: inline;
+  padding-block: var(--spacing-small-xxxxs);
+  padding-inline: var(--spacing-medium-lg) var(--spacing-small-xxxs);
+  background-image: url('/assets/images/hero-title-highlight.svg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  color: var(--landing-hero-title-color); /* follows theme: #201b13 light, #fff dark (Figma) */
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.landing-hero__description {
+  max-inline-size: var(--landing-hero-body-max-width);
+  margin: 0;
+  color: var(--landing-hero-description-color);
+  font-family: var(--typography-body-font-family);
+  font-size: var(--typography-body-font-size);
+  font-weight: var(--landing-hero-body-font-weight);
+  line-height: var(--typography-body-line-height);
+}
+
+.landing-hero__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--landing-hero-button-gap);
+  flex-wrap: wrap;
+}
+
+.landing-hero__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--landing-navbar-button-height);
+  padding: var(--spacing-small-xs) var(--spacing-medium-md);
+  border: 0;
+  border-radius: var(--radius-8);
+  color: var(--landing-navbar-surface); /* Figma: white in both themes */
+  font-family: var(--typography-subtitle-font-family);
+  font-size: var(--typography-subtitle-font-size);
+  font-weight: var(--landing-hero-button-font-weight);
+  line-height: var(--typography-subtitle-line-height);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.landing-hero__button--primary {
+  min-inline-size: var(--landing-hero-primary-cta-min-width);
+  background: var(--landing-navbar-primary); /* solid #2e358f in both themes (Figma 3:51280) */
+  box-shadow: var(--landing-navbar-primary-shadow);
+}
+
+.landing-hero__button--secondary {
+  min-inline-size: var(--landing-hero-secondary-cta-min-width);
+  background: var(--landing-hr-highlight-bg);
+}
+
+.landing-section {
+  overflow: hidden;
+}
+
+.landing-section--dashboard {
+  /* Figma: hero end → panel top = 110.68px; panel bottom → trusted title = 40px */
+  padding-block: var(--landing-dashboard-top-gap) var(--landing-dashboard-bottom-gap);
+  /* Figma: white in BOTH themes — hero is dark but the strip below returns
+     to light (dark frame 3:51282 = white). --landing-impact-bg is #fff non-flipping. */
+  background: var(--landing-impact-bg);
+  overflow: visible; /* floating chart cards extend beyond the panel */
+}
+
+.landing-section--blog {
+  /* Figma: white in BOTH themes (dark frame 3:51738 is identical to light) */
+  background: var(--landing-impact-bg);
+}
+
+.landing-section--choosing {
+  /* Figma: white in BOTH themes (part of frame 3:38071) */
+  background: var(--landing-impact-bg);
+}
+
+.landing-section--hr,
+.landing-section--impact {
+  /* Figma: white in BOTH themes (dark page is white below the hero) */
+  background: var(--landing-impact-bg);
+}
+
+.landing-section--compliance {
+  /* Figma: #f7f5f2 light / #282828 dark */
+  background: var(--landing-compliance-bg);
+}
+
+.landing-section--steps {
+  /* Figma 3:38156 — Bg-Light_Gray #f7f5f2 (match steps :host, no seam) */
+  background: var(--brand-grays-500);
+}
+
+/* Dark-mode-only: the testimonials frame (3:51669 — why + testimonials)
+   is #f7f5f2 off-white in the Figma DARK page, while it stays pure white in
+   light. Light/frozen layout is unchanged; only the dark shade.
+   (The splits/choosing sub-component paints its own :host bg, so its dark
+   override lives in choosing-component.css.) */
+:host-context(.dark-theme) .landing-why,
+:host-context(.dark-theme) .landing-testimonials {
+  background: var(--brand-grays-500); /* #f7f5f2 */
+}
+
+/* The why header is capped at 1388px + centred, so in dark its 26px side
+   gutters and its 56px top margin reveal the black .landing-page behind it.
+   Make it full-bleed and fold the top margin into padding so the off-white
+   band is continuous edge-to-edge. Content stays centred (align-items:center),
+   so the light/frozen layout is visually unchanged. */
+:host-context(.dark-theme) .landing-why {
+  max-inline-size: none;
+  margin-block-start: 0;
+  padding-block-start: calc(var(--spacing-large-massive) + var(--spacing-large-xxl)); /* 56 + 32 */
+}
+
+/* The fade-ramp overlays fade the masked card stacks into the SECTION bg.
+   In dark the section is #f7f5f2, so the ramps must fade from #f7f5f2 too
+   (they used #fff → a visible white-on-offwhite gradient artifact). */
+:host-context(.dark-theme) .landing-testimonials::before {
+  background: linear-gradient(180deg, var(--brand-grays-500), transparent);
+}
+
+:host-context(.dark-theme) .landing-testimonials::after {
+  background: linear-gradient(180deg, transparent, var(--brand-grays-500));
+}
+
+@media (prefers-color-scheme: dark) {
+  :host-context(.dark-theme) .landing-why,
+  :host-context(.dark-theme) .landing-testimonials {
+    background: var(--brand-grays-500);
+  }
+
+  :host-context(.dark-theme) .landing-why {
+    max-inline-size: none;
+    margin-block-start: 0;
+    padding-block-start: calc(var(--spacing-large-massive) + var(--spacing-large-xxl));
+  }
+
+  :host-context(.dark-theme) .landing-testimonials::before {
+    background: linear-gradient(180deg, var(--brand-grays-500), transparent);
+  }
+
+  :host-context(.dark-theme) .landing-testimonials::after {
+    background: linear-gradient(180deg, transparent, var(--brand-grays-500));
+  }
+}
+
+/* Figma node 3:37788 — title H4, body subtitle, 15-logo slider (gap 48, p16) */
+.landing-trusted {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-medium-lg);
+  padding: 0 0 var(--landing-trusted-bottom-gap);
+  /* Figma: white in BOTH themes — trusted strip returns to light below the
+     dark hero (dark frame 3:51386 = white). --landing-impact-bg is #fff non-flipping. */
+  background: var(--landing-impact-bg);
+  text-align: center;
+}
+
+.landing-trusted__title {
+  margin: 0;
+  max-inline-size: var(--landing-hero-title-max-width);
+  padding-inline: var(--spacing-medium-lg);
+  color: var(--text-dark-gray);
+  font-family: var(--typography-h4-font-family);
+  font-size: var(--typography-h4-font-size);
+  font-weight: var(--landing-hero-title-font-weight);
+  line-height: var(--typography-h4-line-height);
+}
+
+.landing-trusted__subtitle {
+  margin: 0;
+  max-inline-size: var(--landing-hero-body-max-width);
+  padding-inline: var(--spacing-medium-lg);
+  color: var(--text-gray);
+  font-family: var(--typography-body-font-family);
+  font-size: var(--typography-body-font-size);
+  font-weight: var(--landing-hero-body-font-weight);
+  line-height: var(--typography-body-line-height);
+}
+
+.landing-trusted__slider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-large-huge);
+  inline-size: 100%;
+  padding: var(--spacing-medium-lg);
+  overflow: hidden;
+}
+
+.landing-trusted__logo {
+  position: relative;
+  flex: 0 0 auto;
+  inline-size: 176px;
+  block-size: 40px;
+}
+
+.landing-trusted__logo-wordmark {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 97.73%;
+  block-size: 100%;
+}
+
+.landing-trusted__logo-mark {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  inline-size: 2.84%;
+  block-size: 12.5%;
+}
+
+/* ─── Section 5 header (Figma 3:38072): white bg both themes ───────── */
+.landing-why {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-medium-lg);
+  max-inline-size: 1388px;
+  margin-inline: auto;
+  margin-block-start: var(--spacing-large-massive); /* 56 frame gap */
+  padding-block-start: var(--spacing-large-xxl);    /* header at frame +32 */
+  background: var(--landing-impact-bg);
+  text-align: center;
+}
+
+/* wavey (3:38073): the original absolute image was calibrated for the 1388px
+   desktop section and didn't follow the title when its position shifted
+   (centring at narrow widths, dark-mode padding) → it floated above the text.
+   Replaced by the span-anchored wavey on .landing-why__highlight::before so
+   it always sits BEHIND "choose our platform". This image is now unused. */
+.landing-why__wavey {
+  display: none;
+}
+
+.landing-why__title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: var(--brand-grays-900);
+  font-family: var(--typography-h4-font-family);
+  font-size: var(--typography-h4-font-size);
+  font-weight: var(--landing-hero-title-font-weight);
+  line-height: var(--typography-h4-line-height);
+  white-space: nowrap;
+}
+
+.landing-why__highlight {
+  position: relative;
+  color: var(--landing-navbar-surface); /* white over the blue wavey */
+  /* the highlighted phrase must stay on one line so it sits entirely inside
+     the single-line blue wavey (never split "choose our / platform") */
+  display: inline-block;
+  white-space: nowrap;
+  padding-inline: 12px;
+}
+
+/* original Figma wavey (3:38073) — blue parallelogram + spark marks, cropped
+   from wavey-header.png — anchored to the phrase so it sits BEHIND it and
+   tracks it at every width/theme (replaces the misaligning absolute image). */
+.landing-why__highlight::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset-block: -8px -6px;
+  inset-inline: -10px -26px; /* room on the right for the spark marks */
+  background: url('/assets/images/testimonials/wavey-highlight.png') left center / 100% 100% no-repeat;
+}
+
+.landing-why__description {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  max-inline-size: var(--landing-hero-body-max-width); /* 555.99 */
+  color: var(--brand-neutral-400);
+  font-family: var(--typography-body-font-family);
+  font-size: var(--typography-body-font-size);
+  line-height: var(--typography-body-line-height);
+}
+
+/* ─── Testimonial columns (Figma 3:38081): 3 × 336×684 clipped stacks ─ */
+.landing-testimonials {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-medium-xl);
+  margin-block-start: var(--spacing-very-large-giant); /* 64 */
+  background: var(--landing-impact-bg);
+}
+
+/* fade overlays (Gradient Ramps 3:38100/3:38101, flip rule applied) */
+.landing-testimonials::before,
+.landing-testimonials::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.landing-testimonials::before {
+  inset-block-start: -70px;
+  block-size: 346px;
+  background: linear-gradient(180deg, var(--landing-impact-bg), transparent);
+}
+
+.landing-testimonials::after {
+  inset-block-start: 454px;
+  block-size: 245px;
+  background: linear-gradient(180deg, transparent, var(--landing-impact-bg));
+}
+
+.landing-testimonials__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium-xl); /* 24 → card step 316 */
+  inline-size: 336px;
+  block-size: 684px;
+  overflow: hidden;
+}
+
+/* stack offset: first card at y −436 (Figma crop) */
+.landing-testimonials__column .landing-testimonials__card:first-child {
+  margin-block-start: -436px;
+}
+
+.landing-testimonials__card {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 39px;
+  inline-size: 336px;
+  block-size: 292px;
+  padding: var(--spacing-medium-lg);
+  border: var(--border-width-hairline) solid var(--landing-impact-tab-border);
+  border-radius: var(--radius-30, 30px);
+  background: var(--landing-analysis-bar-light); /* #feede6 */
+  overflow: hidden;
+}
+
+.landing-testimonials__column--blue .landing-testimonials__card {
+  background: var(--landing-impact-card-bg); /* #ccf1ff */
+}
+
+.landing-testimonials__card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium-md);
+  inline-size: 100%;
+}
+
+.landing-testimonials__card-icon {
+  inline-size: 32px;
+  block-size: 32px;
+}
+
+.landing-testimonials__quote {
+  margin: 0;
+  color: var(--brand-neutral-400);
+  font-family: var(--typography-body-font-family);
+  font-size: var(--body-size);
+  line-height: 1.5;
+}
+
+.landing-testimonials__person {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  inline-size: 100%;
+}
+
+.landing-testimonials__avatar {
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  inline-size: 42px;
+  block-size: 42px;
+  border-radius: var(--radius-full);
+  background: var(--landing-navbar-primary);
+  overflow: hidden;
+}
+
+.landing-testimonials__avatar img {
+  position: absolute;
+  inset-block-start: 3.4px;
+  inset-inline-start: 4.19px;
+  inline-size: 32.398px;
+  block-size: 37.635px;
+}
+
+.landing-testimonials__person-text p {
+  margin: 0;
+}
+
+.landing-testimonials__name {
+  color: var(--brand-grays-900);
+  font-size: var(--subtitle-size);
+  line-height: 1.5;
+}
+
+.landing-testimonials__role {
+  color: var(--brand-neutral-400);
+  font-size: var(--caption-size);
+  line-height: 1.5;
+}
+
+/* ─── Tablet stabilization (768–1100px) — fit why-wavey, show 2 of 3
+   testimonial columns. Desktop (>1100) and mobile (<768) untouched. ── */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .landing-why {
+    padding-inline: var(--spacing-large-xxxl); /* 40 */
+    box-sizing: border-box;
+  }
+
+  /* Title stays on ONE line (frozen behaviour). At tablet the centred title
+     shifts, so the absolute wavey image (calibrated for the 1388px desktop
+     section) no longer aligns with the phrase. Attach the ORIGINAL wavey
+     shape (cropped to its blue parallelogram + sparks) to the highlight span
+     so it sits BEHIND "choose our platform" and tracks it at any width.
+     Desktop (>1100) keeps the frozen absolute image. */
+  /* (The wavey highlight is now span-anchored in the base rule, so it tracks
+     the phrase at tablet automatically — no tablet-specific override needed.) */
+
+  /* 3 columns (1056) exceed the viewport → show 2, centered. The masked
+     vertical stack inside each column is preserved as designed. */
+  .landing-testimonials__column:nth-child(3) {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .landing-hero {
+    /* Figma mobile frame 393×655: 104px top gap, 17.5px inline, 112px bottom */
+    padding: var(--landing-hero-top-gap) var(--landing-hero-inline-padding-mobile) var(--landing-hero-bottom-gap-mobile);
+  }
+
+  .landing-hero__content {
+    max-inline-size: 100%;
+  }
+
+  .landing-hero__title {
+    /* Figma mobile title: H6 26px / line-height 1.4 (node 3:64875) */
+    font-size: var(--typography-h6-font-size);
+    line-height: var(--typography-h6-line-height);
+  }
+
+  .landing-hero::after {
+    /* dark glow ellipse position in the 393 frame (node 3:64868: bbox −59, 506) */
+    background-position: calc(50% + 37.19px) 39.39px;
+  }
+
+  /* Figma mobile 3:65267: the 699-high container clips — only column 1
+     is visible (section height math: 32+117+64+699+64+726.47+64+727.47+32) */
+  .landing-testimonials__column:not(:first-child) {
+    display: none;
+  }
+
+  .landing-why__description {
+    /* Figma mobile (3:65276): keeps the 555.99 desktop box, clipped */
+    flex: 0 0 auto;
+    inline-size: var(--landing-hero-body-max-width);
+    max-inline-size: none;
+  }
+
+  .landing-section--dashboard {
+    padding-block-start: var(--landing-dashboard-top-gap-mobile);
+  }
+
+  .landing-trusted {
+    padding-inline: 0; /* slider stays full-bleed; texts keep their own padding */
+  }
+
+  .landing-trusted__title {
+    /* Figma mobile: H6 26px / 1.4, box 347.24 wide (node 3:64986) */
+    max-inline-size: 347.24px;
+    padding-inline: 0;
+    font-size: var(--typography-h6-font-size);
+    line-height: var(--typography-h6-line-height);
+  }
+
+  .landing-trusted__subtitle {
+    /* Figma mobile: box 321.08 wide (node 3:64987) */
+    max-inline-size: 321.08px;
+    padding-inline: 0;
+  }
+
+}

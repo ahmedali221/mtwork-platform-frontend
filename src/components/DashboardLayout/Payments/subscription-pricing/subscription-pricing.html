@@ -1,0 +1,190 @@
+<section class="page-container pricing-page" aria-labelledby="pricing-title">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1 id="pricing-title" class="page-title">{{ 'payments.subscription.title' | transloco }}</h1>
+    <p class="page-subtitle">{{ 'payments.subscriptionPricing.subtitle' | transloco }}</p>
+  </div>
+
+  <!-- Loading -->
+  @if (isLoading()) {
+    <div class="loading-state" role="status" [attr.aria-label]="'payments.subscriptionPricing.loadingAriaLabel' | transloco">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>{{ 'payments.subscriptionPricing.loading' | transloco }}</p>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (!isLoading() && errorMessage()) {
+    <div class="error-banner" role="alert">
+      <mat-icon aria-hidden="true">error_outline</mat-icon>
+      <span>{{ errorMessage() | transloco }}</span>
+    </div>
+  }
+
+  <!-- Success -->
+  @if (successMessage()) {
+    <div class="success-banner" role="status" aria-live="polite">
+      <mat-icon aria-hidden="true">check_circle</mat-icon>
+      <span>{{ successMessage() | transloco }}</span>
+    </div>
+  }
+
+  <!-- Active subscription badge -->
+  @if (!isLoading() && isActive()) {
+    <div class="active-badge" role="status">
+      <mat-icon aria-hidden="true">verified</mat-icon>
+      <span>
+        {{ 'payments.subscriptionPricing.activePlanLabel' | transloco }}
+        <strong>{{ activeType() | titlecase }}</strong>
+        &mdash; {{ 'payments.subscriptionPricing.renews' | transloco }} {{ activeSubscription()!.endDate | date: 'mediumDate' }}
+      </span>
+    </div>
+  }
+
+  <!-- Pricing cards -->
+  @if (!isLoading() && !errorMessage()) {
+    <div class="pricing-grid" role="list">
+
+      <!-- Monthly -->
+      @if (monthlyPlan()) {
+        <article
+          class="card pricing-card"
+          [class.pricing-card--active]="isCurrentPlan('monthly')"
+          role="listitem"
+          [attr.aria-label]="'payments.subscriptionPricing.monthlyPlanAriaLabel' | transloco"
+        >
+          @if (isCurrentPlan('monthly')) {
+            <div class="current-badge" [attr.aria-label]="'payments.subscription.currentPlan' | transloco">
+              {{ 'payments.subscription.currentPlan' | transloco }}
+            </div>
+          }
+
+          <div class="plan-header">
+            <div class="plan-icon plan-icon--monthly" aria-hidden="true">
+              <mat-icon>calendar_today</mat-icon>
+            </div>
+            <h2 class="plan-name">{{ 'payments.subscription.monthly' | transloco }}</h2>
+            <p class="plan-description">{{ 'payments.subscriptionPricing.monthlyDescription' | transloco }}</p>
+          </div>
+
+          <div class="plan-price">
+            <span class="plan-price__amount">${{ monthlyPlan()!.amount | number: '1.0-0' }}</span>
+            <span class="plan-price__period">{{ 'payments.subscriptionPricing.perMonth' | transloco }}</span>
+          </div>
+
+          <ul class="feature-list" [attr.aria-label]="'payments.subscriptionPricing.monthlyPlanAriaLabel' | transloco">
+            @for (feature of planFeatureKeys; track feature) {
+              <li class="feature-item">
+                <mat-icon class="feature-icon" aria-hidden="true">check</mat-icon>
+                <span>{{ feature | transloco }}</span>
+              </li>
+            }
+          </ul>
+
+          <button
+            class="subscribe-btn"
+            [class.subscribe-btn--active]="isCurrentPlan('monthly')"
+            [disabled]="isCurrentPlan('monthly') || submittingType() !== null"
+            (click)="subscribe('monthly')"
+            [attr.aria-label]="isCurrentPlan('monthly') ? ('payments.subscriptionPricing.monthlyActiveAriaLabel' | transloco) : ('payments.subscriptionPricing.subscribeMonthlyAriaLabel' | transloco)"
+            type="button"
+          >
+            @if (submittingType() === 'monthly') {
+              <mat-spinner diameter="18" aria-hidden="true"></mat-spinner>
+              <span>{{ 'payments.subscriptionPricing.processing' | transloco }}</span>
+            } @else if (isCurrentPlan('monthly')) {
+              <mat-icon aria-hidden="true">check_circle</mat-icon>
+              <span>{{ 'payments.subscription.active' | transloco }}</span>
+            } @else {
+              <span>{{ 'payments.subscriptionPricing.subscribeMonthly' | transloco }}</span>
+            }
+          </button>
+        </article>
+      }
+
+      <!-- Yearly -->
+      @if (yearlyPlan()) {
+        <article
+          class="card pricing-card pricing-card--featured"
+          [class.pricing-card--active]="isCurrentPlan('yearly')"
+          role="listitem"
+          [attr.aria-label]="'payments.subscriptionPricing.yearlyPlanAriaLabel' | transloco"
+        >
+          <div class="savings-badge">
+            @if (monthlyPlan() && yearlyPlan()) {
+              {{ 'payments.subscriptionPricing.save' | transloco }} {{ yearlyDiscount(monthlyPlan()!.amount, yearlyPlan()!.amount) }}%
+            }
+          </div>
+
+          @if (isCurrentPlan('yearly')) {
+            <div class="current-badge" [attr.aria-label]="'payments.subscription.currentPlan' | transloco">
+              {{ 'payments.subscription.currentPlan' | transloco }}
+            </div>
+          }
+
+          <div class="plan-header">
+            <div class="plan-icon plan-icon--yearly" aria-hidden="true">
+              <mat-icon>date_range</mat-icon>
+            </div>
+            <h2 class="plan-name">{{ 'payments.subscription.yearly' | transloco }}</h2>
+            <p class="plan-description">{{ 'payments.subscriptionPricing.yearlyDescription' | transloco }}</p>
+          </div>
+
+          <div class="plan-price">
+            <span class="plan-price__amount">${{ yearlyPlan()!.amount | number: '1.0-0' }}</span>
+            <span class="plan-price__period">{{ 'payments.subscriptionPricing.perYear' | transloco }}</span>
+          </div>
+
+          @if (monthlyPlan()) {
+            <p class="plan-price__equiv">
+              {{ 'payments.subscriptionPricing.equivTo' | transloco }} ${{ (yearlyPlan()!.amount / 12) | number: '1.0-0' }}{{ 'payments.subscriptionPricing.perMonth' | transloco }}
+            </p>
+          }
+
+          <ul class="feature-list" [attr.aria-label]="'payments.subscriptionPricing.yearlyPlanAriaLabel' | transloco">
+            @for (feature of planFeatureKeys; track feature) {
+              <li class="feature-item">
+                <mat-icon class="feature-icon" aria-hidden="true">check</mat-icon>
+                <span>{{ feature | transloco }}</span>
+              </li>
+            }
+            <li class="feature-item feature-item--bonus">
+              <mat-icon class="feature-icon feature-icon--bonus" aria-hidden="true">star</mat-icon>
+              <span>{{ 'payments.subscriptionPricing.twoMonthsFree' | transloco }}</span>
+            </li>
+          </ul>
+
+          <button
+            class="subscribe-btn subscribe-btn--featured"
+            [class.subscribe-btn--active]="isCurrentPlan('yearly')"
+            [disabled]="isCurrentPlan('yearly') || submittingType() !== null"
+            (click)="subscribe('yearly')"
+            [attr.aria-label]="isCurrentPlan('yearly') ? ('payments.subscriptionPricing.yearlyActiveAriaLabel' | transloco) : ('payments.subscriptionPricing.subscribeYearlyAriaLabel' | transloco)"
+            type="button"
+          >
+            @if (submittingType() === 'yearly') {
+              <mat-spinner diameter="18" aria-hidden="true"></mat-spinner>
+              <span>{{ 'payments.subscriptionPricing.processing' | transloco }}</span>
+            } @else if (isCurrentPlan('yearly')) {
+              <mat-icon aria-hidden="true">check_circle</mat-icon>
+              <span>{{ 'payments.subscription.active' | transloco }}</span>
+            } @else {
+              <span>{{ 'payments.subscriptionPricing.subscribeYearly' | transloco }}</span>
+            }
+          </button>
+        </article>
+      }
+
+      <!-- Empty state -->
+      @if (amounts().length === 0) {
+        <div class="empty-state" role="status">
+          <mat-icon aria-hidden="true">info_outline</mat-icon>
+          <p>{{ 'payments.subscriptionPricing.noPlans' | transloco }}</p>
+        </div>
+      }
+
+    </div>
+  }
+
+</section>

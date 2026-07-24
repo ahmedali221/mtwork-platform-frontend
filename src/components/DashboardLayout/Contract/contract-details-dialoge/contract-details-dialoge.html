@@ -1,0 +1,328 @@
+<div class="cd-container">
+
+  <!-- ── HEADER ──────────────────────────────────────────────────── -->
+  <div class="cd-header">
+    <div class="cd-header__left">
+      <span class="cd-header__title">{{ contract.contractTitle || ('contracts.details.fallbackTitle' | transloco) }}</span>
+      <span class="cd-header__id">{{ contract.workId }}</span>
+    </div>
+    <div class="cd-header__actions">
+      <button class="cd-header__icon-btn" [matMenuTriggerFor]="optionsMenu" [attr.aria-label]="'contracts.details.moreOptions' | transloco">
+        <mat-icon>more_horiz</mat-icon>
+      </button>
+      <button class="cd-header__icon-btn" (click)="closeDialog()" [attr.aria-label]="'common.close' | transloco">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── LOADING ─────────────────────────────────────────────────── -->
+  @if (isLoading()) {
+    <div class="cd-loading">
+      <mat-spinner diameter="32"></mat-spinner>
+    </div>
+  }
+
+  <!-- ── SCROLLABLE BODY ─────────────────────────────────────────── -->
+  <div class="cd-body">
+
+    <!-- Contractor card -->
+    <div class="cd-person">
+      <div class="cd-person__avatar-wrap">
+        @if (contract.empoleeOrContractor?.avatar) {
+          <img [src]="contract.empoleeOrContractor!.avatar"
+               [alt]="contract.empoleeOrContractor!.name + ' avatar'"
+               class="cd-person__avatar">
+        } @else {
+          <div class="cd-person__avatar cd-person__avatar--initials">
+            {{ getInitials(contract.empoleeOrContractor?.name) }}
+          </div>
+        }
+        @if (contract.empoleeOrContractor?.availabilityStatus) {
+          <span class="cd-person__status-dot"></span>
+        }
+      </div>
+      <div class="cd-person__info">
+        <div class="cd-person__name">{{ contract.empoleeOrContractor?.name }}</div>
+        <div class="cd-person__role">{{ contract.empoleeOrContractor?.role }}</div>
+        @if (contract.empoleeOrContractor?.availabilityStatus) {
+          <span class="cd-person__avail">
+            <span class="cd-person__avail-dot"></span>
+            {{ contract.empoleeOrContractor!.availabilityStatus }}
+          </span>
+        }
+        <div class="cd-person__contact">
+          @if (contract.country?.name) {
+            <span class="cd-person__contact-item">
+              <mat-icon class="cd-icon-xs">location_on</mat-icon>
+              {{ contract.country!.name }}
+            </span>
+          }
+          @if (contract.empoleeOrContractor?.phone) {
+            <span class="cd-person__contact-item">
+              <mat-icon class="cd-icon-xs">phone</mat-icon>
+              {{ contract.empoleeOrContractor!.phone }}
+            </span>
+          }
+        </div>
+        <div class="cd-person__links">
+          @if (contract.empoleeOrContractor?.email) {
+            <span class="cd-person__link-item">
+              <mat-icon class="cd-icon-xs">email</mat-icon>
+              {{ contract.empoleeOrContractor!.email }}
+            </span>
+          }
+          @if (contract.empoleeOrContractor?.github) {
+            <span class="cd-person__link-item">
+              <mat-icon class="cd-icon-xs">code</mat-icon>
+              {{ contract.empoleeOrContractor!.github }}
+            </span>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Basic Information ────────────────────────────────────── -->
+    <div class="cd-section">
+      <button class="cd-section__header" (click)="toggle('basic')" [attr.aria-label]="'contracts.details.toggleBasicInfo' | transloco">
+        <span class="cd-section__title">{{ 'contracts.details.sections.basic' | transloco }}</span>
+        <div class="cd-section__header-right">
+          <button class="cd-edit-btn" (click)="$event.stopPropagation()" [attr.aria-label]="'contracts.details.editBasicInfo' | transloco">
+            <mat-icon>edit</mat-icon> {{ 'contracts.details.edit' | transloco }}
+          </button>
+          <mat-icon class="cd-chevron" [class.cd-chevron--open]="basicOpen()">expand_more</mat-icon>
+        </div>
+      </button>
+      @if (basicOpen()) {
+        <div class="cd-section__body">
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.companyName' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.name || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.lastName' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.lastName || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.country' | transloco }}</span><span class="cd-row__val">{{ contract.country?.name || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.postCode' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.postCode || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.taxDescription' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.taxId || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.linkedIn' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.linkedin || '—' }}</span></div>
+        </div>
+      }
+    </div>
+
+    <!-- ── Authorized ───────────────────────────────────────────── -->
+    <div class="cd-section">
+      <button class="cd-section__header" (click)="toggle('authorized')" [attr.aria-label]="'contracts.details.toggleAuthorized' | transloco">
+        <span class="cd-section__title">{{ 'contracts.details.sections.authorized' | transloco }}</span>
+        <div class="cd-section__header-right">
+          <button class="cd-edit-btn" (click)="$event.stopPropagation()" [attr.aria-label]="'contracts.details.editAuthorized' | transloco">
+            <mat-icon>edit</mat-icon> {{ 'contracts.details.edit' | transloco }}
+          </button>
+          <mat-icon class="cd-chevron" [class.cd-chevron--open]="authorizedOpen()">expand_more</mat-icon>
+        </div>
+      </button>
+      @if (authorizedOpen()) {
+        <div class="cd-section__body">
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.firstName' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.authorizedFirstName || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.lastName' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.authorizedLastName || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.authorizedId' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.authorizedId || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.city' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.city || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.email' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.email || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.address' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.address || '—' }}</span></div>
+        </div>
+      }
+    </div>
+
+    <!-- ── Attachments ──────────────────────────────────────────── -->
+    <div class="cd-section">
+      <button class="cd-section__header" (click)="toggle('attachments')" [attr.aria-label]="'contracts.details.toggleAttachments' | transloco">
+        <span class="cd-section__title">{{ 'contracts.details.sections.attachments' | transloco }}</span>
+        <div class="cd-section__header-right">
+          <button class="cd-edit-btn" (click)="$event.stopPropagation()" [attr.aria-label]="'contracts.details.editAttachments' | transloco">
+            <mat-icon>edit</mat-icon> {{ 'contracts.details.edit' | transloco }}
+          </button>
+          <mat-icon class="cd-chevron" [class.cd-chevron--open]="attachmentsOpen()">expand_more</mat-icon>
+        </div>
+      </button>
+      @if (attachmentsOpen()) {
+        <div class="cd-section__body cd-attachments">
+          @if (contract.attachments?.length) {
+            @for (att of contract.attachments; track att.name) {
+              <div class="cd-attachment">
+                <div class="cd-attachment__icon"><mat-icon>description</mat-icon></div>
+                <div class="cd-attachment__info">
+                  <span class="cd-attachment__name">{{ att.name }}</span>
+                  @if (att.uploadedAt || att.size) {
+                    <span class="cd-attachment__meta">
+                      {{ att.uploadedAt ? ('contracts.details.uploadedOn' | transloco) + att.uploadedAt : '' }}
+                      {{ att.size ? ' · ' + att.size : '' }}
+                    </span>
+                  }
+                </div>
+                <div class="cd-attachment__actions">
+                  <button class="cd-attachment__btn cd-attachment__btn--delete" [attr.aria-label]="'contracts.details.deleteAttachment' | transloco">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                  <button class="cd-attachment__btn cd-attachment__btn--download"
+                          (click)="downloadAttachment(att.url)"
+                          [attr.aria-label]="'contracts.details.downloadAttachment' | transloco">
+                    <mat-icon>download</mat-icon>
+                  </button>
+                </div>
+              </div>
+            }
+          } @else {
+            <p class="cd-empty-msg">{{ 'contracts.details.noAttachments' | transloco }}</p>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- ── Employer Information ─────────────────────────────────── -->
+    <div class="cd-section">
+      <button class="cd-section__header" (click)="toggle('employer')" [attr.aria-label]="'contracts.details.toggleEmployerInfo' | transloco">
+        <span class="cd-section__title">{{ 'contracts.details.sections.employer' | transloco }}</span>
+        <div class="cd-section__header-right">
+          <button class="cd-edit-btn cd-edit-btn--primary" (click)="$event.stopPropagation()" [attr.aria-label]="'contracts.details.editEmployerInfo' | transloco">
+            <mat-icon>edit</mat-icon> {{ 'contracts.details.edit' | transloco }}
+          </button>
+          <mat-icon class="cd-chevron" [class.cd-chevron--open]="employerOpen()">expand_more</mat-icon>
+        </div>
+      </button>
+      @if (employerOpen()) {
+        <div class="cd-section__body">
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.entityName' | transloco }}</span><span class="cd-row__val">{{ contract.employer?.entityName || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.officialNumber' | transloco }}</span><span class="cd-row__val">{{ contract.employer?.officialNumber || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.phoneNumber' | transloco }}</span><span class="cd-row__val">{{ contract.employer?.phone || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.emailAddress' | transloco }}</span><span class="cd-row__val">{{ contract.employer?.email || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.address' | transloco }}</span><span class="cd-row__val">{{ contract.employer?.address || '—' }}</span></div>
+        </div>
+      }
+    </div>
+
+    <!-- ── Worker Information ───────────────────────────────────── -->
+    <div class="cd-section">
+      <button class="cd-section__header" (click)="toggle('worker')" [attr.aria-label]="'contracts.details.toggleWorkerInfo' | transloco">
+        <span class="cd-section__title">{{ 'contracts.details.sections.worker' | transloco }}</span>
+        <div class="cd-section__header-right">
+          <button class="cd-edit-btn cd-edit-btn--primary" (click)="$event.stopPropagation()" [attr.aria-label]="'contracts.details.editWorkerInfo' | transloco">
+            <mat-icon>edit</mat-icon> {{ 'contracts.details.edit' | transloco }}
+          </button>
+          <mat-icon class="cd-chevron" [class.cd-chevron--open]="workerOpen()">expand_more</mat-icon>
+        </div>
+      </button>
+      @if (workerOpen()) {
+        <div class="cd-section__body">
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.name' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.name || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.role' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.role || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.email' | transloco }}</span><span class="cd-row__val">{{ contract.empoleeOrContractor?.email || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.country' | transloco }}</span><span class="cd-row__val">{{ contract.country?.name || '—' }}</span></div>
+        </div>
+      }
+    </div>
+
+    <!-- ── Contracting ──────────────────────────────────────────── -->
+    <div class="cd-section">
+      <button class="cd-section__header" (click)="toggle('contracting')" [attr.aria-label]="'contracts.details.toggleContracting' | transloco">
+        <span class="cd-section__title">{{ 'contracts.details.sections.contracting' | transloco }}</span>
+        <div class="cd-section__header-right">
+          <button class="cd-edit-btn cd-edit-btn--primary" (click)="$event.stopPropagation()" [attr.aria-label]="'contracts.details.editContracting' | transloco">
+            <mat-icon>edit</mat-icon> {{ 'contracts.details.edit' | transloco }}
+          </button>
+          <mat-icon class="cd-chevron" [class.cd-chevron--open]="contractingOpen()">expand_more</mat-icon>
+        </div>
+      </button>
+      @if (contractingOpen()) {
+        <div class="cd-section__body">
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.startDate' | transloco }}</span><span class="cd-row__val">{{ contract.startDate || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.endDate' | transloco }}</span><span class="cd-row__val">{{ contract.endDate || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.contractDuration' | transloco }}</span><span class="cd-row__val">{{ contract.contractDuration || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.trialPeriod' | transloco }}</span><span class="cd-row__val">{{ contract.trialPeriod || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.typeOfWork' | transloco }}</span><span class="cd-row__val">{{ contract.typeOfWork || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.vacationDays' | transloco }}</span><span class="cd-row__val">{{ contract.vacationDays ?? '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.terminateDuringTrial' | transloco }}</span><span class="cd-row__val">{{ contract.terminateDuringTrial || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.terminateContract' | transloco }}</span><span class="cd-row__val">{{ contract.terminateContract || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.noticePeriod' | transloco }}</span><span class="cd-row__val">{{ contract.noticePeriod || '—' }}</span></div>
+        </div>
+      }
+    </div>
+
+    <!-- ── Working Time & Salaries ──────────────────────────────── -->
+    <div class="cd-section">
+      <button class="cd-section__header" (click)="toggle('salary')" [attr.aria-label]="'contracts.details.toggleWorkTime' | transloco">
+        <span class="cd-section__title">{{ 'contracts.details.sections.salary' | transloco }}</span>
+        <div class="cd-section__header-right">
+          <button class="cd-edit-btn cd-edit-btn--primary" (click)="$event.stopPropagation()" [attr.aria-label]="'contracts.details.editWorkTime' | transloco">
+            <mat-icon>edit</mat-icon> {{ 'contracts.details.edit' | transloco }}
+          </button>
+          <mat-icon class="cd-chevron" [class.cd-chevron--open]="salaryOpen()">expand_more</mat-icon>
+        </div>
+      </button>
+      @if (salaryOpen()) {
+        <div class="cd-section__body">
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.workingHoursPerDay' | transloco }}</span><span class="cd-row__val">{{ contract.numberOfWorkingHours ? contract.numberOfWorkingHours + ' ' + ('contracts.details.units.hours' | transloco) : '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.workingDays' | transloco }}</span><span class="cd-row__val">{{ contract.workingDays ? contract.workingDays + ' ' + ('contracts.details.units.days' | transloco) : '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.totalWorkingHours' | transloco }}</span><span class="cd-row__val">{{ contract.workingHours ? contract.workingHours + ' ' + ('contracts.details.units.hours' | transloco) : '—' }}</span></div>
+
+          <!-- Salaries and Other Benefit sub-section -->
+          <div class="cd-subsection-title">{{ 'contracts.details.salariesSubsection' | transloco }}</div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.salary' | transloco }}</span><span class="cd-row__val cd-salary-val">{{ contract.salary ? ('$ ' + contract.salary + ' ' + (contract.currency || '')) : '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.currency' | transloco }}</span><span class="cd-row__val">{{ contract.currency || '—' }}</span></div>
+          <div class="cd-row"><span class="cd-row__label">{{ 'contracts.details.fields.billingCycle' | transloco }}</span><span class="cd-row__val">{{ contract.billingCycle || '—' }}</span></div>
+          <div class="cd-row">
+            <span class="cd-row__label">{{ 'contracts.details.fields.includeAllowances' | transloco }}</span>
+            <span class="cd-row__val">
+              <span class="cd-toggle" [class.cd-toggle--on]="contract.includeAllowances" role="img" [attr.aria-label]="contract.includeAllowances ? 'On' : 'Off'">
+                <span class="cd-toggle__thumb"></span>
+              </span>
+            </span>
+          </div>
+        </div>
+      }
+    </div>
+
+  </div><!-- /cd-body -->
+
+</div>
+
+<!-- Options menu -->
+<!-- ── Confirm delete banner ──────────────────────────────────── -->
+@if (confirmDelete()) {
+  <div class="cd-confirm-delete">
+    <mat-icon class="cd-confirm-delete__icon">warning</mat-icon>
+    <span>{{ 'contracts.details.confirmDelete.message' | transloco }}</span>
+    <div class="cd-confirm-delete__actions">
+      <button class="cd-confirm-delete__btn cd-confirm-delete__btn--cancel"
+              (click)="cancelDelete()" [disabled]="isActioning()">
+        {{ 'contracts.details.confirmDelete.cancel' | transloco }}
+      </button>
+      <button class="cd-confirm-delete__btn cd-confirm-delete__btn--confirm"
+              (click)="confirmDeleteAction()" [disabled]="isActioning()">
+        @if (isActioning()) { <mat-spinner diameter="14"></mat-spinner> }
+        {{ 'contracts.details.confirmDelete.confirm' | transloco }}
+      </button>
+    </div>
+  </div>
+}
+
+<mat-menu #optionsMenu="matMenu">
+  @if (canActivate()) {
+    <button mat-menu-item (click)="changeStatus(ContractStatus.Reviewed)"
+            [disabled]="isActioning()" [attr.aria-label]="'contracts.details.markContractReviewed' | transloco">
+      <mat-icon>check_circle</mat-icon>
+      <span>{{ 'contracts.details.menu.markReviewed' | transloco }}</span>
+    </button>
+  }
+  @if (canTerminate()) {
+    <button mat-menu-item (click)="changeStatus(ContractStatus.Approved)"
+            [disabled]="isActioning()" [attr.aria-label]="'contracts.details.approveContract' | transloco">
+      <mat-icon>verified</mat-icon>
+      <span>{{ 'contracts.details.menu.approve' | transloco }}</span>
+    </button>
+  }
+  <button mat-menu-item (click)="downloadPdf()"
+          [disabled]="isActioning()" [attr.aria-label]="'contracts.details.downloadContractPDF' | transloco">
+    <mat-icon>picture_as_pdf</mat-icon>
+    <span>{{ 'contracts.details.menu.downloadPdf' | transloco }}</span>
+  </button>
+  <button mat-menu-item (click)="requestDelete()"
+          [disabled]="isActioning()" class="cd-menu-danger" [attr.aria-label]="'contracts.details.deleteContract' | transloco">
+    <mat-icon>delete_outline</mat-icon>
+    <span>{{ 'contracts.details.menu.delete' | transloco }}</span>
+  </button>
+</mat-menu>

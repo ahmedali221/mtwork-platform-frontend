@@ -1,0 +1,140 @@
+
+
+<!-- Contracting Section -->
+<div class="card-section">
+  <h2 class="section-title">Contracting</h2>
+
+  <form [formGroup]="ContractingForm">
+    <div class="form-row two-columns">
+
+      <!-- Start Date -->
+      <div class="form-group">
+        <label class="form-label">
+          Start Date <span class="required-badge">Required</span>
+        </label>
+        <input
+          type="date"
+          class="form-input"
+          formControlName="contractStartDate"
+          placeholder="Enter Start Date"
+        />
+      </div>
+
+      <!-- Contract Duration -->
+      <div class="form-group">
+        <label class="form-label">
+          Contract Duration <span class="required-badge">Required</span>
+        </label>
+        <mat-form-field appearance="outline" class="full-width">
+          
+          <mat-select formControlName="contractDuration">
+            <mat-option
+              *ngFor="let option of ContractDurationOptions"
+              [value]="option"
+            >
+              {{ option }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="form-row two-columns">
+      <!-- Trial Period -->
+      <div class="form-group">
+        <label class="form-label">
+          Trial Period <span class="required-badge">Required</span>
+        </label>
+        <input
+          type="text"
+          class="form-input"
+          formControlName="trialPeriod"
+          placeholder="Enter Trial Period (e.g. 3 months)"
+        />
+      </div>
+
+      <!-- Type of Work -->
+      <div class="form-group">
+        <label class="form-label">
+          Type of Work <span class="required-badge">Required</span>
+        </label>
+        <mat-form-field appearance="outline" class="full-width">
+         
+          <mat-select formControlName="typeOfWork">
+            <mat-option
+              *ngFor="let option of TypeOfWorkOptions"
+              [value]="option"
+            >
+              {{ option }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Vacation Days -->
+    <div class="form-group">
+      <label class="form-label">
+        Vacation Days <span class="required-badge">Required</span>
+      </label>
+      <input
+        type="number"
+        class="form-input"
+        formControlName="vacationDays"
+        placeholder="Enter number of vacation days"
+      />
+    </div>
+
+    <!-- Who Can Terminate During Trial -->
+    <div class="form-group">
+      <label class="form-label">
+        Who can terminate the contract during the trial period
+        <span class="required-badge">Required</span>
+      </label>
+      <mat-form-field appearance="outline" class="full-width">
+  
+        <mat-select formControlName="whoCanTerminateDuringTrial">
+          <mat-option
+            *ngFor="let option of WhoCanTerminateOptions"
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Who Can Terminate -->
+    <div class="form-group">
+      <label class="form-label">
+        Who can terminate the contract
+        <span class="required-badge">Required</span>
+      </label>
+      <mat-form-field appearance="outline" class="full-width">
+       
+        <mat-select formControlName="whoCanTerminate">
+          <mat-option
+            *ngFor="let option of WhoCanTerminateOptions"
+            [value]="option"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Notice Period -->
+    <div class="form-group">
+      <label class="form-label">
+        Notice Period <span class="required-badge">Required</span>
+      </label>
+      <textarea
+        rows="3"
+        class="form-input textarea"
+        formControlName="noticePeriod"
+        placeholder="Enter Notice Period (e.g. 30 days)"
+      ></textarea>
+    </div>
+  </form>
+</div>
+<!-- End of Contracting Section -->

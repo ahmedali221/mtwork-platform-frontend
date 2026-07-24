@@ -1,0 +1,194 @@
+<div class="withdrawals-page">
+
+  <!-- ── Header ── -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">{{ 'withdrawals.title' | transloco }}</h1>
+      <p class="page-subtitle">{{ 'withdrawals.subtitle' | transloco }}</p>
+    </div>
+    <button class="btn-primary" (click)="openWithdrawDialog()" aria-label="{{ 'withdrawals.requestBtn' | transloco }}">
+      <mat-icon>add</mat-icon>
+      {{ 'withdrawals.requestBtn' | transloco }}
+    </button>
+  </div>
+
+  <!-- ── Summary cards ── -->
+  <div class="summary-cards">
+    @if (!isBusiness && balance() !== null) {
+      <div class="summary-card">
+        <div class="summary-icon summary-icon--approved">
+          <mat-icon>savings</mat-icon>
+        </div>
+        <div class="summary-info">
+          <span class="summary-label">{{ 'withdrawals.stats.availableBalance' | transloco }}</span>
+          <span class="summary-value">{{ balance() | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    }
+    <div class="summary-card">
+      <div class="summary-icon summary-icon--total">
+        <mat-icon>account_balance_wallet</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">{{ 'withdrawals.stats.totalRequested' | transloco }}</span>
+        <span class="summary-value">{{ totalAmount() | number:'1.2-2' }}</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon summary-icon--pending">
+        <mat-icon>schedule</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">{{ 'withdrawals.stats.pending' | transloco }}</span>
+        <span class="summary-value">{{ pendingCount() }}</span>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-icon summary-icon--approved">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <div class="summary-info">
+        <span class="summary-label">{{ 'withdrawals.stats.totalApproved' | transloco }}</span>
+        <span class="summary-value">{{ approvedSum() | number:'1.2-2' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Filters ── -->
+  <div class="filter-bar">
+    <div class="search-wrapper">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        class="search-input"
+        type="text"
+        [placeholder]="'withdrawals.searchPlaceholder' | transloco"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="searchQuery.set($event); onFilterChange()"
+        aria-label="{{ 'withdrawals.searchPlaceholder' | transloco }}"
+      />
+    </div>
+    <select
+      class="filter-select"
+      [ngModel]="statusFilter()"
+      (ngModelChange)="statusFilter.set($event); onFilterChange()"
+      aria-label="{{ 'withdrawals.filterByStatus' | transloco }}"
+    >
+      <option value="">{{ 'common.all' | transloco }}</option>
+      <option value="pending">{{ 'salary.withdrawStatus.pending' | transloco }}</option>
+      <option value="approved">{{ 'salary.withdrawStatus.approved' | transloco }}</option>
+      <option value="rejected">{{ 'salary.withdrawStatus.rejected' | transloco }}</option>
+    </select>
+  </div>
+
+  <!-- ── Loading ── -->
+  @if (loading()) {
+    <div class="loading-state">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>{{ 'common.loading' | transloco }}</p>
+    </div>
+  }
+
+  <!-- ── Error ── -->
+  @else if (error()) {
+    <div class="error-state">
+      <mat-icon>error_outline</mat-icon>
+      <p>{{ error()! | transloco }}</p>
+      <button class="btn-secondary" (click)="loadHistory()">{{ 'common.retry' | transloco }}</button>
+    </div>
+  }
+
+  <!-- ── Empty ── -->
+  @else if (entries().length === 0) {
+    <div class="empty-state">
+      <mat-icon class="empty-icon">account_balance_wallet</mat-icon>
+      <p class="empty-title">{{ 'withdrawals.emptyTitle' | transloco }}</p>
+      <p class="empty-desc">{{ 'withdrawals.emptyDesc' | transloco }}</p>
+      <button class="btn-primary" (click)="openWithdrawDialog()">
+        {{ 'withdrawals.requestBtn' | transloco }}
+      </button>
+    </div>
+  }
+
+  <!-- ── Table ── -->
+  @else {
+    <div class="table-wrapper">
+      <table class="data-table" role="table" aria-label="{{ 'withdrawals.title' | transloco }}">
+        <thead>
+          <tr>
+            <th scope="col">{{ 'withdrawals.table.id' | transloco }}</th>
+            @if (isBusiness) {
+              <th scope="col">{{ 'salary.table.requestedBy' | transloco }}</th>
+            }
+            <th scope="col">{{ 'withdrawals.table.amount' | transloco }}</th>
+            <th scope="col">{{ 'withdrawals.table.reason' | transloco }}</th>
+            <th scope="col">{{ 'withdrawals.table.status' | transloco }}</th>
+            <th scope="col">{{ 'withdrawals.table.date' | transloco }}</th>
+            @if (isBusiness) {
+              <th scope="col">{{ 'common.actions' | transloco }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (entry of paginated(); track entry.id) {
+            <tr class="table-row">
+              <td class="td-key">{{ formatKey(entry.id) }}</td>
+              @if (isBusiness) {
+                <td>
+                  <div class="employee-cell">
+                    <span class="employee-avatar">{{ getInitials(entry.employeeName) }}</span>
+                    <span class="employee-name">{{ entry.employeeName ?? '—' }}</span>
+                  </div>
+                </td>
+              }
+              <td class="td-amount">{{ entry.amount | number:'1.2-2' }}</td>
+              <td class="td-reason">{{ entry.reason || '—' }}</td>
+              <td>
+                <span class="status-badge {{ statusClass(entry.status) }}">
+                  <mat-icon class="badge-icon">{{ statusIcon(entry.status) }}</mat-icon>
+                  {{ ('salary.withdrawStatus.' + entry.status) | transloco }}
+                </span>
+              </td>
+              <td class="td-date">{{ entry.createdAt | date:'mediumDate' }}</td>
+              @if (isBusiness) {
+                <td>
+                  @if (entry.status === 'pending') {
+                    <div class="action-btns">
+                      <button class="icon-btn approve-btn"
+                              (click)="processWithdrawal(entry, 'approved')"
+                              [attr.aria-label]="'salary.actions.approve' | transloco">
+                        <mat-icon>check</mat-icon>
+                      </button>
+                      <button class="icon-btn reject-btn"
+                              (click)="processWithdrawal(entry, 'rejected')"
+                              [attr.aria-label]="'salary.actions.reject' | transloco">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </div>
+                  }
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── Pagination ── -->
+    @if (totalPages() > 1) {
+      <div class="pagination" role="navigation" [attr.aria-label]="'withdrawals.pagination.nav' | transloco">
+        <button class="page-btn" (click)="goToPage(currentPage() - 1)" [disabled]="currentPage() === 1" [attr.aria-label]="'withdrawals.pagination.previous' | transloco">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        @for (p of pageNumbers(); track p) {
+          <button class="page-btn" [class.active]="p === currentPage()" (click)="goToPage(p)" [attr.aria-label]="('withdrawals.pagination.page' | transloco) + ' ' + p" [attr.aria-current]="p === currentPage() ? 'page' : null">
+            {{ p }}
+          </button>
+        }
+        <button class="page-btn" (click)="goToPage(currentPage() + 1)" [disabled]="currentPage() === totalPages()" [attr.aria-label]="'withdrawals.pagination.next' | transloco">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    }
+  }
+
+</div>
