@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/components/DashboardLayout/authenticated-layout/authenticated-layout.css"],
-  "sourcesContent": [" \r\n  :host {\r\n      display: block;\r\n    }\r\n\r\n    .layout-container {\r\n      position: relative;\r\n    }\r\n\r\n    main {\r\n      background: var(--ui-bg);\r\n    }\r\n\r\n .app-container {\r\n      display: flex;\r\n      min-height: 100vh;\r\n      background: var(--ui-bg);\r\n    }\r\n\r\n    .main-content {\r\n      flex: 1;\r\n      display: flex;\r\n      flex-direction: column;\r\n      margin-inline-start: 277px;\r\n      transition: margin-inline-start 0.3s ease;\r\n      min-height: 100vh;\r\n    }\r\n\r\n    .main-content.sidebar-collapsed {\r\n      margin-inline-start: 100px;\r\n    }\r\n\r\n    .content-area {\r\n      flex: 1;\r\n      padding: 24px;\r\n      overflow-y: auto;\r\n      background: var(--ui-bg);\r\n    }\r\n\r\n    @media (max-width: 768px) {\r\n      .main-content {\r\n        margin-inline-start: 0;\r\n      }\r\n\r\n      .main-content.sidebar-collapsed {\r\n        margin-inline-start: 0;\r\n      }\r\n    }"],
-  "mappings": ";AACE;AACI,WAAS;AACX;AAEA,CAAC;AACC,YAAU;AACZ;AAEA;AACE,cAAY,IAAI;AAClB;AAEH,CAAC;AACI,WAAS;AACT,cAAY;AACZ,cAAY,IAAI;AAClB;AAEA,CAAC;AACC,QAAM;AACN,WAAS;AACT,kBAAgB;AAChB,uBAAqB;AACrB,cAAY,oBAAoB,KAAK;AACrC,cAAY;AACd;AAEA,CATC,YASY,CAAC;AACZ,uBAAqB;AACvB;AAEA,CAAC;AACC,QAAM;AACN,WAAS;AACT,cAAY;AACZ,cAAY,IAAI;AAClB;AAEA,QAAO,WAAY;AACjB,GArBD;AAsBG,yBAAqB;AACvB;AAEA,GAzBD,YAyBc,CAhBD;AAiBV,yBAAqB;AACvB;AACF;",
-  "names": []
-}

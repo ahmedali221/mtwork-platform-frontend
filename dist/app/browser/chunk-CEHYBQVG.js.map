@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/components/DashboardLayout/Contract/wizard/create-fixed-salary/create-fixed-salary.ts"],
-  "sourcesContent": ["import { Component } from '@angular/core';\nimport { ContractWizardShellComponent } from '../contract-wizard-shell/contract-wizard-shell';\n\n@Component({\n  selector: 'app-create-fixed-salary',\n  standalone: true,\n  imports: [ContractWizardShellComponent],\n  template: `<app-contract-wizard-shell contractType=\"FixedSalary\" />`,\n})\nexport class CreateFixedSalaryComponent {}\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AASM,IAAO,8BAAP,MAAO,4BAA0B;;;mCAA1B,6BAA0B;AAAA;4FAA1B,6BAA0B,WAAA,CAAA,CAAA,yBAAA,CAAA,GAAA,OAAA,GAAA,MAAA,GAAA,QAAA,CAAA,CAAA,gBAAA,aAAA,CAAA,GAAA,UAAA,SAAA,oCAAA,IAAA,KAAA;AAAA,MAAA,KAAA,GAAA;AAF1B,IAAA,oBAAA,GAAA,6BAAA,CAAA;;kBADD,4BAA4B,GAAA,eAAA,EAAA,CAAA;AAGlC,IAAO,6BAAP;;sEAAO,4BAA0B,CAAA;UANtC;WAAU;MACT,UAAU;MACV,YAAY;MACZ,SAAS,CAAC,4BAA4B;MACtC,UAAU;KACX;;;;6EACY,4BAA0B,EAAA,WAAA,8BAAA,UAAA,6FAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
-  "names": []
-}

@@ -1,3 +1,19 @@
 *.md
 *.png
 .playwright-mcp/
+
+.vercel
+
+# dependencies
+node_modules/
+
+# build output
+dist/
+.angular/
+
+# logs
+npm-debug.log*
+*.log
+
+# env
+.env

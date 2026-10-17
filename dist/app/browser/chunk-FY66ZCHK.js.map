@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/components/DashboardLayout/Contract/wizard/create-milestone/create-milestone.ts"],
-  "sourcesContent": ["import { Component } from '@angular/core';\nimport { ContractWizardShellComponent } from '../contract-wizard-shell/contract-wizard-shell';\n\n@Component({\n  selector: 'app-create-milestone',\n  standalone: true,\n  imports: [ContractWizardShellComponent],\n  template: `<app-contract-wizard-shell contractType=\"Milestone\" />`,\n})\nexport class CreateMilestoneComponent {}\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AASM,IAAO,4BAAP,MAAO,0BAAwB;;;mCAAxB,2BAAwB;AAAA;0FAAxB,2BAAwB,WAAA,CAAA,CAAA,sBAAA,CAAA,GAAA,OAAA,GAAA,MAAA,GAAA,QAAA,CAAA,CAAA,gBAAA,WAAA,CAAA,GAAA,UAAA,SAAA,kCAAA,IAAA,KAAA;AAAA,MAAA,KAAA,GAAA;AAFxB,IAAA,oBAAA,GAAA,6BAAA,CAAA;;kBADD,4BAA4B,GAAA,eAAA,EAAA,CAAA;AAGlC,IAAO,2BAAP;;sEAAO,0BAAwB,CAAA;UANpC;WAAU;MACT,UAAU;MACV,YAAY;MACZ,SAAS,CAAC,4BAA4B;MACtC,UAAU;KACX;;;;6EACY,0BAAwB,EAAA,WAAA,4BAAA,UAAA,uFAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
-  "names": []
-}

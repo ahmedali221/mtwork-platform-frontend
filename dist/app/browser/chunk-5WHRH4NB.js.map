@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/models/user.model.ts"],
-  "sourcesContent": ["/**\n * UserType IDs — mirrors backend UserTypeEnum.cs\n * Source: API doc §6 (UserTypeEnum): 1=Employee, 2=Contractor, 3=Business only.\n *\n * NOTE: Admin is a JWT *role* claim (\"role\": \"Admin\"), NOT a UserType.\n * Do NOT add Admin=4 here — it does not exist in the backend enum and\n * causes incorrect authorization logic. Use UserRole.Admin from roles.enum.ts.\n */\nexport enum UserTypeId {\n  Employee   = 1,\n  Contractor = 2,\n  Business   = 3,\n}\n\nexport interface UserDto {\n  id?: string;\n  firstName: string;\n  lastName: string;\n  email: string;\n  phoneNumber?: string;\n  userTypeId: number;\n  companyId?: number;\n  jobTitleId?: number;\n  qualificationId?: number;\n  universityId?: number;\n  countryId?: number;\n  cityId?: number;\n  nationalityId?: number;\n  gender?: number;\n  birthDate?: string;\n  nationalId?: string;\n  passportNumber?: string;\n  ibanNumber?: string;\n  address?: string;\n  isActive?: boolean;\n  profileImagePath?: string;\n  cvPath?: string;\n  passportPath?: string;\n  nationalIdPath?: string;\n}\n"],
-  "mappings": ";AAQA,IAAY;CAAZ,SAAYA,aAAU;AACpB,EAAAA,YAAAA,YAAA,UAAA,IAAA,CAAA,IAAA;AACA,EAAAA,YAAAA,YAAA,YAAA,IAAA,CAAA,IAAA;AACA,EAAAA,YAAAA,YAAA,UAAA,IAAA,CAAA,IAAA;AACF,GAJY,eAAA,aAAU,CAAA,EAAA;",
-  "names": ["UserTypeId"]
-}
